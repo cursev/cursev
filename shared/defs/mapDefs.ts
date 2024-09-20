@@ -1,5 +1,4 @@
 import { DeatchmatchMain } from "../../server/src/deathmatch/maps/main";
-import { Resurviv_Cobalt } from "../../server/src/deathmatch/maps/resurviv-cobalt";
 import type { Vec2 } from "../utils/v2";
 import { Cobalt } from "./maps/cobaltDefs";
 import { Desert } from "./maps/desertDefs";
@@ -19,7 +18,6 @@ import { WoodsSummer } from "./maps/woodsSummerDefs";
 
 export const MapDefs = {
     main: DeatchmatchMain,
-    Resurviv_cobalt: Resurviv_Cobalt,
     main_spring: MainSpring,
     main_summer: MainSummer,
     desert: Desert,
