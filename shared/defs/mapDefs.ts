@@ -11,7 +11,7 @@ import { PotatoSpring } from "./maps/potatoSpringDefs";
 import { Savannah } from "./maps/savannahDefs";
 import { Snow } from "./maps/snowDefs";
 import { Turkey } from "./maps/turkeyDefs";
-import { Woods } from "./maps/woodsDefs";
+import { Woods } from "../../server/src/deathmatch/maps/woods";
 import { WoodsSnow } from "./maps/woodsSnowDefs";
 import { WoodsSpring } from "./maps/woodsSpringDefs";
 import { WoodsSummer } from "./maps/woodsSummerDefs";
