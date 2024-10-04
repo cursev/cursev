@@ -10,7 +10,7 @@ const switchToSmallMap = THIS_REGION === "eu" || THIS_REGION === "as";
 const config = {
     mapSize: switchToSmallMap ? "small" : "large",
     places: 3,
-    mapWidth: { large: 280, small: 240 },
+    mapWidth: { large: 270, small: 230 },
     spawnDensity: { large: 37, small: 27 },
 } as const;
 
@@ -21,6 +21,20 @@ const mapDef = {
         icon: "img/gui/player-king-woods.svg",
         buttonCss: "btn-mode-woods",
     },
+    locationSpawns: [
+        {
+            type: "logging_complex_01", 
+            pos: v2.create(0.5, 0.5),
+            rad: 100,
+            retryOnFailure: true,
+        },
+        {
+            type: "teapavilion_01w", // couldn't get this to spawn 
+            pos: v2.create(0.5, 0.5),
+            rad: 100,
+            retryOnFailure: true,
+        },
+    ],
     assets: {
         audio: [
             { name: "vault_change_02", channel: "sfx" },
@@ -128,28 +142,29 @@ const mapDef = {
     tier_hatchet: [
         { name: "pan", count: 1, weight: 1 },
         { name: "pkp", count: 1, weight: 1 },
-        { name: "m249", count: 1, weight: 1 },
+        { name: "usas", count: 1, weight: 1 },
     ],
     },
     mapGen: {
         map: {
             baseWidth: config.mapWidth[config.mapSize],
             baseHeight: config.mapWidth[config.mapSize],
-            shoreInset: 40,
+            shoreInset: 7, //40
             rivers: {
+                lakes: [{
+                    odds: 1,
+                    innerRad: 16,
+                    outerRad: 48,
+                    spawnBound: {
+                        pos: v2.create(0.5, 0.5),
+                        rad: 100,
+                    },
+                },],
                 weights: [],
             },
         },
-        customSpawnRules: {
-            locationSpawns: [
-                {
-                    type: "logging_complex_01",
-                    pos: v2.create(0.5, 0.5),
-                    rad: 200,
-                    retryOnFailure: true,
-                },
-            ],
-        },
+        
+      
         places: Main.mapGen
             ? Array(config.places)
                   .fill(false)
@@ -191,19 +206,29 @@ const mapDef = {
                 crate_19: 12,
                 stone_04: 6,
                 tree_02: 6,
-                tree_07: 200,
-                tree_08: 200,
-                tree_08b: 40,
-                tree_09: 84,
+                tree_08: 180, 
+                tree_08b: 40, 
+                tree_09: 80, 
             },
         ],
-        randomSpawns: [],
+        randomSpawns: [
+            {
+                spawns: [
+                    "mansion_structure_01",
+                    // "warehouse_complex_01",
+                    "police_01",
+                    "bank_01",
+                ],
+                choose: config.mapSize === "large" ? 2 : 1,
+            },
+        ],
         spawnReplacements: [
             {
                 tree_01: "tree_07",
                 crate_02: "crate_19",
                 crate_08: "crate_19",
                 crate_09: "crate_19",
+                bush_01 : "bush_06",
             },
         ],
     },

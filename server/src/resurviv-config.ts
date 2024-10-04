@@ -68,7 +68,7 @@ export const CustomConfig: DeepPartial<ConfigType> = {
             enabled: false,
         },
         {
-            mapName: "woods",
+            mapName: "main",
             teamMode: 2,
             enabled: true,
         },
