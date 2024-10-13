@@ -111,7 +111,7 @@ export const GameConfig = {
     Input,
     EmoteSlot,
     WeaponSlot,
-    WeaponType: ["gun", "gun", "melee", "throwable"],
+    WeaponType: ["gun", "gun", "melee", "throwable"] as const,
     DamageType,
     Action,
     Anim,
@@ -121,18 +121,7 @@ export const GameConfig = {
     disableKnocking: false,
     disableGroupSpectate: false,
     gas: {
-        customZoneTime: undefined as number | undefined,
-        initWaitTime: 90,
-        waitTimeDecay: 15,
-        waitTimeMin: 10,
-        initGasTime: 30,
-        gasTimeDecay: 5,
-        gasTimeMin: 5,
-        initWidth: 0.75,
-        widthDecay: 0.5,
-        widthMin: 10,
         damageTickRate: 2,
-        damage: [1.4, 2.2, 3.5, 7.5, 10, 14, 22, 22, 22],
     },
     map: {
         gridSize: 16,
@@ -157,6 +146,7 @@ export const GameConfig = {
         moveSpeed: 12,
         waterSpeedPenalty: 3,
         cookSpeedPenalty: 3,
+        frozenSpeedPenalty: 3,
         hasteSpeedBonus: 4.8,
         bleedTickRate: 1,
         downedMoveSpeed: 4,
@@ -178,8 +168,8 @@ export const GameConfig = {
         medicReviveRange: 6,
         spectateDeadTimeout: 2,
         killLeaderMinKills: 3,
-        minSpawnDistance: 50, // minimum distance enemy players need to spawn from each other
-        gracePeriodTime: 0, // time from game start where players can't move
+        minSpawnRad: 25,
+
         /* STRIP_FROM_PROD_CLIENT:START */
         removeOnDisconnect: true,
         defaultItems: {
@@ -204,7 +194,7 @@ export const GameConfig = {
                 "308sub": 0,
                 flare: 0,
                 "45acp": 0,
-                frag: 4,
+                frag: 0,
                 smoke: 0,
                 strobe: 0,
                 mirv: 0,
@@ -262,16 +252,6 @@ export const GameConfig = {
         reflectDistDecay: 1.5,
         height: 0.25,
         falloff: true,
-    },
-    gun: {
-        customSwitchDelay: undefined,
-        customBarrelLength: undefined,
-        customShootingSpeed: {
-            single: undefined,
-            auto: undefined,
-            burst: undefined,
-        } as Record<"auto" | "single" | "burst", number | undefined>,
-        headshotBlacklist: [] as string[],
     },
     projectile: {
         maxHeight: 5,

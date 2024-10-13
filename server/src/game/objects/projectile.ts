@@ -20,7 +20,8 @@ export class ProjectileBarn {
         for (let i = 0; i < this.projectiles.length; i++) {
             const proj = this.projectiles[i];
             if (proj.destroyed) {
-                this.projectiles.splice(i, 0);
+                this.projectiles.splice(i, 1);
+                i--;
                 continue;
             }
             proj.update(dt);
@@ -96,7 +97,7 @@ export class Projectile extends BaseGameObject {
         this.vel = vel;
         this.fuseTime = fuseTime;
         this.damageType = damageType;
-        this.dir = v2.normalize(vel);
+        this.dir = v2.normalizeSafe(vel);
 
         const def = GameObjectDefs[type] as ThrowableDef;
         this.velZ = def.throwPhysics.velZ;
@@ -108,13 +109,15 @@ export class Projectile extends BaseGameObject {
     }
 
     update(dt: number) {
+        const def = GameObjectDefs[this.type] as ThrowableDef;
         //
         // Velocity
         //
-        this.vel = v2.mul(this.vel, 1 / (1 + dt * (this.posZ != 0 ? 1.2 : 2)));
+        if (!def.forceMaxThrowDistance) {
+            //velocity needs to stay constant to reach max throw dist
+            this.vel = v2.mul(this.vel, 1 / (1 + dt * (this.posZ != 0 ? 1.2 : 2)));
+        }
         this.pos = v2.add(this.pos, v2.mul(this.vel, dt));
-
-        const def = GameObjectDefs[this.type] as ThrowableDef;
 
         //
         // Height / posZ
@@ -178,6 +181,7 @@ export class Projectile extends BaseGameObject {
             } else if (
                 obj.__type === ObjectType.Player &&
                 def.playerCollision &&
+                !obj.dead &&
                 obj.__id !== this.playerId
             ) {
                 if (coldet.testCircleCircle(this.pos, this.rad, obj.pos, obj.rad)) {

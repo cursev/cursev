@@ -80,6 +80,7 @@ export class BulletBarn {
 
             if (!bullet.alive || bullet.skipCollision || (bullet.player?.dead ?? false)) {
                 this.bullets.splice(i, 1);
+                i--;
 
                 if (bullet.onHitFx && !bullet.reflected) {
                     this.game.explosionBarn.addExplosion(
@@ -183,7 +184,7 @@ export class Bullet {
         this.startPos = v2.copy(params.pos);
         this.bulletType = params.bulletType;
         this.reflectCount = params.reflectCount ?? 0;
-        this.reflectObjId = params.reflectObjId ?? -1;
+        this.reflectObjId = params.reflectObjId ?? 0;
         this.lastShot = params.lastShot ?? false;
         this.speed = bulletDef.speed * variance;
         this.onHitFx = bulletDef.onHit ?? params.onHitFx;
@@ -358,7 +359,7 @@ export class Bullet {
                     obj.dead ||
                     !util.sameLayer(obj.layer, this.layer) ||
                     obj.height < GameConfig.bullet.height ||
-                    (this.reflectCount > 0 && obj.__id === this.reflectObjId)
+                    obj.__id === this.reflectObjId
                 ) {
                     continue;
                 }
@@ -531,15 +532,10 @@ export class Bullet {
                 if (!shooterDead) {
                     const isHighValueTarget =
                         this.player?.hasPerk("targeting") && col.player!.perks.length;
-                    const shouldFJReduction =
-                        this.isShrapnel && col.player!.hasPerk("flak_jacket");
 
                     let multiplier = 1;
                     if (isHighValueTarget) {
                         multiplier *= 1.25;
-                    }
-                    if (shouldFJReduction) {
-                        multiplier *= 0.1;
                     }
 
                     this.bulletManager.damages.push({
@@ -550,6 +546,7 @@ export class Bullet {
                         damageType: this.damageType,
                         amount: multiplier * finalDamage,
                         dir: this.dir,
+                        isExplosion: this.isShrapnel,
                     });
                 }
                 hit = col.collidable;

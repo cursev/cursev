@@ -3,12 +3,15 @@ import { version } from "../../package.json";
 import { Config, type ConfigType } from "./config";
 import type { FindGameBody, FindGameResponse } from "./gameServer";
 import { TeamMenu } from "./teamMenu";
+import { GIT_VERSION } from "./utils/gitRevision";
 import { Logger } from "./utils/logger";
 import { cors, forbidden, readPostedJSON, returnJson } from "./utils/serverHelpers";
 
 class Region {
     data: ConfigType["regions"][string];
     playerCount = 0;
+
+    lastUpdateTime = Date.now();
 
     constructor(readonly id: string) {
         this.data = Config.regions[this.id];
@@ -68,6 +71,9 @@ export class ApiServer {
 
         app.get("/api/site_info", (res) => {
             cors(res);
+            res.onAborted(() => {
+                res.aborted = true;
+            });
             returnJson(res, this.getSiteInfo());
         });
         app.options("/api/user/profile", (res) => {
@@ -93,6 +99,7 @@ export class ApiServer {
             youtube: { name: "", link: "" },
             twitch: [],
             country: "US",
+            gitRevision: GIT_VERSION,
         };
 
         for (const region in this.regions) {
@@ -111,6 +118,7 @@ export class ApiServer {
     updateRegion(regionId: string, regionData: RegionData) {
         const region = this.regions[regionId];
         region.playerCount = regionData.playerCount;
+        region.lastUpdateTime = Date.now();
     }
 
     async findGame(body: FindGameBody): Promise<FindGameResponse> {
@@ -145,30 +153,21 @@ if (process.argv.includes("--api-server")) {
     });
     app.post("/api/find_game", async (res) => {
         cors(res);
-        let aborted = false;
         res.onAborted(() => {
-            aborted = true;
+            res.aborted = true;
         });
         readPostedJSON(
             res,
             async (body: FindGameBody) => {
                 const data = await server.findGame(body);
-                if (aborted) return;
+                if (res.aborted) return;
                 res.cork(() => {
-                    if (aborted) return;
+                    if (res.aborted) return;
                     returnJson(res, data);
                 });
             },
             () => {
                 server.logger.warn("/api/find_game: Error retrieving body");
-                if (aborted) return;
-                returnJson(res, {
-                    res: [
-                        {
-                            err: "Error retriving body",
-                        },
-                    ],
-                });
             },
         );
     });
@@ -177,11 +176,11 @@ if (process.argv.includes("--api-server")) {
         cors(res);
         res.end();
     });
+
     app.post("/api/update_region", (res) => {
         cors(res);
-        let aborted = false;
         res.onAborted(() => {
-            aborted = true;
+            res.aborted = true;
         });
         readPostedJSON(
             res,
@@ -190,7 +189,7 @@ if (process.argv.includes("--api-server")) {
                 regionId: string;
                 data: RegionData;
             }) => {
-                if (aborted) return;
+                if (res.aborted) return;
                 if (body.apiKey !== Config.apiKey || !(body.regionId in server.regions)) {
                     forbidden(res);
                     return;
@@ -202,11 +201,22 @@ if (process.argv.includes("--api-server")) {
     });
 
     app.listen(Config.apiServer.host, Config.apiServer.port, (): void => {
-        server.logger.log(`Resurviv API Server v${version}`);
+        server.logger.log(`Survev API Server v${version} - GIT ${GIT_VERSION}`);
         server.logger.log(
             `Listening on ${Config.apiServer.host}:${Config.apiServer.port}`,
         );
         server.logger.log("Press Ctrl+C to exit.");
-        0;
     });
+
+    setInterval(() => {
+        for (const regionId in server.regions) {
+            const region = server.regions[regionId];
+            if (Date.now() - region.lastUpdateTime > 60000) {
+                server.logger.warn(
+                    `Region ${regionId} has not sent player count in more than 60 seconds`,
+                );
+                region.playerCount = 0;
+            }
+        }
+    }, 60000);
 }

@@ -4,6 +4,7 @@ import { util } from "../../shared/utils/util";
 import { ApiServer } from "./apiServer";
 import { Config } from "./config";
 import { type FindGameBody, GameServer } from "./gameServer";
+import { GIT_VERSION } from "./utils/gitRevision";
 import { Logger } from "./utils/logger";
 import { readPostedJSON, returnJson } from "./utils/serverHelpers";
 
@@ -39,27 +40,20 @@ app.post("/api/find_game", async (res) => {
         },
         () => {
             logger.warn("/api/find_game: Error retrieving body");
-            returnJson(res, {
-                res: [
-                    {
-                        err: "Error retriving body",
-                    },
-                ],
-            });
         },
     );
 });
 
 setInterval(() => {
     apiServer.updateRegion(gameServer.regionId, {
-        playerCount: gameServer.getPlayerCount(),
+        playerCount: gameServer.manager.getPlayerCount(),
     });
 }, 10 * 1000);
 
 apiServer.init(app);
 
 app.listen(Config.devServer.host, Config.devServer.port, (): void => {
-    logger.log(`Resurviv Dev Server v${version}`);
+    logger.log(`Survev Dev Server v${version} - GIT ${GIT_VERSION}`);
     logger.log(`Listening on ${Config.devServer.host}:${Config.devServer.port}`);
     logger.log("Press Ctrl+C to exit.");
     gameServer.init(app);

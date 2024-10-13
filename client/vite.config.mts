@@ -1,9 +1,58 @@
 import { defineConfig } from "vite";
-import { VitePWA } from "vite-plugin-pwa";
 import stripBlockPlugin from "vite-plugin-strip-block";
+import { version } from "../package.json";
 import { Config } from "../server/src/config";
+import { GIT_VERSION } from "../server/src/utils/gitRevision";
+
+export const SplashThemes = {
+    main: {
+        MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
+        SPLASH_BG: "/img/main_splash.png",
+    },
+    easter: {
+        MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
+        SPLASH_BG: "/img/main_splash_easter.png",
+    },
+    halloween: {
+        MENU_MUSIC: "audio/ambient/menu_music_02.mp3",
+        SPLASH_BG: "/img/main_splash_halloween.png",
+    },
+    faction: {
+        MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
+        SPLASH_BG: "/img/main_splash_0_7_0.png",
+    },
+    snow: {
+        MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
+        SPLASH_BG: "/img/main_splash_0_6_10.png",
+    },
+    spring: {
+        MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
+        SPLASH_BG: "/img/main_splash_7_3.png",
+    },
+};
+
+const selectedTheme = SplashThemes["main"];
 
 export default defineConfig(({ mode }) => {
+    process.env = {
+        ...process.env,
+        VITE_GAME_VERSION: version,
+        VITE_BACKGROUND_IMG: selectedTheme.SPLASH_BG,
+    };
+
+    const regions = {
+        ...Config.regions,
+        ...(mode === "development"
+            ? {
+                  local: {
+                      https: false,
+                      address: `${Config.devServer.host}:${Config.devServer.port}`,
+                      l10n: "index-local",
+                  },
+              }
+            : {}),
+    };
+
     return {
         base: "",
         build: {
@@ -33,46 +82,19 @@ export default defineConfig(({ mode }) => {
             extensions: [".js", ".ts"],
         },
         define: {
-            GAME_REGIONS: {
-                ...Config.regions,
-                ...(mode === "development"
-                    ? {
-                          local: {
-                              https: false,
-                              address: `${Config.devServer.host}:${Config.devServer.port}`,
-                              l10n: "index-local",
-                          },
-                      }
-                    : {}),
-            },
+            GAME_REGIONS: regions,
+            GIT_VERSION: JSON.stringify(GIT_VERSION),
+            PING_TEST_URLS: Object.entries(regions).map(([key, data]) => {
+                return {
+                    region: key,
+                    zone: key,
+                    url: data.address,
+                    https: data.https,
+                };
+            }),
+            MENU_MUSIC: JSON.stringify(selectedTheme.MENU_MUSIC),
         },
         plugins: [
-            VitePWA({
-                registerType: "autoUpdate",
-                includeAssets: ["favicon.ico", "img/apple-touch-icon-180x180.png"],
-                manifest: {
-                    name: "Resurviv",
-                    short_name: "Resurviv",
-                    description: "Describe me daddy",
-                    background_color: "#80af49",
-                    theme_color: "#80af49",
-                    icons: [
-                        {
-                            src: "img/pwa-192x192.png",
-                            sizes: "192x192",
-                            type: "image/png",
-                        },
-                        {
-                            src: "img/pwa-512x512.png",
-                            sizes: "512x512",
-                            type: "image/png",
-                        },
-                    ],
-                },
-                devOptions: {
-                    enabled: true,
-                },
-            }),
             mode !== "development"
                 ? stripBlockPlugin({
                       start: "STRIP_FROM_PROD_CLIENT:START",

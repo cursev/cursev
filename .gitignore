@@ -1,7 +1,10 @@
 reference/
 
 # config file
-# resurviv-config.json
+# legacy
+resurviv-config.json
+# new
+survev-config.json
 
 # Compiled source
 dist/
