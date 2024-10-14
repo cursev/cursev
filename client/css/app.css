@@ -1,4 +1,3 @@
-@import url(font.css);
 @import url(deathmatch.css);
 
 :root {
@@ -300,9 +299,8 @@ a:active {
   width: 300px;
 }
 
-@media (max-width: 850px),
-(max-width: 900px) and (-webkit-min-device-pixel-ratio: 3),
-(max-width: 900px) and (min-resolution: 3dppx) {
+@media (max-width: 850px), (max-width: 900px) and (-webkit-min-device-pixel-ratio: 3),
+  (max-width: 900px) and (min-resolution: 3dppx) {
   #ad-block-left {
     margin-right: 18px;
     height: 230px;
@@ -3353,8 +3351,7 @@ a:active {
   }
 }
 
-@media (max-width: 850px),
-(max-width: 900px) and (min-resolution: 3dppx) {
+@media (max-width: 850px), (max-width: 900px) and (min-resolution: 3dppx) {
   .btn-mode-savannah {
     border-bottom: 2px solid #947c1c;
   }

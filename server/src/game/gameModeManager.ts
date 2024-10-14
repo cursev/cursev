@@ -294,7 +294,11 @@ export class GameModeManager {
                         p.hasPerk("self_revive"),
                     );
 
-                    if (!groupHasSelfRevive && (allDeadOrDisconnected || allDowned)) {
+                    const disableDowningPlayers = true;
+                    if (
+                        (!groupHasSelfRevive && (allDeadOrDisconnected || allDowned)) ||
+                        disableDowningPlayers
+                    ) {
                         group.allDeadOrDisconnected = true; // must set before any kill() calls so the gameovermsgs are accurate
                         player.kill(params);
                         if (allDowned) {

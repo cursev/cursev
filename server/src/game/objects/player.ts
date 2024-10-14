@@ -128,7 +128,11 @@ export class PlayerBarn {
                 }
             }
 
-            if (!group || (group && group.players.length > this.game.teamMode)) {
+            if (
+                !group ||
+                (group && group.players.length > this.game.teamMode) ||
+                this.livingPlayers.length < 2
+            ) {
                 group = this.addGroup(joinMsg.matchPriv, joinData.autoFill);
             } else {
                 team = group.players[0].team;
@@ -812,7 +816,7 @@ export class Player extends BaseGameObject {
             );
         }
 
-        this.recalculateScale();
+        // this.recalculateScale();
     }
 
     removePerk(type: string): void {
@@ -973,6 +977,27 @@ export class Player extends BaseGameObject {
             }
 
             loadout.emotes[i] = emote;
+        }
+
+        if (isItemInLoadout(joinMsg.loadout.primary, "gun")) {
+            const slot = GameConfig.WeaponSlot.Primary;
+            this.weapons[slot].type = joinMsg.loadout.primary;
+            const gunDef = GameObjectDefs[this.weapons[slot].type] as GunDef;
+            this.weapons[slot].ammo = gunDef.maxClip;
+        }
+
+        if (isItemInLoadout(joinMsg.loadout.secondary, "gun")) {
+            const slot = GameConfig.WeaponSlot.Secondary;
+            this.weapons[slot].type = joinMsg.loadout.secondary;
+            const gunDef = GameObjectDefs[this.weapons[slot].type] as GunDef;
+            this.weapons[slot].ammo = gunDef.maxClip;
+        }
+
+        if (
+            this.weapons[GameConfig.WeaponSlot.Primary].type == "bugle" ||
+            this.weapons[GameConfig.WeaponSlot.Secondary].type == "bugle"
+        ) {
+            this.addPerk("inspiration", false);
         }
 
         // createCircle clones the position
@@ -1819,7 +1844,10 @@ export class Player extends BaseGameObject {
     }
 
     spectate(spectateMsg: net.SpectateMsg): void {
-        const spectatablePlayers = this.game.modeManager.getSpectatablePlayers(this);
+        const spectatablePlayers = this.game.playerBarn.livingPlayers.filter(
+            (p) => !p.disconnected,
+        );
+        // const spectatablePlayers = this.game.modeManager.getSpectatablePlayers(this);
         let playerToSpec: Player | undefined;
         switch (true) {
             case spectateMsg.specBegin:
@@ -1929,7 +1957,7 @@ export class Player extends BaseGameObject {
                 finalDamage -= finalDamage * chest.damageReduction;
             }
 
-            const helmet = GameObjectDefs[this.helmet] as HelmetDef;
+            const helmet = GameObjectDefs["helmet03"] as HelmetDef;
             if (helmet) {
                 finalDamage -=
                     finalDamage * (helmet.damageReduction * (isHeadShot ? 1 : 0.3));

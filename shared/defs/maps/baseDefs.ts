@@ -533,15 +533,15 @@ export const Main: MapDef = {
         },
         densitySpawns: [
             {
-                stone_01: 200,
+                stone_01: 350,
                 barrel_01: 76,
-                silo_01: 2,
+                silo_01: 8,
                 crate_01: 50,
                 crate_02: 4,
                 crate_03: 8,
                 bush_01: 78,
                 cache_06: 12,
-                tree_01: 280, 
+                tree_01: 320,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,

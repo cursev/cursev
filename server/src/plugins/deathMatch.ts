@@ -81,7 +81,11 @@ export default class DeathMatchPlugin extends GamePlugin {
                         const gunDef = GameObjectDefs[weapon.type] as GunDef;
                         killer.weapons[slot] = {
                             ...weapon,
-                            ammo: calculateAmmoToGive(weapon.ammo, gunDef.maxClip),
+                            ammo: calculateAmmoToGive(
+                                weapon.type,
+                                weapon.ammo,
+                                gunDef.maxClip,
+                            ),
                         };
                     }
                 }
@@ -93,6 +97,11 @@ export default class DeathMatchPlugin extends GamePlugin {
     }
 }
 
-function calculateAmmoToGive(currAmmo: number, maxClip: number, amount = 50): number {
-    return Math.min(currAmmo + (maxClip * amount) / 100, maxClip);
+const customReloadPercentage: Record<string, number> = {
+    sv98: 30,
+    pkp: 30,
+};
+function calculateAmmoToGive(type: string, currAmmo: number, maxClip: number): number {
+    const amount = customReloadPercentage[type] ?? 50;
+    return Math.floor(Math.min(currAmmo + (maxClip * amount) / 100, maxClip));
 }

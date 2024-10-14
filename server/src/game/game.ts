@@ -309,7 +309,7 @@ export class Game {
         player.spectating = undefined;
         player.dir = v2.create(0, 0);
         player.setPartDirty();
-        if (player.timeAlive < GameConfig.player.minActiveTime) {
+        if (player.timeAlive < GameConfig.player.minActiveTime || true) {
             player.game.playerBarn.removePlayer(player);
         }
     }

@@ -47,7 +47,6 @@ export const allowedGuns = [
     "model94",
 
     //Assault Rifles:
-    "ak47",
     "scar",
     "an94",
     "groza",

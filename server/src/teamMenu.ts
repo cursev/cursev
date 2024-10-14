@@ -455,7 +455,11 @@ export class TeamMenu {
                     return;
                 }
 
-                room.groupHash = playData.data;
+                if (room.groupHash) {
+                    playData.data = room.groupHash;
+                } else {
+                    room.groupHash = playData.data;
+                }
 
                 response = {
                     type: "joinGame",

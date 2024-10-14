@@ -32,7 +32,7 @@ export const DeatchmatchMain: MapDef = util.mergeDeep(structuredClone(Main), {
         map: {
             baseWidth: config.mapWidth[config.mapSize],
             baseHeight: config.mapWidth[config.mapSize],
-            shoreInset: 20, //40
+            shoreInset: 40,
             rivers: {
                 weights: [],
             },
@@ -74,7 +74,7 @@ export const DeatchmatchMain: MapDef = util.mergeDeep(structuredClone(Main), {
                 hut_03: 1, // scout hut
                 greenhouse_01: 1,
                 cache_01: 1,
-                cache_02: 1, // mosin tree
+                cache_02: { odds: 0.8 }, // mosin tree
                 cache_07: 1,
                 // bunker_structure_01: { odds: 0.05 },
                 bunker_structure_02: config.mapSize === "large" ? 1 : 0,
@@ -84,8 +84,8 @@ export const DeatchmatchMain: MapDef = util.mergeDeep(structuredClone(Main), {
                 // warehouse_complex_01: 1,
                 chest_01: 1,
                 chest_03: { odds: 0.2 },
-                mil_crate_02: 1,
-                mil_crate_03: 1,
+                mil_crate_02: { odds: 0.4 },
+                mil_crate_03: config.mapSize === "large" ? { odds: 0.4 } : 0,
                 stone_04: 1,
                 tree_02: 3,
                 teahouse_complex_01su: { odds: 0.5 },
@@ -162,6 +162,5 @@ DeatchmatchMain["lootTable"] = {
     tier_hatchet: [
         { name: "pan", count: 1, weight: 1 },
         { name: "pkp", count: 1, weight: 1 },
-        { name: "m249", count: 1, weight: 1 },
     ],
 };

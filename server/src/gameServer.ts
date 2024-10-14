@@ -37,6 +37,7 @@ export interface GameSocketData {
     gameId: string;
     id: string;
     closed: boolean;
+    ip: string;
 }
 
 export class GameServer {
@@ -87,6 +88,7 @@ export class GameServer {
                         gameId,
                         id: socketId,
                         closed: false,
+                        ip,
                     },
                     req.getHeader("sec-websocket-key"),
                     req.getHeader("sec-websocket-protocol"),

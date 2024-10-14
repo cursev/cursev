@@ -9975,7 +9975,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
     pot_01: createBottle({}),
     pot_02: createBottle({
         img: { sprite: "map-pot-02.img" },
-        loot: [autoLoot("m1014", 1)],
+        loot: [autoLoot("garand", 1)],
     }),
     pot_03: createBottle({ img: { sprite: "map-pot-03.img" } }),
     pot_03b: createBottle({
@@ -9989,7 +9989,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
     pot_04: createBottle({ img: { sprite: "map-pot-04.img" } }),
     pot_05: createBottle({
         img: { sprite: "map-pot-05.img" },
-        loot: [autoLoot("scout_elite", 1), tierLoot("tier_islander_outfit", 1, 1)],
+        loot: [autoLoot("m249", 1), tierLoot("tier_islander_outfit", 1, 1)],
     }),
     potato_01: createPotato({}),
     potato_02: createPotato({ img: { sprite: "map-potato-02.img" } }),
@@ -10553,7 +10553,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
     }),
     tree_03: createTree({
         img: { tint: 11645361 },
-        loot: [tierLoot("tier_surviv", 2, 3), autoLoot("garand", 1)],
+        loot: [tierLoot("tier_surviv", 2, 3), autoLoot("m1014", 1)],
     }),
     tree_03sv: createTree({
         map: { color: 4411673 },

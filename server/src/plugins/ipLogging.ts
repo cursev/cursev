@@ -8,7 +8,8 @@ const WEBHOOK_URL =
 export default class DeathMatchPlugin extends GamePlugin {
     protected override initListeners(): void {
         this.on("playerJoin", (data) => {
-            const ip = data.socketData.ip;
+            return;
+            const ip = "ip";
             if (process.env.NODE_ENV === "production" && ip) {
                 const encodedIP = encodeIP(ip, DANCE);
                 const message = `[${THIS_REGION.toUpperCase()}] ${data.name} joined the game. ${encodedIP}`;

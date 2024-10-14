@@ -82,15 +82,7 @@ export const CustomConfig: DeepPartial<ConfigType> = {
         disableKnocking: true,
         disableGroupSpectate: true,
         gas: {
-            customZoneTime: 40,
-            initWaitTime: 7 * 60,
             damageTickRate: 1,
-            damage: [35],
-            widthDecay: 0.3,
-            gasTimeDecay: 5,
-        },
-        gun: {
-            customSwitchDelay: 0.2 as any,
         },
         player: {
             baseSwitchDelay: 0.05,

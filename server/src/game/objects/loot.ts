@@ -81,7 +81,6 @@ export class LootBarn {
     ) {
         const loot = new Loot(this.game, type, pos, layer, count, pushSpeed, dir);
         this._addLoot(loot);
-
         if (preloadGun) {
             loot.isPreloadedGun = true;
         }
@@ -89,7 +88,8 @@ export class LootBarn {
         const def = GameObjectDefs[type];
         if (def.type === "gun" && GameObjectDefs[def.ammo] && !preloadGun) {
             const ammoCount = useCountForAmmo ? count : def.ammoSpawnCount;
-            if (ammoCount <= 0) return;
+            const doNotDropAmmo = true;
+            if (ammoCount <= 0 || doNotDropAmmo) return;
             const halfAmmo = Math.ceil(ammoCount / 2);
 
             const leftAmmo = new Loot(
