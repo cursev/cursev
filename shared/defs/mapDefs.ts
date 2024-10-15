@@ -3,7 +3,7 @@ import type { Vec2 } from "../utils/v2";
 import { Cobalt } from "./maps/cobaltDefs";
 import { Desert } from "./maps/desertDefs";
 import { Faction } from "./maps/factionDefs";
-import { Halloween } from "./maps/halloweenDefs";
+import { Halloween } from "../../server/src/deathmatch/maps/halloween";
 import { MainSpring } from "./maps/mainSpringDefs";
 import { MainSummer } from "./maps/mainSummerDefs";
 import { Potato } from "./maps/potatoDefs";

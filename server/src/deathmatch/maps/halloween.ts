@@ -1,7 +1,18 @@
-import { GameConfig } from "../../gameConfig";
-import { util } from "../../utils/util";
-import type { MapDef } from "../mapDefs";
-import { Main } from "./baseDefs";
+import type { MapDef } from "../../../../shared/defs/mapDefs";
+import { Main } from "../../../../shared/defs/maps/baseDefs";
+import { GameConfig } from "../../../../shared/gameConfig";
+import { util } from "../../../../shared/utils/util";
+import { v2 } from "../../../../shared/utils/v2";
+import { THIS_REGION } from "../../resurviv-config";
+
+const switchToSmallMap = THIS_REGION === "eu" || THIS_REGION === "as";
+
+const config = {
+    mapSize: switchToSmallMap ? "small" : "large",
+    places: 3,
+    mapWidth: { large: 270, small: 230 },
+    spawnDensity: { large: 37, small: 27 },
+} as const;
 
 const mapDef = {
     mapId: 6,
@@ -197,65 +208,56 @@ const mapDef = {
     },
     mapGen: {
         map: {
-            scale: { small: 1.1875, large: 1.1875 },
+            baseWidth: config.mapWidth[config.mapSize],
+            baseHeight: config.mapWidth[config.mapSize],
+            shoreInset: 40,
             rivers: {
-                weights: [
-                    { weight: 0.1, widths: [4] },
-                    { weight: 0.15, widths: [8] },
-                    { weight: 0.25, widths: [8, 4] },
-                    { weight: 0.21, widths: [8] },
-                    { weight: 0.09, widths: [8, 8] },
-                    { weight: 0.2, widths: [8, 8, 4] },
-                    {
-                        weight: 1e-4,
-                        widths: [8, 8, 8, 6, 4],
-                    },
-                ],
+                weights: [],
             },
         },
-        customSpawnRules: {
-            locationSpawns: [],
-        },
-        densitySpawns: [
-            {
-                stone_01: 125,
-                barrel_01: 76,
-                crate_01: 120,
-                crate_02: 6,
-                crate_03: 8,
-                bush_01: 90,
-                hedgehog_01: 12,
-                cache_pumpkin_01: 32,
-                cache_pumpkin_03: 32,
-                shack_01: 6,
-                outhouse_01: 6,
-                loot_tier_1: 48,
-                loot_tier_beach: 8,
-            },
-        ],
+        places: Main.mapGen
+            ? Array(config.places)
+                  .fill(false)
+                  .map(() => {
+                      return Main.mapGen?.places[
+                          Math.floor(Math.random() * Main.mapGen.places.length)
+                      ];
+                  })
+            : {},
+        densitySpawns: Main.mapGen
+            ? Main.mapGen.densitySpawns.reduce(
+                  (array, item) => {
+                      let object: Record<string, number> = {};
+                      for (const [key, value] of Object.entries(item)) {
+                          object[key] =
+                              (value * config.spawnDensity[config.mapSize]) / 100;
+                      }
+                      array.push(object);
+                      return array;
+                  },
+                  [] as Record<string, number>[],
+              )
+            : {},
         fixedSpawns: [
             {
                 junkyard_01: 1,
-                warehouse_01h: 4,
-                house_red_01h: 7,
-                cache_03: 36,
+                warehouse_01h: 1,
+                house_red_01h: 3,
+                cache_03: 10,
                 cache_01: 1,
                 cache_02: 1,
                 mansion_structure_02: 1,
-                bunker_structure_01: 1,
-                bunker_structure_03: 1,
-                bunker_structure_07: 1,
                 mil_crate_02: { odds: 0.25 },
-                tree_05: 72,
-                tree_07: 700,
-                tree_08: 200,
-                tree_09: 36,
-                barrel_02: 24,
-                oven_01: 24,
-                refrigerator_01: 24,
-                table_01: 24,
-                vending_01: 24,
-                woodpile_01: 24,
+                tree_05: 30,
+                tree_08: 20,
+                tree_09: 10,
+                barrel_02: 5,
+                oven_01: 5,
+                refrigerator_01: 5,
+                table_01: 5,
+                vending_01: 5,
+                woodpile_01: 5,
+                cache_pumpkin_02: 40,
             },
         ],
         randomSpawns: [],

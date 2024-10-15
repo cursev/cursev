@@ -31,7 +31,7 @@ export const SplashThemes = {
     },
 };
 
-const selectedTheme = SplashThemes["main"];
+const selectedTheme = SplashThemes["halloween"];
 
 export default defineConfig(({ mode }) => {
     process.env = {

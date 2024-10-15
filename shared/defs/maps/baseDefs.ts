@@ -541,7 +541,7 @@ export const Main: MapDef = {
                 crate_03: 8,
                 bush_01: 78,
                 cache_06: 12,
-                tree_01: 320,
+                tree_01: 200, // we can return this back to 320 on classic mode.
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,
