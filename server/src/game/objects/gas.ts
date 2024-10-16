@@ -27,7 +27,7 @@ const GasStages: StageData[] = [
     {
         mode: GasMode.Moving,
         duration: 30,
-        rad: 0.45,
+        rad: 0.32,
         damage: 1.4,
     },
     {
