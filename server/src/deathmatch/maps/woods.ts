@@ -23,13 +23,13 @@ const mapDef = {
     },
     locationSpawns: [
         {
-            type: "logging_complex_01", 
+            type: "logging_complex_01",
             pos: v2.create(0.5, 0.5),
             rad: 100,
             retryOnFailure: true,
         },
         {
-            type: "teapavilion_01w", // couldn't get this to spawn 
+            type: "teapavilion_01w", // couldn't get this to spawn
             pos: v2.create(0.5, 0.5),
             rad: 100,
             retryOnFailure: true,
@@ -88,62 +88,62 @@ const mapDef = {
     /* STRIP_FROM_PROD_CLIENT:START */
     lootTable: {
         tier_mansion_floor: [{ name: "outfitCasanova", count: 1, weight: 1 }],
-    tier_vault_floor: [{ name: "outfitJester", count: 1, weight: 1 }],
-    tier_police_floor: [{ name: "outfitPrisoner", count: 1, weight: 1 }],
-    tier_chrys_01: [{ name: "outfitImperial", count: 1, weight: 1 }],
-    tier_chrys_02: [{ name: "katana", count: 1, weight: 1 }],
-    tier_chrys_case: [
-        // { name: "tier_katanas", count: 1, weight: 3 },
-        { name: "naginata", count: 1, weight: 1 },
-    ],
-    tier_police: [
-        { name: "saiga", count: 1, weight: 1 },
-        // { name: "flare_gun", count: 1, weight: 0.1 }
-    ],
-    tier_eye_02: [{ name: "stonehammer", count: 1, weight: 1 }],
-    tier_eye_block: [
-        { name: "m9", count: 1, weight: 1 },
-        { name: "ots38_dual", count: 1, weight: 1 },
-        { name: "flare_gun", count: 1, weight: 1 },
-        { name: "colt45", count: 1, weight: 1 },
-        { name: "45acp", count: 1, weight: 1 },
-        { name: "painkiller", count: 1, weight: 1 },
-        { name: "m4a1", count: 1, weight: 1 },
-        { name: "m249", count: 1, weight: 1 },
-        { name: "awc", count: 1, weight: 1 },
-        { name: "pkp", count: 1, weight: 1 },
-    ],
-    tier_sledgehammer: [{ name: "sledgehammer", count: 1, weight: 1 }],
-    tier_chest_04: [
-        { name: "p30l", count: 1, weight: 40 },
-        { name: "p30l_dual", count: 1, weight: 1 },
-    ],
-    tier_woodaxe: [{ name: "woodaxe", count: 1, weight: 1 }],
-    tier_club_melee: [{ name: "machete_taiga", count: 1, weight: 1 }],
-    tier_pirate_melee: [{ name: "hook", count: 1, weight: 1 }],
-    tier_hatchet_melee: [
-        { name: "fireaxe", count: 1, weight: 5 },
-        { name: "tier_katanas", count: 1, weight: 3 },
-        { name: "stonehammer", count: 1, weight: 1 },
-    ],
-    tier_airdrop_uncommon: [
-        { name: "sv98", count: 1, weight: 1 },
-        { name: "outfitGhillie", count: 1, weight: 1 },
-    ],
-    tier_airdrop_rare: [
-        { name: "sv98", count: 1, weight: 1 },
-        { name: "outfitGhillie", count: 1, weight: 1 },
-    ],
-    tier_throwables: [
-        { name: "frag", count: 2, weight: 1 },
-        { name: "smoke", count: 1, weight: 1 },
-        { name: "mirv", count: 2, weight: 0.05 },
-    ],
-    tier_hatchet: [
-        { name: "pan", count: 1, weight: 1 },
-        { name: "pkp", count: 1, weight: 1 },
-        { name: "usas", count: 1, weight: 1 },
-    ],
+        tier_vault_floor: [{ name: "outfitJester", count: 1, weight: 1 }],
+        tier_police_floor: [{ name: "outfitPrisoner", count: 1, weight: 1 }],
+        tier_chrys_01: [{ name: "outfitImperial", count: 1, weight: 1 }],
+        tier_chrys_02: [{ name: "katana", count: 1, weight: 1 }],
+        tier_chrys_case: [
+            // { name: "tier_katanas", count: 1, weight: 3 },
+            { name: "naginata", count: 1, weight: 1 },
+        ],
+        tier_police: [
+            { name: "saiga", count: 1, weight: 1 },
+            // { name: "flare_gun", count: 1, weight: 0.1 }
+        ],
+        tier_eye_02: [{ name: "stonehammer", count: 1, weight: 1 }],
+        tier_eye_block: [
+            { name: "m9", count: 1, weight: 1 },
+            { name: "ots38_dual", count: 1, weight: 1 },
+            { name: "flare_gun", count: 1, weight: 1 },
+            { name: "colt45", count: 1, weight: 1 },
+            { name: "45acp", count: 1, weight: 1 },
+            { name: "painkiller", count: 1, weight: 1 },
+            { name: "m4a1", count: 1, weight: 1 },
+            { name: "m249", count: 1, weight: 1 },
+            { name: "awc", count: 1, weight: 1 },
+            { name: "pkp", count: 1, weight: 1 },
+        ],
+        tier_sledgehammer: [{ name: "sledgehammer", count: 1, weight: 1 }],
+        tier_chest_04: [
+            { name: "p30l", count: 1, weight: 40 },
+            { name: "p30l_dual", count: 1, weight: 1 },
+        ],
+        tier_woodaxe: [{ name: "woodaxe", count: 1, weight: 1 }],
+        tier_club_melee: [{ name: "machete_taiga", count: 1, weight: 1 }],
+        tier_pirate_melee: [{ name: "hook", count: 1, weight: 1 }],
+        tier_hatchet_melee: [
+            { name: "fireaxe", count: 1, weight: 5 },
+            { name: "tier_katanas", count: 1, weight: 3 },
+            { name: "stonehammer", count: 1, weight: 1 },
+        ],
+        tier_airdrop_uncommon: [
+            { name: "sv98", count: 1, weight: 1 },
+            { name: "outfitGhillie", count: 1, weight: 1 },
+        ],
+        tier_airdrop_rare: [
+            { name: "sv98", count: 1, weight: 1 },
+            { name: "outfitGhillie", count: 1, weight: 1 },
+        ],
+        tier_throwables: [
+            { name: "frag", count: 2, weight: 1 },
+            { name: "smoke", count: 1, weight: 1 },
+            { name: "mirv", count: 2, weight: 0.05 },
+        ],
+        tier_hatchet: [
+            { name: "pan", count: 1, weight: 1 },
+            { name: "pkp", count: 1, weight: 1 },
+            { name: "usas", count: 1, weight: 1 },
+        ],
     },
     mapGen: {
         map: {
@@ -151,20 +151,21 @@ const mapDef = {
             baseHeight: config.mapWidth[config.mapSize],
             shoreInset: 7, //40
             rivers: {
-                lakes: [{
-                    odds: 1,
-                    innerRad: 16,
-                    outerRad: 48,
-                    spawnBound: {
-                        pos: v2.create(0.5, 0.5),
-                        rad: 100,
+                lakes: [
+                    {
+                        odds: 1,
+                        innerRad: 16,
+                        outerRad: 48,
+                        spawnBound: {
+                            pos: v2.create(0.5, 0.5),
+                            rad: 100,
+                        },
                     },
-                },],
+                ],
                 weights: [],
             },
         },
-        
-      
+
         places: Main.mapGen
             ? Array(config.places)
                   .fill(false)
@@ -206,9 +207,9 @@ const mapDef = {
                 crate_19: 12,
                 stone_04: 6,
                 tree_02: 6,
-                tree_08: 180, 
-                tree_08b: 40, 
-                tree_09: 80, 
+                tree_08: 180,
+                tree_08b: 40,
+                tree_09: 80,
             },
         ],
         randomSpawns: [
@@ -228,7 +229,7 @@ const mapDef = {
                 crate_02: "crate_19",
                 crate_08: "crate_19",
                 crate_09: "crate_19",
-                bush_01 : "bush_06",
+                bush_01: "bush_06",
             },
         ],
     },

@@ -2,7 +2,6 @@ import type { MapDef } from "../../../../shared/defs/mapDefs";
 import { Main } from "../../../../shared/defs/maps/baseDefs";
 import { GameConfig } from "../../../../shared/gameConfig";
 import { util } from "../../../../shared/utils/util";
-import { v2 } from "../../../../shared/utils/v2";
 import { THIS_REGION } from "../../resurviv-config";
 
 const switchToSmallMap = THIS_REGION === "eu" || THIS_REGION === "as";
@@ -200,9 +199,7 @@ const mapDef = {
             { name: "outfitStumpAxe", count: 1, weight: 1 },
         ],
         // seems to be unused? so adding this to suppress the warning
-        tier_pumpkin_candy: [
-            { name: "halloween_mystery", weight: 1, count: 1 },
-        ],
+        tier_pumpkin_candy: [{ name: "halloween_mystery", weight: 1, count: 1 }],
     },
     mapGen: {
         map: {

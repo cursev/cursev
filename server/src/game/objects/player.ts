@@ -43,7 +43,7 @@ import { BaseGameObject, type DamageParams, type GameObject } from "./gameObject
 import type { Loot } from "./loot";
 import type { Obstacle } from "./obstacle";
 
-interface Emote {
+export interface Emote {
     playerId: number;
     pos: Vec2;
     type: string;
