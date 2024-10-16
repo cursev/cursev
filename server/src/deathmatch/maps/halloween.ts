@@ -116,22 +116,10 @@ const mapDef = {
         planes: {
             timings: [
                 {
-                    circleIdx: 1,
-                    wait: 10,
+                    circleIdx: 0,
+                    wait: 2,
                     options: { type: GameConfig.Plane.Airdrop },
                 },
-                {
-                    circleIdx: 3,
-                    wait: 2,
-                    options: {
-                        type: GameConfig.Plane.Airdrop,
-                        airdropType: "airdrop_crate_02h",
-                    },
-                },
-            ],
-            crates: [
-                { name: "airdrop_crate_01", weight: 10 },
-                { name: "airdrop_crate_02", weight: 1 },
             ],
         },
     },
@@ -182,6 +170,14 @@ const mapDef = {
             { name: "", count: 1, weight: 18 },
             { name: "4xscope", count: 1, weight: 0 },
         ],
+        tier_airdrop_uncommon: [
+            { name: "sv98", count: 1, weight: 1 },
+            { name: "outfitGhillie", count: 1, weight: 1 },
+        ],
+        tier_airdrop_rare: [
+            { name: "sv98", count: 1, weight: 1 },
+            { name: "outfitGhillie", count: 1, weight: 1 },
+        ],
         tier_outfits: [
             { name: "outfitBarrel", count: 1, weight: 1 },
             { name: "outfitWoodBarrel", count: 1, weight: 1 },
@@ -204,7 +200,9 @@ const mapDef = {
             { name: "outfitStumpAxe", count: 1, weight: 1 },
         ],
         // seems to be unused? so adding this to suppress the warning
-        tier_pumpkin_candy: [{ name: "", weight: 1, count: 1 }],
+        tier_pumpkin_candy: [
+            { name: "halloween_mystery", weight: 1, count: 1 },
+        ],
     },
     mapGen: {
         map: {

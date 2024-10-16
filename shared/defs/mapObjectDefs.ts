@@ -10002,7 +10002,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
         health: 140,
         img: { sprite: "map-pumpkin-02.img" },
         loot: [
-            tierLoot("tier_guns", 1, 2),
+            // tierLoot("tier_guns", 1, 2), we don't really need this rn
             tierLoot("tier_pumpkin_candy", 1, 2),
             tierLoot("tier_outfits", 1, 1),
         ],
