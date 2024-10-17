@@ -816,7 +816,7 @@ export class Player extends BaseGameObject {
             );
         }
 
-        // this.recalculateScale();
+        this.recalculateScale();
     }
 
     removePerk(type: string): void {
@@ -3696,7 +3696,10 @@ export class Player extends BaseGameObject {
             net.Constants.PlayerMinScale,
             net.Constants.PlayerMaxScale,
         );
-        this.collider.rad = this.rad;
+        
+        if (this.collider) {
+            this.collider.rad = this.rad;
+        }
     }
 
     recalculateSpeed(): void {
