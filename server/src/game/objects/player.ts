@@ -3433,7 +3433,19 @@ export class Player extends BaseGameObject {
 
     dropItem(dropMsg: net.DropItemMsg): void {
         const itemDef = GameObjectDefs[dropMsg.item] as LootDef;
-        if (!itemDef) return;
+        const disableDropping = true;
+        switch (itemDef.type) {
+            case "gun":
+            case "melee": {
+                if (isItemInLoadout(dropMsg.item, itemDef.type)) {
+                    return;
+                }
+                break;
+            }
+            default: {
+                if (disableDropping) return;
+            }
+        }
         switch (itemDef.type) {
             case "ammo": {
                 const inventoryCount = this.inventory[dropMsg.item];
