@@ -1030,6 +1030,15 @@ export class Player extends BaseGameObject {
         if (isItemInLoadout(joinMsg.loadout.secondary, "gun")) {
             const slot = GameConfig.WeaponSlot.Secondary;
             this.weapons[slot].type = joinMsg.loadout.secondary;
+
+            // disable dual spas
+            if (
+                this.weapons[GameConfig.WeaponSlot.Primary].type === "spas12" &&
+                this.weapons[slot].type === "spas12"
+            ) {
+                this.weapons[slot].type = "mosin";
+            }
+
             const gunDef = GameObjectDefs[this.weapons[slot].type] as GunDef;
             this.weapons[slot].ammo = gunDef.maxClip;
         }
