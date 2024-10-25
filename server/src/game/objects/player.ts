@@ -322,6 +322,7 @@ export class PlayerBarn {
                 return (
                     (team ? sameTeamId : true) &&
                     group.autoFill &&
+                    this.livingPlayers.length > 1 &&
                     group.canJoin(joinData.playerCount)
                 );
             });
