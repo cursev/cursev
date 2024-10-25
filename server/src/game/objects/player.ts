@@ -3696,7 +3696,7 @@ export class Player extends BaseGameObject {
             net.Constants.PlayerMinScale,
             net.Constants.PlayerMaxScale,
         );
-        
+
         if (this.collider) {
             this.collider.rad = this.rad;
         }
