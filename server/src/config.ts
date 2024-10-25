@@ -2,6 +2,13 @@ import type { MapDefs } from "../../shared/defs/mapDefs";
 import { type GameConfig, TeamMode } from "../../shared/gameConfig";
 import { util } from "../../shared/utils/util";
 import type { Vec2 } from "../../shared/utils/v2";
+import { CustomConfig } from "./resurviv-config";
+
+const isProduction = process.env["NODE_ENV"] === "production";
+
+// WARNING: THIS IS THE DEFAULT CONFIG
+// YOU SHOULD MODIFY survev-config.json FILE INSTEAD FOR LOCAL CHANGES
+// TO AVOID MERGE CONFLICTS AND PUSHING IT TO GIT
 
 /**
  * Default config

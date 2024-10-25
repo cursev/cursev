@@ -31,14 +31,13 @@ export const SplashThemes = {
     },
 };
 
-const selectedTheme = SplashThemes["halloween"];
+const selectedTheme = SplashThemes[Config.client.theme];
 
 export default defineConfig(({ mode }) => {
     process.env = {
         ...process.env,
         VITE_GAME_VERSION: version,
         VITE_BACKGROUND_IMG: selectedTheme.SPLASH_BG,
-        ...AdsVars,
     };
 
     const regions = {
