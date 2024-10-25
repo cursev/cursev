@@ -11,12 +11,19 @@ import { math } from "../../shared/utils/math";
 import { assert } from "../../shared/utils/util";
 import type { ApiServer } from "./apiServer";
 import { Config } from "./config";
-import { checkForBadWords } from "./utils/serverHelpers";
+import {
+    HTTPRateLimit,
+    WebSocketRateLimit,
+    checkForBadWords,
+    getIp,
+} from "./utils/serverHelpers";
 
 export interface TeamSocketData {
     sendMsg: (response: string) => void;
     closeSocket: () => void;
     roomUrl: string;
+    rateLimit: Record<symbol, number>;
+    ip: string;
 }
 
 interface RoomPlayer extends TeamMenuPlayer {
@@ -69,6 +76,9 @@ export class TeamMenu {
     init(app: TemplatedApp) {
         const teamMenu = this;
 
+        const httpRateLimit = new HTTPRateLimit(1, 2000);
+        const wsRateLimit = new WebSocketRateLimit(5, 1000, 10);
+
         app.ws("/team_v2", {
             idleTimeout: 30,
             /**
@@ -77,8 +87,21 @@ export class TeamMenu {
             upgrade(res, req, context) {
                 res.onAborted((): void => {});
 
+                const ip = getIp(res);
+
+                if (httpRateLimit.isRateLimited(ip) || wsRateLimit.isIpRateLimited(ip)) {
+                    res.writeStatus("429 Too Many Requests");
+                    res.write("429 Too Many Requests");
+                    res.end();
+                    return;
+                }
+                wsRateLimit.ipConnected(ip);
+
                 res.upgrade(
-                    {},
+                    {
+                        rateLimit: {},
+                        ip,
+                    },
                     req.getHeader("sec-websocket-key"),
                     req.getHeader("sec-websocket-protocol"),
                     req.getHeader("sec-websocket-extensions"),
@@ -101,6 +124,10 @@ export class TeamMenu {
              * @param message The message to handle.
              */
             message(socket: WebSocket<TeamSocketData>, message) {
+                if (wsRateLimit.isRateLimited(socket.getUserData().rateLimit)) {
+                    socket.close();
+                    return;
+                }
                 teamMenu.handleMsg(message, socket.getUserData());
             },
 
@@ -116,6 +143,7 @@ export class TeamMenu {
                     teamMenu.removePlayer(userData);
                     teamMenu.sendRoomState(room);
                 }
+                wsRateLimit.ipDisconnected(userData.ip);
             },
         });
     }

@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => {
         ...process.env,
         VITE_GAME_VERSION: version,
         VITE_BACKGROUND_IMG: selectedTheme.SPLASH_BG,
+        ...AdsVars,
     };
 
     const regions = {
@@ -93,6 +94,7 @@ export default defineConfig(({ mode }) => {
                 };
             }),
             MENU_MUSIC: JSON.stringify(selectedTheme.MENU_MUSIC),
+            AIP_PLACEMENT_ID: JSON.stringify(Config.client.AIP_PLACEMENT_ID),
         },
         plugins: [
             mode !== "development"

@@ -27,6 +27,7 @@ import type { InputBindUi, InputBinds } from "./../inputBinds";
 import type { Localization } from "./localization";
 import { PieTimer } from "./pieTimer";
 import type { Touch } from "./touch";
+import type { UiManager2 } from "./ui2";
 
 function humanizeTime(time: number) {
     const hours = Math.floor(time / 3600);
@@ -1284,6 +1285,28 @@ export class UiManager {
         this.playerKills.html(kills);
     }
 
+    removeAds() {
+        if (!window.aiptag) return;
+        const ads = ["728x90", "300x250_2"];
+        for (let i = 0; i < ads.length; i++) {
+            const ad = ads[i];
+            window.aiptag.cmd.display.push(() => {
+                window.aipDisplayTag!.destroy(`${AIP_PLACEMENT_ID}_${ad}`);
+            });
+        }
+    }
+
+    refreshMainPageAds() {
+        if (!window.aiptag) return;
+        const ads = ["728x90"];
+        for (let i = 0; i < ads.length; i++) {
+            const ad = ads[i];
+            window.aiptag.cmd.display.push(() => {
+                window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_${ad}`);
+            });
+        }
+    }
+
     clearUI() {
         this.pieTimer.stop();
         // @ts-expect-error not used anywhere, should be removed, I think.
@@ -1378,6 +1401,7 @@ export class UiManager {
 
     quitGame() {
         this.game.gameOver = true;
+        this.refreshMainPageAds();
         this.game.onQuit();
     }
 
@@ -1391,9 +1415,9 @@ export class UiManager {
         teamMode: TeamMode,
         spectating: boolean,
         playerBarn: PlayerBarn,
-        _audioManager: unknown,
+        _audioManager: AudioManager,
         map: Map,
-        _ui2: unknown,
+        ui2: UiManager2,
     ) {
         // If we're spectating a team that's not our own, and the game isn't over yet,
         // don't display the stats screen again.
@@ -1405,6 +1429,7 @@ export class UiManager {
             this.clearStatsElems();
             this.setSpectating(false, teamMode);
 
+            this.removeAds();
             this.statsMain.css("display", "block");
             this.statsLogo.css("display", "block");
 
@@ -1417,6 +1442,9 @@ export class UiManager {
 
             const victory = localTeamId == winningTeamId;
             const statsDelay = victory ? 1750 : 2500;
+
+            this.setBannerAd(statsDelay, ui2);
+
             const isLocalTeamWinner =
                 localTeamId == winningTeamId || (spectating && winningTeamId == teamId);
             const spectatingAnotherTeam = spectating && localTeamId != teamId;
@@ -1723,6 +1751,21 @@ export class UiManager {
             },
             1000,
         );
+    }
+
+    setBannerAd(time: number, ui2: UiManager2) {
+        if (!window.aiptag) return;
+        let delay = Math.max(time - 150, 0);
+        setTimeout(() => {
+            const bannerAd = $("#ui-stats-ad-container-desktop");
+            bannerAd.css("display", "inline-block");
+
+            window.aiptag!.cmd.display.push(() => {
+                window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_300x250_2`);
+            });
+
+            ui2.hideKillMessage();
+        }, delay);
     }
 
     setSpectateTarget(

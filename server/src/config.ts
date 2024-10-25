@@ -2,12 +2,10 @@ import type { MapDefs } from "../../shared/defs/mapDefs";
 import { type GameConfig, TeamMode } from "../../shared/gameConfig";
 import { util } from "../../shared/utils/util";
 import type { Vec2 } from "../../shared/utils/v2";
-import { CustomConfig } from "./resurviv-config";
 
 /**
- * Default server config
+ * Default config
  */
-
 export const Config = {
     devServer: {
         host: "127.0.0.1",
@@ -39,12 +37,20 @@ export const Config = {
         spawnMode: "default",
     },
 
+    rateLimitsEnabled: isProduction,
+
+    client: {
+        AIP_ID: undefined,
+        AIP_PLACEMENT_ID: undefined,
+        theme: "main",
+    },
+
     thisRegion: "local",
 
     gameTps: 100,
     netSyncTps: 33,
 
-    processMode: process.env.NODE_ENV === "production" ? "multi" : "single",
+    processMode: isProduction ? "multi" : "single",
 
     perfLogging: {
         enabled: true,
@@ -74,6 +80,7 @@ interface ServerConfig {
         certFile: string;
     };
 }
+
 export interface ConfigType {
     devServer: ServerConfig;
 
@@ -125,6 +132,15 @@ export interface ConfigType {
          * Seconds between each game performance log
          */
         time: number;
+    };
+
+    rateLimitsEnabled: boolean;
+
+    client: {
+        // adin play IDs
+        AIP_ID: string | undefined;
+        AIP_PLACEMENT_ID: string | undefined;
+        theme: "main" | "easter" | "halloween" | "faction" | "snow" | "spring";
     };
 
     debug: {

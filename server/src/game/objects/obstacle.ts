@@ -17,6 +17,8 @@ export class Obstacle extends BaseGameObject {
     override readonly __type = ObjectType.Obstacle;
     bounds: AABB;
     collider!: Collider;
+    // just to cope with shared client function typing
+    active = true;
 
     mapObstacleBounds: Collider[];
 
@@ -327,6 +329,9 @@ export class Obstacle extends BaseGameObject {
         this.health = this.healthT = 0;
         this.dead = true;
         this.setDirty();
+
+        this.scale = this.minScale;
+        this.updateCollider();
 
         if (def.destroyType) {
             this.game.map.genAuto(def.destroyType, this.pos, this.layer, this.ori);
