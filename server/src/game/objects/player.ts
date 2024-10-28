@@ -593,8 +593,8 @@ export class Player extends BaseGameObject {
 
     outfit = "outfitBase";
 
-    setOutfit(outfit: string) {
-        if (this.outfit === outfit) return;
+    setOutfit(outfit: string, skipCheck?: boolean) {
+        if (this.outfit === outfit && !skipCheck) return;
         this.outfit = outfit;
         const def = GameObjectDefs[outfit] as OutfitDef;
         this.obstacleOutfit?.destroy();

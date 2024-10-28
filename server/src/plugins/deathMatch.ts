@@ -14,16 +14,25 @@ export default class DeathMatchPlugin extends GamePlugin {
             data.boost = 100;
             data.weaponManager.setCurWeapIndex(WeaponSlot.Primary);
 
-            if (data.outfit === "outfitDarkGloves") {
-                data.chest = "";
-                data.helmet = "";
-            }
-            if (data.outfit === "outfitNotEnough") {
-                data.helmet = "";
-                data.backpack = "backpack00";
-            }
-            if (data.outfit === "outfitGreenEyes") {
-                data.addPerk("trick_size");
+            switch (data.outfit) {
+                case "outfitToilet": {
+                    data.setOutfit("outfitToilet", true);
+                    break;
+                }
+                case "outfitDarkGloves": {
+                    data.chest = "";
+                    data.helmet = "";
+                    break;
+                }
+                case "outfitNotEnough": {
+                    data.helmet = "";
+                    data.backpack = "backpack00";
+                    break;
+                }
+                case "outfitGreenEyes": {
+                    data.addPerk("trick_size");
+                    break;
+                }
             }
         });
 

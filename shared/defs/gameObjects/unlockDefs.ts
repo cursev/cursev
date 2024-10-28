@@ -20,6 +20,7 @@ const allowedMeleeSkins = [
     "bowie_frontier",
 ];
 export const privateOutfits = [
+    "outfitToilet",
     "outfitGreenEyes",
     "outfitOwnr",
     "outfitShinyGold",
