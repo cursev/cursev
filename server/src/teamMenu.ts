@@ -483,14 +483,14 @@ export class TeamMenu {
                     this.sendResponse(response, player);
                     return;
                 }
-                if ( room.gameId === playData.gameId ) {
+                if (room.gameId === playData.gameId) {
                     if (room.groupHash) {
                         playData.data = room.groupHash;
                     }
                 } else {
                     room.gameId = playData.gameId;
-                    room.groupHash =  playData.data;
-                } 
+                    room.groupHash = playData.data;
+                }
 
                 response = {
                     type: "joinGame",
