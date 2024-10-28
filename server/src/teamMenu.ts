@@ -34,6 +34,7 @@ export interface Room {
     roomData: RoomData;
     players: RoomPlayer[];
     groupHash?: string;
+    gameId?: string;
 }
 
 type ErrorType =
@@ -482,12 +483,14 @@ export class TeamMenu {
                     this.sendResponse(response, player);
                     return;
                 }
-
-                if (room.groupHash) {
-                    playData.data = room.groupHash;
+                if ( room.gameId === playData.gameId ) {
+                    if (room.groupHash) {
+                        playData.data = room.groupHash;
+                    }
                 } else {
-                    room.groupHash = playData.data;
-                }
+                    room.gameId = playData.gameId;
+                    room.groupHash =  playData.data;
+                } 
 
                 response = {
                     type: "joinGame",
