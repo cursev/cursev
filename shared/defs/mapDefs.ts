@@ -1,4 +1,4 @@
-import { Halloween } from "../../server/src/deathmatch/maps/halloween";
+import { DeatchmatchHalloween } from "../../server/src/deathmatch/maps/halloween";
 import { DeatchmatchMain } from "../../server/src/deathmatch/maps/main";
 import { Woods } from "../../server/src/deathmatch/maps/woods";
 import type { Vec2 } from "../utils/v2";
@@ -22,7 +22,7 @@ export const MapDefs = {
     main_summer: MainSummer,
     desert: Desert,
     faction: Faction,
-    halloween: Halloween,
+    halloween: DeatchmatchHalloween,
     potato: Potato,
     potato_spring: PotatoSpring,
     snow: Snow,
