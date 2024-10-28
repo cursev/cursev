@@ -4,10 +4,7 @@ import { GameObjectDefs } from "../../../shared/defs/gameObjectDefs";
 import { EmoteCategory, type EmoteDef } from "../../../shared/defs/gameObjects/emoteDefs";
 import type { MeleeDef } from "../../../shared/defs/gameObjects/meleeDefs";
 import { OutfitDefs } from "../../../shared/defs/gameObjects/outfitDefs";
-import {
-    type UnlockDef,
-    privateOutfits,
-} from "../../../shared/defs/gameObjects/unlockDefs";
+import type { UnlockDef } from "../../../shared/defs/gameObjects/unlockDefs";
 import { EmoteSlot } from "../../../shared/gameConfig";
 import { util } from "../../../shared/utils/util";
 import type { Account } from "../account";
@@ -833,18 +830,7 @@ export class LoadoutMenu {
                 stroke: Number(stroke.toFixed(2)),
             };
         } else {
-            const privateSkin = helpers.getParameterByName("customSkin");
-            if (
-                loadoutType === "outfit" &&
-                privateSkin &&
-                privateOutfits.includes(privateSkin)
-            ) {
-                this.loadout.outfit = privateSkin;
-                this.config.set("loadout", this.loadout);
-            } else {
-                this.loadout[loadoutType as keyof Loadout] = this.selectedItem
-                    .type as any;
-            }
+            this.loadout[loadoutType as keyof Loadout] = this.selectedItem.type as any;
         }
         this.loadout = loadout.validate(this.loadout);
 

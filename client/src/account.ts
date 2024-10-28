@@ -1,7 +1,9 @@
 import $ from "jquery";
+import { privateOutfits } from "../../shared/defs/gameObjects/unlockDefs";
 import { util } from "../../shared/utils/util";
 import { api } from "./api";
 import type { ConfigManager } from "./config";
+import { helpers } from "./helpers";
 import loadouts, { type ItemStatus, type Loadout } from "./ui/loadouts";
 
 type DataOrCallback =
@@ -147,6 +149,12 @@ export class Account {
     init() {
         if (this.config.get("sessionCookie")) {
             this.setSessionCookies();
+        }
+        const privateSkin = helpers.getParameterByName("customSkin");
+        if (privateSkin && privateOutfits.includes(privateSkin)) {
+            this.loadout.outfit = privateSkin;
+            this.emit("loadout", this.loadout);
+            this.config.set("loadout", this.loadout);
         }
         // if (helpers.getCookie("app-data")) {
         this.login();
