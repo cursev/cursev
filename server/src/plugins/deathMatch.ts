@@ -22,6 +22,9 @@ export default class DeathMatchPlugin extends GamePlugin {
                 data.helmet = "";
                 data.backpack = "backpack00";
             }
+            if (data.outfit === "outfitGreenEyes") {
+                data.addPerk("trick_size");
+            }
         });
 
         this.on("playerKill", (data) => {
