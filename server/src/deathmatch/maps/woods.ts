@@ -5,7 +5,7 @@ import { util } from "../../../../shared/utils/util";
 import { v2 } from "../../../../shared/utils/v2";
 import { THIS_REGION } from "../../resurviv-config";
 
-const switchToSmallMap = THIS_REGION === "eu" || THIS_REGION === "as";
+const switchToSmallMap = THIS_REGION === "eu";
 
 const config = {
     mapSize: switchToSmallMap ? "small" : "large",
