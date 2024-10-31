@@ -174,8 +174,8 @@ export const GameConfig = {
         removeOnDisconnect: true,
         defaultItems: {
             weapons: [
-                { type: "", ammo: 0 },
-                { type: "", ammo: 0 },
+                { type: "spas12", ammo: 0 },
+                { type: "mosin", ammo: 0 },
                 { type: "fists", ammo: 0 },
                 { type: "", ammo: 0 },
             ],
