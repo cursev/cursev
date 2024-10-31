@@ -88,8 +88,7 @@ export class PlayerBarn {
 
     addPlayer(socketId: string, joinMsg: net.JoinMsg) {
         const joinData = this.game.joinTokens.get(joinMsg.matchPriv);
-
-        if (!joinData || joinData.expiresAt < Date.now() || joinData.avaliableUses <= 0) {
+        if (!joinData || joinData.avaliableUses <= 0) {
             this.game.closeSocket(socketId);
             if (joinData) {
                 this.game.joinTokens.delete(joinMsg.matchPriv);
@@ -322,8 +321,8 @@ export class PlayerBarn {
                 return (
                     (team ? sameTeamId : true) &&
                     group.autoFill &&
-                    this.livingPlayers.length > 1 &&
-                    group.canJoin(joinData.playerCount)
+                    this.livingPlayers.length > 1
+                    // && group.canJoin(joinData.playerCount)
                 );
             });
         }
@@ -338,9 +337,9 @@ export class PlayerBarn {
         // only reserve slots on the first time this join token is used
         // since the playerCount counts for other people from the team menu
         // using the same token
-        if (group.hash !== joinData.groupHashToJoin) {
-            group.reservedSlots += joinData.playerCount;
-        }
+        // if (group.hash !== joinData.groupHashToJoin) {
+        //     group.reservedSlots += joinData.playerCount;
+        // }
 
         joinData.groupHashToJoin = group.hash;
 

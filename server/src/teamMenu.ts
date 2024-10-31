@@ -484,21 +484,11 @@ export class TeamMenu {
                     return;
                 }
 
-
                 if (room.groupHash) {
                     playData.data = room.groupHash;
                 } else {
                     room.groupHash = playData.data;
                 }
-
-                // if (room.gameId === playData.gameId) {
-                //     if (room.groupHash) {
-                //         playData.data = room.groupHash;
-                //     }
-                // } else {
-                //     room.gameId = playData.gameId;
-                //     room.groupHash = playData.data;
-                // }
 
                 response = {
                     type: "joinGame",
@@ -512,7 +502,6 @@ export class TeamMenu {
                 // room.players.forEach((p) => {
                 //     p.inGame = true;
                 // });
-
                 this.sendResponse(response, player);
                 player.inGame = true;
                 room.roomData.findingGame = false;
