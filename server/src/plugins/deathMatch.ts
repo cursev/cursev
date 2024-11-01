@@ -27,9 +27,6 @@ export default class DeathMatchPlugin extends GamePlugin {
                 case "outfitNotEnough": {
                     data.helmet = "";
                     data.backpack = "backpack00";
-                    break;
-                }
-                case "outfitGreenEyes": {
                     data.addPerk("trick_size");
                     break;
                 }
