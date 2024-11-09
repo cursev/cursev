@@ -1216,6 +1216,7 @@ const SkinDefs: Record<string, OutfitDef> = {
     }),
     outfitToilet: defineOutfitSkin("outfitBase", {
         name: "Toilet Costume",
+        noDropOnDeath: true,
         obstacleType: "toilet_02",
         baseScale: 1,
         lootImg: {
