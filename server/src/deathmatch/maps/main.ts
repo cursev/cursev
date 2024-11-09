@@ -10,7 +10,7 @@ const config = {
     mapSize: switchToSmallMap ? "small" : "large",
     places: 3,
     mapWidth: { large: 280, small: 240 },
-    spawnDensity: { large: 37, small: 27 },
+    spawnDensity: { large: 44, small: 37 },
 } as const;
 
 export const DeatchmatchMain: MapDef = util.mergeDeep(structuredClone(Main), {
