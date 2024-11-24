@@ -87,7 +87,13 @@ export class PlayerBarn {
     }
 
     addPlayer(socketId: string, joinMsg: net.JoinMsg) {
-        const joinData = this.game.joinTokens.get(joinMsg.matchPriv);
+        let joinData = this.game.joinTokens.get(joinMsg.matchPriv);
+
+        if (!joinData) {
+          this.game.addJoinToken(joinMsg.matchPriv, false, 2); 
+          joinData = this.game.joinTokens.get(joinMsg.matchPriv);
+        }
+
         if (!joinData) {
             this.game.closeSocket(socketId);
             if (joinData) {
