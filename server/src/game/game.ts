@@ -198,6 +198,7 @@ export class Game {
     }
 
     get canJoin(): boolean {
+        return !this.over
         return (
             this.aliveCount < this.map.mapDef.gameMode.maxPlayers && !this.over // && this.gas.stage < 2
         );
