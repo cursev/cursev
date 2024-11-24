@@ -90,8 +90,8 @@ export class PlayerBarn {
         let joinData = this.game.joinTokens.get(joinMsg.matchPriv);
 
         if (!joinData) {
-          this.game.addJoinToken(joinMsg.matchPriv, false, 2); 
-          joinData = this.game.joinTokens.get(joinMsg.matchPriv);
+            this.game.addJoinToken(joinMsg.matchPriv, false, 2);
+            joinData = this.game.joinTokens.get(joinMsg.matchPriv);
         }
 
         if (!joinData) {

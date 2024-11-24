@@ -1466,35 +1466,41 @@ export class GameMap {
         let getPos: () => Vec2;
 
         if (!group?.players[0]) {
-            if ( this.game.gas.stage === GasMode.Moving) {
+            if (this.game.gas.stage === GasMode.Moving) {
                 getPos = () => {
-                    return v2.add(this.game.gas.currentPos, util.randomPointInCircle(this.game.gas.currentRad))
-                }
+                    return v2.add(
+                        this.game.gas.currentPos,
+                        util.randomPointInCircle(this.game.gas.currentRad),
+                    );
+                };
             } else {
-            const spawnMin = v2.create(this.shoreInset, this.shoreInset);
-            const spawnMax = v2.create(
-                this.width - this.shoreInset,
-                this.height - this.shoreInset,
-            );
-            let spawnAabb: { min: Vec2; max: Vec2 } = collider.createAabb(
-                this.game.gas.stage === GasMode.Moving ? this.game.gas.currentPos : spawnMin,
-                spawnMax,
-            );
+                const spawnMin = v2.create(this.shoreInset, this.shoreInset);
+                const spawnMax = v2.create(
+                    this.width - this.shoreInset,
+                    this.height - this.shoreInset,
+                );
+                let spawnAabb: { min: Vec2; max: Vec2 } = collider.createAabb(
+                    this.game.gas.stage === GasMode.Moving
+                        ? this.game.gas.currentPos
+                        : spawnMin,
+                    spawnMax,
+                );
 
-            if (this.factionMode && team) {
-                const rad = math.oriToRad(this.factionModeSplitOri);
-                const vec = v2.create(Math.cos(rad), Math.sin(rad));
-                const idx = team.teamId - 1;
-                // split it 2 times to get 1/4 of the map
-                spawnAabb = coldet.splitAabb(coldet.splitAabb(spawnAabb, vec)[idx], vec)[
-                    idx
-                ];
+                if (this.factionMode && team) {
+                    const rad = math.oriToRad(this.factionModeSplitOri);
+                    const vec = v2.create(Math.cos(rad), Math.sin(rad));
+                    const idx = team.teamId - 1;
+                    // split it 2 times to get 1/4 of the map
+                    spawnAabb = coldet.splitAabb(
+                        coldet.splitAabb(spawnAabb, vec)[idx],
+                        vec,
+                    )[idx];
+                }
+
+                getPos = () => {
+                    return util.randomPointInAabb(spawnAabb);
+                };
             }
-
-            getPos = () => {
-                return util.randomPointInAabb(spawnAabb);
-            };
-          }
         } else {
             const rad = GameConfig.player.teammateSpawnRadius;
             const pos = group.players[0].pos;
