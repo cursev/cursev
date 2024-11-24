@@ -1,5 +1,6 @@
 import { DeatchmatchHalloween } from "../../server/src/deathmatch/maps/halloween";
 import { DeatchmatchMain } from "../../server/src/deathmatch/maps/main";
+import { DeatchmatchSnow } from "../../server/src/deathmatch/maps/snow";
 import { Woods } from "../../server/src/deathmatch/maps/woods";
 import type { Vec2 } from "../utils/v2";
 import { Cobalt } from "./maps/cobaltDefs";
@@ -10,7 +11,6 @@ import { MainSummer } from "./maps/mainSummerDefs";
 import { Potato } from "./maps/potatoDefs";
 import { PotatoSpring } from "./maps/potatoSpringDefs";
 import { Savannah } from "./maps/savannahDefs";
-import { Snow } from "./maps/snowDefs";
 import { Turkey } from "./maps/turkeyDefs";
 import { WoodsSnow } from "./maps/woodsSnowDefs";
 import { WoodsSpring } from "./maps/woodsSpringDefs";
@@ -25,7 +25,7 @@ export const MapDefs = {
     halloween: DeatchmatchHalloween,
     potato: Potato,
     potato_spring: PotatoSpring,
-    snow: Snow,
+    snow: DeatchmatchSnow,
     woods: Woods,
     woods_snow: WoodsSnow,
     woods_spring: WoodsSpring,
