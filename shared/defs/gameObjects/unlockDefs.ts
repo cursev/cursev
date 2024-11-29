@@ -25,6 +25,7 @@ export const privateOutfits = [
     "outfitOwnr",
     "outfitShinyGold",
     "outfitPreacher",
+    "outfitBoutique",
     "outfitNotEnough",
 ];
 
