@@ -200,8 +200,8 @@ const mapDef = {
                 spawns: [
                     "mansion_structure_01",
                     // "warehouse_complex_01",
-                    "police_01",
-                    "bank_01",
+                    "police_01x",
+                    "bank_01x",
                 ],
                 choose: config.mapSize === "large" ? 2 : 1,
             },
