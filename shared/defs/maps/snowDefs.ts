@@ -73,12 +73,12 @@ const mapDef = {
             { name: "frag", count: 2, weight: 1 },
             { name: "smoke", count: 1, weight: 1 },
             { name: "mirv", count: 2, weight: 0.05 },
-            { name: "snowball", count: 5, weight: 0.5 },
+            { name: "snowball", count: 5, weight: 2 },
         ],
         tier_airdrop_throwables: [
             { name: "frag", count: 2, weight: 1 },
             { name: "mirv", count: 2, weight: 0.5 },
-            { name: "snowball", count: 10, weight: 0.5 },
+            { name: "snowball", count: 10, weight: 1 },
         ],
     },
     mapGen: {

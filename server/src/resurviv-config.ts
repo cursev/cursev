@@ -88,6 +88,7 @@ export const CustomConfig: DeepPartial<ConfigType> = {
                 ],
 
                 inventory: {
+                    snowball: 10,
                     frag: 3,
                     smoke: 1,
                     mirv: 1,
