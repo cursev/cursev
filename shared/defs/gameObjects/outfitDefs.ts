@@ -198,7 +198,7 @@ const SkinDefs: Record<string, OutfitDef> = {
     }),
     outfitDev: defineOutfitSkin("outfitBase", {
         name: "Developer Swag",
-        noDropOnDeath: true,
+        noDropOnDeath: false,
         skinImg: {
             baseTint: 3442216,
             baseSprite: "player-base-outfitDC.img",

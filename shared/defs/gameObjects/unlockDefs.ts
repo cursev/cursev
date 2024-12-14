@@ -27,12 +27,12 @@ export const privateOutfits = [
     "outfitPreacher",
     "outfitBoutique",
     "outfitNotEnough",
+    "outfitDev"
 ];
 
 const allowedOutfits = [
     "outfitBase",
     "outfitTurkey",
-    "outfitDev",
     "outfitMod",
     "outfitWheat",
     "outfitNoir",
