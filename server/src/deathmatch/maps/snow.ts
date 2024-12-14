@@ -2,7 +2,6 @@ import type { MapDef } from "../../../../shared/defs/mapDefs";
 import { Main } from "../../../../shared/defs/maps/baseDefs";
 import { GameConfig } from "../../../../shared/gameConfig";
 import { util } from "../../../../shared/utils/util";
-import { v2 } from "../../../../shared/utils/v2";
 import { THIS_REGION } from "../../resurviv-config";
 
 const switchToSmallMap = THIS_REGION === "na";
@@ -47,23 +46,16 @@ const mapDef = {
     gameMode: { maxPlayers: 80, woodsMode: true },
     gameConfig: {
         /* STRIP_FROM_PROD_CLIENT:START */
-        planes: {
-            timings: [
-                {
-                    circleIdx: 1,
-                    wait: 10,
-                    options: { type: GameConfig.Plane.Airdrop },
-                },
-                {
-                    circleIdx: 3,
-                    wait: 2,
-                    options: { type: GameConfig.Plane.Airdrop },
-                },
-            ],
-            crates: [
-                { name: "airdrop_crate_01", weight: 10 },
-                { name: "airdrop_crate_02", weight: 1 },
-            ],
+        gameConfig: {
+          planes: {
+              timings: [
+                  {
+                      circleIdx: 0,
+                      wait: 2,
+                      options: { type: GameConfig.Plane.Airdrop },
+                  },
+              ],
+          },
         },
         /* STRIP_FROM_PROD_CLIENT:END */
         bagSizes: {
@@ -243,3 +235,61 @@ const mapDef = {
     /* STRIP_FROM_PROD_CLIENT:END */
 };
 export const DeatchmatchSnow = util.mergeDeep({}, Main, mapDef) as MapDef;
+
+
+DeatchmatchSnow["lootTable"] = {
+    tier_mansion_floor: [{ name: "outfitCasanova", count: 1, weight: 1 }],
+    tier_vault_floor: [{ name: "outfitJester", count: 1, weight: 1 }],
+    tier_police_floor: [{ name: "outfitPrisoner", count: 1, weight: 1 }],
+    tier_chrys_01: [{ name: "outfitImperial", count: 1, weight: 1 }],
+    tier_chrys_02: [{ name: "katana", count: 1, weight: 1 }],
+    tier_chrys_case: [
+        // { name: "tier_katanas", count: 1, weight: 3 },
+        { name: "naginata", count: 1, weight: 1 },
+    ],
+    tier_police: [
+        { name: "saiga", count: 1, weight: 1 },
+        // { name: "flare_gun", count: 1, weight: 0.1 }
+    ],
+    tier_eye_02: [{ name: "stonehammer", count: 1, weight: 1 }],
+    tier_eye_block: [
+        { name: "m9", count: 1, weight: 1 },
+        { name: "ots38_dual", count: 1, weight: 1 },
+        { name: "flare_gun", count: 1, weight: 1 },
+        { name: "colt45", count: 1, weight: 1 },
+        { name: "45acp", count: 1, weight: 1 },
+        { name: "painkiller", count: 1, weight: 1 },
+        { name: "m4a1", count: 1, weight: 1 },
+        { name: "m249", count: 1, weight: 1 },
+        { name: "awc", count: 1, weight: 1 },
+        { name: "pkp", count: 1, weight: 1 },
+    ],
+    tier_sledgehammer: [{ name: "sledgehammer", count: 1, weight: 1 }],
+    tier_chest_04: [
+        { name: "p30l", count: 1, weight: 40 },
+        { name: "p30l_dual", count: 1, weight: 1 },
+    ],
+    tier_woodaxe: [{ name: "woodaxe", count: 1, weight: 1 }],
+    tier_club_melee: [{ name: "machete_taiga", count: 1, weight: 1 }],
+    tier_pirate_melee: [{ name: "hook", count: 1, weight: 1 }],
+    tier_hatchet_melee: [
+        { name: "fireaxe", count: 1, weight: 5 },
+        { name: "tier_katanas", count: 1, weight: 3 },
+        { name: "stonehammer", count: 1, weight: 1 },
+    ],
+    tier_airdrop_uncommon: [
+        { name: "outfitGhillie", count: 1, weight: 1 },
+    ],
+    tier_airdrop_rare: [
+        { name: "outfitGhillie", count: 1, weight: 1 },
+    ],
+    tier_throwables: [
+        { name: "frag", count: 2, weight: 1 },
+        { name: "smoke", count: 1, weight: 1 },
+        { name: "mirv", count: 2, weight: 0.05 },
+    ],
+    tier_hatchet: [
+        { name: "pan", count: 1, weight: 1 },
+        { name: "pkp", count: 1, weight: 1 },
+    ],
+};
