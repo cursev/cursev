@@ -61,6 +61,7 @@ const mapDef = {
         bagSizes: {
             frag: [6, 12, 15, 18],
             smoke: [6, 12, 15, 18],
+            snowball: [6, 12, 18]
         },
     },
     /* STRIP_FROM_PROD_CLIENT:START */
@@ -192,8 +193,8 @@ const mapDef = {
                 spawns: [
                     "mansion_structure_01",
                     // "warehouse_complex_01",
-                    "police_01",
-                    "bank_01",
+                    "police_01x",
+                    "bank_01x",
                 ],
                 choose: config.mapSize === "large" ? 2 : 1,
             },

@@ -81,6 +81,7 @@ export default class DeathMatchPlugin extends GamePlugin {
 
                 killer.inventory["frag"] = Math.min(killer.inventory["frag"] + 3, 12);
                 killer.inventory["mirv"] = Math.min(killer.inventory["mirv"] + 1, 4);
+                killer.inventory["snowball"] = Math.min(killer.inventory["snowball"] + 4, 10);
                 killer.inventoryDirty = true;
                 killer.weapsDirty = true;
 
