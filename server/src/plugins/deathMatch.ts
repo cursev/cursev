@@ -3,6 +3,7 @@ import type { GunDef } from "../../../shared/defs/gameObjects/gunDefs";
 import { isItemInLoadout } from "../../../shared/defs/gameObjects/unlockDefs";
 import { WeaponSlot } from "../../../shared/gameConfig";
 import { ObjectType } from "../../../shared/net/objectSerializeFns";
+import { Config } from "../config";
 import { GamePlugin } from "../game/pluginManager";
 
 export default class DeathMatchPlugin extends GamePlugin {
@@ -79,7 +80,7 @@ export default class DeathMatchPlugin extends GamePlugin {
 
                 killer.inventory["frag"] = Math.min(killer.inventory["frag"] + 3, 12);
                 killer.inventory["mirv"] = Math.min(killer.inventory["mirv"] + 1, 4);
-                killer.inventory["snowball"] = Math.min(killer.inventory["snowball"] + 4, 10);
+                if ( Config.modes[1].mapName === "snow" ) killer.inventory["snowball"] = Math.min(killer.inventory["snowball"] + 4, 10);
                 killer.inventoryDirty = true;
                 killer.weapsDirty = true;
 
