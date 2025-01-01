@@ -47,21 +47,21 @@ const mapDef = {
     gameConfig: {
         /* STRIP_FROM_PROD_CLIENT:START */
         gameConfig: {
-          planes: {
-              timings: [
-                  {
-                      circleIdx: 0,
-                      wait: 2,
-                      options: { type: GameConfig.Plane.Airdrop },
-                  },
-              ],
-          },
+            planes: {
+                timings: [
+                    {
+                        circleIdx: 0,
+                        wait: 2,
+                        options: { type: GameConfig.Plane.Airdrop },
+                    },
+                ],
+            },
         },
         /* STRIP_FROM_PROD_CLIENT:END */
         bagSizes: {
             frag: [6, 12, 15, 18],
             smoke: [6, 12, 15, 18],
-            snowball: [6, 12, 18]
+            snowball: [6, 12, 18],
         },
     },
     /* STRIP_FROM_PROD_CLIENT:START */
@@ -124,7 +124,7 @@ const mapDef = {
             { name: "usas", count: 1, weight: 1 },
         ],
     },
-   mapGen: {
+    mapGen: {
         map: {
             baseWidth: config.mapWidth[config.mapSize],
             baseHeight: config.mapWidth[config.mapSize],
@@ -200,7 +200,6 @@ const mapDef = {
             },
         ],
         spawnReplacements: [
-            
             {
                 barn_01: "barn_01x",
                 bridge_lg_01: "bridge_lg_01x",
@@ -230,13 +229,11 @@ const mapDef = {
                 tree_01: "tree_10",
                 mil_crate_02: "mil_crate_03",
             },
-            
         ],
     },
     /* STRIP_FROM_PROD_CLIENT:END */
 };
 export const DeatchmatchSnow = util.mergeDeep({}, Main, mapDef) as MapDef;
-
 
 DeatchmatchSnow["lootTable"] = {
     tier_mansion_floor: [{ name: "outfitCasanova", count: 1, weight: 1 }],
@@ -278,12 +275,8 @@ DeatchmatchSnow["lootTable"] = {
         { name: "tier_katanas", count: 1, weight: 3 },
         { name: "stonehammer", count: 1, weight: 1 },
     ],
-    tier_airdrop_uncommon: [
-        { name: "outfitGhillie", count: 1, weight: 1 },
-    ],
-    tier_airdrop_rare: [
-        { name: "outfitGhillie", count: 1, weight: 1 },
-    ],
+    tier_airdrop_uncommon: [{ name: "outfitGhillie", count: 1, weight: 1 }],
+    tier_airdrop_rare: [{ name: "outfitGhillie", count: 1, weight: 1 }],
     tier_throwables: [
         { name: "frag", count: 2, weight: 1 },
         { name: "smoke", count: 1, weight: 1 },

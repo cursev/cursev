@@ -11,13 +11,13 @@ import { math } from "../../shared/utils/math";
 import { assert } from "../../shared/utils/util";
 import type { ApiServer } from "./apiServer";
 import { Config } from "./config";
+import { logTeamCreation } from "./utils/ipLogging";
 import {
     HTTPRateLimit,
     WebSocketRateLimit,
     checkForBadWords,
     getIp,
 } from "./utils/serverHelpers";
-import { logTeamCreation } from "./utils/ipLogging";
 
 export interface TeamSocketData {
     sendMsg: (response: string) => void;
@@ -325,7 +325,7 @@ export class TeamMenu {
         switch (type) {
             case "create": {
                 const name = this.cleanUserName(parsedMessage.data.playerData.name);
-                  
+
                 const player: RoomPlayer = {
                     name,
                     isLeader: true,

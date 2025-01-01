@@ -205,7 +205,7 @@ class GameProcess implements GameData {
                 {
                     socketId,
                     data,
-                    ip
+                    ip,
                 },
             ],
         });
