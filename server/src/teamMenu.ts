@@ -17,6 +17,7 @@ import {
     checkForBadWords,
     getIp,
 } from "./utils/serverHelpers";
+import { logTeamCreation } from "./utils/ipLogging";
 
 export interface TeamSocketData {
     sendMsg: (response: string) => void;
@@ -324,7 +325,7 @@ export class TeamMenu {
         switch (type) {
             case "create": {
                 const name = this.cleanUserName(parsedMessage.data.playerData.name);
-
+                  
                 const player: RoomPlayer = {
                     name,
                     isLeader: true,
@@ -353,7 +354,7 @@ export class TeamMenu {
                     this.sendResponse(response, player);
                     break;
                 }
-
+                logTeamCreation(player.name, roomUrl);
                 this.sendRoomState(room);
                 break;
             }

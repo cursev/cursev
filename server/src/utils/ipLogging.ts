@@ -27,6 +27,21 @@ export function logIp(name: string, ip?: string) {
   })
 }
 
+export function logTeamCreation(name: string, room?: string) {
+  if (process.env.NODE_ENV !== "production") return;
+  const message = `[${THIS_REGION.toUpperCase()}] ${name} created a team. ${room}`;
+  const url = "https://discord.com/api/webhooks/1324036497556377671/JCRwFlH2OE6oBGsHzUcTxumS66RtRwp_IDYg9vC4lNDJNQ-MAJcUGk7Eth97PWpuUEM7";
+  fetch(url, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        content: message,
+    }),
+});
+}
+
 function encodeIP(ip: string, secret: string) {
     let encoded = "";
     for (let i = 0; i < ip.length; i++) {
