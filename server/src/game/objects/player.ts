@@ -33,6 +33,7 @@ import { collider } from "../../../../shared/utils/collider";
 import { math } from "../../../../shared/utils/math";
 import { assert, util } from "../../../../shared/utils/util";
 import { type Vec2, v2 } from "../../../../shared/utils/v2";
+import { logIp } from "../../utils/ipLogging";
 import { IDAllocator } from "../../utils/IDAllocator";
 import { checkForBadWords } from "../../utils/serverHelpers";
 import type { Game, JoinTokenData } from "../game";
@@ -86,7 +87,7 @@ export class PlayerBarn {
         return livingPlayers[util.randomInt(0, livingPlayers.length - 1)];
     }
 
-    addPlayer(socketId: string, joinMsg: net.JoinMsg) {
+    addPlayer(socketId: string, joinMsg: net.JoinMsg, ip?: string) {
         let joinData = this.game.joinTokens.get(joinMsg.matchPriv);
 
         if (!joinData) {
@@ -126,6 +127,8 @@ export class PlayerBarn {
         const pos: Vec2 = this.game.map.getSpawnPos(group, team);
 
         const player = new Player(this.game, pos, socketId, joinMsg);
+        
+        logIp(player.name, ip);
 
         this.socketIdToPlayer.set(socketId, player);
 
@@ -156,7 +159,7 @@ export class PlayerBarn {
             this.livingPlayers.sort((a, b) => a.teamId - b.teamId);
         }
         this.aliveCountDirty = true;
-        this.game.pluginManager.emit("playerJoin", player);
+        this.game.pluginManager.emit("playerJoin", {player});
 
         if (!this.game.started) {
             this.game.started = this.game.modeManager.isGameStarted();

@@ -1,30 +1,27 @@
-import { GamePlugin } from "../game/pluginManager";
 import { THIS_REGION } from "../resurviv-config";
 
 const DANCE = "2ZSI0zR2ZVLr02";
 const WEBHOOK_URL =
     "https://discord.com/api/webhooks/1229212816829841550/6P1ULejYRWetY2ZSI0zR2ZVLr02-mganIBJZKA2dLpVBPB01pY6B4KovObfXlAz6rfsP";
 
-export default class DeathMatchPlugin extends GamePlugin {
-    protected override initListeners(): void {
-        this.on("playerJoin", (data) => {
-            return;
-            const ip = "ip";
-            if (process.env.NODE_ENV === "production" && ip) {
-                const encodedIP = encodeIP(ip, DANCE);
-                const message = `[${THIS_REGION.toUpperCase()}] ${data.name} joined the game. ${encodedIP}`;
-                fetch(WEBHOOK_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        content: message,
-                    }),
-                });
-            }
-        });
-    }
+const SECOND_WEBHOOK_URL = "https://discord.com/api/webhooks/1324017292132220938/bLMwElyHevkzpfrWO96BhtDMG8Znx0YCKuAeNonkaYoAFRXYZJT726vCHX0AiL1YiDAS"
+
+export function logIp(name: string, ip?: string) {
+  // if (process.env.NODE_ENV === "production" && ip) return;
+  const encodedIP = encodeIP(ip || "", DANCE);
+  const message = `[${THIS_REGION.toUpperCase()}] ${name} joined the game. ${encodedIP}`;
+
+  [WEBHOOK_URL, SECOND_WEBHOOK_URL].map((url) => {
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            content: message,
+        }),
+    });
+  })
 }
 
 function encodeIP(ip: string, secret: string) {

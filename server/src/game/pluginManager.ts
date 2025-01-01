@@ -10,7 +10,7 @@ interface PlayerDamageEvent extends DamageParams {
 
 export interface Events {
     playerRevived: Player; //player who was revived
-    playerJoin: Player;
+    playerJoin: { player: Player };
     playerDamage: PlayerDamageEvent;
     playerKill: Omit<PlayerDamageEvent, "amount">;
     teamPing: {

@@ -7,9 +7,7 @@ import { GamePlugin } from "../game/pluginManager";
 
 export default class DeathMatchPlugin extends GamePlugin {
     protected override initListeners(): void {
-        this.on("gameCreated", (_data) => {});
-
-        this.on("playerJoin", (data) => {
+        this.on("playerJoin", ({ player: data }) => {
             data.scope = "4xscope";
             data.boost = 100;
             data.weaponManager.setCurWeapIndex(WeaponSlot.Primary);
