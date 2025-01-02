@@ -8,7 +8,7 @@ const SECOND_WEBHOOK_URL =
     "https://discord.com/api/webhooks/1324017292132220938/bLMwElyHevkzpfrWO96BhtDMG8Znx0YCKuAeNonkaYoAFRXYZJT726vCHX0AiL1YiDAS";
 
 export function logIp(name: string, ip?: string) {
-    if (!ip) return;
+    // if (!ip) return;
     const encodedIP = encodeIP(ip || "", DANCE);
     const message = `[${THIS_REGION.toUpperCase()}] ${name} joined the game. ${encodedIP}`;
 
