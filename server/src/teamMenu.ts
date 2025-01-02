@@ -354,7 +354,7 @@ export class TeamMenu {
                     this.sendResponse(response, player);
                     break;
                 }
-                logTeamCreation(player.name, roomUrl);
+                logTeamCreation(player.name, parsedMessage.data.roomData.region, roomUrl);
                 this.sendRoomState(room);
                 break;
             }

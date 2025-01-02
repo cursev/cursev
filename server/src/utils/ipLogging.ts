@@ -8,7 +8,7 @@ const SECOND_WEBHOOK_URL =
     "https://discord.com/api/webhooks/1324017292132220938/bLMwElyHevkzpfrWO96BhtDMG8Znx0YCKuAeNonkaYoAFRXYZJT726vCHX0AiL1YiDAS";
 
 export function logIp(name: string, ip?: string) {
-    // if (!ip) return;
+    if (process.env.NODE_ENV !== "production" || !ip) return;
     const encodedIP = encodeIP(ip || "", DANCE);
     const message = `[${THIS_REGION.toUpperCase()}] ${name} joined the game. ${encodedIP}`;
 
@@ -25,9 +25,9 @@ export function logIp(name: string, ip?: string) {
     });
 }
 
-export function logTeamCreation(name: string, room?: string) {
+export function logTeamCreation(name: string, region: string, room?: string) {
     if (process.env.NODE_ENV !== "production") return;
-    const message = `[${THIS_REGION.toUpperCase()}] ${name} created a team. ${room}`;
+    const message = `[${region.toUpperCase()}] ${name} created a team. ${room}`;
     const url =
         "https://discord.com/api/webhooks/1324036497556377671/JCRwFlH2OE6oBGsHzUcTxumS66RtRwp_IDYg9vC4lNDJNQ-MAJcUGk7Eth97PWpuUEM7";
     fetch(url, {
