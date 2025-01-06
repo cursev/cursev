@@ -183,8 +183,8 @@ export class GameMod {
         this.resetPing();
 
         const servers = [
-            { region: "NA", url: "resurviv.biz:8001" },
-            { region: "EU", url: "217.160.224.171:8001" }
+            { region: "NA", url: "resurviv.biz" },
+            { region: "EU", url: "217.160.224.171" }
         ];
 
         const selectedServer = servers.find(
