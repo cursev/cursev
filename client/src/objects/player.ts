@@ -1711,7 +1711,7 @@ export class Player implements AbstractObject {
             mouseY - window.innerHeight / 2,
             mouseX - window.innerWidth / 2,
         );
-        } else if (this.activeId != this.__id) {
+        }else {
         this.bodyContainer.rotation = -Math.atan2(this.dir.y, this.dir.x);
         }
     }
