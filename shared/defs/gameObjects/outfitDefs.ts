@@ -133,13 +133,13 @@ const SkinDefs: Record<string, OutfitDef> = {
         noDrop: true,
         skinImg: {
             "baseTint": 0,  
-            "baseSprite": "player-base-01.img",  
-            "handTint": 16713993,  
-            "handSprite": "player-hands-01.img",  
-            "footTint": 16713993,  
-            "footSprite": "player-feet-01.img",  
-            "backpackTint": 16713993,  
-            "backpackSprite": "player-circle-base-01.img"
+            "baseSprite": "player-base-02.img",  
+            "handTint": 0,  
+            "handSprite": "player-hands-02.img",  
+            "footTint": 0,  
+            "footSprite": "player-feet-02.img",  
+            "backpackTint": 0,  
+            "backpackSprite": "player-circle-base-02.img"
         },
         lootImg: {
             sprite: "loot-shirt-01.img",
