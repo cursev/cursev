@@ -75,7 +75,8 @@ const allowedOutfits = [
     "outfitLargeSky",
     "outfitZESKLunar",
     "outfitTheSurvivor",
-    "outfitXander"
+    "outfitXander",
+    "outfitLaines"
 ];
 const _allowedEmotes = [
     "emote_thumbsup",
