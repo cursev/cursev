@@ -128,6 +128,24 @@ const SkinDefs: Record<string, OutfitDef> = {
             tint: 4980991,
         },
     }),
+    outfitXander: defineOutfitSkin("outfitBase", {
+        name: "Xander",
+        noDrop: true,
+        skinImg: {
+            "baseTint": 0,  
+            "baseSprite": "player-base-01.img",  
+            "handTint": 16713993,  
+            "handSprite": "player-hands-01.img",  
+            "footTint": 16713993,  
+            "footSprite": "player-feet-01.img",  
+            "backpackTint": 16713993,  
+            "backpackSprite": "player-circle-base-01.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 0,
+        },
+    }),
     /*players skins ends here*/ 
 
     outfitTank: defineOutfitSkin("outfitBase", {
