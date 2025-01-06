@@ -91,6 +91,45 @@ const SkinDefs: Record<string, OutfitDef> = {
             tint: 0xffffff,
         },
     }),
+    /* players skins start here*/
+    outfitTheSurvivor: defineOutfitSkin("outfitBase", {
+        name: "The Survivor[EU]",
+        noDrop: true,
+        skinImg: {
+            "baseTint": 11973551,  
+            "baseSprite": "player-base-02.img",  
+            "handTint": 3552822,  
+            "handSprite": "player-hands-02.img",  
+            "footTint": 3552822,  
+            "footSprite": "player-feet-02.img",  
+            "backpackTint": 8353393,  
+            "backpackSprite": "player-circle-base-02.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 11973551,
+        },
+    }),
+    outfitZESKLunar: defineOutfitSkin("outfitBase", {
+        name: "[ZESK] Lunar",
+        noDrop: true,
+        skinImg: {
+            "baseTint": 4980991,  
+            "baseSprite": "player-base-02.img",  
+            "handTint": 7931590,  
+            "handSprite": "player-hands-02.img",  
+            "footTint": 7931590,  
+            "footSprite": "player-feet-02.img",  
+            "backpackTint": 1312709,  
+            "backpackSprite": "player-circle-base-02.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 4980991,
+        },
+    }),
+    /*players skins ends here*/ 
+
     outfitTank: defineOutfitSkin("outfitBase", {
         noDrop: true,
         skinImg: {
