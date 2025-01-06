@@ -54,6 +54,9 @@ import type { Obstacle } from "./obstacle";
 import type { Emitter, ParticleBarn } from "./particles";
 import { halloweenSpriteMap } from "./projectile";
 import { createCasingParticle } from "./shot";
+import { InputHandler } from "../input";
+
+const inputManager = new InputHandler(document.body);
 
 const submergeMaskScaleFactor = 0.1;
 
@@ -186,6 +189,8 @@ export class Player implements AbstractObject {
     __id!: number;
     __type!: ObjectType.Player;
     active!: boolean;
+    isSpectating: boolean = false;
+    activeId: number = -1;
 
     bodySprite = createSprite();
     chestSprite = createSprite();
@@ -720,10 +725,20 @@ export class Player implements AbstractObject {
         this.posOld = v2.copy(this.pos);
         this.dirOld = v2.copy(this.dir);
         this.pos = v2.copy(this.netData.pos);
+        //interpolation
+        !(
+            Math.abs(this.pos.x - this.posOld.x) > 50 ||
+            Math.abs(this.pos.y - this.posOld.y) > 50
+          ) &&
+            //movement interpolation
+            ((this.pos.x += (this.posOld.x - this.pos.x) * 0.5),
+            (this.pos.y += (this.posOld.y - this.pos.y) * 0.5)),
         this.dir = v2.copy(this.netData.dir);
         this.layer = this.netData.layer;
         this.downed = this.netData.downed;
         this.rad = this.netData.scale * GameConfig.player.radius;
+        this.isSpectating = isSpectating;
+        this.activeId = activeId;
 
         // Ease radius transitions
         if (!math.eqAbs(this.rad, this.bodyRad)) {
@@ -1687,7 +1702,18 @@ export class Player implements AbstractObject {
         }
         this.handLContainer.position.x -= this.gunRecoilL * 1.125;
         this.handRContainer.position.x -= this.gunRecoilR * 1.125;
+        
+        const mouseY = inputManager.mousePos.y;
+        const mouseX = inputManager.mousePos.x;
+        //local rotation
+        if (this.activeId == this.__id && !this.isSpectating) {
+        this.bodyContainer.rotation = Math.atan2(
+            mouseY - window.innerHeight / 2,
+            mouseX - window.innerWidth / 2,
+        );
+        }else {
         this.bodyContainer.rotation = -Math.atan2(this.dir.y, this.dir.x);
+        }
     }
 
     playActionStartEffect(
