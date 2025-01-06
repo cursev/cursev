@@ -5,14 +5,10 @@ export class GameMod {
   kills: number;
   isFpsUncapped: boolean;
   isFpsVisible: boolean;
-  isPingVisible: boolean;
   isKillsVisible: boolean;
   isMenuVisible: boolean;
-  pingCounter!: HTMLElement | null;
   fpsCounter!: HTMLElement | null;
   killsCounter!: HTMLElement | null;
-  currentServer!: string | null;
-  pingTest!: PingTest | null;
   animationFrameCallback: (callback: () => void) => void;
 
   constructor() {
@@ -22,12 +18,8 @@ export class GameMod {
       this.kills = 0;
       this.isFpsUncapped = true;
       this.isFpsVisible = true;
-      this.isPingVisible = true;
       this.isKillsVisible = true;
       this.isMenuVisible = true;
-
-      this.pingCounter = null;
-      this.initPingCounter();
 
       this.animationFrameCallback = (callback: () => void) => setTimeout(callback, 1);
 
@@ -60,27 +52,6 @@ export class GameMod {
       this.updateFpsVisibility();
   }
 
-  initPingCounter() {
-      this.pingCounter = document.createElement("div");
-      this.pingCounter.id = "pingCounter";
-      Object.assign(this.pingCounter.style, {
-          color: "white",
-          backgroundColor: "rgba(0, 0, 0, 0.2)",
-          padding: "5px 10px",
-          marginTop: "10px",
-          borderRadius: "5px",
-          fontFamily: "Arial, sans-serif",
-          fontSize: "14px",
-          zIndex: "10000",
-          pointerEvents: "none",
-      });
-
-      const uiTopLeft = document.getElementById("ui-top-left");
-      if (uiTopLeft) {
-          uiTopLeft.appendChild(this.pingCounter);
-      }
-      this.updatePingVisibility();
-  }
 
   initKillsCounter() {
       this.killsCounter = document.createElement("div");
@@ -113,11 +84,6 @@ export class GameMod {
       }
   }
 
-  updatePingVisibility() {
-      if (this.pingCounter) {
-          this.pingCounter.style.display = this.isPingVisible ? "block" : "none";
-      }
-  }
 
   updateKillsVisibility() {
       if (this.killsCounter) {
@@ -131,11 +97,6 @@ export class GameMod {
   toggleFpsDisplay() {
       this.isFpsVisible = !this.isFpsVisible;
       this.updateFpsVisibility();
-  }
-
-  togglePingDisplay() {
-      this.isPingVisible = !this.isPingVisible;
-      this.updatePingVisibility();
   }
 
   toggleKillsDisplay() {
@@ -154,61 +115,7 @@ export class GameMod {
       return 0;
   }
 
-  getRegionFromLocalStorage(): string | null {
-      let config = localStorage.getItem("surviv_config");
-      if (config) {
-          let configObject = JSON.parse(config);
-          return configObject.region;
-      }
-      return null;
-  }
-
-  startPingTest() {
-    const currentUrl = window.location.href;
-    const isSpecialUrl = /\/#\w+/.test(currentUrl);
-
-    const teamSelectElement = document.getElementById("team-server-select") as HTMLSelectElement | null;
-    const mainSelectElement = document.getElementById("server-select-main") as HTMLSelectElement | null;
-
-    // Verificar si los elementos existen antes de acceder a value
-    const region =
-        isSpecialUrl && teamSelectElement
-            ? teamSelectElement.value || teamSelectElement.getAttribute("value")
-            : mainSelectElement
-                ? mainSelectElement.value || mainSelectElement.getAttribute("value")
-                : null;
-
-    if (region && region !== this.currentServer) {
-        this.currentServer = region;
-        this.resetPing();
-
-        const servers = [
-            { region: "NA", url: "resurviv.biz:8001" },
-            { region: "EU", url: "217.160.224.171:8001" }
-        ];
-
-        const selectedServer = servers.find(
-            (server) => region.toUpperCase() === server.region.toUpperCase(),
-        );
-
-        if (selectedServer) {
-            this.pingTest = new PingTest(selectedServer);
-            this.pingTest.startPingTest();
-        } else {
-            this.resetPing();
-        }
-    }
-}
-
-  resetPing() {
-      if (this.pingTest && this.pingTest.test.ws) {
-          this.pingTest.test.ws.close();
-          this.pingTest.test.ws = null;
-      }
-      this.pingTest = null;
-  }
-
-
+ 
   setupWeaponBorderHandler() {
       const weaponContainers = Array.from(
           document.getElementsByClassName("ui-weapon-switch"),
@@ -325,88 +232,9 @@ export class GameMod {
               this.killsCounter.textContent = `Kills: ${this.kills}`;
           }
 
-          if (this.isPingVisible && this.pingCounter && this.pingTest) {
-              const result = this.pingTest.getPingResult();
-              this.pingCounter.textContent = `PING: ${result.ping} ms`;
-          }
       }
 
-      this.startPingTest();
       this.animationFrameCallback(() => this.startUpdateLoop());
       this.updateUiElements();
-  }
-}
-
-export class PingTest {
-  ptcDataBuf: ArrayBuffer;
-  test: {
-      region: string;
-      url: string;
-      ping: number | string;
-      ws: WebSocket | null;
-      sendTime: number;
-      retryCount: number;
-  };
-
-  constructor(selectedServer: { region: string; url: string }) {
-      this.ptcDataBuf = new ArrayBuffer(1);
-      this.test = {
-          region: selectedServer.region,
-          url: `wss://${selectedServer.url}/ptc`,
-          ping: 9999,
-          ws: null,
-          sendTime: 0,
-          retryCount: 0,
-      };
-  }
-
-  startPingTest() {
-      if (!this.test.ws) {
-          const ws = new WebSocket(this.test.url);
-          ws.binaryType = "arraybuffer";
-
-          ws.onopen = () => {
-              this.sendPing();
-              this.test.retryCount = 0;
-          };
-
-          ws.onmessage = () => {
-              const elapsed = (Date.now() - this.test.sendTime) / 1e3;
-              this.test.ping = Math.round(elapsed * 1000);
-              this.test.retryCount = 0;
-              setTimeout(() => this.sendPing(), 200);
-          };
-
-          ws.onerror = () => {
-              this.test.ping = "Error";
-              this.test.retryCount++;
-              if (this.test.retryCount < 5) {
-                  setTimeout(() => this.startPingTest(), 2000);
-              } else {
-
-                  this.test.ws = null;
-              }
-          };
-
-          ws.onclose = () => {
-              this.test.ws = null;
-          };
-
-          this.test.ws = ws;
-      }
-  }
-
-  sendPing() {
-      if (this.test.ws && this.test.ws.readyState === WebSocket.OPEN) {
-          this.test.sendTime = Date.now();
-          this.test.ws.send(this.ptcDataBuf);
-      }
-  }
-
-  getPingResult() {
-      return {
-          region: this.test.region,
-          ping: this.test.ping,
-      };
   }
 }
