@@ -3112,13 +3112,17 @@ span.ui-stats-header-value {
 }
 
 .ui-stats-ad-container {
-  display: none;
+  position: absolute;
   margin-top: 80px;
+  left: 50%;
+  transform: translate(-50%) scale(.7);
+  transform-origin: bottom;
+  bottom: 20px
 }
 
 @media (max-height: 768px) {
   .ui-stats-ad-container {
-    margin-top: 70px;
+      margin-top:70px
   }
 }
 
@@ -4945,10 +4949,13 @@ span.ui-stats-header-value {
   }
 
   .ui-stats-ad-container {
-    display: none;
-    margin-top: 8px;
-    transform: scale(0.7);
-  }
+    position: absolute;
+    margin-top: 80px;
+    left: 50%;
+    transform: translate(-50%) scale(.7);
+    transform-origin: bottom;
+    bottom: 20px
+}
 
   /* Tooltip container */
   .tooltip {
@@ -5160,26 +5167,20 @@ span.ui-stats-header-value {
   }
 }
 
-@media (max-width: 850px) and (max-height: 360px) and (max-width: 640px),
-  (max-width: 900px) and (min-resolution: 3dppx) and (max-height: 360px) and (
-    max-width: 640px
-  ) {
+@media (max-width: 850px) and (max-height: 360px) and (max-width: 640px),(max-width: 900px) and (min-resolution: 3dppx) and (max-height: 360px) and (max-width: 640px) {
   .ui-stats-ad-container {
-    margin-top: 0px;
-    transform: scale(0.6);
+      margin-top:0;
+      transform: scale(.6)
   }
 }
 
-@media (max-width: 850px) and (max-width: 850px) and (max-height: 320px),
-  (max-width: 900px) and (min-resolution: 3dppx) and (max-width: 850px) and (
-    max-height: 320px
-  ) {
+@media (max-width: 850px) and (max-width: 850px) and (max-height: 320px),(max-width: 900px) and (min-resolution: 3dppx) and (max-width: 850px) and (max-height: 320px) {
   .ui-stats-ad-container {
-    position: fixed;
-    right: 10px;
-    top: 24px;
-    transform: scale(0.5);
-    transform-origin: bottom right;
+      position:fixed;
+      right: 10px;
+      top: 24px;
+      transform: scale(.5);
+      transform-origin: bottom right
   }
 }
 
@@ -5474,7 +5475,7 @@ span.ui-stats-header-value {
   }
 
   .ui-stats-ad-container {
-    margin-top: 20px;
+    margin-top: 20px
   }
 }
 
