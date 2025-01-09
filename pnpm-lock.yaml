@@ -80,6 +80,9 @@ importers:
       '@types/node':
         specifier: ^20.17.1
         version: 20.17.1
+      '@types/node-persist':
+        specifier: ^3.1.8
+        version: 3.1.8
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.17.1)(typescript@5.6.3)
@@ -910,6 +913,9 @@ packages:
 
   '@types/nanotimer@0.3.2':
     resolution: {integrity: sha512-KdUvVLlifjNSkjb5OOyu0hJmHtNfLv/IUXmSOyf3cAMluefhBpY3XikvvC5wKBEVKbMnFLeJ1cb15PbRq/nDQA==}
+
+  '@types/node-persist@3.1.8':
+    resolution: {integrity: sha512-QLidg6/SadZYPrTKxtxL1A85XBoQlG40bhoMdhu6DH6+eNCMr2j+RGfFZ9I9+IY8W/PDwQonJ+iBWD62jZjMfg==}
 
   '@types/node@20.17.1':
     resolution: {integrity: sha512-j2VlPv1NnwPJbaCNv69FO/1z4lId0QmGvpT41YxitRtWlg96g/j8qcv2RKsLKe2F6OJgyXhupN1Xo17b2m139Q==}
@@ -1854,6 +1860,10 @@ snapshots:
       '@types/sizzle': 2.3.9
 
   '@types/nanotimer@0.3.2': {}
+
+  '@types/node-persist@3.1.8':
+    dependencies:
+      '@types/node': 20.17.1
 
   '@types/node@20.17.1':
     dependencies:

@@ -1,7 +1,7 @@
 import storage from "node-persist";
 import { encodeIP } from "./ipLogging";
 
-storage.initSync();
+storage.init();
 
 export async function banIp(encodedIP: string, days: number) {
   days = Math.max(0, days ?? 0); 
