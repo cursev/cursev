@@ -232,17 +232,17 @@ if (process.argv.includes("--api-server")) {
             res.aborted = true;
         });
 
-        // if ( await isBanned(getIp(res))) {
-        //     res.writeStatus("403 Forbidden");
-        //     returnJson(res, {
-        //         res: [
-        //             {
-        //                 err: "This IP address has been banned",
-        //             },
-        //         ],
-        //     });
-        //     return;
-        // }
+        if ( await isBanned(getIp(res))) {
+            res.writeStatus("403 Forbidden");
+            returnJson(res, {
+                res: [
+                    {
+                        err: "This IP address has been banned",
+                    },
+                ],
+            });
+            return;
+        }
 
         if (findGameRateLimit.isRateLimited(getIp(res))) {
             res.writeStatus("429 Too Many Requests");
