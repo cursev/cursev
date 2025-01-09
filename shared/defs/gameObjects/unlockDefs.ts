@@ -28,6 +28,7 @@ export const privateOutfits = [
     "outfitBoutique",
     "outfitNotEnough",
     "outfitDev",
+    "outfitTheSurvivor",
 ];
 
 const allowedOutfits = [
@@ -74,7 +75,6 @@ const allowedOutfits = [
     "outfitOceanEyes",
     "outfitLargeSky",
     "outfitZESKLunar",
-    "outfitTheSurvivor",
     "outfitXander",
     "outfitLaines"
 ];
