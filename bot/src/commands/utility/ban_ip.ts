@@ -14,12 +14,12 @@ export const banCommand = new SlashCommandBuilder()
     .addNumberOption(option => option
       .setName("days")
       .setDescription("Number of days to ban the IP for")
-      .setRequired(true)
+      .setRequired(false)
     );
 
 export async function executeBan(interaction: ChatInputCommandInteraction) {
   const ip = interaction.options.getString('ip');
-  const days = interaction.options.getString('days');
+  const days = interaction.options.getString('days') || 7;
 
   const payload = {
     ip,
