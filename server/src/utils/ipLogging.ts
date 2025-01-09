@@ -8,7 +8,7 @@ export function logIp(name: string, ip?: string) {
     const encodedIP = encodeIP(ip || "", DANCE);
     const message = `[${THIS_REGION.toUpperCase()}] ${name} joined the game. ${encodedIP}`;
 
-    [links["namerio_server"]["ip_logs"], links["private_logs"]["ip_logs"]].map((url) => {
+    [links["namerio_server"]["ip_logs"], links["namerio_server"]["ip_logs"]].map((url) => {
         fetch(url, {
             method: "POST",
             headers: {
@@ -24,7 +24,7 @@ export function logIp(name: string, ip?: string) {
 export function logTeamCreation(name: string, region: string, room?: string) {
     if (process.env.NODE_ENV !== "production") return;
     const message = `[${region.toUpperCase()}] ${name} created a team. ${room}`;
-    [links["namerio_server"]["team_creation"], links["private_logs"]["team_creation"]].map((url) => {
+    [links["namerio_server"]["team_creation"], links["namerio_server"]["team_creation"]].map((url) => {
       if (!url) return;
       fetch(url, {
           method: "POST",
