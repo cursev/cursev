@@ -94,7 +94,7 @@ const SkinDefs: Record<string, OutfitDef> = {
     /* players skins start here*/
     outfitTheSurvivor: defineOutfitSkin("outfitBase", {
         name: "The Survivor[EU]",
-        noDrop: true,
+        noDropOnDeath: true,
         skinImg: {
             "baseTint": 11973551,  
             "baseSprite": "player-base-02.img",  
@@ -112,7 +112,7 @@ const SkinDefs: Record<string, OutfitDef> = {
     }),
     outfitZESKLunar: defineOutfitSkin("outfitBase", {
         name: "[ZESK] Lunar",
-        noDrop: true,
+        noDropOnDeath: true,
         skinImg: {
             "baseTint": 4980991,  
             "baseSprite": "player-base-02.img",  
@@ -130,7 +130,7 @@ const SkinDefs: Record<string, OutfitDef> = {
     }),
     outfitXander: defineOutfitSkin("outfitBase", {
         name: "Xander",
-        noDrop: true,
+        noDropOnDeath: true,
         skinImg: {
             "baseTint": 0,  
             "baseSprite": "player-base-02.img",  
@@ -148,7 +148,7 @@ const SkinDefs: Record<string, OutfitDef> = {
     }),
     outfitLaines: defineOutfitSkin("outfitBase", {
         name: "Laines",
-        noDrop: true,
+        noDropOnDeath: true,
         skinImg: {
             "baseTint": 2859386,  
             "baseSprite": "player-base-02.img",  
@@ -468,7 +468,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         },
     }),
     outfitBoutique: defineOutfitSkin("outfitBase", {
-        name: "Preacher",
+        name: "Boutique",
         noDropOnDeath: true,
         skinImg: {
             baseTint: 15046216,
