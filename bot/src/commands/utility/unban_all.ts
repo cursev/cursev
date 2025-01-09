@@ -15,13 +15,19 @@ export async function executeUnbanAll(interaction: ChatInputCommandInteraction) 
     apiKey: Config.apiKey,
   }
 
-fetch(`${API_URL}/api/moderation`, {
+  const res = await fetch(`${API_URL}/api/moderation`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
   });
+
+  try {
+    console.log(res.json())
+  } catch (error) {
+    console.error(error);
+  }
 
   await interaction.reply("All clear, I hope..");
 }
