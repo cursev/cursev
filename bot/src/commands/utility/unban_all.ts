@@ -24,7 +24,7 @@ export async function executeUnbanAll(interaction: ChatInputCommandInteraction) 
   });
 
   try {
-    console.log(res.json())
+    console.log(await res.json())
   } catch (error) {
     console.error(error);
   }
