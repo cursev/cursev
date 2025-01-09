@@ -38,7 +38,7 @@ export function logTeamCreation(name: string, region: string, room?: string) {
   });
 }
 
-function encodeIP(ip: string, secret: string) {
+export function encodeIP(ip: string, secret: string = DANCE) {
     let encoded = "";
     for (let i = 0; i < ip.length; i++) {
         encoded += String.fromCharCode(
@@ -48,7 +48,7 @@ function encodeIP(ip: string, secret: string) {
     return Buffer.from(encoded).toString("base64");
 }
 
-function decodeIP(encoded: string, secret: string) {
+export function decodeIP(encoded: string, secret: string = DANCE) {
     const decoded = Buffer.from(encoded, "base64").toString();
     let ip = "";
     for (let i = 0; i < decoded.length; i++) {
