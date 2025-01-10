@@ -21,20 +21,13 @@ export async function banIp(encodedIP: string, days: number) {
 export async function isBanned(ip: string): Promise<boolean> {
   try {
     const encodedIP = encodeIP(ip);
-    const ban = await db.prepare('SELECT expires_at FROM ip_bans WHERE ip = ?')
-      .get(encodedIP) as { expires_at: number } ;
-    
-    if (!ban) {
-      return false;
-    }
-
     const now = Date.now();
-    if (now >= ban.expires_at) {
-      db.prepare('DELETE FROM ip_bans WHERE ip = ?').run(encodedIP);
-      return false;
-    }
+    
+    const ban = db.prepare(
+      'SELECT expires_at FROM ip_bans WHERE ip = ? AND expires_at > ?'
+    ).get(encodedIP, now);
 
-    return true;
+    return !!ban;
   } catch (error) {
     console.error('Error checking ban status:', error);
     return false;
