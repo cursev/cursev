@@ -228,8 +228,6 @@ if (process.argv.includes("--api-server")) {
 
     app.post("/api/find_game", async (res) => {
         cors(res);
-        console.log("checking ban status for");
-      
         res.onAborted(() => {
             res.aborted = true;
         });

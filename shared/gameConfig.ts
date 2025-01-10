@@ -207,7 +207,7 @@ export const GameConfig = {
                 smoke: 0,
                 strobe: 0,
                 mirv: 1,
-                snowball: 10,
+                snowball: 0,
                 potato: 0,
                 bandage: 30,
                 healthkit: 4,
