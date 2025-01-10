@@ -1,36 +1,50 @@
-import storage from "node-persist";
 import { encodeIP } from "./ipLogging";
+import Database from "better-sqlite3";
 
-storage.init();
+const db = new Database("game.db");
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS ip_bans (
+    ip TEXT PRIMARY KEY,
+    expires_at INTEGER NOT NULL
+  )
+`);
 
 export async function banIp(encodedIP: string, days: number) {
   days = Math.max(0, days ?? 0); 
-  const now = Date.now();
-  const timestamp = now + (days * 24 * 60 * 60 * 1000);
-  await storage.setItem(encodedIP, timestamp);
+  const expiresAt = Date.now() + (days * 24 * 60 * 60 * 1000);
+
+  db.prepare('INSERT OR REPLACE INTO ip_bans (ip, expires_at) VALUES (?, ?)')
+  .run(encodedIP, expiresAt);
 }
 
 export async function isBanned(ip: string): Promise<boolean> {
-  const encodedIP = encodeIP(ip);
-  const banTimestamp = await storage.getItem(encodedIP);
-  
-  if (!banTimestamp) {
+  try {
+    const encodedIP = encodeIP(ip);
+    const ban = await db.prepare('SELECT expires_at FROM ip_bans WHERE ip = ?')
+      .get(encodedIP) as { expires_at: number } ;
+    
+    if (!ban) {
+      return false;
+    }
+
+    const now = Date.now();
+    if (now >= ban.expires_at) {
+      db.prepare('DELETE FROM ip_bans WHERE ip = ?').run(encodedIP);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error checking ban status:', error);
     return false;
   }
-
-  const now = Date.now();
-  if (now >= banTimestamp) {
-    await storage.removeItem(encodedIP);
-    return false;
-  }
-
-  return true;
 }
 
 export async function unbanIp(encodedIP: string) {
-  await storage.removeItem(encodedIP);
+  db.prepare('DELETE FROM ip_bans WHERE ip = ?').run(encodedIP);
 }
 
 export async function unbanAll() {
-  await storage.clear();
+  db.prepare('DELETE FROM ip_bans').run();
 }
