@@ -51,10 +51,10 @@ const argv = yargs
  */
 function banIp(ip, duration) {
   const millisecondsInOneDay = 24 * 60 * 60 * 1000; // Milliseconds in one day
-  const expiresAt = Date.now() + durationInDays * millisecondsInOneDay; 
+  const expiresAt = Date.now() + duration * millisecondsInOneDay; 
     db.prepare('INSERT OR REPLACE INTO ip_bans (ip, expires_at) VALUES (?, ?)')
   .run(ip, expiresAt);
-  console.log(`Banning IP ${ip} for ${durationInDays} days...`);}
+  console.log(`Banning IP ${ip} for ${duration} days...`);}
 
 /**
  * @param {string} ip
