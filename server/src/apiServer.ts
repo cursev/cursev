@@ -10,7 +10,6 @@ import {
     cors,
     forbidden,
     getIp,
-    getIpCustom,
     readPostedJSON,
     returnJson,
 } from "./utils/serverHelpers";
@@ -169,7 +168,7 @@ if (process.argv.includes("--api-server")) {
             res.aborted = true;
         });
 
-        if ( await isBanned(getIpCustom(res))) {
+        if ( await isBanned(getIp(res))) {
             res.writeStatus("403 Forbidden");
             returnJson(res, {
                 res: [

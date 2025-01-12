@@ -109,25 +109,6 @@ export function getIp(res: HttpResponse) {
     return proxyIp || ip;
 }
 
-export function getIpCustom(res: HttpResponse) {
-  // First try X-Forwarded-For which Nginx sets
-  const forwardedFor = res.getHeader('x-forwarded-for');
-  if (forwardedFor) {
-      // Get first IP in chain which is the original client IP
-      return forwardedFor.split(',')[0].trim();
-  }
-  
-  // Fallback to X-Real-IP
-  const realIp = res.getHeader('x-real-ip');
-  if (realIp) {
-      return realIp;
-  }
-
-  // Last resort - direct IP
-  const ip = textDecoder.decode(res.getRemoteAddressAsText());
-  return ip;
-}
-
 // modified version of https://github.com/uNetworking/uWebSockets.js/blob/master/examples/RateLimit.js
 // also wraps simultaneous connections rate limit not just messages
 export class WebSocketRateLimit {
