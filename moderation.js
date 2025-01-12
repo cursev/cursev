@@ -10,12 +10,16 @@ const Database = require('better-sqlite3');
 
 const db = new Database('moderation.db', { verbose: console.log });
 
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS ip_bans (
     ip TEXT PRIMARY KEY,
     expires_at INTEGER NOT NULL
   )
 `);
+
+const rows = db.prepare('SELECT * FROM ip_bans').all();
+console.log(rows);
 
 const argv = yargs
   .command('ban-ip', 'Ban an IP address for a specified duration', {
@@ -49,7 +53,7 @@ const argv = yargs
  * @param {string} ip
  * @param {number} duration
  */
-function banIp(ip, duration) {
+async function banIp(ip, duration) {
   const millisecondsInOneDay = 24 * 60 * 60 * 1000; // Milliseconds in one day
   const expiresAt = Date.now() + duration * millisecondsInOneDay; 
     db.prepare('INSERT OR REPLACE INTO ip_bans (ip, expires_at) VALUES (?, ?)')
