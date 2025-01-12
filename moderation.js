@@ -13,7 +13,7 @@ const db = new Database('moderation.db', { verbose: console.log });
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS ip_bans (
-    ip TEXT PRIMARY KEY,
+    ip TEXT PRIMARY KEY
   )
 `);
 

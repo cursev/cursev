@@ -6,7 +6,6 @@ const db = new Database("game.db");
 db.exec(`
   CREATE TABLE IF NOT EXISTS ip_bans (
     ip TEXT PRIMARY KEY,
-    expires_at INTEGER NOT NULL
   )
 `);
 
