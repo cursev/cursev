@@ -1,6 +1,13 @@
 const yargs = require('yargs');
 const Database = require('better-sqlite3');
 
+/**
+ * @fileoverview This script manages IP bans and unbans using a SQLite database.
+ * node moderation.js ban-ip --ip 192.168.1.1 --duration 30
+ * node moderation.js unban-ip --ip 192.168.1.1
+ * node moderation.js unban-all
+ */
+
 const db = new Database('moderation.db', { verbose: console.log });
 
 db.exec(`
