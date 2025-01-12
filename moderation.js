@@ -44,12 +44,11 @@ const argv = yargs
 
 /**
  * @param {string} ip
- * @param {number} duration
  */
-async function banIp(ip, duration) {
+async function banIp(ip) {
     db.prepare('INSERT OR REPLACE INTO ip_bans (ip) VALUES (?)')
   .run(ip);
-  console.log(`Banning IP ${ip} for ${duration} days...`);}
+  console.log(`Banning IP ${ip}...`);}
 
 /**
  * @param {string} ip
@@ -66,8 +65,8 @@ function unbanAll() {
 
 if (argv._.includes('ban-ip')) {
   const ip = argv.ip;
-  const duration = argv.duration;
-  banIp(ip, duration);
+  console.log({ip})
+  banIp(ip);
 } else if (argv._.includes('unban-ip')) {
   const ip = argv.ip;
   unbanIp(ip);
