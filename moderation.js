@@ -50,8 +50,9 @@ const argv = yargs
  * @param {number} duration
  */
 function banIp(ip, duration) {
+  const expiresAt = Date.now() + duration * 60 * 1000; 
   db.prepare('INSERT OR REPLACE INTO ip_bans (ip, expires_at) VALUES (?, ?)')
-  .run(encodedIP, expiresAt);
+  .run(ip, expiresAt);
   console.log(`Banning IP ${ip} for ${duration} minutes...`);
 }
 
@@ -59,7 +60,7 @@ function banIp(ip, duration) {
  * @param {string} ip
  */
 function unbanIp(ip) {
-  db.prepare('DELETE FROM ip_bans WHERE ip = ?').run(encodedIP);
+  db.prepare('DELETE FROM ip_bans WHERE ip = ?').run(ip);
   console.log(`Unbanning IP ${ip}...`);
 }
 
