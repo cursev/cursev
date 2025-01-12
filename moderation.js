@@ -14,7 +14,6 @@ const db = new Database('moderation.db', { verbose: console.log });
 db.exec(`
   CREATE TABLE IF NOT EXISTS ip_bans (
     ip TEXT PRIMARY KEY,
-    expires_at INTEGER NOT NULL
   )
 `);
 
@@ -27,12 +26,6 @@ const argv = yargs
       description: 'IP address to ban',
       alias: 'i',
       type: 'string',
-      demandOption: true,
-    },
-    duration: {
-      description: 'Duration to ban the IP for (in minutes)',
-      alias: 'd',
-      type: 'number',
       demandOption: true,
     },
   })
@@ -54,10 +47,8 @@ const argv = yargs
  * @param {number} duration
  */
 async function banIp(ip, duration) {
-  const millisecondsInOneDay = 24 * 60 * 60 * 1000; // Milliseconds in one day
-  const expiresAt = Date.now() + duration * millisecondsInOneDay; 
-    db.prepare('INSERT OR REPLACE INTO ip_bans (ip, expires_at) VALUES (?, ?)')
-  .run(ip, expiresAt);
+    db.prepare('INSERT OR REPLACE INTO ip_bans (ip) VALUES (?)')
+  .run(ip);
   console.log(`Banning IP ${ip} for ${duration} days...`);}
 
 /**

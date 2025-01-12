@@ -14,11 +14,9 @@ export async function isBanned(ip: string): Promise<boolean> {
   try {
     const encodedIP = encodeIP(ip);
 
-    const now = Date.now();
-    
     const ban = db.prepare(
-      'SELECT expires_at FROM ip_bans WHERE ip = ? AND expires_at > ?'
-    ).get(encodedIP, now);
+      'SELECT ip FROM ip_bans WHERE ip = ?'
+    ).get(encodedIP);
 
     console.log({
       ip,
