@@ -11,6 +11,7 @@ survev-config.json
 
 # sqlite db
 game.db
+moderation.db
 
 # Compiled source
 dist/
