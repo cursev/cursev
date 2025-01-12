@@ -18,6 +18,7 @@ import {
     checkForBadWords,
     getIp,
 } from "./utils/serverHelpers";
+import { isBanned } from "./utils/moderation";
 
 export interface TeamSocketData {
     sendMsg: (response: string) => void;
@@ -86,10 +87,17 @@ export class TeamMenu {
             /**
              * Upgrade the connection to WebSocket.
              */
-            upgrade(res, req, context) {
+            async upgrade(res, req, context) {
                 res.onAborted((): void => {});
 
                 const ip = getIp(res);
+
+                if (await isBanned(ip)) {
+                    res.writeStatus("403 Forbidden");
+                    res.write("403 Forbidden");
+                    res.end();
+                    return;
+                }
 
                 if (httpRateLimit.isRateLimited(ip) || wsRateLimit.isIpRateLimited(ip)) {
                     res.writeStatus("429 Too Many Requests");

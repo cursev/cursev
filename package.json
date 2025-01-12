@@ -4,7 +4,6 @@
   "description": "Open Source Surviv.io Server",
   "scripts": {
     "dev:server": "cd server && pnpm dev",
-    "dev:bot": "cd bot && pnpm dev", 
     "dev:client": "cd client && pnpm dev",
     "lint": "biome check --write",
     "lint:ci": "biome check"
@@ -19,5 +18,8 @@
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^20.17.1",
     "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
   }
 }

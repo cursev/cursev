@@ -16,6 +16,7 @@ import {
     readPostedJSON,
     returnJson,
 } from "./utils/serverHelpers";
+import { isBanned } from "./utils/moderation";
 
 export interface FindGameBody {
     region: string;
@@ -81,10 +82,18 @@ export class GameServer {
             /**
              * Upgrade the connection to WebSocket.
              */
-            upgrade(res, req, context) {
+            async upgrade(res, req, context) {
                 res.onAborted((): void => {});
 
                 const ip = getIp(res);
+
+                if (await isBanned(ip)) {
+                    res.writeStatus("403 Forbidden");
+                    res.write("403 Forbidden");
+                    res.end();
+                    return;
+                }
+
                 if (
                     gameHTTPRateLimit.isRateLimited(ip) ||
                     gameWsRateLimit.isIpRateLimited(ip)
