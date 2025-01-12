@@ -24,10 +24,7 @@ export const echoCommand = new SlashCommandBuilder()
     );
 
 export async function executeEcho(interaction: ChatInputCommandInteraction) {
-    // const message = interaction.options.getString('ip');
-    // const result = decodeIP(message!);
-    const response = await fetch("http://127.0.0.1:3000/api/get_players")
-    const result = await response.text();
-    console.log({result});
+    const message = interaction.options.getString('ip');
+    const result = decodeIP(message!);
     await interaction.reply(JSON.stringify(result, null, 2));
 }

@@ -13,7 +13,7 @@ import {
     readPostedJSON,
     returnJson,
 } from "./utils/serverHelpers";
-import { banIp, isBanned, unbanAll, unbanIp } from "./utils/moderation";
+import { isBanned } from "./utils/moderation";
 
 class Region {
     data: ConfigType["regions"][string];
@@ -91,70 +91,6 @@ export class ApiServer {
         app.post("/api/user/profile", (res, _req) => {
             cors(res);
             returnJson(res, this.getUserProfile());
-        });
-
-        
-    app.options("/api/moderation", (res) => {
-      cors(res);
-      res.end();
-      });
-app.post("/api/moderation", (res) => {
-    cors(res);
-    res.onAborted(() => {
-        res.aborted = true;
-    });
-    
-    readPostedJSON(
-        res,
-        async (body: {
-            apiKey: string;
-            ip: string;
-            days: string;
-            action: "ban" | "unban" | "clear";
-        }) => {
-            if (res.aborted) return;
-            
-            try {
-                if (body.apiKey !== Config.apiKey) {
-                    forbidden(res);
-                    return;
-                }
-
-                if (body.action === "ban") {
-                    await banIp(body.ip, Number(body.days));
-                    res.cork(() => {
-                        returnJson(res, {
-                            "message": "banned ip!"
-                        });
-                    });
-                }
-                else if (body.action === "unban") {
-                    await unbanIp(body.ip);
-                    res.cork(() => {
-                        returnJson(res, {
-                            "message": "unbanned ip!"
-                        });
-                    });
-                } else if (body.action === "clear") {
-                  await unbanAll();
-                  res.cork(() => {
-                      returnJson(res, {
-                          "message": "all clear!"
-                      });
-                  });
-              }
-            } catch (_) {
-                if (!res.aborted) {
-                    res.cork(() => {
-                        returnJson(res, {
-                            "error": "An error occurred"
-                        });
-                    });
-                }
-            }
-        },
-        () => {} // error handler
-    );
         });
     }
 

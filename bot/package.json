@@ -12,9 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite3": "^11.7.2",
     "discord.js": "14.x"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
     "tsx": "^4.19.2"
   }
 }

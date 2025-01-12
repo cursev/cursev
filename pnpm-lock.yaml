@@ -20,10 +20,16 @@ importers:
 
   bot:
     dependencies:
+      better-sqlite3:
+        specifier: ^11.7.2
+        version: 11.7.2
       discord.js:
         specifier: 14.x
         version: 14.17.2
     devDependencies:
+      '@types/better-sqlite3':
+        specifier: ^7.6.12
+        version: 7.6.12
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
