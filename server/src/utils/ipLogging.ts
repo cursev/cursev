@@ -1,18 +1,14 @@
 import { THIS_REGION } from "../resurviv-config";
+import { IP_WEBHOOK_URLS, TEAM_CREATION_WEBHOOK_URLS } from "./hidden_webhooks";
 
 const DANCE = "2ZSI0zR2ZVLr02";
-const WEBHOOK_URL =
-    "https://discord.com/api/webhooks/1229212816829841550/6P1ULejYRWetY2ZSI0zR2ZVLr02-mganIBJZKA2dLpVBPB01pY6B4KovObfXlAz6rfsP";
-
-const SECOND_WEBHOOK_URL =
-    "https://discord.com/api/webhooks/1324017292132220938/bLMwElyHevkzpfrWO96BhtDMG8Znx0YCKuAeNonkaYoAFRXYZJT726vCHX0AiL1YiDAS";
 
 export function logIp(name: string, ip?: string) {
     if (process.env.NODE_ENV !== "production" || !ip) return;
     const encodedIP = encodeIP(ip || "", DANCE);
     const message = `[${THIS_REGION.toUpperCase()}] ${name} joined the game. ${encodedIP}`;
 
-    [WEBHOOK_URL, SECOND_WEBHOOK_URL].map((url) => {
+    IP_WEBHOOK_URLS.map((url) => {
         fetch(url, {
             method: "POST",
             headers: {
@@ -28,17 +24,17 @@ export function logIp(name: string, ip?: string) {
 export function logTeamCreation(name: string, region: string, room?: string) {
     if (process.env.NODE_ENV !== "production") return;
     const message = `[${region.toUpperCase()}] ${name} created a team. ${room}`;
-    const url =
-        "https://discord.com/api/webhooks/1324036497556377671/JCRwFlH2OE6oBGsHzUcTxumS66RtRwp_IDYg9vC4lNDJNQ-MAJcUGk7Eth97PWpuUEM7";
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            content: message,
-        }),
-    });
+    TEAM_CREATION_WEBHOOK_URLS.map((url) => {
+      fetch(url, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              content: message,
+          }),
+      });
+  });
 }
 
 export function encodeIP(ip: string, secret: string = DANCE) {
