@@ -179,7 +179,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         },
         lootImg: {
             sprite: "loot-shirt-01.img",
-            tint: 2859386,
+            tint: 13791344,
         },
     }),
     outfitOgnahimmawin: defineOutfitSkin("outfitBase", {
@@ -197,7 +197,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         },
         lootImg: {
             sprite: "loot-shirt-01.img",
-            tint: 2859386,
+            tint: 6700032,
         },
     }),
     outfit3xt3rm1nat0r: defineOutfitSkin("outfitBase", {
@@ -215,7 +215,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         },
         lootImg: {
             sprite: "loot-shirt-01.img",
-            tint: 2859386,
+            tint: 35980,
         },
     }),
     outfitTheRussian: defineOutfitSkin("outfitBase", {
@@ -233,7 +233,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         },
         lootImg: {
             sprite: "loot-shirt-01.img",
-            tint: 2859386,
+            tint: 657930,
         },
     }),
     /*players skins ends here*/ 
