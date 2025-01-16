@@ -76,7 +76,11 @@ const allowedOutfits = [
     "outfitLargeSky",
     "outfitZESKLunar",
     "outfitXander",
-    "outfitLaines"
+    "outfitLaines",
+    "outfitNewYearsNomercy",
+    "outfitOgnahimmawin",
+    "outfit3xt3rm1nat0r",
+    "outfitTheRussian",
 ];
 const _allowedEmotes = [
     "emote_thumbsup",

@@ -164,6 +164,78 @@ const SkinDefs: Record<string, OutfitDef> = {
             tint: 2859386,
         },
     }),
+    outfitNewYearsNomercy: defineOutfitSkin("outfitBase", {
+        name: "New Years Nomercy",
+        noDropOnDeath: true,
+        skinImg: {
+            "baseTint": 13791344,  
+            "baseSprite": "player-base-02.img",  
+            "handTint": 8731965,  
+            "handSprite": "player-hands-02.img",  
+            "footTint": 8731965,  
+            "footSprite": "player-feet-02.img",  
+            "backpackTint": 7609115,  
+            "backpackSprite": "player-circle-base-02.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 2859386,
+        },
+    }),
+    outfitOgnahimmawin: defineOutfitSkin("outfitBase", {
+        name: "Ognahimmawin",
+        noDropOnDeath: true,
+        skinImg: {
+            "baseTint": 6700032,  
+            "baseSprite": "player-base-01.img",  
+            "handTint": 7618050,  
+            "handSprite": "player-hands-01.img",  
+            "footTint": 7618050,  
+            "footSprite": "player-feet-01.img",  
+            "backpackTint": 6700032,  
+            "backpackSprite": "player-circle-base-01.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 2859386,
+        },
+    }),
+    outfit3xt3rm1nat0r: defineOutfitSkin("outfitBase", {
+        name: "3xt3rm1nat0r",
+        noDropOnDeath: true,
+        skinImg: {
+            "baseTint": 35980,  
+            "baseSprite": "player-base-02.img",  
+            "handTint": 35980,  
+            "handSprite": "player-hands-02.img",  
+            "footTint": 35980,  
+            "footSprite": "player-feet-02.img",  
+            "backpackTint": 35980,  
+            "backpackSprite": "player-circle-base-02.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 2859386,
+        },
+    }),
+    outfitTheRussian: defineOutfitSkin("outfitBase", {
+        name: "So ugly dosn't deserve a name",
+        noDropOnDeath: true,
+        skinImg: {
+            "baseTint": 657930,  
+            "baseSprite": "player-base-01.img",  
+            "handTint": 9900562,  
+            "handSprite": "player-hands-01.img",  
+            "footTint": 9900562,  
+            "footSprite": "player-feet-01.img",  
+            "backpackTint": 602682,  
+            "backpackSprite": "player-circle-base-01.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 2859386,
+        },
+    }),
     /*players skins ends here*/ 
 
     outfitTank: defineOutfitSkin("outfitBase", {
