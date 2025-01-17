@@ -1291,14 +1291,11 @@ export class UiManager {
         for (let i = 0; i < ads.length; i++) {
             const ad = ads[i];
             window.aiptag.cmd.display.push(() => {
-                const adElement = document.getElementById(`${AIP_PLACEMENT_ID}_${ad}`);
-                if (adElement) {
-                    adElement.style.display = "none";
-                }
+                window.aipDisplayTag!.destroy(`${AIP_PLACEMENT_ID}_${ad}`);
             });
         }
     }
-    
+
     lastTimeSinceLastRefresh: Record<string, number | null> = {
       "728x90": null,
       "300x250_2": null,
@@ -1306,16 +1303,9 @@ export class UiManager {
     };
     
     refreshMainPageAds() {
-        const ads = ["728x90"];
-        for (const ad of ads) {
-            if (window.aipDisplayTag) {
-                window.aipDisplayTag.display(`${AIP_PLACEMENT_ID}_${ad}`);
-            } else {
-                console.error("aipDisplayTag is not available.");
-            }
-        }
+      helpers.refreshPageAds(["728x90"]);
     }
-        
+
     clearUI() {
         this.pieTimer.stop();
         // @ts-expect-error not used anywhere, should be removed, I think.
@@ -1410,9 +1400,8 @@ export class UiManager {
 
     quitGame() {
         this.game.gameOver = true;
-        this.game.onQuit();
-        this.removeAds();
         this.refreshMainPageAds();
+        this.game.onQuit();
     }
 
     showStats(
