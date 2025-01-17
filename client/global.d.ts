@@ -29,7 +29,7 @@ declare global {
         mobile?: boolean;
         webkitAudioContext?: AudioContext;
         CP: any;
-
+        adsbygoogle?: Array<{}>;
         aiptag?: {
             cmd: {
                 display: Array<() => void>;

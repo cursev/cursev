@@ -1764,6 +1764,7 @@ export class UiManager {
                 window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_300x250_2`);
             });
 
+
             ui2.hideKillMessage();
         }, delay);
     }
