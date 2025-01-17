@@ -6500,6 +6500,10 @@ input [type="image"]:focus {
     display: none !important;
   }
 
+  #surviv-io_300x250_2 {
+    display: block !important;
+  }
+
   #language-select-mobile-wrapper,
   #mobile-settings-front,
   #btn-hamburger {
