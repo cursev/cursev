@@ -1297,7 +1297,6 @@ export class UiManager {
     }
 
     refreshMainPageAds() {
-        (window.adsbygoogle || []).push({});  
         if (!window.aiptag) return;
         const ads = ["728x90"];
         for (let i = 0; i < ads.length; i++) {
@@ -1775,7 +1774,6 @@ export class UiManager {
                 window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_300x250_2`);
             });
 
-            (window.adsbygoogle || []).push({})
 
             ui2.hideKillMessage();
         }, delay);
