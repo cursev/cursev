@@ -1306,7 +1306,17 @@ export class UiManager {
                 window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_${ad}`);
             });
         }
+    
+        // Delay the ad push to ensure the ad container has a valid size
+        setTimeout(() => {
+            if (window.aiptag) {
+                window.aiptag.cmd.display.push(() => {
+                    window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_728x90`);
+                });
+            }
+        }, 500);
     }
+    
 
     clearUI() {
         this.pieTimer.stop();
