@@ -1296,15 +1296,14 @@ export class UiManager {
         }
     }
 
+    lastTimeSinceLastRefresh: Record<string, number | null> = {
+      "728x90": null,
+      "300x250_2": null,
+      "300x600": null,
+    };
+    
     refreshMainPageAds() {
-        if (!window.aiptag) return;
-        const ads = ["728x90"];
-        for (let i = 0; i < ads.length; i++) {
-            const ad = ads[i];
-            window.aiptag.cmd.display.push(() => {
-                window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_${ad}`);
-            });
-        }
+      helpers.refreshPageAds(["728x90"]);
     }
 
     clearUI() {
