@@ -1775,7 +1775,6 @@ export class UiManager {
                 window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_300x250_2`);
             });
 
-            // @ts-expect-error ads
             (window.adsbygoogle || []).push({})
 
             ui2.hideKillMessage();
