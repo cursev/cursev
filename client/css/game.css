@@ -4955,7 +4955,7 @@ span.ui-stats-header-value {
     transform: translate(-50%) scale(.7);
     transform-origin: bottom;
     bottom: 20px
-}
+  }
 
   /* Tooltip container */
   .tooltip {
