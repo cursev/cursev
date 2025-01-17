@@ -43,8 +43,6 @@ function humanizeTime(time: number) {
     return (timeText += `${seconds}s`);
 }
 
-type Ads = "728x90" | "300x250_2" | "300x600";
-
 function Interpolate(start: number, end: number, steps: number, count: number) {
     const f = start + ((end - start) / steps) * count;
     return Math.floor(f);
@@ -1293,11 +1291,14 @@ export class UiManager {
         for (let i = 0; i < ads.length; i++) {
             const ad = ads[i];
             window.aiptag.cmd.display.push(() => {
-                window.aipDisplayTag!.destroy(`${AIP_PLACEMENT_ID}_${ad}`);
+                const adElement = document.getElementById(`${AIP_PLACEMENT_ID}_${ad}`);
+                if (adElement) {
+                    adElement.style.display = "none";
+                }
             });
         }
     }
-
+    
     lastTimeSinceLastRefresh: Record<string, number | null> = {
       "728x90": null,
       "300x250_2": null,
@@ -1305,9 +1306,16 @@ export class UiManager {
     };
     
     refreshMainPageAds() {
-      helpers.refreshPageAds(["728x90"]);
+        const ads = ["728x90"];
+        for (const ad of ads) {
+            if (window.aipDisplayTag) {
+                window.aipDisplayTag.display(`${AIP_PLACEMENT_ID}_${ad}`);
+            } else {
+                console.error("aipDisplayTag is not available.");
+            }
+        }
     }
-
+        
     clearUI() {
         this.pieTimer.stop();
         // @ts-expect-error not used anywhere, should be removed, I think.
@@ -1402,27 +1410,10 @@ export class UiManager {
 
     quitGame() {
         this.game.gameOver = true;
-        this.refreshMainPageAds();
         this.game.onQuit();
-        this.refreshPageAds()
+        this.removeAds();
+        this.refreshMainPageAds();
     }
-
-    refreshPageAds(ads = ["728x90"]) {
-        try {
-            for (let i = 0; i < ads.length; i++) {
-                const ad = ads[i];
-                const adsEle = document.querySelector(`#surviv-io_${ad}`);
-                
-                if (!adsEle) continue;
-                adsEle.innerHTML = adsEle.innerHTML;
-            
-                this.lastTimeSinceLastRefresh[ad] = Date.now();
-            }
-        } catch (e) {
-            console.error("Failed to refresh ads", e);
-        }
-    }
-    
 
     showStats(
         playerStats: Array<PlayerStatsMsg["playerStats"]>,
