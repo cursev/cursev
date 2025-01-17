@@ -10,6 +10,14 @@ export function getParameterByName(name: string, url?: string) {
     const searchParams = new URLSearchParams(url || window.location.search);
     return searchParams.get(name) || "";
 }
+type Ads = "728x90" | "300x250_2" | "300x600";
+
+const lastTimeSinceLastRefresh: Record<Ads, number | null> = {
+  "728x90": null,
+  "300x250_2": null,
+  "300x600": null,
+};
+
 
 export const helpers = {
     getParameterByName,
@@ -44,6 +52,25 @@ export const helpers = {
         return `rgba(${(color >> 16) & 255}, ${(color >> 8) & 255}, ${
             color & 255
         }, ${alpha})`;
+    },
+    refreshPageAds(ads: Ads[] = ["728x90"]) {
+      try {
+        const now = Date.now();
+        const ONE_MINUTE = 60 * 1000;
+
+        for (let i = 0; i < ads.length; i++) {
+          const ad = ads[i];
+          const adsEle = document.querySelector(`#surviv-io_${ad}`);
+          const lastRefresh = lastTimeSinceLastRefresh[ad];
+          
+          if (!adsEle || (lastRefresh && now - lastRefresh < ONE_MINUTE)) continue;
+          
+          adsEle.innerHTML = adsEle.innerHTML;
+          lastTimeSinceLastRefresh[ad] = now;
+        }
+      } catch (e) {
+        console.error("Failed to refresh ads", e);
+      }
     },
     htmlEscape: function (str = "") {
         return str
