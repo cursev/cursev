@@ -1297,6 +1297,7 @@ export class UiManager {
     }
 
     refreshMainPageAds() {
+        (window.adsbygoogle || []).push({});  
         if (!window.aiptag) return;
         const ads = ["728x90"];
         for (let i = 0; i < ads.length; i++) {
@@ -1763,7 +1764,7 @@ export class UiManager {
             window.aiptag!.cmd.display.push(() => {
                 window.aipDisplayTag!.display(`${AIP_PLACEMENT_ID}_300x250_2`);
             });
-            
+
             // @ts-expect-error ads
             (window.adsbygoogle || []).push({})
 
