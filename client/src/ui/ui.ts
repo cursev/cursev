@@ -1652,7 +1652,7 @@ export class UiManager {
         this.statsHeader.empty();
         this.statsInfoBox.empty();
         this.statsOptions.empty();
-        this.statsAds.css("display", "none");
+        this.statsAds.css("display", "block");
         this.statsContents.stop();
         this.statsContents.css({
             display: "none",
