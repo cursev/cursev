@@ -43,6 +43,8 @@ function humanizeTime(time: number) {
     return (timeText += `${seconds}s`);
 }
 
+type Ads = "728x90" | "300x250_2" | "300x600";
+
 function Interpolate(start: number, end: number, steps: number, count: number) {
     const f = start + ((end - start) / steps) * count;
     return Math.floor(f);
@@ -1402,7 +1404,25 @@ export class UiManager {
         this.game.gameOver = true;
         this.refreshMainPageAds();
         this.game.onQuit();
+        this.refreshPageAds()
     }
+
+    refreshPageAds(ads = ["728x90"]) {
+        try {
+            for (let i = 0; i < ads.length; i++) {
+                const ad = ads[i];
+                const adsEle = document.querySelector(`#surviv-io_${ad}`);
+                
+                if (!adsEle) continue;
+                adsEle.innerHTML = adsEle.innerHTML;
+            
+                this.lastTimeSinceLastRefresh[ad] = Date.now();
+            }
+        } catch (e) {
+            console.error("Failed to refresh ads", e);
+        }
+    }
+    
 
     showStats(
         playerStats: Array<PlayerStatsMsg["playerStats"]>,
