@@ -3,4 +3,6 @@ export const bannedIPs: string[] = [
   "AG59eAVKfARueH5BBA==",
   "BmN9egZUYAFteH5DAQ==",
   "C2l9eANMfABpeHw=",
+  // timeout, remove me
+  "Cm19fR5IYRxoZn8=",
 ];
