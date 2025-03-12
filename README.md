@@ -15,3 +15,5 @@ or cd into server and client directories and run `pnpm dev` for each
 
 ## Production builds
 See [HOSTING.md](./HOSTING.md)
+
+[![Star History Chart](https://api.star-history.com/svg?repos=NAMERIO/resurviv-public&type=Date)](https://www.star-history.com/#NAMERIO/resurviv-public&Date)
