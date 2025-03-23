@@ -396,6 +396,8 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-scope-02.svg",
         "loot/loot-scope-03.svg",
         "loot/loot-scope-04.svg",
+        "loot/loot-shirt-grinch.svg",
+        "loot/loot-shirt-outfitFireball.svg",
         "loot/loot-shirt-01.svg",
         "loot/loot-shirt-outfitBase.svg",
         "loot/loot-shirt-outfitCamo.svg",
@@ -604,6 +606,7 @@ export const LoadoutAtlas: AtlasDef = {
         "player/player-feet-02.svg",
         "player/player-hands-01.svg",
         "player/player-hands-02.svg",
+        "player/player-hands-outfitFireball.svg",
         "player/player-mash-01.svg",
         "player/player-mash-02.svg",
         "player/player-mash-03.svg",
@@ -614,6 +617,11 @@ export const LoadoutAtlas: AtlasDef = {
         "player/player-snow-02.svg",
         "player/player-snow-03.svg",
         "player/player-wading-01.svg",
+        "player/player-base-grinch.svg",
+        "player/player-accessory-village-ninja.svg",
+        "player/player-accessory-outfitFireball.svg",
+     
+
         "proj/proj-bomb-iron-01.svg",
         "proj/proj-frag-nopin-01.svg",
         "proj/proj-frag-nopin-02.svg",

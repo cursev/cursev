@@ -206,6 +206,8 @@ export const UnlockDefs: Record<string, UnlockDef> = {
         name: "standard-issue",
         unlocks: [
             "outfitBase",
+            "outfitGrich",
+            "outfitFireball",
             "fists",
             "heal_basic",
             "boost_basic",

@@ -12,6 +12,7 @@ export interface OutfitDef {
         footSprite: string;
         backpackTint: number;
         backpackSprite: string;
+        frontSprite?: string;
     };
     lootImg: {
         sprite: string;
@@ -231,6 +232,47 @@ const SkinDefs: Record<string, OutfitDef> = {
         },
         lootImg: {
             sprite: "loot-shirt-outfitMod.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitGrich: defineOutfitSkin("outfitBase", {
+        name: "Discord Moderatr",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseSprite: "player-base-grinch.img",
+            handTint: 9684974,
+            handSprite: "player-hands-02.img",
+            footTint: 9684974,
+            footSprite: "player-feet-02.img",
+            backpackTint: 12002083,
+            backpackSprite: "player-circle-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-shirt-grinch.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitFireball: defineOutfitSkin("outfitBase", {
+        name: "",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 12266256,
+            baseSprite: "player-base-01.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-outfitFireball.img",
+            footTint: 9684974,
+            footSprite: "player-feet-02.img",
+            backpackTint: 13644309,
+            backpackSprite: "player-circle-base-01.img",
+            frontSprite: "player-accessory-outfitFireball.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-outfitFireball.img",
             tint: 0xffffff,
         },
         rarity: 3,
