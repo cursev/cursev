@@ -302,6 +302,32 @@ const SkinDefs: Record<string, OutfitDef> = {
         rarity: 3,
         lore: "For those who wield the power of the pan.",
     }),
+    outfitDragonTails: defineOutfitSkin("outfitBase", {
+        name: "Dragon Tails",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 13041664,
+            baseSprite: "player-base-dragon-tails.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-dragon-tails.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-dragon-tails.img",
+            backpackTint: 7667712,
+            backpackSprite: "player-circle-base-02.img",
+            frontSpritePos: { x: -5, y: 0 },
+            frontSprite: "player-accessory-dragon-tails.img"
+        },
+        lootImg: {
+            sprite: "loot-dragon-tails-outfit.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+
+
+
+
     outfitSpeedoSunburn: defineOutfitSkin("outfitBase", {
         name: "Speedo Sunburn",
         noDropOnDeath: true,
