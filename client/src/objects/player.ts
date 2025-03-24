@@ -1754,17 +1754,23 @@ export class Player implements AbstractObject {
         if (outfitImg.frontSprite) {
             this.frontSprite.texture = PIXI.Texture.from(outfitImg.frontSprite);
             this.frontSprite.scale.set(bodyScale * 0.25);
-            this.frontSprite.position.set(-4, 0)
+            this.frontSprite.position.set(-4, 0);
             this.frontSprite.tint = 0xffffff;
             this.frontSprite.visible = true;
         } else {
             this.frontSprite.visible = false;
         }
-        
+
         if (this.bodyContainer.children.includes(this.helmetSprite)) {
             const helmetIndex = this.bodyContainer.getChildIndex(this.helmetSprite);
-            this.bodyContainer.setChildIndex(this.frontSprite, helmetIndex);
+            this.bodyContainer.setChildIndex(this.frontSprite, Math.max(helmetIndex, 0));
         }
+        
+        // Force helmet + visor on top to prevent flickering during shooting/switching
+        this.bodyContainer.setChildIndex(this.helmetSprite, this.bodyContainer.children.length - 1);
+        this.bodyContainer.setChildIndex(this.visorSprite, this.bodyContainer.children.length - 1);
+
+        this.bodyContainer.scale.set(bodyScale, bodyScale);
     }
 
     updateAura(dt: number, isActivePlayer: boolean, activePlayer: Player) {
