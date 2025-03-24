@@ -1754,7 +1754,8 @@ export class Player implements AbstractObject {
         if (outfitImg.frontSprite) {
             this.frontSprite.texture = PIXI.Texture.from(outfitImg.frontSprite);
             this.frontSprite.scale.set(bodyScale * 0.25);
-            this.frontSprite.position.set(-4, 0);
+            const frontPos = outfitImg.frontSpritePos ?? { x: 0, y: 0 };
+            this.frontSprite.position.set(frontPos.x, frontPos.y);
             this.frontSprite.tint = 0xffffff;
             this.frontSprite.visible = true;
         } else {

@@ -13,6 +13,7 @@ export interface OutfitDef {
         backpackTint: number;
         backpackSprite: string;
         frontSprite?: string;
+        frontSpritePos?: { x: number; y: number };
     };
     lootImg: {
         sprite: string;
@@ -269,10 +270,33 @@ const SkinDefs: Record<string, OutfitDef> = {
             footSprite: "player-hands-outfitFireball.img",
             backpackTint: 13644309,
             backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: -4, y: 0 },
             frontSprite: "player-accessory-outfitFireball.img"
         },
         lootImg: {
             sprite: "loot-shirt-outfitFireball.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitGreenTeaRex: defineOutfitSkin("outfitBase", {
+        name: "Green Tea Rex",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-green-tea-rex.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-green-tea-rex.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-green-tea-rex.img",
+            backpackTint: 13644309,
+            backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: 4, y: 0 },
+            frontSprite: "player-accessory-green-tea-rex.img"
+        },
+        lootImg: {
+            sprite: "loot-green-tea-rex-outfit.img",
             tint: 0xffffff,
         },
         rarity: 3,
