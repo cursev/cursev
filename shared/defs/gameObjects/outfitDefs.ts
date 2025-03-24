@@ -221,7 +221,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         name: "Discord Moderatr",
         noDropOnDeath: true,
         skinImg: {
-            baseTint: 3380187,
+            baseTint: 0xffffff,
             baseSprite: "player-base-outfitDC.img",
             handTint: 9684974,
             handSprite: "player-hands-02.img",
@@ -238,15 +238,15 @@ const SkinDefs: Record<string, OutfitDef> = {
         lore: "For those who wield the power of the pan.",
     }),
     outfitGrich: defineOutfitSkin("outfitBase", {
-        name: "Discord Moderatr",
+        name: "Grinch",
         noDropOnDeath: true,
         skinImg: {
             baseTint: 0xffffff,
             baseSprite: "player-base-grinch.img",
-            handTint: 9684974,
-            handSprite: "player-hands-02.img",
-            footTint: 9684974,
-            footSprite: "player-feet-02.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-grinch.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-grinch.img",
             backpackTint: 12002083,
             backpackSprite: "player-circle-base-01.img",
         },
@@ -258,15 +258,15 @@ const SkinDefs: Record<string, OutfitDef> = {
         lore: "For those who wield the power of the pan.",
     }),
     outfitFireball: defineOutfitSkin("outfitBase", {
-        name: "",
+        name: "Fireball",
         noDropOnDeath: true,
         skinImg: {
             baseTint: 12266256,
             baseSprite: "player-base-01.img",
             handTint: 0xffffff,
             handSprite: "player-hands-outfitFireball.img",
-            footTint: 9684974,
-            footSprite: "player-feet-02.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-outfitFireball.img",
             backpackTint: 13644309,
             backpackSprite: "player-circle-base-01.img",
             frontSprite: "player-accessory-outfitFireball.img"
@@ -278,6 +278,50 @@ const SkinDefs: Record<string, OutfitDef> = {
         rarity: 3,
         lore: "For those who wield the power of the pan.",
     }),
+    outfitSpeedoSunburn: defineOutfitSkin("outfitBase", {
+        name: "Speedo Sunburn",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-outfitSpeedoSunburn.img",
+            handTint: 16037119,
+            handSprite: "player-hands-01.img",
+            footTint: 16037119,
+            footSprite: "player-feet-01.img",
+            backpackTint: 16650006,
+            backpackSprite: "player-circle-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-shirt-outfitSpeedoSunburn.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     outfitWheat: defineOutfitSkin("outfitBase", {
         name: "Splintered Wheat",
         skinImg: {

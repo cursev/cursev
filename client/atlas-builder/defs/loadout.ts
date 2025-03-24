@@ -396,6 +396,11 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-scope-02.svg",
         "loot/loot-scope-03.svg",
         "loot/loot-scope-04.svg",
+
+
+
+
+        "loot/loot-shirt-outfitSpeedoSunburn.svg",
         "loot/loot-shirt-grinch.svg",
         "loot/loot-shirt-outfitFireball.svg",
         "loot/loot-shirt-01.svg",
@@ -591,6 +596,9 @@ export const LoadoutAtlas: AtlasDef = {
         "player/player-armor-base-01.svg",
         "player/player-base-01.svg",
         "player/player-base-02.svg",
+
+
+
         "player/player-base-outfitDC.svg",
         "player/player-base-outfitHeaven.svg",
         "player/player-base-outfitLumber.svg",
@@ -598,6 +606,15 @@ export const LoadoutAtlas: AtlasDef = {
         "player/player-base-outfitSpetsnaz.svg",
         "player/player-base-outfitTurkey.svg",
         "player/player-base-outfitWheat.svg",
+        "player/player-base-grinch.svg",
+        "player/player-base-outfitBlueLava.svg",
+        "player/player-base-outfitSpeedoSunburn.svg",
+
+
+        
+
+
+
         "player/player-bullet-trail-02.svg",
         "player/player-bullet-trail-03.svg",
         "player/player-circle-base-01.svg",
@@ -607,6 +624,17 @@ export const LoadoutAtlas: AtlasDef = {
         "player/player-hands-01.svg",
         "player/player-hands-02.svg",
         "player/player-hands-outfitFireball.svg",
+        "player/player-hands-ghoul-fire.svg",
+        "player/player-hands-grinch.svg",
+        "player/player-hands-magmatic.svg",
+        "player/player-hands-hot-magma.svg",
+        "player/player-hands-ghoul-fire.svg",
+        "player/player-hands-jule-verny.svg",
+
+
+
+
+
         "player/player-mash-01.svg",
         "player/player-mash-02.svg",
         "player/player-mash-03.svg",
@@ -617,7 +645,6 @@ export const LoadoutAtlas: AtlasDef = {
         "player/player-snow-02.svg",
         "player/player-snow-03.svg",
         "player/player-wading-01.svg",
-        "player/player-base-grinch.svg",
         "player/player-accessory-village-ninja.svg",
         "player/player-accessory-outfitFireball.svg",
      
