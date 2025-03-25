@@ -312,6 +312,8 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-medical-heart.svg",
         "loot/loot-medical-pill.svg",
         "loot/loot-medical-soda.svg",
+
+
         "loot/loot-melee-bayonet-rugged.svg",
         "loot/loot-melee-bayonet-woodland.svg",
         "loot/loot-melee-bonesaw-healer.svg",
@@ -345,6 +347,13 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-melee-warhammer-tank.svg",
         "loot/loot-melee-woodaxe-bloody.svg",
         "loot/loot-melee-woodaxe.svg",
+        "loot/loot-melee-lasr-sword-01.svg",
+        "loot/loot-melee-lasr-sword-02.svg",
+        "loot/loot-melee-lasr-sword-03.svg",
+
+
+
+
         "loot/loot-pack-00.svg",
         "loot/loot-pack-01.svg",
         "loot/loot-pack-02.svg",
@@ -1064,6 +1073,10 @@ export const LoadoutAtlas: AtlasDef = {
         "player/outfit-chrome-accessory.svg",
 
         "player/player-back-village-ninja.svg",
+
+        "player/lasr-sword-01.svg",
+        "player/lasr-sword-02.svg",
+        "player/lasr-sword-03.svg",
 
         "proj/proj-bomb-iron-01.svg",
         "proj/proj-frag-nopin-01.svg",
