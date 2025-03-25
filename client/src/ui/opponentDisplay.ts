@@ -258,7 +258,7 @@ export class LoadoutDisplay {
         const obj = {
             outfit: this.loadout.outfit,
             backpack: "backpack02",
-            helmet: "helmet01",
+            helmet: "",
             chest: "chest03",
             activeWeapon: this.loadout.melee,
             layer: 0,
