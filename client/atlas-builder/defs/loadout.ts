@@ -460,6 +460,10 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-green-tea-rex-outfit.svg",
         "loot/loot-dragon-tails-outfit.svg",
         "loot/loot-village-ninja-outfit.svg",
+        "loot/loot-multi-tusking-outfit.svg",
+        "loot/loot-max-attack-outfit.svg",
+        "loot/loot-lustrous-paladin-outfit.svg",
+
 
         "loot/loot-throwable-frag-egg.svg",
         "loot/loot-throwable-frag.svg",
@@ -1057,6 +1061,7 @@ export const LoadoutAtlas: AtlasDef = {
         "player/player-accessory-suppa-poncho.svg",
         "player/player-accessory-they-see-me-rolling.svg",
         "player/player-accessory-village-ninja.svg",
+        "player/outfit-chrome-accessory.svg",
 
         "player/player-back-village-ninja.svg",
 

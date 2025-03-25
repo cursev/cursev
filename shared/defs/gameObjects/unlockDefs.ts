@@ -18,6 +18,10 @@ const _allowedMeleeSkins = [
     "bowie_frontier",
 ];
 const _allowedOutfits = [
+    "outfitLustrousPaladin",
+    "outfitMaxAttack",
+    "outfitMultiTusking",
+    "outfitChromesis",
     "outfitVillageNinja",
     "outfitDragonTails",
     "outfitGreenTeaRex",
