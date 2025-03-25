@@ -14,6 +14,7 @@ export interface OutfitDef {
         backpackSprite: string;
         frontSprite?: string;
         frontSpritePos?: { x: number; y: number };
+        aboveHand? : Boolean
     };
     lootImg: {
         sprite: string;
@@ -324,6 +325,30 @@ const SkinDefs: Record<string, OutfitDef> = {
         rarity: 3,
         lore: "For those who wield the power of the pan.",
     }),
+    outfitVillageNinja: defineOutfitSkin("outfitBase", {
+        name: "Village Ninja",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-village-ninja.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-village-ninja.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-dragon-tails.img",
+            backpackTint: 7667712,
+            backpackSprite: "player-circle-base-02.img",
+            frontSpritePos: { x: -2, y: 0 },
+            frontSprite: "player-accessory-village-ninja.img",
+            aboveHand: false,
+        },
+        lootImg: {
+            sprite: "loot-village-ninja-outfit.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+
 
 
 

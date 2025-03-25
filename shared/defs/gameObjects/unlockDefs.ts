@@ -18,6 +18,7 @@ const _allowedMeleeSkins = [
     "bowie_frontier",
 ];
 const _allowedOutfits = [
+    "outfitVillageNinja",
     "outfitDragonTails",
     "outfitGreenTeaRex",
     "outfitBase",

@@ -1758,13 +1758,18 @@ export class Player implements AbstractObject {
             this.frontSprite.position.set(frontPos.x, frontPos.y);
             this.frontSprite.tint = 0xffffff;
             this.frontSprite.visible = true;
+            const handLIndex = this.bodyContainer.getChildIndex(this.handLContainer);
+            const handRIndex = this.bodyContainer.getChildIndex(this.handRContainer);
+            let targetIndex;
+            if (outfitImg.aboveHand) {
+                targetIndex = Math.max(handLIndex, handRIndex) + 1;
+            } else {
+                targetIndex = Math.min(handLIndex, handRIndex) - 1;
+            }
+            const clampedIndex = Math.max(0, Math.min(targetIndex, this.bodyContainer.children.length - 1));
+            this.bodyContainer.setChildIndex(this.frontSprite, clampedIndex);
         } else {
             this.frontSprite.visible = false;
-        }
-
-        if (this.bodyContainer.children.includes(this.helmetSprite)) {
-            const helmetIndex = this.bodyContainer.getChildIndex(this.helmetSprite);
-            this.bodyContainer.setChildIndex(this.frontSprite, Math.max(helmetIndex, 0));
         }
         
         // Force helmet + visor on top to prevent flickering during shooting/switching
