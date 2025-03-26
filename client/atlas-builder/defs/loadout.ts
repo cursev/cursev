@@ -265,6 +265,7 @@ export const LoadoutAtlas: AtlasDef = {
         "gui/timer.svg",
         "gui/trash.svg",
         "gui/unlock.svg",
+
         "guns/gun-awc-01.svg",
         "guns/gun-awc-02.svg",
         "guns/gun-bugle-01.svg",
@@ -294,6 +295,8 @@ export const LoadoutAtlas: AtlasDef = {
         "guns/gun-short-01.svg",
         "guns/gun-usas-01.svg",
         "guns/gun-vss-01.svg",
+        "guns/gun-lasr-gun.svg",
+
         "loot/loot-ammo-box.svg",
         "loot/loot-chest-01.svg",
         "loot/loot-chest-02.svg",
@@ -350,6 +353,9 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-melee-lasr-sword-01.svg",
         "loot/loot-melee-lasr-sword-02.svg",
         "loot/loot-melee-lasr-sword-03.svg",
+        "loot/lasr-sword-01.svg",
+        "loot/lasr-sword-02.svg",
+        "loot/lasr-sword-03.svg",
 
 
 
@@ -482,6 +488,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-throwable-smoke.svg",
         "loot/loot-throwable-snowball.svg",
         "loot/loot-throwable-strobe.svg",
+
         "loot/loot-weapon-ak.svg",
         "loot/loot-weapon-an94.svg",
         "loot/loot-weapon-awc.svg",
@@ -548,6 +555,10 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-weapon-vector.svg",
         "loot/loot-weapon-vector45.svg",
         "loot/loot-weapon-vss.svg",
+        "loot/loot-weapon-double-lasr-gun.svg",
+        "loot/loot-weapon-lasr-gun.svg",
+
+
         "loot/loot-xp-bone-01.svg",
         "loot/loot-xp-book-01.svg",
         "loot/loot-xp-book-02.svg",
