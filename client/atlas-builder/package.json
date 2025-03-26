@@ -8,5 +8,9 @@
     "canvas": "^3.1.0",
     "maxrects-packer": "^2.7.3",
     "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
   }
 }
