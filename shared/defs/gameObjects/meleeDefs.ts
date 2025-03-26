@@ -1340,11 +1340,11 @@ const SkinDefs: Record<string, MeleeDef> = {
             pos: { x: -10.5, y: -3 },
         },
     }),
-    lasr_sword_02: defineMeleeSkin("lasr_swrd", {
+    lasr_swrd_02: defineMeleeSkin("lasr_swrd", {
         lootImg: { sprite: "loot-melee-lasr-sword-02.img" },
         worldImg: { sprite: "lasr-sword-02.img" },
     }),
-    lasr_sword_03: defineMeleeSkin("lasr_swrd", {
+    lasr_swrd_03: defineMeleeSkin("lasr_swrd", {
         lootImg: { sprite: "loot-melee-lasr-sword-03.img" },
         worldImg: { sprite: "lasr-sword-03.img" },
     }),

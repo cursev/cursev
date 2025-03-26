@@ -1085,9 +1085,7 @@ export const LoadoutAtlas: AtlasDef = {
 
         "player/player-back-village-ninja.svg",
 
-        "player/lasr-sword-01.svg",
-        "player/lasr-sword-02.svg",
-        "player/lasr-sword-03.svg",
+
 
         "proj/proj-bomb-iron-01.svg",
         "proj/proj-frag-nopin-01.svg",

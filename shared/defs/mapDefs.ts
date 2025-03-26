@@ -15,6 +15,7 @@ import { Woods } from "./maps/woodsDefs";
 import { WoodsSnow } from "./maps/woodsSnowDefs";
 import { WoodsSpring } from "./maps/woodsSpringDefs";
 import { WoodsSummer } from "./maps/woodsSummerDefs";
+import { May } from "./maps/mayDefs";
 
 export const MapDefs = {
     main: Main,
@@ -33,6 +34,7 @@ export const MapDefs = {
     savannah: Savannah,
     cobalt: Cobalt,
     turkey: Turkey,
+    may: May,
 } satisfies Record<string, MapDef>;
 
 export type Atlas =
@@ -47,7 +49,8 @@ export type Atlas =
     | "snow"
     | "woods"
     | "cobalt"
-    | "savannah";
+    | "savannah"
+    | "may";
 
 export interface MapDef {
     mapId: number;

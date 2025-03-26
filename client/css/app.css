@@ -3339,6 +3339,31 @@ a:active {
   }
 }
 
+.btn-mode-may {
+  animation-name: may-pulse;
+  border-bottom: 4px solid #6e6b87;
+}
+
+@keyframes may-pulse {
+  from {
+    background-color: #56617A;
+    -webkit-box-shadow: 0 0 9px #56617A;
+  }
+  50% {
+    background-color: #7c85a3;
+    -webkit-box-shadow: 0 0 18px #7c85a3;
+  }
+  to {
+    background-color: #56617A;
+    -webkit-box-shadow: 0 0 9px #56617A;
+  }
+}
+@media (max-width: 850px), (max-width: 900px) and (min-resolution: 3dppx) {
+  .btn-mode-may {
+    border-bottom: 2px solid #6e6b87;
+  }
+}
+
 .btn-mode-halloween {
   animation-name: bloodPulse;
   border-bottom: 4px solid #2d0000;
