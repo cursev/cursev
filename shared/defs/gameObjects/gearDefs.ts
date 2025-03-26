@@ -359,6 +359,28 @@ const BoostDefs: Record<string, BoostDef> = {
             tint: 1676544,
         },
     },
+    pulseBox: {
+        name: "Pulse Box",
+        type: "boost",
+        useTime: 0.2,
+        boost: 0.0,
+        lootImg: {
+            sprite: "loot-pulseBox.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0x000000,
+            scale: 0.2
+        },
+        sound: {
+            pickup: "soda_pickup_01",
+            use: "pulseBox_use_01"
+        },
+        aura: {
+            sprite: "part-aura-circle-01.img",
+            tint: 0x199500
+        },
+        emitter: "boost"
+    }
 };
 
 export interface HealDef {

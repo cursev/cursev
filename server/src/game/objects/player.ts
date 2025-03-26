@@ -3250,6 +3250,7 @@ export class Player extends BaseGameObject {
                 this.useHealingItem(msg.useItem);
                 break;
             case "soda":
+            case "pulseBox":
             case "painkiller":
                 this.useBoostItem(msg.useItem);
                 break;

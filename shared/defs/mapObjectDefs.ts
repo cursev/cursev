@@ -10593,6 +10593,7 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
     } as unknown as Partial<ObstacleDef>),
     crate_23: createCrate({
         health: 150,
+        reflectBullets: true,
         loot: [tierLoot("tier_space", 3, 5)],
         map: { display: false },
         terrain: { grass: true, beach: false },
