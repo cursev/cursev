@@ -1696,36 +1696,55 @@ export class Player implements AbstractObject {
         if (this.downed) {
             this.backpackSprite.visible = false;
         }
+        
+        // aura visual thing 
 
-        // Role specific visuals
-        if (
-            (this.m_action.type != Action.UseItem &&
-                this.m_action.type != Action.Revive) ||
-            this.m_netData.m_dead ||
-            (this.m_netData.m_downed && !this.m_hasPerk("self_revive")) ||
-            !this.m_hasPerk("aoe_heal")
-        ) {
-            this.auraPulseTicker = 0;
-            this.auraPulseDir = 1;
-            this.auraCircle.visible = false;
-        } else {
-            const actionItemDef = GameObjectDefs[this.m_action.item] as
-                | HealDef
-                | BoostDef;
-            // Assume if there's no item defined, it's a revive circle
-            const sprite = actionItemDef?.aura
-                ? actionItemDef.aura.sprite
-                : "part-aura-circle-01.img";
-            const tint = actionItemDef?.aura ? actionItemDef.aura.tint : 0xff00ff;
-            const auraScale = 0.125;
-            let auraRad = actionItemDef
-                ? GameConfig.player.medicHealRange
-                : GameConfig.player.medicReviveRange;
-            auraRad *= auraScale;
+        if (this.m_action.type === Action.UseItem && this.m_action.item === "pulseBox") {
+            const sprite = "part-aura-circle-02.img";
+            const tint = 0x1996f0;
+            const auraScale = 0.11;
+            const auraRad = GameConfig.player.medicHealRange * auraScale;
+            this.auraPulseTicker += 0.1;
+            const totalDuration = 2.0;
+            const flickerCount = 3;
+            const flickerCycle = totalDuration / flickerCount;
+            const phase = this.auraPulseTicker % flickerCycle;
+            const isVisibleThisFrame = phase < flickerCycle / 2;
             this.auraCircle.texture = PIXI.Texture.from(sprite);
             this.auraCircle.scale.set(auraRad, auraRad);
             this.auraCircle.tint = tint;
-            this.auraCircle.visible = true;
+            this.auraCircle.alpha = 1;
+            this.auraCircle.visible = isVisibleThisFrame;
+            if (this.auraPulseTicker >= totalDuration) {
+                this.auraCircle.visible = false;
+                this.auraPulseTicker = 0;
+            }
+        } else {
+            if (
+                (this.m_action.type != Action.UseItem &&
+                    this.m_action.type != Action.Revive) ||
+                this.m_netData.m_dead ||
+                (this.m_netData.m_downed && !this.m_hasPerk("self_revive")) ||
+                !this.m_hasPerk("aoe_heal")
+            ) {
+                this.auraPulseTicker = 0;
+                this.auraPulseDir = 1;
+                this.auraCircle.visible = false;
+            } else {
+                const actionItemDef = GameObjectDefs[this.m_action.item] as HealDef | BoostDef;
+                const sprite = actionItemDef?.aura?.sprite ?? "part-aura-circle-01.img";
+                const tint = actionItemDef?.aura?.tint ?? 0xff00ff;
+                const auraScale = 0.125;
+                let auraRad = actionItemDef
+                    ? GameConfig.player.medicHealRange
+                    : GameConfig.player.medicReviveRange;
+                auraRad *= auraScale;
+                this.auraCircle.texture = PIXI.Texture.from(sprite);
+                this.auraCircle.scale.set(auraRad, auraRad);
+                this.auraCircle.tint = tint;
+                this.auraCircle.alpha = 1;
+                this.auraCircle.visible = true;
+            }
         }
 
         // Class visors

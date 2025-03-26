@@ -206,7 +206,7 @@ export const GameConfig = {
                 bandage: 0,
                 healthkit: 0,
                 soda: 0,
-                pilseBox: 0,
+                pulseBox: 10,
                 painkiller: 0,
                 "1xscope": 1,
                 "2xscope": 0,
