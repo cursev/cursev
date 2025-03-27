@@ -168,10 +168,10 @@ export class Projectile extends BaseGameObject {
 
         if (this.type === "mine") {
             this.activateTime += dt;
-            if (this.activateTime >= 2) {
+            if (this.activateTime >= 1.5) {
                 if (this.triggeredTime !== null) {
                     this.triggeredTime += dt;
-                    if (this.triggeredTime >= 1) {
+                    if (this.triggeredTime >= 0.5) {
                         this.game.explosionBarn.addExplosion(
                             "explosion_frag",
                             this.pos,
@@ -181,19 +181,19 @@ export class Projectile extends BaseGameObject {
                             GameConfig.DamageType.Player,
                             this
                         );
-                        this.destroyed = true;
+                        this.destroy();
                     }
                 } else {
                     let mineTrigger = false;
                     for (const player of this.game.playerBarn.players.values()) {
-                        if (v2.distance(this.pos, player.pos) < 1) {
+                        if (v2.distance(this.pos, player.pos) < 3) {
                             mineTrigger = true;
                             break;
                         }
                     }
                     if (!mineTrigger) {
                         for (const bullet of this.game.bulletBarn.bullets) {
-                            if (v2.distance(this.pos, bullet.pos) < 1) {
+                            if (v2.distance(this.pos, bullet.pos) < 1.5) {
                                 mineTrigger = true;
                                 break;
                             }
@@ -201,7 +201,7 @@ export class Projectile extends BaseGameObject {
                     }
                     if (!mineTrigger) {
                         for (const explosion of this.game.explosionBarn.explosions) {
-                            if (v2.distance(this.pos, explosion.pos) < 1) {
+                            if (v2.distance(this.pos, explosion.pos) < 10) {
                                 mineTrigger = true;
                                 break;
                             }
