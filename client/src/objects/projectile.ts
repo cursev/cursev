@@ -68,6 +68,16 @@ class Projectile implements AbstractObject {
     strobeDir!: number;
     strobeSpeed!: number;
 
+    mineEffect = {
+        sprite: null as PIXI.Sprite | null,
+        ticker: 0,
+        dir: 1,
+        scale: 0,
+        scaleMax: 1.5,
+        speed: 1.25,
+        armed: false,
+    };
+
     constructor() {
         this.container.visible = false;
         this.trail.anchor.set(1, 0.5);
@@ -151,6 +161,21 @@ class Projectile implements AbstractObject {
             this.sprite.texture = PIXI.Texture.from(sprite);
             this.sprite.tint = imgDef.tint;
             this.sprite.alpha = 1;
+
+            if (this.type === "mine") {
+                const mineSprite = PIXI.Sprite.from("part-strobe-01.img");
+                mineSprite.anchor.set(0.5);
+                mineSprite.tint = 0xFF0000;
+                mineSprite.scale.set(0);
+                this.container.addChild(mineSprite);
+                this.mineEffect.sprite = mineSprite;
+                this.mineEffect.ticker = 0;
+                this.mineEffect.dir = 1;
+                this.mineEffect.scale = 0;
+                this.mineEffect.armed = false;
+            }
+            
+            
 
             this.container.visible = isVisible;
 
@@ -318,6 +343,7 @@ export class ProjectileBarn {
 
                 // Strobe effects
                 if (p.type == "strobe" && p.strobeSprite) {
+                    
                     p.strobeTicker = math.clamp(
                         p.strobeTicker + dt * p.strobeDir * p.strobeSpeed,
                         0,
@@ -329,6 +355,21 @@ export class ProjectileBarn {
                         p.strobeDir *= -1;
                     }
                 }
+                // Mine effect
+                if (p.type === "mine" && p.mineEffect.sprite) {
+
+                    const m = p.mineEffect;    
+                    m.ticker = math.clamp(m.ticker + dt * m.dir * m.speed, 0, 1);
+                    m.scale = m.armed
+                        ? m.scaleMax / 2
+                        : math.easeInExpo(m.ticker) * m.scaleMax;
+                
+                    m.sprite!.scale.set(m.scale);
+                    if (m.scale >= m.scaleMax || m.ticker <= 0) {
+                        m.dir *= -1;
+                    }
+                }
+
                 p.sprite.rotation = p.rot;
                 p.sprite.alpha = p.inWater ? 0.3 : 1;
 

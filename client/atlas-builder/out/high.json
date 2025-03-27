@@ -7542,7 +7542,7 @@
         },
         "lock.img": {
           "frame": {
-            "x": 3561,
+            "x": 3556,
             "y": 2481,
             "w": 48,
             "h": 64
@@ -8442,8 +8442,8 @@
         },
         "loot-melee-hook-silver.img": {
           "frame": {
-            "x": 273,
-            "y": 1941,
+            "x": 2205,
+            "y": 2586,
             "w": 42,
             "h": 78
           },
@@ -11260,6 +11260,26 @@
             "h": 128
           }
         },
+        "loot-throwable-mine.img": {
+          "frame": {
+            "x": 232,
+            "y": 1943,
+            "w": 81,
+            "h": 81
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 24,
+            "y": 24,
+            "w": 81,
+            "h": 81
+          },
+          "sourceSize": {
+            "w": 129,
+            "h": 129
+          }
+        },
         "loot-throwable-mirv.img": {
           "frame": {
             "x": 3654,
@@ -13482,8 +13502,8 @@
         },
         "part-cloth-01.img": {
           "frame": {
-            "x": 3618,
-            "y": 3326,
+            "x": 3107,
+            "y": 3259,
             "w": 70,
             "h": 72
           },
@@ -13562,8 +13582,8 @@
         },
         "part-frag-burst-01.img": {
           "frame": {
-            "x": 4028,
-            "y": 2691,
+            "x": 3649,
+            "y": 3173,
             "w": 66,
             "h": 66
           },
@@ -13582,8 +13602,8 @@
         },
         "part-frag-burst-02.img": {
           "frame": {
-            "x": 2694,
-            "y": 3338,
+            "x": 3649,
+            "y": 3243,
             "w": 66,
             "h": 66
           },
@@ -13642,8 +13662,8 @@
         },
         "part-frag-pin-01.img": {
           "frame": {
-            "x": 4035,
-            "y": 3018,
+            "x": 4036,
+            "y": 3093,
             "w": 58,
             "h": 58
           },
@@ -14022,8 +14042,8 @@
         },
         "part-potato-01.img": {
           "frame": {
-            "x": 3768,
-            "y": 3402,
+            "x": 3541,
+            "y": 3249,
             "w": 66,
             "h": 66
           },
@@ -14062,8 +14082,8 @@
         },
         "part-pulse-01.img": {
           "frame": {
-            "x": 3838,
-            "y": 3402,
+            "x": 3895,
+            "y": 3170,
             "w": 66,
             "h": 66
           },
@@ -14262,8 +14282,8 @@
         },
         "part-snow-01.img": {
           "frame": {
-            "x": 2771,
-            "y": 3268,
+            "x": 3183,
+            "y": 3335,
             "w": 68,
             "h": 68
           },
@@ -14382,8 +14402,8 @@
         },
         "part-strobe-01.img": {
           "frame": {
-            "x": 3908,
-            "y": 3403,
+            "x": 3965,
+            "y": 3170,
             "w": 66,
             "h": 66
           },
@@ -19342,8 +19362,8 @@
         },
         "player-hands-01.img": {
           "frame": {
-            "x": 3692,
-            "y": 3401,
+            "x": 3181,
+            "y": 3259,
             "w": 72,
             "h": 72
           },
@@ -19362,8 +19382,8 @@
         },
         "player-hands-02.img": {
           "frame": {
-            "x": 3028,
-            "y": 3180,
+            "x": 3257,
+            "y": 3325,
             "w": 72,
             "h": 72
           },
@@ -19382,8 +19402,8 @@
         },
         "player-hands-BlueVelvet.img": {
           "frame": {
-            "x": 3807,
-            "y": 2864,
+            "x": 3496,
+            "y": 2941,
             "w": 73,
             "h": 73
           },
@@ -19402,8 +19422,8 @@
         },
         "player-hands-FrostPunch.img": {
           "frame": {
-            "x": 3796,
-            "y": 2551,
+            "x": 3637,
+            "y": 2629,
             "w": 75,
             "h": 73
           },
@@ -19422,8 +19442,8 @@
         },
         "player-hands-SpliTheDiff.img": {
           "frame": {
-            "x": 3884,
-            "y": 2940,
+            "x": 3081,
+            "y": 2874,
             "w": 73,
             "h": 73
           },
@@ -19442,8 +19462,8 @@
         },
         "player-hands-ahoy.img": {
           "frame": {
-            "x": 3796,
-            "y": 2628,
+            "x": 3716,
+            "y": 2629,
             "w": 73,
             "h": 74
           },
@@ -19462,8 +19482,8 @@
         },
         "player-hands-arctic-avenger.img": {
           "frame": {
-            "x": 3961,
-            "y": 2941,
+            "x": 3158,
+            "y": 2874,
             "w": 73,
             "h": 73
           },
@@ -19482,8 +19502,8 @@
         },
         "player-hands-assault.img": {
           "frame": {
-            "x": 3496,
-            "y": 2863,
+            "x": 2972,
+            "y": 2876,
             "w": 73,
             "h": 72
           },
@@ -19502,8 +19522,8 @@
         },
         "player-hands-astronaut.img": {
           "frame": {
-            "x": 3573,
-            "y": 2863,
+            "x": 2879,
+            "y": 2886,
             "w": 73,
             "h": 73
           },
@@ -19522,8 +19542,8 @@
         },
         "player-hands-avocadoh.img": {
           "frame": {
-            "x": 3650,
-            "y": 2863,
+            "x": 2694,
+            "y": 2953,
             "w": 73,
             "h": 73
           },
@@ -19542,7 +19562,7 @@
         },
         "player-hands-bePresent-left.img": {
           "frame": {
-            "x": 3953,
+            "x": 3950,
             "y": 2551,
             "w": 71,
             "h": 74
@@ -19562,7 +19582,7 @@
         },
         "player-hands-bePresent-right.img": {
           "frame": {
-            "x": 3953,
+            "x": 3950,
             "y": 2629,
             "w": 71,
             "h": 74
@@ -19582,8 +19602,8 @@
         },
         "player-hands-beach-camo.img": {
           "frame": {
-            "x": 3727,
-            "y": 2938,
+            "x": 2771,
+            "y": 2953,
             "w": 73,
             "h": 73
           },
@@ -19602,8 +19622,8 @@
         },
         "player-hands-bengal.img": {
           "frame": {
-            "x": 3804,
-            "y": 2941,
+            "x": 2571,
+            "y": 2957,
             "w": 73,
             "h": 73
           },
@@ -19622,7 +19642,7 @@
         },
         "player-hands-bitplosion.img": {
           "frame": {
-            "x": 3873,
+            "x": 3872,
             "y": 2630,
             "w": 73,
             "h": 74
@@ -19642,8 +19662,8 @@
         },
         "player-hands-blackholes.img": {
           "frame": {
-            "x": 3881,
-            "y": 3017,
+            "x": 2491,
+            "y": 2969,
             "w": 73,
             "h": 73
           },
@@ -19662,8 +19682,8 @@
         },
         "player-hands-blue-mecha.img": {
           "frame": {
-            "x": 3958,
-            "y": 3018,
+            "x": 2389,
+            "y": 2996,
             "w": 73,
             "h": 73
           },
@@ -19682,8 +19702,8 @@
         },
         "player-hands-blue-zone.img": {
           "frame": {
-            "x": 3950,
-            "y": 2707,
+            "x": 3793,
+            "y": 2631,
             "w": 74,
             "h": 74
           },
@@ -19701,6 +19721,106 @@
           }
         },
         "player-hands-blunt-razor.img": {
+          "frame": {
+            "x": 3949,
+            "y": 2707,
+            "w": 74,
+            "h": 74
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 2,
+            "w": 74,
+            "h": 74
+          },
+          "sourceSize": {
+            "w": 78,
+            "h": 78
+          }
+        },
+        "player-hands-boet.img": {
+          "frame": {
+            "x": 2311,
+            "y": 3026,
+            "w": 73,
+            "h": 73
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 2,
+            "w": 73,
+            "h": 73
+          },
+          "sourceSize": {
+            "w": 77,
+            "h": 77
+          }
+        },
+        "player-hands-bombyman.img": {
+          "frame": {
+            "x": 3851,
+            "y": 2863,
+            "w": 73,
+            "h": 73
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 2,
+            "w": 73,
+            "h": 73
+          },
+          "sourceSize": {
+            "w": 77,
+            "h": 77
+          }
+        },
+        "player-hands-braaains.img": {
+          "frame": {
+            "x": 3871,
+            "y": 2708,
+            "w": 74,
+            "h": 74
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 2,
+            "w": 74,
+            "h": 74
+          },
+          "sourceSize": {
+            "w": 78,
+            "h": 78
+          }
+        },
+        "player-hands-bronco-saurus.img": {
+          "frame": {
+            "x": 3949,
+            "y": 2785,
+            "w": 74,
+            "h": 74
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 2,
+            "w": 74,
+            "h": 74
+          },
+          "sourceSize": {
+            "w": 78,
+            "h": 78
+          }
+        },
+        "player-hands-bronto-chop.img": {
           "frame": {
             "x": 3152,
             "y": 2562,
@@ -19720,47 +19840,7 @@
             "h": 78
           }
         },
-        "player-hands-boet.img": {
-          "frame": {
-            "x": 3184,
-            "y": 2796,
-            "w": 73,
-            "h": 73
-          },
-          "rotated": false,
-          "trimmed": true,
-          "spriteSourceSize": {
-            "x": 2,
-            "y": 2,
-            "w": 73,
-            "h": 73
-          },
-          "sourceSize": {
-            "w": 77,
-            "h": 77
-          }
-        },
-        "player-hands-bombyman.img": {
-          "frame": {
-            "x": 3261,
-            "y": 2796,
-            "w": 73,
-            "h": 73
-          },
-          "rotated": false,
-          "trimmed": true,
-          "spriteSourceSize": {
-            "x": 2,
-            "y": 2,
-            "w": 73,
-            "h": 73
-          },
-          "sourceSize": {
-            "w": 77,
-            "h": 77
-          }
-        },
-        "player-hands-braaains.img": {
+        "player-hands-bubblegum.img": {
           "frame": {
             "x": 3230,
             "y": 2562,
@@ -19780,70 +19860,10 @@
             "h": 78
           }
         },
-        "player-hands-bronco-saurus.img": {
-          "frame": {
-            "x": 3308,
-            "y": 2562,
-            "w": 74,
-            "h": 74
-          },
-          "rotated": false,
-          "trimmed": true,
-          "spriteSourceSize": {
-            "x": 2,
-            "y": 2,
-            "w": 74,
-            "h": 74
-          },
-          "sourceSize": {
-            "w": 78,
-            "h": 78
-          }
-        },
-        "player-hands-bronto-chop.img": {
-          "frame": {
-            "x": 3386,
-            "y": 2562,
-            "w": 74,
-            "h": 74
-          },
-          "rotated": false,
-          "trimmed": true,
-          "spriteSourceSize": {
-            "x": 2,
-            "y": 2,
-            "w": 74,
-            "h": 74
-          },
-          "sourceSize": {
-            "w": 78,
-            "h": 78
-          }
-        },
-        "player-hands-bubblegum.img": {
-          "frame": {
-            "x": 3464,
-            "y": 2562,
-            "w": 74,
-            "h": 74
-          },
-          "rotated": false,
-          "trimmed": true,
-          "spriteSourceSize": {
-            "x": 2,
-            "y": 2,
-            "w": 74,
-            "h": 74
-          },
-          "sourceSize": {
-            "w": 78,
-            "h": 78
-          }
-        },
         "player-hands-buck-teeth.img": {
           "frame": {
-            "x": 3338,
-            "y": 2796,
+            "x": 3773,
+            "y": 2865,
             "w": 73,
             "h": 73
           },
@@ -19882,8 +19902,8 @@
         },
         "player-hands-calaca.img": {
           "frame": {
-            "x": 3542,
-            "y": 2629,
+            "x": 3308,
+            "y": 2562,
             "w": 73,
             "h": 74
           },
@@ -19902,8 +19922,8 @@
         },
         "player-hands-camo-deer.img": {
           "frame": {
-            "x": 3082,
-            "y": 2873,
+            "x": 3651,
+            "y": 2941,
             "w": 73,
             "h": 73
           },
@@ -19922,8 +19942,8 @@
         },
         "player-hands-camo.img": {
           "frame": {
-            "x": 2968,
-            "y": 2876,
+            "x": 3928,
+            "y": 2863,
             "w": 73,
             "h": 73
           },
@@ -19942,8 +19962,8 @@
         },
         "player-hands-captn-cactus.img": {
           "frame": {
-            "x": 3619,
-            "y": 2629,
+            "x": 3385,
+            "y": 2562,
             "w": 74,
             "h": 74
           },
@@ -19962,8 +19982,8 @@
         },
         "player-hands-carbon-fiber.img": {
           "frame": {
-            "x": 2879,
-            "y": 2885,
+            "x": 4005,
+            "y": 2863,
             "w": 73,
             "h": 72
           },
@@ -19982,8 +20002,8 @@
         },
         "player-hands-catchem-ol.img": {
           "frame": {
-            "x": 2771,
-            "y": 2953,
+            "x": 4005,
+            "y": 2939,
             "w": 73,
             "h": 73
           },
@@ -20002,8 +20022,8 @@
         },
         "player-hands-celestial-garb.img": {
           "frame": {
-            "x": 2643,
-            "y": 3027,
+            "x": 3850,
+            "y": 2940,
             "w": 73,
             "h": 73
           },
@@ -20022,8 +20042,8 @@
         },
         "player-hands-chemis-tree.img": {
           "frame": {
-            "x": 3697,
-            "y": 2629,
+            "x": 3463,
+            "y": 2562,
             "w": 74,
             "h": 74
           },
@@ -20042,8 +20062,8 @@
         },
         "player-hands-chewie-cheese.img": {
           "frame": {
-            "x": 2544,
-            "y": 3029,
+            "x": 3927,
+            "y": 2940,
             "w": 73,
             "h": 73
           },
@@ -20062,8 +20082,8 @@
         },
         "player-hands-christmastree.img": {
           "frame": {
-            "x": 2466,
-            "y": 3053,
+            "x": 4004,
+            "y": 3016,
             "w": 73,
             "h": 73
           },
@@ -20082,8 +20102,8 @@
         },
         "player-hands-chromatic-ctr.img": {
           "frame": {
-            "x": 2309,
-            "y": 3104,
+            "x": 3728,
+            "y": 2942,
             "w": 73,
             "h": 73
           },
@@ -20102,8 +20122,8 @@
         },
         "player-hands-chrome.img": {
           "frame": {
-            "x": 2386,
-            "y": 3104,
+            "x": 3805,
+            "y": 3017,
             "w": 73,
             "h": 73
           },
@@ -20122,8 +20142,8 @@
         },
         "player-hands-clay-more.img": {
           "frame": {
-            "x": 3159,
-            "y": 2873,
+            "x": 3882,
+            "y": 3017,
             "w": 73,
             "h": 72
           },
@@ -20142,8 +20162,8 @@
         },
         "player-hands-cobalt-shell.img": {
           "frame": {
-            "x": 3236,
-            "y": 2873,
+            "x": 3882,
+            "y": 3093,
             "w": 73,
             "h": 73
           },
@@ -20162,8 +20182,8 @@
         },
         "player-hands-coldest-edge.img": {
           "frame": {
-            "x": 3104,
-            "y": 3181,
+            "x": 3107,
+            "y": 3335,
             "w": 72,
             "h": 72
           },
@@ -20182,8 +20202,8 @@
         },
         "player-hands-color-palette.img": {
           "frame": {
-            "x": 3159,
-            "y": 2949,
+            "x": 3959,
+            "y": 3093,
             "w": 73,
             "h": 73
           },
@@ -20202,8 +20222,8 @@
         },
         "player-hands-cosmic-blue.img": {
           "frame": {
-            "x": 3775,
-            "y": 2706,
+            "x": 3541,
+            "y": 2630,
             "w": 74,
             "h": 73
           },
@@ -20222,8 +20242,8 @@
         },
         "player-hands-cow.img": {
           "frame": {
-            "x": 3045,
-            "y": 2950,
+            "x": 3049,
+            "y": 2951,
             "w": 73,
             "h": 72
           },
@@ -20243,7 +20263,7 @@
         "player-hands-crusader.img": {
           "frame": {
             "x": 2956,
-            "y": 2953,
+            "y": 2952,
             "w": 73,
             "h": 73
           },
@@ -20262,8 +20282,8 @@
         },
         "player-hands-darklets.img": {
           "frame": {
-            "x": 3621,
-            "y": 3017,
+            "x": 4025,
+            "y": 2627,
             "w": 69,
             "h": 69
           },
@@ -20282,8 +20302,8 @@
         },
         "player-hands-de-ranged.img": {
           "frame": {
-            "x": 3853,
-            "y": 2708,
+            "x": 3619,
+            "y": 2706,
             "w": 74,
             "h": 74
           },
@@ -20303,7 +20323,7 @@
         "player-hands-deep-purple.img": {
           "frame": {
             "x": 2848,
-            "y": 2961,
+            "y": 2963,
             "w": 73,
             "h": 73
           },
@@ -20322,7 +20342,7 @@
         },
         "player-hands-demo.img": {
           "frame": {
-            "x": 2720,
+            "x": 2648,
             "y": 3030,
             "w": 73,
             "h": 73
@@ -20342,8 +20362,8 @@
         },
         "player-hands-desert-camo.img": {
           "frame": {
-            "x": 2621,
-            "y": 3104,
+            "x": 2568,
+            "y": 3034,
             "w": 73,
             "h": 73
           },
@@ -20362,8 +20382,8 @@
         },
         "player-hands-dev.img": {
           "frame": {
-            "x": 2543,
-            "y": 3106,
+            "x": 2466,
+            "y": 3046,
             "w": 73,
             "h": 73
           },
@@ -20382,8 +20402,8 @@
         },
         "player-hands-diamondy.img": {
           "frame": {
-            "x": 2463,
-            "y": 3130,
+            "x": 2388,
+            "y": 3073,
             "w": 73,
             "h": 73
           },
@@ -20403,7 +20423,7 @@
         "player-hands-digiturt.img": {
           "frame": {
             "x": 2309,
-            "y": 3181,
+            "y": 3103,
             "w": 73,
             "h": 73
           },
@@ -20442,8 +20462,8 @@
         },
         "player-hands-disasteroid.img": {
           "frame": {
-            "x": 3931,
-            "y": 2785,
+            "x": 3697,
+            "y": 2707,
             "w": 74,
             "h": 74
           },
@@ -20462,7 +20482,7 @@
         },
         "player-hands-dragon-tails.img": {
           "frame": {
-            "x": 3875,
+            "x": 3872,
             "y": 2551,
             "w": 74,
             "h": 75
@@ -20522,8 +20542,8 @@
         },
         "player-hands-eggnite.img": {
           "frame": {
-            "x": 2386,
-            "y": 3181,
+            "x": 2725,
+            "y": 3030,
             "w": 73,
             "h": 73
           },
@@ -20542,8 +20562,8 @@
         },
         "player-hands-electric-ice.img": {
           "frame": {
-            "x": 4009,
-            "y": 2785,
+            "x": 3775,
+            "y": 2709,
             "w": 74,
             "h": 74
           },
@@ -20562,8 +20582,8 @@
         },
         "player-hands-event-horizon.img": {
           "frame": {
-            "x": 3313,
-            "y": 2873,
+            "x": 3126,
+            "y": 2951,
             "w": 73,
             "h": 73
           },
@@ -20582,8 +20602,8 @@
         },
         "player-hands-eyes-t.img": {
           "frame": {
-            "x": 3152,
-            "y": 2640,
+            "x": 3853,
+            "y": 2786,
             "w": 74,
             "h": 73
           },
@@ -20602,8 +20622,8 @@
         },
         "player-hands-forest.img": {
           "frame": {
-            "x": 3390,
-            "y": 2873,
+            "x": 3033,
+            "y": 3027,
             "w": 73,
             "h": 73
           },
@@ -20622,8 +20642,8 @@
         },
         "player-hands-fragtastic.img": {
           "frame": {
-            "x": 3467,
-            "y": 2939,
+            "x": 2925,
+            "y": 3029,
             "w": 73,
             "h": 73
           },
@@ -20642,8 +20662,8 @@
         },
         "player-hands-full-circle.img": {
           "frame": {
-            "x": 3544,
-            "y": 2940,
+            "x": 2802,
+            "y": 3040,
             "w": 72,
             "h": 73
           },
@@ -20662,8 +20682,8 @@
         },
         "player-hands-gaudisque.img": {
           "frame": {
-            "x": 3028,
-            "y": 2643,
+            "x": 3152,
+            "y": 2640,
             "w": 74,
             "h": 74
           },
@@ -20682,8 +20702,8 @@
         },
         "player-hands-geometric.img": {
           "frame": {
-            "x": 2731,
-            "y": 2790,
+            "x": 2643,
+            "y": 2798,
             "w": 77,
             "h": 77
           },
@@ -20722,8 +20742,8 @@
         },
         "player-hands-gingerbread.img": {
           "frame": {
-            "x": 3620,
-            "y": 2940,
+            "x": 2645,
+            "y": 3107,
             "w": 73,
             "h": 73
           },
@@ -20742,8 +20762,8 @@
         },
         "player-hands-giraffe.img": {
           "frame": {
-            "x": 3697,
-            "y": 3015,
+            "x": 2722,
+            "y": 3107,
             "w": 73,
             "h": 73
           },
@@ -20761,6 +20781,26 @@
           }
         },
         "player-hands-good-feather.img": {
+          "frame": {
+            "x": 3028,
+            "y": 2643,
+            "w": 74,
+            "h": 74
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 2,
+            "w": 74,
+            "h": 74
+          },
+          "sourceSize": {
+            "w": 78,
+            "h": 78
+          }
+        },
+        "player-hands-green-tea-rex.img": {
           "frame": {
             "x": 3230,
             "y": 2640,
@@ -20780,30 +20820,10 @@
             "h": 78
           }
         },
-        "player-hands-green-tea-rex.img": {
-          "frame": {
-            "x": 3106,
-            "y": 2717,
-            "w": 74,
-            "h": 74
-          },
-          "rotated": false,
-          "trimmed": true,
-          "spriteSourceSize": {
-            "x": 2,
-            "y": 2,
-            "w": 74,
-            "h": 74
-          },
-          "sourceSize": {
-            "w": 78,
-            "h": 78
-          }
-        },
         "player-hands-gridflag.img": {
           "frame": {
-            "x": 3028,
-            "y": 2721,
+            "x": 3308,
+            "y": 2640,
             "w": 74,
             "h": 73
           },
@@ -20822,8 +20842,8 @@
         },
         "player-hands-grinch.img": {
           "frame": {
-            "x": 3774,
-            "y": 3018,
+            "x": 2543,
+            "y": 3111,
             "w": 73,
             "h": 73
           },
@@ -20842,8 +20862,8 @@
         },
         "player-hands-h2oh.img": {
           "frame": {
-            "x": 3851,
-            "y": 3094,
+            "x": 2465,
+            "y": 3123,
             "w": 73,
             "h": 73
           },
@@ -20862,8 +20882,8 @@
         },
         "player-hands-holdin-hide.img": {
           "frame": {
-            "x": 2926,
-            "y": 2730,
+            "x": 3386,
+            "y": 2640,
             "w": 74,
             "h": 73
           },
@@ -20882,8 +20902,8 @@
         },
         "player-hands-hopeless-ramentic.img": {
           "frame": {
-            "x": 3928,
-            "y": 3095,
+            "x": 2386,
+            "y": 3150,
             "w": 73,
             "h": 73
           },
@@ -20922,8 +20942,8 @@
         },
         "player-hands-how-pita-ful.img": {
           "frame": {
-            "x": 4005,
-            "y": 3095,
+            "x": 2309,
+            "y": 3180,
             "w": 73,
             "h": 73
           },
@@ -20942,8 +20962,8 @@
         },
         "player-hands-howl-o-days.img": {
           "frame": {
-            "x": 2812,
-            "y": 2798,
+            "x": 3464,
+            "y": 2707,
             "w": 74,
             "h": 74
           },
@@ -20962,8 +20982,8 @@
         },
         "player-hands-huedini.img": {
           "frame": {
-            "x": 3236,
-            "y": 2950,
+            "x": 3203,
+            "y": 2951,
             "w": 73,
             "h": 73
           },
@@ -20982,8 +21002,8 @@
         },
         "player-hands-i-lava-you.img": {
           "frame": {
-            "x": 2724,
-            "y": 2871,
+            "x": 3542,
+            "y": 2707,
             "w": 73,
             "h": 74
           },
@@ -21002,8 +21022,8 @@
         },
         "player-hands-id-die-4-u.img": {
           "frame": {
-            "x": 2616,
-            "y": 2873,
+            "x": 3619,
+            "y": 2784,
             "w": 73,
             "h": 74
           },
@@ -21022,8 +21042,8 @@
         },
         "player-hands-immolate.img": {
           "frame": {
-            "x": 2643,
-            "y": 2798,
+            "x": 2535,
+            "y": 2816,
             "w": 77,
             "h": 71
           },
@@ -21042,8 +21062,8 @@
         },
         "player-hands-into-the-grid.img": {
           "frame": {
-            "x": 2489,
-            "y": 2897,
+            "x": 3696,
+            "y": 2785,
             "w": 73,
             "h": 74
           },
@@ -21062,8 +21082,8 @@
         },
         "player-hands-it-just-mist.img": {
           "frame": {
-            "x": 3313,
-            "y": 2950,
+            "x": 3280,
+            "y": 2951,
             "w": 73,
             "h": 73
           },
@@ -21082,8 +21102,8 @@
         },
         "player-hands-its-me-coin.img": {
           "frame": {
-            "x": 3390,
-            "y": 2950,
+            "x": 3357,
+            "y": 3017,
             "w": 73,
             "h": 73
           },
@@ -21122,8 +21142,8 @@
         },
         "player-hands-key-lime.img": {
           "frame": {
-            "x": 3467,
-            "y": 3016,
+            "x": 3110,
+            "y": 3028,
             "w": 73,
             "h": 73
           },
@@ -21142,8 +21162,8 @@
         },
         "player-hands-king-galaxy.img": {
           "frame": {
-            "x": 2311,
-            "y": 2948,
+            "x": 3773,
+            "y": 2787,
             "w": 74,
             "h": 74
           },
@@ -21162,8 +21182,8 @@
         },
         "player-hands-lasr-disk.img": {
           "frame": {
-            "x": 3544,
-            "y": 3017,
+            "x": 3002,
+            "y": 3104,
             "w": 73,
             "h": 73
           },
@@ -21222,7 +21242,7 @@
         },
         "player-hands-linedUp.img": {
           "frame": {
-            "x": 3561,
+            "x": 3637,
             "y": 2549,
             "w": 73,
             "h": 76
@@ -21242,8 +21262,8 @@
         },
         "player-hands-lit-left.img": {
           "frame": {
-            "x": 3621,
-            "y": 3092,
+            "x": 2878,
+            "y": 3106,
             "w": 73,
             "h": 73
           },
@@ -21262,8 +21282,8 @@
         },
         "player-hands-lit-right.img": {
           "frame": {
-            "x": 3698,
-            "y": 3095,
+            "x": 2799,
+            "y": 3117,
             "w": 73,
             "h": 73
           },
@@ -21282,8 +21302,8 @@
         },
         "player-hands-lumber.img": {
           "frame": {
-            "x": 3775,
-            "y": 3171,
+            "x": 3187,
+            "y": 3028,
             "w": 73,
             "h": 73
           },
@@ -21302,8 +21322,8 @@
         },
         "player-hands-lustrous-paladin.img": {
           "frame": {
-            "x": 2389,
-            "y": 2948,
+            "x": 3308,
+            "y": 2717,
             "w": 73,
             "h": 74
           },
@@ -21322,8 +21342,8 @@
         },
         "player-hands-macho-lucha.img": {
           "frame": {
-            "x": 3033,
-            "y": 3026,
+            "x": 3264,
+            "y": 3028,
             "w": 73,
             "h": 73
           },
@@ -21342,8 +21362,8 @@
         },
         "player-hands-magma-camo.img": {
           "frame": {
-            "x": 2925,
-            "y": 3030,
+            "x": 2620,
+            "y": 3184,
             "w": 73,
             "h": 73
           },
@@ -21362,8 +21382,8 @@
         },
         "player-hands-magmatic.img": {
           "frame": {
-            "x": 3110,
-            "y": 3026,
+            "x": 2542,
+            "y": 3188,
             "w": 73,
             "h": 73
           },
@@ -21382,8 +21402,8 @@
         },
         "player-hands-max-attack.img": {
           "frame": {
-            "x": 3308,
-            "y": 2640,
+            "x": 3385,
+            "y": 2717,
             "w": 73,
             "h": 74
           },
@@ -21402,8 +21422,8 @@
         },
         "player-hands-medic.img": {
           "frame": {
-            "x": 2797,
-            "y": 3038,
+            "x": 2463,
+            "y": 3200,
             "w": 73,
             "h": 72
           },
@@ -21422,8 +21442,8 @@
         },
         "player-hands-mellow.img": {
           "frame": {
-            "x": 2698,
-            "y": 3107,
+            "x": 2386,
+            "y": 3227,
             "w": 73,
             "h": 73
           },
@@ -21442,8 +21462,8 @@
         },
         "player-hands-melonwater.img": {
           "frame": {
-            "x": 3385,
-            "y": 2640,
+            "x": 3462,
+            "y": 2785,
             "w": 73,
             "h": 74
           },
@@ -21462,8 +21482,8 @@
         },
         "player-hands-micro-wave.img": {
           "frame": {
-            "x": 3462,
-            "y": 2640,
+            "x": 3539,
+            "y": 2785,
             "w": 74,
             "h": 74
           },
@@ -21482,8 +21502,8 @@
         },
         "player-hands-military.img": {
           "frame": {
-            "x": 2535,
-            "y": 2816,
+            "x": 2413,
+            "y": 2837,
             "w": 77,
             "h": 77
           },
@@ -21502,8 +21522,8 @@
         },
         "player-hands-mojo.img": {
           "frame": {
-            "x": 2620,
-            "y": 3181,
+            "x": 2288,
+            "y": 3257,
             "w": 73,
             "h": 73
           },
@@ -21522,8 +21542,8 @@
         },
         "player-hands-moosli.img": {
           "frame": {
-            "x": 3540,
-            "y": 2707,
+            "x": 3617,
+            "y": 2862,
             "w": 74,
             "h": 74
           },
@@ -21542,8 +21562,8 @@
         },
         "player-hands-moss.img": {
           "frame": {
-            "x": 2540,
-            "y": 3183,
+            "x": 2697,
+            "y": 3184,
             "w": 73,
             "h": 73
           },
@@ -21562,8 +21582,8 @@
         },
         "player-hands-mugnificient.img": {
           "frame": {
-            "x": 2463,
-            "y": 3207,
+            "x": 3434,
+            "y": 3018,
             "w": 73,
             "h": 73
           },
@@ -21582,8 +21602,8 @@
         },
         "player-hands-multi-tusking.img": {
           "frame": {
-            "x": 3618,
-            "y": 2707,
+            "x": 3695,
+            "y": 2863,
             "w": 74,
             "h": 74
           },
@@ -21602,8 +21622,8 @@
         },
         "player-hands-nacho-hat.img": {
           "frame": {
-            "x": 3696,
-            "y": 2707,
+            "x": 3106,
+            "y": 2718,
             "w": 74,
             "h": 74
           },
@@ -21622,8 +21642,8 @@
         },
         "player-hands-neck-napkin.img": {
           "frame": {
-            "x": 3774,
-            "y": 2783,
+            "x": 3028,
+            "y": 2721,
             "w": 74,
             "h": 74
           },
@@ -21642,8 +21662,8 @@
         },
         "player-hands-neon.img": {
           "frame": {
-            "x": 2288,
-            "y": 3258,
+            "x": 3341,
+            "y": 3094,
             "w": 73,
             "h": 73
           },
@@ -21662,8 +21682,8 @@
         },
         "player-hands-norse-code.img": {
           "frame": {
-            "x": 3852,
-            "y": 2786,
+            "x": 2926,
+            "y": 2730,
             "w": 73,
             "h": 74
           },
@@ -21682,8 +21702,8 @@
         },
         "player-hands-old-kumo.img": {
           "frame": {
-            "x": 3028,
-            "y": 3256,
+            "x": 3005,
+            "y": 3336,
             "w": 72,
             "h": 72
           },
@@ -21702,8 +21722,8 @@
         },
         "player-hands-one-in-a-melon.img": {
           "frame": {
-            "x": 3929,
-            "y": 2863,
+            "x": 2816,
+            "y": 2798,
             "w": 74,
             "h": 73
           },
@@ -21722,8 +21742,8 @@
         },
         "player-hands-outfit-base.img": {
           "frame": {
-            "x": 2365,
-            "y": 3258,
+            "x": 3511,
+            "y": 3018,
             "w": 73,
             "h": 72
           },
@@ -21762,8 +21782,8 @@
         },
         "player-hands-outfitDC.img": {
           "frame": {
-            "x": 3852,
-            "y": 3172,
+            "x": 3588,
+            "y": 3018,
             "w": 73,
             "h": 73
           },
@@ -21782,8 +21802,8 @@
         },
         "player-hands-outfitFireball.img": {
           "frame": {
-            "x": 2413,
-            "y": 2837,
+            "x": 3399,
+            "y": 2481,
             "w": 72,
             "h": 77
           },
@@ -21802,8 +21822,8 @@
         },
         "player-hands-outfitMango.img": {
           "frame": {
-            "x": 3929,
-            "y": 3172,
+            "x": 3511,
+            "y": 3094,
             "w": 73,
             "h": 72
           },
@@ -21822,8 +21842,8 @@
         },
         "player-hands-outfitMecha.img": {
           "frame": {
-            "x": 4006,
-            "y": 3172,
+            "x": 3418,
+            "y": 3095,
             "w": 73,
             "h": 73
           },
@@ -21842,8 +21862,8 @@
         },
         "player-hands-outfitParmaPrestige.img": {
           "frame": {
-            "x": 3929,
-            "y": 3248,
+            "x": 3665,
+            "y": 3019,
             "w": 73,
             "h": 73
           },
@@ -21862,8 +21882,8 @@
         },
         "player-hands-pantera-onca.img": {
           "frame": {
-            "x": 2929,
-            "y": 3257,
+            "x": 3819,
+            "y": 3170,
             "w": 72,
             "h": 72
           },
@@ -21882,8 +21902,8 @@
         },
         "player-hands-parma.img": {
           "frame": {
-            "x": 4006,
-            "y": 3249,
+            "x": 3588,
+            "y": 3095,
             "w": 73,
             "h": 73
           },
@@ -21902,8 +21922,8 @@
         },
         "player-hands-parrot.img": {
           "frame": {
-            "x": 3187,
-            "y": 3027,
+            "x": 3495,
+            "y": 3170,
             "w": 73,
             "h": 73
           },
@@ -21942,8 +21962,8 @@
         },
         "player-hands-phoebonachi.img": {
           "frame": {
-            "x": 4007,
-            "y": 2863,
+            "x": 3184,
+            "y": 2718,
             "w": 74,
             "h": 74
           },
@@ -21962,7 +21982,7 @@
         },
         "player-hands-pineFury-left.img": {
           "frame": {
-            "x": 3638,
+            "x": 3714,
             "y": 2549,
             "w": 75,
             "h": 76
@@ -21982,8 +22002,8 @@
         },
         "player-hands-pineFury-right.img": {
           "frame": {
-            "x": 3717,
-            "y": 2549,
+            "x": 3793,
+            "y": 2551,
             "w": 75,
             "h": 76
           },
@@ -22002,8 +22022,8 @@
         },
         "player-hands-pleasing-part.img": {
           "frame": {
-            "x": 3002,
-            "y": 3103,
+            "x": 3742,
+            "y": 3094,
             "w": 73,
             "h": 73
           },
@@ -22022,8 +22042,8 @@
         },
         "player-hands-poinsetee.img": {
           "frame": {
-            "x": 3079,
-            "y": 3103,
+            "x": 3665,
+            "y": 3096,
             "w": 73,
             "h": 73
           },
@@ -22062,8 +22082,8 @@
         },
         "player-hands-prey-dinner.img": {
           "frame": {
-            "x": 3184,
-            "y": 2718,
+            "x": 3262,
+            "y": 2795,
             "w": 74,
             "h": 74
           },
@@ -22082,8 +22102,8 @@
         },
         "player-hands-purple-mecha.img": {
           "frame": {
-            "x": 2874,
-            "y": 3107,
+            "x": 3572,
+            "y": 3172,
             "w": 73,
             "h": 73
           },
@@ -22102,8 +22122,8 @@
         },
         "player-hands-rainbowhands.img": {
           "frame": {
-            "x": 2775,
-            "y": 3114,
+            "x": 3079,
+            "y": 3105,
             "w": 73,
             "h": 73
           },
@@ -22122,7 +22142,7 @@
         },
         "player-hands-ranch-dressing.img": {
           "frame": {
-            "x": 3106,
+            "x": 3340,
             "y": 2795,
             "w": 74,
             "h": 74
@@ -22142,8 +22162,8 @@
         },
         "player-hands-ranger.img": {
           "frame": {
-            "x": 2697,
-            "y": 3184,
+            "x": 2955,
+            "y": 3181,
             "w": 73,
             "h": 73
           },
@@ -22162,8 +22182,8 @@
         },
         "player-hands-retro-sunset.img": {
           "frame": {
-            "x": 2617,
-            "y": 3258,
+            "x": 2876,
+            "y": 3183,
             "w": 73,
             "h": 73
           },
@@ -22182,8 +22202,8 @@
         },
         "player-hands-rose-petals.img": {
           "frame": {
-            "x": 2540,
-            "y": 3260,
+            "x": 2774,
+            "y": 3194,
             "w": 73,
             "h": 73
           },
@@ -22202,8 +22222,8 @@
         },
         "player-hands-royal-fortune.img": {
           "frame": {
-            "x": 2442,
-            "y": 3284,
+            "x": 2619,
+            "y": 3261,
             "w": 73,
             "h": 73
           },
@@ -22222,8 +22242,8 @@
         },
         "player-hands-ruppert.img": {
           "frame": {
-            "x": 3004,
-            "y": 2798,
+            "x": 3106,
+            "y": 2796,
             "w": 74,
             "h": 74
           },
@@ -22242,8 +22262,8 @@
         },
         "player-hands-rustic-sands.img": {
           "frame": {
-            "x": 2365,
-            "y": 3334,
+            "x": 2696,
+            "y": 3261,
             "w": 73,
             "h": 73
           },
@@ -22262,8 +22282,8 @@
         },
         "player-hands-scareween.img": {
           "frame": {
-            "x": 2288,
-            "y": 3335,
+            "x": 2540,
+            "y": 3265,
             "w": 73,
             "h": 73
           },
@@ -22282,7 +22302,7 @@
         },
         "player-hands-scifi.img": {
           "frame": {
-            "x": 3399,
+            "x": 3475,
             "y": 2481,
             "w": 77,
             "h": 77
@@ -22302,8 +22322,8 @@
         },
         "player-hands-scout.img": {
           "frame": {
-            "x": 2188,
-            "y": 3345,
+            "x": 2463,
+            "y": 3276,
             "w": 73,
             "h": 72
           },
@@ -22322,8 +22342,8 @@
         },
         "player-hands-semi-pro.img": {
           "frame": {
-            "x": 3264,
-            "y": 3027,
+            "x": 2365,
+            "y": 3304,
             "w": 73,
             "h": 72
           },
@@ -22342,8 +22362,8 @@
         },
         "player-hands-sir-loin.img": {
           "frame": {
-            "x": 2890,
-            "y": 2807,
+            "x": 3184,
+            "y": 2796,
             "w": 74,
             "h": 74
           },
@@ -22362,8 +22382,8 @@
         },
         "player-hands-sniper.img": {
           "frame": {
-            "x": 3341,
-            "y": 3027,
+            "x": 2288,
+            "y": 3334,
             "w": 73,
             "h": 73
           },
@@ -22382,8 +22402,8 @@
         },
         "player-hands-snowman.img": {
           "frame": {
-            "x": 3264,
-            "y": 3103,
+            "x": 2188,
+            "y": 3345,
             "w": 73,
             "h": 73
           },
@@ -22403,7 +22423,7 @@
         "player-hands-snowy-claus.img": {
           "frame": {
             "x": 3156,
-            "y": 3104,
+            "y": 3105,
             "w": 73,
             "h": 73
           },
@@ -22422,8 +22442,8 @@
         },
         "player-hands-soap-pods.img": {
           "frame": {
-            "x": 3418,
-            "y": 3093,
+            "x": 3233,
+            "y": 3105,
             "w": 73,
             "h": 73
           },
@@ -22442,8 +22462,8 @@
         },
         "player-hands-sorta-blue.img": {
           "frame": {
-            "x": 3341,
-            "y": 3104,
+            "x": 3310,
+            "y": 3171,
             "w": 73,
             "h": 73
           },
@@ -22462,8 +22482,8 @@
         },
         "player-hands-space-snout.img": {
           "frame": {
-            "x": 3233,
-            "y": 3180,
+            "x": 3387,
+            "y": 3172,
             "w": 73,
             "h": 73
           },
@@ -22482,8 +22502,8 @@
         },
         "player-hands-speedo-sunburn.img": {
           "frame": {
-            "x": 3495,
-            "y": 3094,
+            "x": 3464,
+            "y": 3247,
             "w": 73,
             "h": 73
           },
@@ -22502,8 +22522,8 @@
         },
         "player-hands-speedo.img": {
           "frame": {
-            "x": 3418,
-            "y": 3170,
+            "x": 3032,
+            "y": 3182,
             "w": 73,
             "h": 73
           },
@@ -22522,8 +22542,8 @@
         },
         "player-hands-spetsnaz.img": {
           "frame": {
-            "x": 3310,
-            "y": 3181,
+            "x": 2953,
+            "y": 3258,
             "w": 73,
             "h": 73
           },
@@ -22542,8 +22562,8 @@
         },
         "player-hands-splotchfest.img": {
           "frame": {
-            "x": 3572,
-            "y": 3169,
+            "x": 2851,
+            "y": 3260,
             "w": 73,
             "h": 73
           },
@@ -22562,8 +22582,8 @@
         },
         "player-hands-starflag.img": {
           "frame": {
-            "x": 2801,
-            "y": 2876,
+            "x": 3003,
+            "y": 2799,
             "w": 74,
             "h": 73
           },
@@ -22582,8 +22602,8 @@
         },
         "player-hands-starry-night.img": {
           "frame": {
-            "x": 2693,
-            "y": 2949,
+            "x": 2894,
+            "y": 2808,
             "w": 74,
             "h": 74
           },
@@ -22602,8 +22622,8 @@
         },
         "player-hands-street-art.img": {
           "frame": {
-            "x": 2566,
-            "y": 2951,
+            "x": 2724,
+            "y": 2875,
             "w": 73,
             "h": 74
           },
@@ -22622,8 +22642,8 @@
         },
         "player-hands-stumpd.img": {
           "frame": {
-            "x": 2466,
-            "y": 2975,
+            "x": 2801,
+            "y": 2875,
             "w": 74,
             "h": 74
           },
@@ -22642,8 +22662,8 @@
         },
         "player-hands-sunburn.img": {
           "frame": {
-            "x": 2311,
-            "y": 3026,
+            "x": 2616,
+            "y": 2879,
             "w": 74,
             "h": 74
           },
@@ -22662,8 +22682,8 @@
         },
         "player-hands-sunrise-blvd.img": {
           "frame": {
-            "x": 2389,
-            "y": 3026,
+            "x": 2494,
+            "y": 2891,
             "w": 73,
             "h": 74
           },
@@ -22682,8 +22702,8 @@
         },
         "player-hands-sunset.img": {
           "frame": {
-            "x": 3495,
-            "y": 3171,
+            "x": 2773,
+            "y": 3271,
             "w": 73,
             "h": 73
           },
@@ -22702,8 +22722,8 @@
         },
         "player-hands-suppa-poncho.img": {
           "frame": {
-            "x": 3262,
-            "y": 2718,
+            "x": 2413,
+            "y": 2918,
             "w": 74,
             "h": 74
           },
@@ -22722,8 +22742,8 @@
         },
         "player-hands-swords.img": {
           "frame": {
-            "x": 3387,
-            "y": 3247,
+            "x": 2617,
+            "y": 3338,
             "w": 73,
             "h": 73
           },
@@ -22742,8 +22762,8 @@
         },
         "player-hands-tank.img": {
           "frame": {
-            "x": 3649,
-            "y": 3172,
+            "x": 2540,
+            "y": 3342,
             "w": 73,
             "h": 73
           },
@@ -22762,8 +22782,8 @@
         },
         "player-hands-target-red.img": {
           "frame": {
-            "x": 3572,
-            "y": 3246,
+            "x": 2694,
+            "y": 3338,
             "w": 73,
             "h": 72
           },
@@ -22782,8 +22802,8 @@
         },
         "player-hands-the-professional.img": {
           "frame": {
-            "x": 3464,
-            "y": 3248,
+            "x": 2442,
+            "y": 3352,
             "w": 73,
             "h": 73
           },
@@ -22802,8 +22822,8 @@
         },
         "player-hands-they-see-me-rolling.img": {
           "frame": {
-            "x": 3340,
-            "y": 2718,
+            "x": 2311,
+            "y": 2948,
             "w": 74,
             "h": 74
           },
@@ -22822,8 +22842,8 @@
         },
         "player-hands-tiki.img": {
           "frame": {
-            "x": 3726,
-            "y": 3248,
+            "x": 2365,
+            "y": 3380,
             "w": 72,
             "h": 73
           },
@@ -22842,8 +22862,8 @@
         },
         "player-hands-tip-the-scales.img": {
           "frame": {
-            "x": 2851,
-            "y": 3261,
+            "x": 3742,
+            "y": 3171,
             "w": 72,
             "h": 72
           },
@@ -22863,7 +22883,7 @@
         "player-hands-tirelessly.img": {
           "frame": {
             "x": 3418,
-            "y": 2718,
+            "y": 2863,
             "w": 74,
             "h": 73
           },
@@ -22882,8 +22902,8 @@
         },
         "player-hands-tomato-and-cheese.img": {
           "frame": {
-            "x": 3649,
-            "y": 3249,
+            "x": 2265,
+            "y": 3411,
             "w": 73,
             "h": 73
           },
@@ -22903,7 +22923,7 @@
         "player-hands-toontooine.img": {
           "frame": {
             "x": 3496,
-            "y": 2785,
+            "y": 2863,
             "w": 73,
             "h": 74
           },
@@ -22922,8 +22942,8 @@
         },
         "player-hands-toxic-barrel.img": {
           "frame": {
-            "x": 3418,
-            "y": 2795,
+            "x": 3573,
+            "y": 2940,
             "w": 74,
             "h": 74
           },
@@ -22942,8 +22962,8 @@
         },
         "player-hands-tribe-mask.img": {
           "frame": {
-            "x": 3573,
-            "y": 2785,
+            "x": 3262,
+            "y": 2873,
             "w": 74,
             "h": 74
           },
@@ -22962,8 +22982,8 @@
         },
         "player-hands-tribe-shield.img": {
           "frame": {
-            "x": 3651,
-            "y": 2785,
+            "x": 3340,
+            "y": 2873,
             "w": 74,
             "h": 74
           },
@@ -22982,8 +23002,8 @@
         },
         "player-hands-tunel-sun.img": {
           "frame": {
-            "x": 3541,
-            "y": 3322,
+            "x": 2188,
+            "y": 3422,
             "w": 73,
             "h": 73
           },
@@ -23002,8 +23022,8 @@
         },
         "player-hands-turkey.img": {
           "frame": {
-            "x": 3802,
-            "y": 3249,
+            "x": 3109,
+            "y": 3182,
             "w": 73,
             "h": 73
           },
@@ -23022,8 +23042,8 @@
         },
         "player-hands-turtle-sweater.img": {
           "frame": {
-            "x": 3879,
-            "y": 3325,
+            "x": 3186,
+            "y": 3182,
             "w": 73,
             "h": 73
           },
@@ -23042,8 +23062,8 @@
         },
         "player-hands-underbrush.img": {
           "frame": {
-            "x": 3956,
-            "y": 3326,
+            "x": 3263,
+            "y": 3248,
             "w": 73,
             "h": 73
           },
@@ -23062,8 +23082,8 @@
         },
         "player-hands-urban-camo.img": {
           "frame": {
-            "x": 2951,
-            "y": 3180,
+            "x": 3340,
+            "y": 3249,
             "w": 73,
             "h": 73
           },
@@ -23082,8 +23102,8 @@
         },
         "player-hands-venom.img": {
           "frame": {
-            "x": 2852,
-            "y": 3184,
+            "x": 3030,
+            "y": 3259,
             "w": 73,
             "h": 73
           },
@@ -23102,8 +23122,8 @@
         },
         "player-hands-village-ninja.img": {
           "frame": {
-            "x": 2774,
-            "y": 3191,
+            "x": 2928,
+            "y": 3335,
             "w": 73,
             "h": 73
           },
@@ -23122,8 +23142,8 @@
         },
         "player-hands-viper.img": {
           "frame": {
-            "x": 2694,
-            "y": 3261,
+            "x": 2850,
+            "y": 3337,
             "w": 73,
             "h": 73
           },
@@ -23142,8 +23162,8 @@
         },
         "player-hands-waves.img": {
           "frame": {
-            "x": 2617,
-            "y": 3335,
+            "x": 2771,
+            "y": 3348,
             "w": 73,
             "h": 73
           },
@@ -23162,8 +23182,8 @@
         },
         "player-hands-wheat.img": {
           "frame": {
-            "x": 2519,
-            "y": 3337,
+            "x": 2694,
+            "y": 3414,
             "w": 73,
             "h": 73
           },
@@ -23202,8 +23222,8 @@
         },
         "player-hands-winter.img": {
           "frame": {
-            "x": 3480,
-            "y": 2481,
+            "x": 3556,
+            "y": 2549,
             "w": 77,
             "h": 77
           },
@@ -23222,8 +23242,8 @@
         },
         "player-hands-wood-fire.img": {
           "frame": {
-            "x": 3729,
-            "y": 2861,
+            "x": 3418,
+            "y": 2940,
             "w": 74,
             "h": 73
           },
@@ -23242,8 +23262,8 @@
         },
         "player-hands-wooland.img": {
           "frame": {
-            "x": 2442,
-            "y": 3361,
+            "x": 2617,
+            "y": 3415,
             "w": 73,
             "h": 73
           },
@@ -23262,8 +23282,8 @@
         },
         "player-hands-yin-yang.img": {
           "frame": {
-            "x": 2365,
-            "y": 3411,
+            "x": 2519,
+            "y": 3419,
             "w": 73,
             "h": 73
           },
@@ -23282,8 +23302,8 @@
         },
         "player-hands-zebra.img": {
           "frame": {
-            "x": 2265,
-            "y": 3412,
+            "x": 2441,
+            "y": 3429,
             "w": 73,
             "h": 73
           },
@@ -23602,8 +23622,8 @@
         },
         "player-map-inner.img": {
           "frame": {
-            "x": 3775,
-            "y": 3095,
+            "x": 2342,
+            "y": 3457,
             "w": 72,
             "h": 72
           },
@@ -23622,8 +23642,8 @@
         },
         "player-map-outer.img": {
           "frame": {
-            "x": 3726,
-            "y": 3325,
+            "x": 2265,
+            "y": 3488,
             "w": 72,
             "h": 72
           },
@@ -24242,8 +24262,8 @@
         },
         "proj-frag-pin-part.img": {
           "frame": {
-            "x": 3474,
-            "y": 364,
+            "x": 4036,
+            "y": 3155,
             "w": 58,
             "h": 58
           },
@@ -24278,6 +24298,26 @@
           "sourceSize": {
             "w": 128,
             "h": 128
+          }
+        },
+        "proj-mine-01.img": {
+          "frame": {
+            "x": 2731,
+            "y": 2790,
+            "w": 81,
+            "h": 81
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 24,
+            "y": 24,
+            "w": 81,
+            "h": 81
+          },
+          "sourceSize": {
+            "w": 129,
+            "h": 129
           }
         },
         "proj-mirv-mini-01.img": {
@@ -24662,8 +24702,8 @@
         },
         "quit.img": {
           "frame": {
-            "x": 2188,
-            "y": 3421,
+            "x": 4025,
+            "y": 2551,
             "w": 68,
             "h": 72
           },
@@ -25142,8 +25182,8 @@
         },
         "submit.img": {
           "frame": {
-            "x": 4028,
-            "y": 2551,
+            "x": 4027,
+            "y": 2700,
             "w": 66,
             "h": 66
           },
@@ -25262,8 +25302,8 @@
         },
         "timer-background.img": {
           "frame": {
-            "x": 3802,
-            "y": 3326,
+            "x": 2188,
+            "y": 3499,
             "w": 72,
             "h": 72
           },
