@@ -69,7 +69,7 @@ const mapDef: PartialMapDef = {
             { name: "lasr_swrd_03", count: 1, weight: 0.20 },
             { name: "lasr_gun", count: 1, weight: 0.27 },
             { name: "lasr_gun_dual", count: 1, weight: 0.15 },
-            { name: "pulseBox", count: 10, weight: 17},
+            { name: "pulseBox", count: 2, weight: 0.20},
         ]
     }
 };
