@@ -796,7 +796,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         name: "Mine",
         type: "throwable",
         quality: 0,
-        explosionType: "explosion_frag",
+        explosionType: "explosion_mine",
         inventoryOrder: 1,
         cookable: true,
         explodeOnImpact: false,

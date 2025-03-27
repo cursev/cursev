@@ -173,7 +173,7 @@ export class Projectile extends BaseGameObject {
                     this.triggeredTime += dt;
                     if (this.triggeredTime >= 0.5) {
                         this.game.explosionBarn.addExplosion(
-                            "explosion_frag",
+                            "explosion_mine",
                             this.pos,
                             this.layer,
                             "",
