@@ -793,7 +793,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         },
     },
     mine: {
-        name: "Frag Grenade",
+        name: "Mine",
         type: "throwable",
         quality: 0,
         explosionType: "explosion_frag",

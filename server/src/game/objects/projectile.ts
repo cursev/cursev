@@ -14,6 +14,7 @@ import { BaseGameObject } from "./gameObject";
 // and exploding, from recorded packets from the original game
 const gravity = 10.5;
 
+
 export class ProjectileBarn {
     projectiles: Projectile[] = [];
     constructor(readonly game: Game) {}
@@ -81,6 +82,10 @@ export class Projectile extends BaseGameObject {
     dead = false;
 
     obstacleBellowId = 0;
+
+    private activateTime: number = 0;
+    private triggeredTime: number | null = null;
+
 
     strobe?: {
         strobeTicker: number;
@@ -160,6 +165,56 @@ export class Projectile extends BaseGameObject {
         if (this.strobe) {
             this.updateStrobe(dt);
         }
+
+        if (this.type === "mine") {
+            this.activateTime += dt;
+            if (this.activateTime >= 2) {
+                if (this.triggeredTime !== null) {
+                    this.triggeredTime += dt;
+                    if (this.triggeredTime >= 1) {
+                        this.game.explosionBarn.addExplosion(
+                            "explosion_frag",
+                            this.pos,
+                            this.layer,
+                            "",
+                            "",
+                            GameConfig.DamageType.Player,
+                            this
+                        );
+                        this.destroyed = true;
+                    }
+                } else {
+                    let mineTrigger = false;
+                    for (const player of this.game.playerBarn.players.values()) {
+                        if (v2.distance(this.pos, player.pos) < 1) {
+                            mineTrigger = true;
+                            break;
+                        }
+                    }
+                    if (!mineTrigger) {
+                        for (const bullet of this.game.bulletBarn.bullets) {
+                            if (v2.distance(this.pos, bullet.pos) < 1) {
+                                mineTrigger = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!mineTrigger) {
+                        for (const explosion of this.game.explosionBarn.explosions) {
+                            if (v2.distance(this.pos, explosion.pos) < 1) {
+                                mineTrigger = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (mineTrigger) {
+                        this.triggeredTime = 0;
+                    }
+                }
+            }
+        }
+        
+        
 
         const def = GameObjectDefs[this.type] as ThrowableDef;
         //
