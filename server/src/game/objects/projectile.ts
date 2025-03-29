@@ -40,6 +40,8 @@ export class ProjectileBarn {
         vel: Vec2,
         fuseTime: number,
         damageType: number,
+        throwDir?: Vec2,
+        gameSourceType?: string,
     ): Projectile {
         const proj = new Projectile(
             this.game,
@@ -51,6 +53,8 @@ export class ProjectileBarn {
             vel,
             fuseTime,
             damageType,
+            throwDir,
+            gameSourceType,
         );
 
         this.projectiles.push(proj);
@@ -67,9 +71,12 @@ export class Projectile extends BaseGameObject {
 
     posZ: number;
     dir: Vec2;
-    initialDir: Vec2;
+    throwDir: Vec2;
 
     type: string;
+    // used for "heavy" potatos and snowballs
+    // so the kill source is still the regular potato
+    gameSourceType: string;
 
     rad: number;
 
@@ -103,6 +110,8 @@ export class Projectile extends BaseGameObject {
         vel: Vec2,
         fuseTime: number,
         damageType: DamageType,
+        throwDir?: Vec2,
+        gameSourceType?: string,
     ) {
         super(game, pos);
         this.layer = layer;
@@ -113,7 +122,8 @@ export class Projectile extends BaseGameObject {
         this.fuseTime = fuseTime;
         this.damageType = damageType;
         this.dir = v2.normalizeSafe(vel);
-        this.initialDir = v2.copy(this.dir);
+        this.throwDir = throwDir ?? v2.copy(this.dir);
+        this.gameSourceType = gameSourceType || this.type;
 
         const def = GameObjectDefs[type] as ThrowableDef;
         this.velZ = def.throwPhysics.velZ;
@@ -132,7 +142,7 @@ export class Projectile extends BaseGameObject {
 
             if (this.strobe.strobeTicker <= 0) {
                 this.game.playerBarn.addEmote(0, this.pos, "ping_airstrike", true);
-                this.game.planeBarn.addAirStrike(this.pos, this.dir, this.playerId);
+                this.game.planeBarn.addAirStrike(this.pos, this.throwDir, this.playerId);
                 this.strobe.airstrikesLeft--;
                 this.strobe.airstrikeTicker = 0.85;
             }
@@ -150,11 +160,11 @@ export class Projectile extends BaseGameObject {
                 //the position can only be "past" the strobe
                 //meaning that the random direction can be a MAX of 90 degrees offset from the regular direction so it doesnt go backwards
                 const randomDir = v2.rotate(
-                    this.dir,
+                    this.throwDir,
                     util.random(-Math.PI / 2, Math.PI / 2),
                 );
                 const pos = v2.add(this.pos, v2.mul(randomDir, 7));
-                this.game.planeBarn.addAirStrike(pos, this.initialDir, this.playerId);
+                this.game.planeBarn.addAirStrike(pos, this.throwDir, this.playerId);
                 this.strobe.airstrikesLeft--;
                 this.strobe.airstrikeTicker = 0.85;
             }
@@ -255,7 +265,13 @@ export class Projectile extends BaseGameObject {
                     this.pos,
                     this.rad,
                 );
-                if (intersection) {
+                const lineIntersection = collider.intersectSegment(
+                    obj.collider,
+                    posOld,
+                    this.pos,
+                );
+
+                if (intersection || lineIntersection) {
                     if (obj.height >= height && obj.__id !== this.obstacleBellowId) {
                         let damage = 1;
                         if (def.destroyNonCollidables && !obj.collidable) {
@@ -265,25 +281,20 @@ export class Projectile extends BaseGameObject {
                         obj.damage({
                             amount: damage,
                             damageType: this.damageType,
-                            gameSourceType: this.type,
+                            gameSourceType: this.gameSourceType,
+                            source: this.game.objectRegister.getById(this.playerId),
                             mapSourceType: "",
                             dir: this.vel,
                         });
 
                         if (obj.dead || !obj.collidable) continue;
 
-                        const lineIntersection = collider.intersectSegment(
-                            obj.collider,
-                            posOld,
-                            this.pos,
-                        );
-
                         if (lineIntersection) {
                             this.pos = v2.add(
                                 lineIntersection.point,
                                 v2.mul(lineIntersection.normal, this.rad + 0.1),
                             );
-                        } else {
+                        } else if (intersection) {
                             this.pos = v2.add(
                                 this.pos,
                                 v2.mul(intersection.dir, intersection.pen + 0.1),
@@ -295,7 +306,9 @@ export class Projectile extends BaseGameObject {
                         } else {
                             const len = v2.length(this.vel);
                             const dir = v2.div(this.vel, len);
-                            const normal = intersection.dir;
+                            const normal = intersection
+                                ? intersection.dir
+                                : lineIntersection!.normal;
                             const dot = v2.dot(dir, normal);
                             const newDir = v2.add(v2.mul(normal, dot * -2), dir);
                             this.vel = v2.mul(newDir, len * 0.3);
@@ -397,6 +410,8 @@ export class Projectile extends BaseGameObject {
                     velocity,
                     splitDef.fuseTime,
                     DamageType.Player,
+                    undefined,
+                    this.gameSourceType,
                 );
             }
         }
@@ -413,7 +428,7 @@ export class Projectile extends BaseGameObject {
                 explosionType,
                 this.pos,
                 this.layer,
-                this.type,
+                this.gameSourceType,
                 "",
                 this.damageType,
                 source,
