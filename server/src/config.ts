@@ -1,9 +1,8 @@
-import fs from "fs";
-import path from "path";
 import type { MapDefs } from "../../shared/defs/mapDefs";
-import { GameConfig, TeamMode } from "../../shared/gameConfig";
+import { type GameConfig, TeamMode } from "../../shared/gameConfig";
 import { util } from "../../shared/utils/util";
 import type { Vec2 } from "../../shared/utils/v2";
+import { CustomConfig } from "./resurviv-config";
 
 const isProduction = process.env["NODE_ENV"] === "production";
 
@@ -71,37 +70,21 @@ export const Config = {
     gameConfig: {},
 } satisfies ConfigType as ConfigType;
 
-const runningOnVite = process.argv.toString().includes("vite");
+util.mergeDeep(Config, CustomConfig);
 
-const configPath = path.join(
-    __dirname,
-    isProduction && !runningOnVite ? "../../" : "",
-    "../../",
-);
-
-function loadConfig(fileName: string, create?: boolean) {
-    const path = `${configPath}${fileName}`;
-
-    let loaded = false;
-    if (fs.existsSync(path)) {
-        const localConfig = JSON.parse(fs.readFileSync(path).toString());
-        util.mergeDeep(Config, localConfig);
-        loaded = true;
-    } else if (create) {
-        console.log("Config file doesn't exist... creating");
-        fs.writeFileSync(path, JSON.stringify({}, null, 2));
-    }
-
-    util.mergeDeep(GameConfig, Config.gameConfig);
-    return loaded;
+if (!isProduction) {
+    util.mergeDeep(Config, {
+        regions: {
+            local: {
+                https: false,
+                address: `${Config.devServer.host}:${Config.devServer.port}`,
+                l10n: "index-local",
+            },
+        },
+    });
 }
 
-// try loading old config file first for backwards compatibility
-if (!loadConfig("resurviv-config.json")) {
-    loadConfig("survev-config.json", true);
-}
-
-type DeepPartial<T> = T extends object
+export type DeepPartial<T> = T extends object
     ? {
           [P in keyof T]?: DeepPartial<T[P]>;
       }

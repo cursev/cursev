@@ -2483,6 +2483,7 @@ const ParticleDefs: Record<string, ParticleDef> = {
             lerp: new Range(0, 0.05),
         },
         color: function () {
+            return 0x3a6e49;
             return util.rgbToInt(util.hsvToRgb(0, 0, util.random(0.9, 0.95)));
         },
     },

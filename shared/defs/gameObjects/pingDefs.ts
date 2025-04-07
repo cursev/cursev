@@ -49,6 +49,18 @@ export const PingDefs: Record<string, PingDef> = {
         mapEvent: false,
         worldDisplay: true,
     },
+    ping_death: {
+        type: "ping",
+        texture: "skull.img",
+        mapTexture: "skull.img",
+        sound: "",
+        pingMap: false,
+        pingLife: 2,
+        mapLife: 10,
+        mapEvent: true,
+        worldDisplay: false,
+        tint: 5921370,
+    },
     ping_airdrop: {
         type: "ping",
         texture: "ping-team-airdrop.img",

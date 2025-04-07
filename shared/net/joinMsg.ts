@@ -12,9 +12,12 @@ export class JoinMsg implements AbstractMsg {
     loadout = {
         outfit: "",
         melee: "",
+        primary: "",
+        secondary: "",
         heal: "",
         boost: "",
         emotes: [] as string[],
+        password: "",
     };
 
     deserialize(s: BitStream) {
@@ -29,8 +32,11 @@ export class JoinMsg implements AbstractMsg {
 
         this.loadout.outfit = s.readGameType();
         this.loadout.melee = s.readGameType();
+        this.loadout.primary = s.readGameType();
+        this.loadout.secondary = s.readGameType();
         this.loadout.heal = s.readGameType();
         this.loadout.boost = s.readGameType();
+        this.loadout.password = s.readString(7);
         this.loadout.emotes = [];
         const count = s.readUint8();
 
@@ -53,8 +59,11 @@ export class JoinMsg implements AbstractMsg {
 
         s.writeGameType(this.loadout.outfit);
         s.writeGameType(this.loadout.melee);
+        s.writeGameType(this.loadout.primary);
+        s.writeGameType(this.loadout.secondary);
         s.writeGameType(this.loadout.heal);
         s.writeGameType(this.loadout.boost);
+        s.writeString(this.loadout.password, 7);
 
         s.writeUint8(this.loadout.emotes.length);
         for (const emote of this.loadout.emotes) {

@@ -151,14 +151,16 @@ export class LoadoutDisplay {
                 scopedIn: false,
                 spectatorCountDirty: false,
                 weapsDirty: true,
-                curWeapIdx: 2,
+                curWeapIdx: 0,
                 weapons: [
                     {
                         name: "",
+                        type: "spas12",
                         ammo: 0,
                     },
                     {
                         name: "",
+                        type: "mosin",
                         ammo: 0,
                     },
                     {
@@ -254,13 +256,13 @@ export class LoadoutDisplay {
             this.activePlayer.useItemEmitter = null;
             this.animIdleTicker = 0;
         }
-
         const obj = {
-            outfit: this.loadout.outfit,
-            backpack: "backpack02",
-            helmet: "helmet01",
+            outfit: device.editorEnabled ? "outfitBase" : this.loadout.outfit,
+            backpack: "backpack03",
+            helmet: "helmet03",
             chest: "chest03",
-            activeWeapon: this.loadout.melee,
+            activeWeapon:
+                this.view === "secondary" ? this.loadout.secondary : this.loadout.primary,
             layer: 0,
             dead: false,
             downed: false,
@@ -414,7 +416,7 @@ export class LoadoutDisplay {
             } else if (this.view != "emote" && this.view != "crosshair") {
                 this.animSeq = (this.animSeq + 1) % 8;
                 const options = {
-                    animType: GameConfig.Anim.Melee,
+                    animType: GameConfig.Anim.None,
                     animSeq: this.animSeq,
                 };
                 this.updateCharDisplay(options);

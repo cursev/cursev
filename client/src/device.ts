@@ -72,6 +72,9 @@ class Device {
     tablet: boolean;
     touch: boolean;
     uiLayout: number;
+    debug = false;
+    editorEnabled = false;
+
     UiLayout = {
         Lg: 0,
         Sm: 1,
@@ -86,6 +89,8 @@ class Device {
         this.browser = getBrowser();
         this.model = detectiPhoneX() ? "iphonex" : "unknown";
         const versionParam = getParameterByName("version");
+        this.editorEnabled = Boolean(getParameterByName("outfitEditor"));
+        console.log(getParameterByName("outfitEditor"));
         if (versionParam) {
             setItem("surviv_version", versionParam);
         }

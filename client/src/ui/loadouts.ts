@@ -8,10 +8,13 @@ export interface Loadout {
     player_icon: string;
     outfit: string;
     heal: string;
+    primary: string;
+    secondary: string;
     boost: string;
     melee: string;
     emotes: string[];
     crosshair: Crosshair;
+    password: string;
 }
 
 export enum ItemStatus {
@@ -59,6 +62,8 @@ const loadout = {
             heal: getGameType("heal_effect", mergedLoadout.heal, "heal_basic"),
             boost: getGameType("boost_effect", mergedLoadout.boost, "boost_basic"),
             player_icon: getGameType("emote", mergedLoadout.player_icon, ""),
+            primary: getGameType("gun", mergedLoadout.primary, "mosin"),
+            secondary: getGameType("gun", mergedLoadout.secondary, "mosin"),
             crosshair: {
                 type: getGameType(
                     "crosshair",
@@ -78,6 +83,7 @@ const loadout = {
                 ).toFixed(2) as unknown as number,
             },
             emotes: [] as string[],
+            password: "",
         };
 
         const defaultEmotes = GameConfig.defaultEmoteLoadout.slice();

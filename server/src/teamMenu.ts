@@ -33,6 +33,7 @@ interface RoomPlayer extends TeamMenuPlayer {
 export interface Room {
     roomData: RoomData;
     players: RoomPlayer[];
+    groupHash?: string;
 }
 
 type ErrorType =
@@ -453,9 +454,9 @@ export class TeamMenu {
                     (p) => p.socketData === localPlayerData,
                 )!;
 
-                if (!player.isLeader) {
-                    return;
-                }
+                // if (!player.isLeader) {
+                //     return;
+                // }
 
                 room.roomData.findingGame = true;
                 this.sendRoomState(room);
@@ -478,6 +479,12 @@ export class TeamMenu {
                     return;
                 }
 
+                if (room.groupHash) {
+                    playData.data = room.groupHash;
+                } else {
+                    room.groupHash = playData.data;
+                }
+
                 response = {
                     type: "joinGame",
                     data: {
@@ -485,11 +492,15 @@ export class TeamMenu {
                         data: playData.data,
                     },
                 };
-                this.sendResponses(response, room.players);
+                // this.sendResponses(response, room.players);
 
-                room.players.forEach((p) => {
-                    p.inGame = true;
-                });
+                // room.players.forEach((p) => {
+                //     p.inGame = true;
+                // });
+                this.sendResponse(response, player);
+                player.inGame = true;
+                room.roomData.findingGame = false;
+
                 this.sendRoomState(room);
                 break;
             }

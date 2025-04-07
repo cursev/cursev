@@ -562,7 +562,7 @@ export class GameMap {
         //
         // Generate rivers
         //
-
+        if (!mapConfig.rivers.weights.length) return;
         const widths = util.weightedRandom(
             mapConfig.rivers.weights,
             randomGenerator,
@@ -831,17 +831,19 @@ export class GameMap {
             if (def.terrain?.waterEdge) {
                 this.genOnWaterEdge(type);
             } else if (def.terrain?.river) {
-                this.genOnRiver(type);
+                // this.genOnRiver(type);
             } else if (def.terrain?.bridge) {
-                this.genBridge(type);
+                // this.genBridge(type);
             } else if (def.terrain?.lakeCenter) {
-                this.genOnLakeCenter(type);
+                // this.genOnLakeCenter(type);
             } else if (def.terrain?.grass) {
-                this.genOnGrass(type);
+                try {
+                    this.genOnGrass(type);
+                } catch (error) {
+                    console.log(`failed to generate ${type}`);
+                }
             } else if (def.terrain?.beach) {
                 this.genOnBeach(type);
-            } else if (def.terrain?.riverShore) {
-                this.genOnRiverShore(type);
             } else {
                 this.genOnGrass(type);
             }

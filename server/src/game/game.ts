@@ -217,10 +217,9 @@ export class Game {
     }
 
     get canJoin(): boolean {
+        return !this.over;
         return (
-            this.aliveCount < this.map.mapDef.gameMode.maxPlayers &&
-            !this.over &&
-            this.gas.stage < 2
+            this.aliveCount < this.map.mapDef.gameMode.maxPlayers && !this.over // && this.gas.stage < 2
         );
     }
 
@@ -350,7 +349,10 @@ export class Game {
         player.spectating = undefined;
         player.dir = v2.create(0, 0);
         player.setPartDirty();
-        if (player.timeAlive < GameConfig.player.minActiveTime && !player.downed) {
+        if (
+            (player.timeAlive < GameConfig.player.minActiveTime && !player.downed) ||
+            true
+        ) {
             player.game.playerBarn.removePlayer(player);
         }
     }

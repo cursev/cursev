@@ -3,11 +3,16 @@ import $ from "jquery";
 import { GameObjectDefs } from "../../../shared/defs/gameObjectDefs";
 import { EmoteCategory, type EmoteDef } from "../../../shared/defs/gameObjects/emoteDefs";
 import type { MeleeDef } from "../../../shared/defs/gameObjects/meleeDefs";
-import type { UnlockDef } from "../../../shared/defs/gameObjects/unlockDefs";
+import { OutfitDefs } from "../../../shared/defs/gameObjects/outfitDefs";
+import {
+    type UnlockDef,
+    privateOutfits,
+} from "../../../shared/defs/gameObjects/unlockDefs";
 import { EmoteSlot } from "../../../shared/gameConfig";
 import { util } from "../../../shared/utils/util";
 import type { Account } from "../account";
-import { crosshair } from "../crosshair";
+import type { ConfigManager } from "../config";
+import { type Crosshair, crosshair } from "../crosshair";
 import { device } from "../device";
 import { helpers } from "../helpers";
 import loadout, { type ItemStatus, type Loadout } from "./loadouts";
@@ -91,12 +96,12 @@ const sortTypes: Record<string, any> = {
     subcat: itemSort(sortSubcat),
 };
 
-interface Item {
+export interface Item {
     type: string;
     source: string;
-    ackd: number;
     timeAcquired: number;
     status?: ItemStatus;
+    ackd?: ItemStatus.Ackd;
 }
 interface ItemInfo {
     type: string;
@@ -143,6 +148,16 @@ export class LoadoutMenu {
             loadoutType: "melee",
             gameType: "melee",
             categoryImage: "img/gui/loadout-melee.svg",
+        },
+        {
+            loadoutType: "primary",
+            gameType: "gun",
+            categoryImage: "img/loot/loot-weapon-m870.svg",
+        },
+        {
+            loadoutType: "secondary",
+            gameType: "gun",
+            categoryImage: "img/loot/loot-weapon-ak.svg",
         },
         {
             loadoutType: "emote",
@@ -207,6 +222,7 @@ export class LoadoutMenu {
     constructor(
         public account: Account,
         public localization: Localization,
+        readonly config: ConfigManager,
     ) {
         if (!device.touch) {
             this.categories.push({
@@ -247,6 +263,9 @@ export class LoadoutMenu {
         account.addEventListener("loadout", this.onLoadout.bind(this));
         account.addEventListener("items", this.onItems.bind(this));
         account.addEventListener("pass", this.onPass.bind(this));
+        if (device.editorEnabled) {
+            this.mountEditor();
+        }
     }
 
     init() {
@@ -296,16 +315,9 @@ export class LoadoutMenu {
                 this.sortItems(e.target.value);
             });
             this.modalCustomizeItemName.on("click", () => {
-                const elements = document.getElementsByClassName(
+                const _elements = document.getElementsByClassName(
                     "customize-list-item-selected",
                 );
-                if (elements.length > 0) {
-                    elements[0].scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                        inline: "nearest",
-                    });
-                }
             });
             $("#crosshair-size").on("input", () => {
                 this.updateLoadoutFromDOM();
@@ -352,6 +364,7 @@ export class LoadoutMenu {
 
     show() {
         this.init();
+        helpers.refreshPageAds(["300x600"]);
         this.modal.show();
     }
 
@@ -419,8 +432,8 @@ export class LoadoutMenu {
         }
     }
 
-    onItems(items: unknown[]) {
-        this.items = loadout.getUserAvailableItems(items) as unknown as Item[];
+    onItems(items: Item[]) {
+        this.items = loadout.getUserAvailableItems(items) as Item[];
         for (let i = 0; i < this.items.length; i++) {
             const item = this.items[i];
             if (
@@ -447,17 +460,6 @@ export class LoadoutMenu {
             this.tryBeginConfirmingItems();
             this.selectCat(this.selectedCatIdx);
         }
-
-        // Request the default unlock if we don't have it yet
-        if (this.account.loggedIn) {
-            if (
-                !this.items.find((x) => {
-                    return x.type == "unlock_new_account";
-                })
-            ) {
-                this.account.unlock("unlock_new_account");
-            }
-        }
     }
 
     onPass(pass: UnlockDef) {
@@ -475,6 +477,122 @@ export class LoadoutMenu {
                 this.account.setPassUnlock(unlockType);
             });
         }
+    }
+
+    mountEditor() {
+        const laodoutBtn = document.querySelector("#player-options #btn-customize")!;
+        laodoutBtn.className =
+            "btn-darken menu-option player-options-btn btn-custom-mode-main btn-custom";
+        laodoutBtn.addEventListener(
+            "click",
+            function () {
+                const skinOutfit = OutfitDefs["outfitBase"];
+                var lodoutOutfit = document.querySelector<HTMLElement>(
+                    "#modal-customize-body",
+                )!;
+                var colorPicker = `
+                        <div class="container" style="color: white; padding: 10px 5px">
+                        <div style="padding: 10px 0">
+                        <label>body color</label>
+                        <input type="color" id="bodyColorPicker" value="#f8c574">
+                        </div>
+
+                        <div style="padding: 10px 0">
+                        <label>hands color</label>
+                        <input type="color" id="handsColorPicker" value="#f8c574">
+                        </div>
+
+                        <div style="padding: 10px 0">
+                        <label>backpack color</label>
+                        <input type="color" id="backpackColoPicker" value="#816537">
+                        </div>
+
+                        <div class="choose-sprite" style="display: flex;">
+                        <div class="outfit">
+                        <h4 style="padding: 0; text-align: center;">player-base-01</h4>
+                        <img id="base01" class="customize-list-item" src="/img/player/player-base-01.svg" alt="player-base-01">
+                        </div>
+                        <div class="outfit">
+                        <h4 style="padding: 0; text-align: center;">player-base-02</h4>
+                        <img id="base02" class="customize-list-item" src="/img/player/player-base-02.svg" alt="player-base-02">
+                        </div>
+                        </div>
+                        <div style="display: flex; align-items: center">
+                            <button class="btn-submit">Copy Value</button>
+                        </div>
+                        </div>
+                    `;
+                lodoutOutfit.innerHTML = colorPicker;
+                const bodyColorPicker =
+                    document.querySelector<HTMLInputElement>("#bodyColorPicker")!;
+                bodyColorPicker.addEventListener("change", changeBodyColor, !1);
+                const copyButton =
+                    lodoutOutfit.querySelector<HTMLButtonElement>(".btn-submit")!;
+                copyButton.addEventListener("click", (e) => {
+                    const code = JSON.stringify(skinOutfit.skinImg, null, 2);
+                    console.log(code);
+                    helpers.copyTextToClipboard(code);
+                });
+                function changeBodyColor() {
+                    skinOutfit.skinImg.baseTint = util.hexToInt(
+                        bodyColorPicker.value.substring(1),
+                    );
+                }
+                const handsColorPicker =
+                    document.querySelector<HTMLInputElement>("#handsColorPicker")!;
+                handsColorPicker.addEventListener("change", changeHandsColor, !1);
+
+                function changeHandsColor() {
+                    const tint = util.hexToInt(handsColorPicker.value.substring(1));
+                    skinOutfit.skinImg.handTint = tint;
+                    skinOutfit.skinImg.footTint = tint;
+                }
+                const backpackColoPicker =
+                    document.querySelector<HTMLInputElement>("#backpackColoPicker")!;
+                backpackColoPicker.addEventListener("change", changeBackpackColor, !1);
+
+                function changeBackpackColor() {
+                    skinOutfit.skinImg.backpackTint = util.hexToInt(
+                        backpackColoPicker.value.substring(1),
+                    );
+                }
+                const chooseSprite =
+                    document.querySelector<HTMLElement>(".choose-sprite")!;
+                chooseSprite.addEventListener("click", function ({ target }) {
+                    const { id } = target as HTMLElement;
+                    // TODO: clean up
+                    if (id == "base01") {
+                        changeSprite(
+                            "player-base-01.img",
+                            "player-hands-01.img",
+                            "player-circle-base-01.img",
+                            "player-feet-01.img",
+                        );
+                    } else if (id == "base02") {
+                        changeSprite(
+                            "player-base-02.img",
+                            "player-hands-02.img",
+                            "player-circle-base-02.img",
+                            "player-feet-02.img",
+                        );
+                    }
+                });
+                function changeSprite(
+                    baseSprite: string,
+                    handSprite: string,
+                    backpackSprite: string,
+                    footSprite: string,
+                ) {
+                    Object.assign(skinOutfit.skinImg, {
+                        baseSprite,
+                        handSprite,
+                        backpackSprite,
+                        footSprite,
+                    });
+                }
+            },
+            !1,
+        );
     }
 
     getCategory(gameType: string) {
@@ -696,13 +814,22 @@ export class LoadoutMenu {
                 color: util.hexToInt(color),
                 size: Number(size.toFixed(2)),
                 stroke: Number(stroke.toFixed(2)),
-            };
+            } as unknown as Crosshair;
         } else {
-            this.loadout[loadoutType as keyof Loadout] = this.selectedItem.type as any;
+            const privateSkin = helpers.getParameterByName("customSkin");
+            if (
+                loadoutType === "outfit" &&
+                privateSkin &&
+                privateOutfits.includes(privateSkin)
+            ) {
+                this.loadout.outfit = privateSkin;
+                this.config.set("loadout", this.loadout);
+            } else {
+                this.loadout[loadoutType as keyof Loadout] = this.selectedItem
+                    .type as any;
+            }
         }
-
         this.loadout = loadout.validate(this.loadout);
-
         if (this.loadoutDisplay?.initialized) {
             this.loadoutDisplay.setLoadout(this.loadout);
         }
@@ -1030,7 +1157,7 @@ export class LoadoutMenu {
                     color: 0xffffff,
                     size: 1,
                     stroke: 0,
-                };
+                } as unknown as Crosshair;
                 crosshair.setElemCrosshair(outerDiv, crosshairDef);
             }
 

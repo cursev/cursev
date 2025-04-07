@@ -18,6 +18,7 @@ import { type Vec2, v2 } from "../../../shared/utils/v2";
 import type { BulletParams } from "../game/objects/bullet";
 import type { GameObject } from "../game/objects/gameObject";
 import type { Player } from "../game/objects/player";
+import { THIS_REGION } from "../region";
 import type { Projectile } from "./objects/projectile";
 
 /**
@@ -113,7 +114,7 @@ export class WeaponManager {
 
             const swappingToGun = nextWeaponDef.type == "gun";
 
-            effectiveSwitchDelay = swappingToGun ? nextWeaponDef.switchDelay : 0;
+            effectiveSwitchDelay = swappingToGun ? nextWeaponDef.switchDelay * 0.33 : 0;
 
             if (this.player.freeSwitchTimer < 0) {
                 effectiveSwitchDelay = GameConfig.player.baseSwitchDelay;
@@ -128,7 +129,8 @@ export class WeaponManager {
                 curWeaponDef.deployGroup / nextWeaponDef.deployGroup === 1 &&
                 curWeapon.cooldown > 0
             ) {
-                effectiveSwitchDelay = nextWeaponDef.switchDelay;
+                const nerfPercentage = THIS_REGION === "eu" ? 0.7 : 0.4;
+                effectiveSwitchDelay = nextWeaponDef.switchDelay * nerfPercentage;
             }
 
             nextWeapon.cooldown = effectiveSwitchDelay;

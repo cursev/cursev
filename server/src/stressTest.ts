@@ -293,6 +293,9 @@ class Bot {
             heal: "heal_basic",
             boost: "boost_basic",
             emotes: this.emotes,
+            primary: "mosin",
+            secondary: "mosin",
+            password: "",
         };
 
         joinMsg.matchPriv = this.data;

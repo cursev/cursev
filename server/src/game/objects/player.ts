@@ -119,9 +119,14 @@ export class PlayerBarn {
     }
 
     addPlayer(socketId: string, joinMsg: net.JoinMsg) {
-        const joinData = this.game.joinTokens.get(joinMsg.matchPriv);
+        let joinData = this.game.joinTokens.get(joinMsg.matchPriv);
 
-        if (!joinData || joinData.expiresAt < Date.now() || joinData.availableUses <= 0) {
+        if (!joinData) {
+            this.game.addJoinToken(joinMsg.matchPriv, false, 2);
+            joinData = this.game.joinTokens.get(joinMsg.matchPriv);
+        }
+
+        if (!joinData) {
             this.game.closeSocket(socketId);
             if (joinData) {
                 this.game.joinTokens.delete(joinMsg.matchPriv);
@@ -853,7 +858,7 @@ export class Player extends BaseGameObject {
 
             // armor
             if (this.helmet && !this.hasRoleHelmet) {
-                this.dropArmor(this.helmet);
+                // this.dropArmor(this.helmet);
             }
 
             const roleHelmet =
@@ -1011,6 +1016,7 @@ export class Player extends BaseGameObject {
         replaceOnDeath?: string,
         isFromRole?: boolean,
     ) {
+        if (this.hasPerk(type)) return;
         this.perks.push({
             type,
             droppable,
@@ -1256,6 +1262,39 @@ export class Player extends BaseGameObject {
             }
 
             loadout.emotes[i] = emote;
+        }
+
+        // Normal mode: Initialize primary weapon
+        if (isItemInLoadout(joinMsg.loadout.primary, "gun")) {
+            const slot = GameConfig.WeaponSlot.Primary;
+            this.weapons[slot].type = joinMsg.loadout.primary;
+            const gunDef = GameObjectDefs[this.weapons[slot].type] as GunDef;
+            this.weapons[slot].ammo = gunDef.maxClip;
+        }
+
+        // Normal mode: Initialize secondary weapon
+        if (isItemInLoadout(joinMsg.loadout.secondary, "gun")) {
+            const slot = GameConfig.WeaponSlot.Secondary;
+            this.weapons[slot].type = joinMsg.loadout.secondary;
+
+            // Disable dual spas in normal mode
+            if (
+                this.weapons[GameConfig.WeaponSlot.Primary].type === "spas12" &&
+                this.weapons[slot].type === "spas12"
+            ) {
+                this.weapons[slot].type = "mosin";
+            }
+
+            const gunDef = GameObjectDefs[this.weapons[slot].type] as GunDef;
+            this.weapons[slot].ammo = gunDef.maxClip;
+        }
+
+        // Add "inspiration" perk if using "bugle"
+        if (
+            this.weapons[GameConfig.WeaponSlot.Primary].type == "bugle" ||
+            this.weapons[GameConfig.WeaponSlot.Secondary].type == "bugle"
+        ) {
+            this.addPerk("inspiration", false);
         }
 
         this.weaponManager.showNextThrowable();

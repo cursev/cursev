@@ -1,37 +1,39 @@
+import { DeatchmatchDesert } from "../../server/src/deathmatch/maps/desert";
+import { gun_game } from "../../server/src/deathmatch/maps/gun_game";
+import { DeatchmatchHalloween } from "../../server/src/deathmatch/maps/halloween";
+import { DeatchmatchMain } from "../../server/src/deathmatch/maps/main";
+import { Resurviv_Cobalt } from "../../server/src/deathmatch/maps/resurviv-cobalt";
+import { DeatchmatchSnow } from "../../server/src/deathmatch/maps/snow";
+import { DeatchmatchWoods as Woods } from "../../server/src/deathmatch/maps/woods";
 import type { Vec2 } from "../utils/v2";
-import { Main } from "./maps/baseDefs";
-import { Cobalt } from "./maps/cobaltDefs";
-import { Desert } from "./maps/desertDefs";
 import { Faction } from "./maps/factionDefs";
-import { Halloween } from "./maps/halloweenDefs";
 import { MainSpring } from "./maps/mainSpringDefs";
 import { MainSummer } from "./maps/mainSummerDefs";
 import { Potato } from "./maps/potatoDefs";
 import { PotatoSpring } from "./maps/potatoSpringDefs";
 import { Savannah } from "./maps/savannahDefs";
-import { Snow } from "./maps/snowDefs";
 import { Turkey } from "./maps/turkeyDefs";
-import { Woods } from "./maps/woodsDefs";
 import { WoodsSnow } from "./maps/woodsSnowDefs";
 import { WoodsSpring } from "./maps/woodsSpringDefs";
 import { WoodsSummer } from "./maps/woodsSummerDefs";
 
 export const MapDefs = {
-    main: Main,
+    main: DeatchmatchMain,
     main_spring: MainSpring,
     main_summer: MainSummer,
-    desert: Desert,
+    desert: DeatchmatchDesert,
     faction: Faction,
-    halloween: Halloween,
+    halloween: DeatchmatchHalloween,
+    gun_game: gun_game,
     potato: Potato,
     potato_spring: PotatoSpring,
-    snow: Snow,
+    snow: DeatchmatchSnow,
     woods: Woods,
     woods_snow: WoodsSnow,
     woods_spring: WoodsSpring,
     woods_summer: WoodsSummer,
     savannah: Savannah,
-    cobalt: Cobalt,
+    cobalt: Resurviv_Cobalt,
     turkey: Turkey,
 } satisfies Record<string, MapDef>;
 
@@ -130,14 +132,6 @@ export interface MapDef {
         roles?: {
             timings: Array<{
                 role: string | (() => string);
-                circleIdx: number;
-                wait: number;
-            }>;
-        };
-        unlocks?: {
-            timings: Array<{
-                type: string; //can either be a building with the door(s) to unlock OR the door itself, no support for structures yet
-                stagger: number; //only for buildings with multiple unlocks, will stagger the unlocks instead of doing them all at once
                 circleIdx: number;
                 wait: number;
             }>;
