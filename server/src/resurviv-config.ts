@@ -8,7 +8,7 @@ const BACKPACK_LEVEL = 3;
 const mapName: Record<typeof THIS_REGION, keyof typeof MapDefs> = {
     local: "cobalt",
     na: "cobalt",
-    // eu: "main",
+    eu: "main",
 };
 
 const serverDataConfig = {
@@ -24,27 +24,27 @@ const serverDataConfig = {
                 address: "resurviv.biz:8001",
                 l10n: "index-north-america",
             },
-            // eu: {
-            //     https: true,
-            //     address: "217.160.224.171:8001",
-            //     l10n: "index-europe",
-            // },
+            eu: {
+                https: true,
+                address: "217.160.224.171:8001",
+                l10n: "index-europe",
+            },
         },
         thisRegion: "na",
     },
-    // eu: {
-    //     gameServer: {
-    //         apiServerUrl: "http://resurviv.biz",
-    //     },
-    //     regions: {
-    //         eu: {
-    //             https: true,
-    //             address: "217.160.224.171:8001",
-    //             l10n: "index-europe",
-    //         },
-    //     },
-    //     thisRegion: "eu",
-    // },
+    eu: {
+        gameServer: {
+            apiServerUrl: "http://resurviv.biz",
+        },
+        regions: {
+            eu: {
+                https: true,
+                address: "217.160.224.171:8001",
+                l10n: "index-europe",
+            },
+        },
+        thisRegion: "eu",
+    },
 };
 
 export const CustomConfig: DeepPartial<ConfigType> = {
