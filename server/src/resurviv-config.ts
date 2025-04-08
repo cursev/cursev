@@ -19,7 +19,7 @@ const serverDataConfig = {
         },
         regions: {
             na: {
-                https: true,
+                https: false,
                 address: "resurviv.biz:8001",
                 l10n: "index-north-america",
             },
