@@ -129,7 +129,7 @@ export class WeaponManager {
                 curWeaponDef.deployGroup / nextWeaponDef.deployGroup === 1 &&
                 curWeapon.cooldown > 0
             ) {
-                const nerfPercentage = THIS_REGION === "eu" ? 0.7 : 0.4;
+                const nerfPercentage = 0.4;
                 effectiveSwitchDelay = nextWeaponDef.switchDelay * nerfPercentage;
             }
 
