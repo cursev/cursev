@@ -6,8 +6,8 @@ import { THIS_REGION } from "./region";
 const BACKPACK_LEVEL = 3;
 
 const mapName: Record<typeof THIS_REGION, keyof typeof MapDefs> = {
-    local: "cobalt",
-    na: "cobalt",
+    local: "main",
+    na: "main",
     eu: "main",
 };
 
@@ -51,7 +51,7 @@ const serverDataConfig = {
 export const CustomConfig: DeepPartial<ConfigType> = {
     ...serverDataConfig[THIS_REGION],
     client: {
-        theme: "cobalt",
+        theme: "main",
     },
     modes: [
         {
