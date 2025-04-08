@@ -500,6 +500,9 @@ export class Player extends BaseGameObject {
 
     dir = v2.create(0, 0);
 
+    pushBack: Vec2 = v2.create(0, 0);
+    pushBackTime: number = 0;
+
     posOld = v2.create(0, 0);
     dirOld = v2.create(0, 0);
 
@@ -1480,6 +1483,9 @@ export class Player extends BaseGameObject {
                             target.boost += itemDef.boost;
                         });
                     }
+                    if (this.actionItem === "pulseBox") {
+                        this.usePulseEffect();
+                    }                    
                     this.inventory[this.actionItem]--;
                     this.inventoryDirty = true;
                 } else if (this.isReloading()) {
@@ -1654,6 +1660,13 @@ export class Player extends BaseGameObject {
             }
         }
 
+        if (this.pushBackTime > 0) {
+            // Move player backward using knockback direction
+            this.moveVel.x = -this.pushBack.x * this.speed * 0.5;  // Apply knockback direction to moveVel
+            this.moveVel.y = -this.pushBack.y * this.speed * 0.5;  // Apply knockback direction to moveVel
+            this.pushBackTime -= dt;  // Reduce knockback time each frame
+        }
+        
         //
         // Calculate new speed, position and check for collision with obstacles
         //
@@ -3122,6 +3135,58 @@ export class Player extends BaseGameObject {
             (this.hasPerk("aoe_heal") ? 0.75 : 1) * itemDef.useTime,
         );
     }
+    
+    usePulseEffect(): void {
+        const origin = this.pos;
+        const rad = 300;
+        const force = 4.5;
+
+        // this does not work rn
+        for (const other of this.game.playerBarn.livingPlayers) {
+            if (other === this) continue;
+            const dx = other.pos.x - origin.x;
+            const dy = other.pos.y - origin.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > rad || dist === 0) continue;
+            const f = (1 - dist / rad) * force;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            other.pushBack = v2.create(nx * f * 0.2, ny * f * 0.2);
+            other.pushBackTime = 0.2;
+        }
+
+        // this probably need to be removed since surviv never had this
+        for (const proj of this.game.projectileBarn.projectiles) {
+            const dx = proj.pos.x - origin.x;
+            const dy = proj.pos.y - origin.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > rad || dist === 0) continue;
+    
+            const f = (1 - dist / rad) * force;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            proj.vel.x += nx * f;
+            proj.vel.y += ny * f;
+        }
+
+        for (const loot of this.game.lootBarn.loots) {
+            const dx = loot.pos.x - origin.x;
+            const dy = loot.pos.y - origin.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist > rad || dist === 0) continue;
+    
+            const f = (1 - dist / rad) * force;
+            const nx = dx / dist;
+            const ny = dy / dist;
+    
+            if (typeof loot.push === "function") {
+                loot.push(v2.create(nx, ny), f);
+            } else if (loot.vel) {
+                loot.vel.x += nx * f;
+                loot.vel.y += ny * f;
+            }
+        }
+    }
 
     moveLeft = false;
     moveRight = false;
@@ -3385,6 +3450,9 @@ export class Player extends BaseGameObject {
                 this.useHealingItem(msg.useItem);
                 break;
             case "soda":
+            case "pulseBox":
+            this.usePulseItem(msg.useItem);
+            break;            
             case "painkiller":
                 this.useBoostItem(msg.useItem);
                 break;
@@ -4552,4 +4620,18 @@ export class Player extends BaseGameObject {
     sendData(buffer: ArrayBuffer | Uint8Array): void {
         this.game.sendSocketMsg(this.socketId, buffer);
     }
+
+    usePulseItem(item: string): void {
+        const itemDef = GameObjectDefs[item];
+        if (!itemDef || itemDef.type !== "boost") return;
+        if (!this.inventory[item]) return;
+    
+        this.cancelAction();
+        this.doAction(
+            item,
+            GameConfig.Action.UseItem,
+            itemDef.useTime,
+        );
+    }
+    
 }

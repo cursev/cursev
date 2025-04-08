@@ -743,6 +743,15 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/guns/potato_smg_reload_01.mp3",
             volume: 1,
         },
+        lasr_01: {
+            path: "audio/guns/lasr_01.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
+        lasr_gun_reload_01: {
+            path: "audio/guns/lasr_gun_reload_01.mp3",
+            volume: 1,
+        },
         potato_smg_switch_01: {
             path: "audio/guns/potato_smg_switch_01.mp3",
             volume: 1,
@@ -789,6 +798,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/ui/soda_use_01.mp3",
             volume: 1,
         },
+        pulseBox_use_01: {
+            path: "audio/ui/pulseBox_use_01.mp3",
+            volume: 1,
+        },
         pills_use_01: {
             path: "audio/ui/pills_use_01.mp3",
             volume: 1,
@@ -797,6 +810,7 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/ui/stow_weapon_01.mp3",
             volume: 1,
         },
+
     },
     hits: {
         stone_bullet_hit_01: {
@@ -1009,6 +1023,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             canCoalesce: true,
             maxInstances: 3,
         },
+        lasr_hit_01: {
+            path: "audio/hits/lasr_hit_01.mp3",
+            volume: 1.0
+        },
     },
     sfx: {
         crate_break_01: {
@@ -1214,6 +1232,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         heavy_swing_01: {
             path: "audio/sfx/heavy_swing_01.mp3",
             volume: 1,
+        },
+        lasr_swing_01: {
+            path: "audio/sfx/lasr_swing_01.mp3",
+            volume: 1.0
         },
         bullet_whiz_01: {
             path: "audio/sfx/bullet_whiz_01.mp3",
@@ -1882,6 +1904,10 @@ const Groups: Record<string, { channel: string; sounds: string[] }> = {
     organic_hit: {
         channel: "hits",
         sounds: ["organic_hit_01"],
+    },
+    "lasr_hit": {
+        channel: "hits",
+        sounds: ["lasr_hit_01"]
     },
     piano_hit: {
         channel: "hits",

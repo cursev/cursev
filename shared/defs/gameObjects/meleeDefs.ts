@@ -1043,6 +1043,54 @@ const BaseDefs: Record<string, MeleeDef> = {
             tint: 0xffffff,
         },
     },
+    lasr_swrd: {
+        name: "Lasr Swrd",
+        type: "melee",
+        quality: 1,
+        armorPiercing: true,
+        stonePiercing: true,
+        autoAttack: false,
+        switchDelay: 0.25,
+        damage: 60,
+        obstacleDamage: 1.5,
+        headshotMult: 1,
+        attack: {
+            offset: { x: 2, y: 0 },
+            rad: 2.1,
+            damageTimes: [0.3],
+            cooldownTime: 0.6,
+        },
+        speed: {
+            equip: 1,
+        },
+        anim: {
+            idlePose: "meleeLasrSwrd",
+            attackAnims: ["lasrSwrdSwing"],
+        },
+        sound: {
+            pickup: "heavy_pickup_01",
+            swing: "heavy_swing_01",
+            deploy: "stow_weapon_01",
+            playerHit: "hammer_hit_01",
+        },
+        lootImg: {
+            sprite: 'loot-melee-lasr-sword-01.img',
+            tint: 0xffffff,
+            border: 'loot-circle-outer-02.img',
+            borderTint: 0xffffff,
+            scale: 0.3,
+            mirror: true,
+            rot: 0.0
+        },
+        worldImg: {
+            sprite: "lasr-sword-01.img",
+            pos: { x: 110.0, y: -2.0 },
+            rot: 0.0,
+            scale: { x: 0.15, y: 0.15 },
+            tint: 0xffffff,
+            leftHandOntop: true
+        },
+    },
 };
 
 const SkinDefs: Record<string, MeleeDef> = {
@@ -1291,6 +1339,14 @@ const SkinDefs: Record<string, MeleeDef> = {
             sprite: "loot-melee-warhammer-tank.img",
             pos: { x: -10.5, y: -3 },
         },
+    }),
+    lasr_swrd_02: defineMeleeSkin("lasr_swrd", {
+        lootImg: { sprite: "loot-melee-lasr-sword-02.img" },
+        worldImg: { sprite: "lasr-sword-02.img" },
+    }),
+    lasr_swrd_03: defineMeleeSkin("lasr_swrd", {
+        lootImg: { sprite: "loot-melee-lasr-sword-03.img" },
+        worldImg: { sprite: "lasr-sword-03.img" },
     }),
 };
 

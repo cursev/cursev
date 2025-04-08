@@ -212,6 +212,7 @@ export class Player implements AbstractObject {
     footRSubmergeSprite = createSprite();
     bodyEffectSprite = createSprite();
     patchSprite = createSprite();
+    frontSprite = createSprite();
     handLContainer = new PIXI.Container();
     handRContainer = new PIXI.Container();
 
@@ -408,6 +409,10 @@ export class Player implements AbstractObject {
         this.bodyContainer.addChild(this.footRContainer);
         this.bodyContainer.addChild(this.backpackSprite);
         this.bodyContainer.addChild(this.bodySprite);
+        this.frontSprite = new PIXI.Sprite();
+        this.frontSprite.anchor.set(0.5);
+        this.frontSprite.visible = false;
+        this.bodyContainer.addChild(this.frontSprite);
         this.bodyContainer.addChild(this.chestSprite);
         this.bodyContainer.addChild(this.flakSprite);
         this.bodyContainer.addChild(this.steelskinSprite);
@@ -1699,36 +1704,55 @@ export class Player implements AbstractObject {
         if (this.downed) {
             this.backpackSprite.visible = false;
         }
+        
+        // aura visual thing 
 
-        // Role specific visuals
-        if (
-            (this.m_action.type != Action.UseItem &&
-                this.m_action.type != Action.Revive) ||
-            this.m_netData.m_dead ||
-            (this.m_netData.m_downed && !this.m_hasPerk("self_revive")) ||
-            !this.m_hasPerk("aoe_heal")
-        ) {
-            this.auraPulseTicker = 0;
-            this.auraPulseDir = 1;
-            this.auraCircle.visible = false;
-        } else {
-            const actionItemDef = GameObjectDefs[this.m_action.item] as
-                | HealDef
-                | BoostDef;
-            // Assume if there's no item defined, it's a revive circle
-            const sprite = actionItemDef?.aura
-                ? actionItemDef.aura.sprite
-                : "part-aura-circle-01.img";
-            const tint = actionItemDef?.aura ? actionItemDef.aura.tint : 0xff00ff;
-            const auraScale = 0.125;
-            let auraRad = actionItemDef
-                ? GameConfig.player.medicHealRange
-                : GameConfig.player.medicReviveRange;
-            auraRad *= auraScale;
+        if (this.m_action.type === Action.UseItem && this.m_action.item === "pulseBox") {
+            const sprite = "part-aura-circle-02.img";
+            const tint = 0x1996f0;
+            const auraScale = 0.11;
+            const auraRad = GameConfig.player.medicHealRange * auraScale;
+            this.auraPulseTicker += 0.1;
+            const totalDuration = 2.0;
+            const flickerCount = 3;
+            const flickerCycle = totalDuration / flickerCount;
+            const phase = this.auraPulseTicker % flickerCycle;
+            const isVisibleThisFrame = phase < flickerCycle / 2;
             this.auraCircle.texture = PIXI.Texture.from(sprite);
             this.auraCircle.scale.set(auraRad, auraRad);
             this.auraCircle.tint = tint;
-            this.auraCircle.visible = true;
+            this.auraCircle.alpha = 1;
+            this.auraCircle.visible = isVisibleThisFrame;
+            if (this.auraPulseTicker >= totalDuration) {
+                this.auraCircle.visible = false;
+                this.auraPulseTicker = 0;
+            }
+        } else {
+            if (
+                (this.m_action.type != Action.UseItem &&
+                    this.m_action.type != Action.Revive) ||
+                this.m_netData.m_dead ||
+                (this.m_netData.m_downed && !this.m_hasPerk("self_revive")) ||
+                !this.m_hasPerk("aoe_heal")
+            ) {
+                this.auraPulseTicker = 0;
+                this.auraPulseDir = 1;
+                this.auraCircle.visible = false;
+            } else {
+                const actionItemDef = GameObjectDefs[this.m_action.item] as HealDef | BoostDef;
+                const sprite = actionItemDef?.aura?.sprite ?? "part-aura-circle-01.img";
+                const tint = actionItemDef?.aura?.tint ?? 0xff00ff;
+                const auraScale = 0.125;
+                let auraRad = actionItemDef
+                    ? GameConfig.player.medicHealRange
+                    : GameConfig.player.medicReviveRange;
+                auraRad *= auraScale;
+                this.auraCircle.texture = PIXI.Texture.from(sprite);
+                this.auraCircle.scale.set(auraRad, auraRad);
+                this.auraCircle.tint = tint;
+                this.auraCircle.alpha = 1;
+                this.auraCircle.visible = true;
+            }
         }
 
         // Class visors
@@ -1754,6 +1778,31 @@ export class Player implements AbstractObject {
         } else {
             this.visorSprite.visible = false;
         }
+        if (outfitImg.frontSprite) {
+            this.frontSprite.texture = PIXI.Texture.from(outfitImg.frontSprite);
+            this.frontSprite.scale.set(bodyScale * 0.27);
+            const frontPos = outfitImg.frontSpritePos ?? { x: 0, y: 0 };
+            this.frontSprite.position.set(frontPos.x, frontPos.y);
+            this.frontSprite.tint = 0xffffff;
+            this.frontSprite.visible = true;
+            const handLIndex = this.bodyContainer.getChildIndex(this.handLContainer);
+            const handRIndex = this.bodyContainer.getChildIndex(this.handRContainer);
+            let targetIndex;
+            if (outfitImg.aboveHand) {
+                targetIndex = Math.max(handLIndex, handRIndex) + 1;
+            } else {
+                targetIndex = Math.min(handLIndex, handRIndex) - 1;
+            }
+            const clampedIndex = Math.max(0, Math.min(targetIndex, this.bodyContainer.children.length - 1));
+            this.bodyContainer.setChildIndex(this.frontSprite, clampedIndex);
+        } else {
+            this.frontSprite.visible = false;
+        }
+        
+        // Force helmet + visor on top to prevent flickering during shooting/switching
+        this.bodyContainer.setChildIndex(this.helmetSprite, this.bodyContainer.children.length - 1);
+        this.bodyContainer.setChildIndex(this.visorSprite, this.bodyContainer.children.length - 1);
+
         this.bodyContainer.scale.set(bodyScale, bodyScale);
     }
 

@@ -259,7 +259,7 @@ export class LoadoutDisplay {
         const obj = {
             outfit: device.editorEnabled ? "outfitBase" : this.loadout.outfit,
             backpack: "backpack03",
-            helmet: "helmet03",
+            helmet: "",
             chest: "chest03",
             activeWeapon:
                 this.view === "secondary" ? this.loadout.secondary : this.loadout.primary,

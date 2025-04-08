@@ -792,4 +792,73 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
             deploy: "frag_deploy_01",
         },
     },
+    mine: {
+        name: "Mine",
+        type: "throwable",
+        quality: 0,
+        explosionType: "explosion_mine",
+        inventoryOrder: 1,
+        cookable: true,
+        explodeOnImpact: false,
+        playerCollision: false,
+        fuseTime: 9999,
+        aimDistance: 0,
+        rad: 1,
+        throwPhysics: {
+            playerVelMult: 0.6,
+            velZ: 5,
+            speed: 20,
+            spinVel: 1 * Math.PI,
+            spinDrag: 1,
+        },
+        speed: { equip: 0, attack: 0 },
+        lootImg: {
+            sprite: "loot-throwable-mine.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2
+        },
+        worldImg: {
+            sprite: "proj-mine-01.img",
+            scale: 0.12,
+            tint: 16777215
+        },
+        handImg: {
+            equip: {
+                right: {
+                  sprite: "proj-mine-01.img",
+                  pos: { x: 4.2, y: 4.2 },
+                  scale: 0.14
+                },
+                left: {
+                  sprite: "none"
+                }
+              },
+            cook: {
+                right: {
+                    sprite: "proj-mine-01.img",
+                    pos: {
+                      x: 4.2,
+                      y: 4.2
+                    },
+                    scale: 0.14
+                  },
+                  left: {
+                    sprite: "none"
+                  }
+            },
+            throwing: {
+                right: { sprite: "none" },
+                left: { sprite: "none" },
+            },
+        },
+        useThrowParticles: true,
+        sound: {
+            pullPin: "frag_pin_01",
+            throwing: "frag_throw_01",
+            pickup: "frag_pickup_01",
+            deploy: "frag_deploy_01",
+        },
+    },
 };

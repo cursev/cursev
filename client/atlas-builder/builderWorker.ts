@@ -88,7 +88,18 @@ export class AtlasBuilder {
             const ctx = canvas.getContext("2d");
 
             ctx.drawImage(image, 0, 0);
-            edges = detectEdges(canvas, { tolerance: 0 }) as Edges;
+            try {
+                edges = detectEdges(canvas, { tolerance: 0 }) as Edges;
+            } catch (err) {
+                console.warn(`Failed to detect edges for image: ${path}`);
+                console.warn(err);
+                edges = {
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                };
+            }
 
             AtlasBuilder.imageCache.set(key, {
                 image,

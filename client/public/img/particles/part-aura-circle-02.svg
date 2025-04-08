@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="288"
+   height="288"
+   viewBox="0 0 418.32 418.32"
+   version="1.1"
+   id="svg5"
+   sodipodi:docname="part-aura-circle-02.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.8020833"
+     inkscape:cx="144"
+     inkscape:cy="144"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg5" />
+  <defs
+     id="defs5">
+    <linearGradient
+       id="a">
+      <stop
+         offset="0"
+         stop-color="#e57a00"
+         id="stop1" />
+      <stop
+         stop-color="#8bbe00"
+         offset=".604"
+         stop-opacity=".392"
+         id="stop2" />
+      <stop
+         offset="1"
+         stop-color="#963200"
+         stop-opacity="0"
+         id="stop3" />
+    </linearGradient>
+    <radialGradient
+       xlink:href="#a"
+       id="d"
+       cx="65.45"
+       cy="65.45"
+       fx="65.45"
+       fy="65.45"
+       r="48.29"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-427.657 8.835)" />
+    <radialGradient
+       xlink:href="#b"
+       id="c"
+       gradientUnits="userSpaceOnUse"
+       cx="65.45"
+       cy="65.45"
+       fx="65.45"
+       fy="65.45"
+       r="48.29"
+       gradientTransform="matrix(4.3003899,1.4545345e-8,1.8354242e-8,4.2044842,-476.37093,-55.660049)" />
+    <linearGradient
+       id="b">
+      <stop
+         offset="0"
+         stop-color="#b3b3b3"
+         id="stop4" />
+      <stop
+         offset="1"
+         stop-color="#e1e1e1"
+         stop-opacity=".313"
+         id="stop5" />
+    </linearGradient>
+  </defs>
+  <ellipse
+     transform="matrix(0.05900076,-0.99825794,0.99809268,0.06173334,0,0)"
+     cy="219.52362"
+     cx="-194.91133"
+     fill="url(#c)"
+     id="circle5"
+     style="fill:url(#c);stroke-width:1.06585"
+     rx="207.66576"
+     ry="203.03447" />
+</svg>

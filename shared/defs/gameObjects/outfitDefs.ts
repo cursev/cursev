@@ -12,6 +12,9 @@ export interface OutfitDef {
         footSprite: string;
         backpackTint: number;
         backpackSprite: string;
+        frontSprite?: string;
+        frontSpritePos?: { x: number; y: number };
+        aboveHand? : Boolean
     };
     lootImg: {
         sprite: string;
@@ -220,7 +223,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         name: "Discord Moderatr",
         noDropOnDeath: true,
         skinImg: {
-            baseTint: 3380187,
+            baseTint: 0xffffff,
             baseSprite: "player-base-outfitDC.img",
             handTint: 9684974,
             handSprite: "player-hands-02.img",
@@ -236,6 +239,256 @@ const SkinDefs: Record<string, OutfitDef> = {
         rarity: 3,
         lore: "For those who wield the power of the pan.",
     }),
+    outfitGrich: defineOutfitSkin("outfitBase", {
+        name: "Grinch",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 0xffffff,
+            baseSprite: "player-base-grinch.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-grinch.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-grinch.img",
+            backpackTint: 12002083,
+            backpackSprite: "player-circle-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-shirt-grinch.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitFireball: defineOutfitSkin("outfitBase", {
+        name: "Fireball",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 12266256,
+            baseSprite: "player-base-01.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-outfitFireball.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-outfitFireball.img",
+            backpackTint: 13644309,
+            backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: -4, y: 0 },
+            frontSprite: "player-accessory-outfitFireball.img"
+        },
+        lootImg: {
+            sprite: "loot-shirt-outfitFireball.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitGreenTeaRex: defineOutfitSkin("outfitBase", {
+        name: "Green Tea Rex",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-green-tea-rex.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-green-tea-rex.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-green-tea-rex.img",
+            backpackTint: 13644309,
+            backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: 6, y: 0 },
+            frontSprite: "player-accessory-green-tea-rex.img",
+            aboveHand: true,
+        },
+        lootImg: {
+            sprite: "loot-green-tea-rex-outfit.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitDragonTails: defineOutfitSkin("outfitBase", {
+        name: "Dragon Tails",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 13041664,
+            baseSprite: "player-base-dragon-tails.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-dragon-tails.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-dragon-tails.img",
+            backpackTint: 7667712,
+            backpackSprite: "player-circle-base-02.img",
+            frontSpritePos: { x: -5, y: 0 },
+            frontSprite: "player-accessory-dragon-tails.img"
+        },
+        lootImg: {
+            sprite: "loot-dragon-tails-outfit.img",
+            tint: 0xffffff,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitVillageNinja: defineOutfitSkin("outfitBase", {
+        name: "Village Ninja",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-village-ninja.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-village-ninja.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-dragon-tails.img",
+            backpackTint: 16777215,
+            backpackSprite: "player-back-village-ninja.img",
+            frontSpritePos: { x: -2, y: 0 },
+            frontSprite: "player-accessory-village-ninja.img",
+            aboveHand: false,
+        },
+        lootImg: {
+            sprite: "loot-village-ninja-outfit.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitChromesis: defineOutfitSkin("outfitBase", {
+        name: "Chromesis",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-outfitChromesis.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-chrome.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-chrome.img",
+            backpackTint: 9803157,
+            backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: -5, y: 0 },
+            frontSprite: "outfit-chrome-accessory.img",
+            aboveHand: false,
+        },
+        lootImg: {
+            sprite: "loot-shirt-outfitChromesis.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitMultiTusking: defineOutfitSkin("outfitBase", {
+        name: "Multi Tusking",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-multi-tusking.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-multi-tusking.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-multi-tusking.img",
+            backpackTint: 9065728,
+            backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: 0, y: 0 },
+            frontSprite: "player-accessory-multi-tusking.img",
+            aboveHand: true,
+        },
+        lootImg: {
+            sprite: "loot-multi-tusking-outfit.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitMaxAttack: defineOutfitSkin("outfitBase", {
+        name: "Max Attack",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-max-attack.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-max-attack.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-max-attack.img",
+            backpackTint: 2359872,
+            backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: 0, y: 0 },
+            frontSprite: "player-accessory-max-attack.img",
+            aboveHand: true,
+        },
+        lootImg: {
+            sprite: "loot-max-attack-outfit.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+    outfitLustrousPaladin: defineOutfitSkin("outfitBase", {
+        name: "Lustrous Paladin",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-lustrous-paladin.img",
+            handTint: 0xffffff,
+            handSprite: "player-hands-lustrous-paladin.img",
+            footTint: 0xffffff,
+            footSprite: "player-hands-lustrous-paladin.img",
+            backpackTint: 16768256,
+            backpackSprite: "player-circle-base-01.img",
+            frontSpritePos: { x: -1, y: 0 },
+            frontSprite: "player-accessory-lustrous-paladin.img",
+        },
+        lootImg: {
+            sprite: "loot-lustrous-paladin-outfit.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+
+
+
+
+
+    outfitSpeedoSunburn: defineOutfitSkin("outfitBase", {
+        name: "Speedo Sunburn",
+        noDropOnDeath: true,
+        skinImg: {
+            baseTint: 16777215,
+            baseSprite: "player-base-outfitSpeedoSunburn.img",
+            handTint: 16037119,
+            handSprite: "player-hands-01.img",
+            footTint: 16037119,
+            footSprite: "player-feet-01.img",
+            backpackTint: 16650006,
+            backpackSprite: "player-circle-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-shirt-outfitSpeedoSunburn.img",
+            tint: 16777215,
+        },
+        rarity: 3,
+        lore: "For those who wield the power of the pan.",
+    }),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     outfitWheat: defineOutfitSkin("outfitBase", {
         name: "Splintered Wheat",
         skinImg: {

@@ -10654,6 +10654,25 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
         map: { color: 4411673 },
         img: { sprite: "map-tree-03sv.img" },
     } as unknown as Partial<ObstacleDef>),
+
+    tree_01m: createTree({
+        map: { color: 10306003 },
+        img: { sprite: "lasr_swrds_tree_01.img" },
+    } as unknown as Partial<ObstacleDef>),
+    tree_02m: createTree({
+        map: { color: 4598631 },
+        img: { sprite: "lasr_swrds_tree_02.img" },
+    } as unknown as Partial<ObstacleDef>),
+    crate_23: createCrate({
+        health: 150,
+        reflectBullets: true,
+        loot: [tierLoot("tier_space", 3, 5)],
+        map: { display: false },
+        terrain: { grass: true, beach: false },
+        img: { sprite: "space_crate.img" },
+        sound: { explode: "crate_break_01" },
+    } as unknown as Partial<ObstacleDef>),
+
     tree_interior_01: createTree({ img: { zIdx: 200 } }),
     tree_01x: createTree({ img: { sprite: "map-tree-01x.img" } }),
     tree_02: createTree({
@@ -19161,6 +19180,11 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
         grass_color: 6460706,
         tree_small: "tree_08su",
         tree_large: "tree_08su",
+    }),
+    teahouse_complex_01m: createTeaHouseComplex({
+        grass_color: 5793150,
+        tree_small: "tree_01m",
+        tree_large: "tree_02m",
     }),
     savannah_patch_01: (function <T extends BuildingDef>(e: Partial<T>): T {
         const t = {
@@ -29478,4 +29502,12 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
             zIdx: 4,
         },
     },
+    crate_01m: createCrate({ 
+        loot: [tierLoot("tier_soviet", 3, 5)],
+        img: { sprite: "lasr_Swrds_Crate.img" } 
+    }),
+    bush_01m: createBush({
+        img: { sprite: "lasr_swrds_bush.img" },
+        map: { color: 61183 },
+    } as unknown as Partial<ObstacleDef>),
 };

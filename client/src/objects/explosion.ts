@@ -652,4 +652,18 @@ const ExplosionEffectDefs: Record<string, ExplotionDef> = {
         shakeDur: 0.4,
         lifetime: 2,
     },
+    mine: {
+        burst: {
+            particle: 'explosionBurst',
+            scale: 1.0,
+            sound: {
+                grass: 'explosion_01',
+                water: 'explosion_02'
+            }
+        },
+        rippleCount: 10,
+        shakeStr: 0.2,
+        shakeDur: 0.35,
+        lifetime: 2.0
+    }
 };

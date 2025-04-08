@@ -215,4 +215,15 @@ export const ExplosionDefs: Record<string, ExplosionDef> = {
         explosionEffectType: "bomb_iron",
         decalType: "decal_bomb_iron_explosion",
     },
+    explosion_mine: {
+        type: "explosion",
+        damage: 125,
+        obstacleDamage: 1.1,
+        rad: { min: 5, max: 12 },
+        shrapnelCount: 12,
+        shrapnelType: "shrapnel_frag",
+        explosionEffectType: "frag",
+        decalType: "decal_frag_explosion",
+    },
+    
 };
