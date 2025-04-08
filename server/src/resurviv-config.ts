@@ -49,7 +49,7 @@ const serverDataConfig = {
 export const CustomConfig: DeepPartial<ConfigType> = {
     ...serverDataConfig[THIS_REGION],
     client: {
-        theme: "main",
+        theme: "cobalt",
     },
     modes: [
         {

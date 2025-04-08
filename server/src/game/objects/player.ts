@@ -877,7 +877,7 @@ export class Player extends BaseGameObject {
                 }
                 this.chest = roleDef.defaultItems.chest;
             }
-            this.backpack = roleDef.defaultItems.backpack;
+            // this.backpack = roleDef.defaultItems.backpack;
 
             // weapons
             for (let i = 0; i < roleDef.defaultItems.weapons.length; i++) {

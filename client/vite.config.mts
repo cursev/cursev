@@ -30,6 +30,10 @@ export const SplashThemes = {
         MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
         SPLASH_BG: "/img/main_splash_7_3.png",
     },
+    cobalt: {
+        MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
+        SPLASH_BG: "/img/cobalt_splash.png",
+    },
 };
 
 const selectedTheme = SplashThemes[Config.client.theme];

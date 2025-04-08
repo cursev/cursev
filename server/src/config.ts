@@ -163,7 +163,7 @@ export interface ConfigType {
         // adin play IDs
         AIP_ID: string | undefined;
         AIP_PLACEMENT_ID: string | undefined;
-        theme: "main" | "easter" | "halloween" | "faction" | "snow" | "spring";
+        theme: "main" | "easter" | "halloween" | "faction" | "snow" | "spring" | "cobalt";
     };
 
     debug: {

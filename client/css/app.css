@@ -1,3 +1,6 @@
+@import url(deathmatch.css);
+
+
 :root {
   --side-pad: 12px;
 }
@@ -162,7 +165,7 @@ a:active {
 
 #start-row-header {
   /* Main menu logo, don't forget there's also game over logo in game.css */
-  background-image: url(/img/survev_logo_full.png);
+  background-image: url(/img/resurviv_logo_full.png);
   background-repeat: no-repeat;
   /* In case of logo change, update this value to width divided by 2 ceiled  */
   background-size: 396px;
@@ -455,11 +458,11 @@ a:active {
   box-shadow: inset 0 -4px #9b2354;
 }
 
-.btn-kofi {
+/* .btn-kofi {
   background-image: url(/img/icon_kofi.png);
   background-color: #ff6433;
   box-shadow: inset 0 -4px #be4926;
-}
+} */
 
 .btn-darken:hover,
 .btn-darken:active {

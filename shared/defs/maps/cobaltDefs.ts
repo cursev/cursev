@@ -80,15 +80,15 @@ const mapDef: PartialMapDef = {
         },
         densitySpawns: [
             {
-                stone_01cb: 350,
+                stone_01cb: 280,
                 barrel_01: 76,
-                silo_01: 8,
+                silo_01: 4,
                 crate_01: 50,
                 crate_02: 4,
                 crate_03: 8,
                 bush_01cb: 78,
                 cache_06: 12,
-                tree_01cb: 320,
+                tree_01cb: 220,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,
@@ -105,9 +105,9 @@ const mapDef: PartialMapDef = {
             {
                 bunker_structure_09: 1,
                 warehouse_01: 2,
-                house_red_01: { small: 3, large: 4 },
-                house_red_02: { small: 3, large: 4 },
-                barn_01: { small: 1, large: 3 },
+                house_red_01: 3,
+                house_red_02: 1,
+                barn_01: 1,
                 barn_02: 1,
                 hut_01: 3,
                 hut_02: 1, // spas hut
@@ -118,11 +118,7 @@ const mapDef: PartialMapDef = {
                 cache_02cb: 1, // mosin tree
                 cache_07: 1,
                 bunker_structure_01: { odds: 0.05 },
-                bunker_structure_02: 1,
                 bunker_structure_03: 1,
-                bunker_structure_04: 1,
-                bunker_structure_05: 1,
-                warehouse_complex_01: 1,
                 chest_01cb: 1,
                 chest_03cb: { odds: 0.2 },
                 mil_crate_02: { odds: 0.25 },

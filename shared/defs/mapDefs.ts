@@ -2,7 +2,7 @@ import { DeatchmatchDesert } from "../../server/src/deathmatch/maps/desert";
 import { gun_game } from "../../server/src/deathmatch/maps/gun_game";
 import { DeatchmatchHalloween } from "../../server/src/deathmatch/maps/halloween";
 import { DeatchmatchMain } from "../../server/src/deathmatch/maps/main";
-import { Resurviv_Cobalt } from "../../server/src/deathmatch/maps/resurviv-cobalt";
+import { DeatchmatchCobalt } from "../../server/src/deathmatch/maps/cobalt";
 import { DeatchmatchSnow } from "../../server/src/deathmatch/maps/snow";
 import { DeatchmatchWoods as Woods } from "../../server/src/deathmatch/maps/woods";
 import type { Vec2 } from "../utils/v2";
@@ -33,7 +33,7 @@ export const MapDefs = {
     woods_spring: WoodsSpring,
     woods_summer: WoodsSummer,
     savannah: Savannah,
-    cobalt: Resurviv_Cobalt,
+    cobalt: DeatchmatchCobalt,
     turkey: Turkey,
 } satisfies Record<string, MapDef>;
 
