@@ -114,4 +114,9 @@ DeatchmatchCobalt.lootTable = {
         { name: "garand", count: 1, weight: 2 },
         { name: "awc", count: 1, weight: 0.1 },
     ],
+    tier_class_crate_mythic: [
+        { name: "scavenger_adv", count: 1, weight: 1 },
+        { name: "explosive", count: 1, weight: 2 },
+        { name: "splinter", count: 1, weight: 3 },
+    ],
 };
