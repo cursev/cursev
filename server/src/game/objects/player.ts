@@ -2711,8 +2711,13 @@ export class Player extends BaseGameObject {
         }
 
         //params.gameSourceType check ensures player didnt die by bleeding out
-        if (this.game.map.potatoMode && this.lastDamagedBy && params.gameSourceType) {
-            this.lastDamagedBy.randomWeaponSwap(params.gameSourceType);
+        if (
+            this.game.map.potatoMode &&
+            this.lastDamagedBy &&
+            params.damageType === GameConfig.DamageType.Player &&
+            params.source !== this
+        ) {
+            this.lastDamagedBy.randomWeaponSwap(params);
         }
 
         this.game.broadcastMsg(net.MsgType.Kill, killMsg);
@@ -3251,42 +3256,23 @@ export class Player extends BaseGameObject {
                     this.weaponManager.setCurWeapIndex(this.weaponManager.lastWeaponIdx);
                     break;
                 case GameConfig.Input.EquipOtherGun:
-                    if (
-                        this.curWeapIdx == GameConfig.WeaponSlot.Primary ||
-                        this.curWeapIdx == GameConfig.WeaponSlot.Secondary
-                    ) {
-                        const otherGunSlotIdx = this.curWeapIdx ^ 1;
-                        const isOtherGunSlotFull: number =
-                            +!!this.weapons[otherGunSlotIdx].type; //! ! converts string to boolean, + coerces boolean to number
-                        this.weaponManager.setCurWeapIndex(
-                            isOtherGunSlotFull
-                                ? otherGunSlotIdx
-                                : GameConfig.WeaponSlot.Melee,
-                        );
-                    } else if (
-                        this.curWeapIdx == GameConfig.WeaponSlot.Melee &&
-                        (this.weapons[GameConfig.WeaponSlot.Primary].type ||
-                            this.weapons[GameConfig.WeaponSlot.Secondary].type)
-                    ) {
-                        this.weaponManager.setCurWeapIndex(
-                            +!this.weapons[GameConfig.WeaponSlot.Primary].type,
-                        );
-                    } else if (this.curWeapIdx == GameConfig.WeaponSlot.Throwable) {
-                        const bothSlotsEmpty =
-                            !this.weapons[GameConfig.WeaponSlot.Primary].type &&
-                            !this.weapons[GameConfig.WeaponSlot.Secondary].type;
-                        if (bothSlotsEmpty) {
-                            this.weaponManager.setCurWeapIndex(
-                                GameConfig.WeaponSlot.Melee,
-                            );
-                        } else {
-                            const index = this.weapons[GameConfig.WeaponSlot.Primary].type
-                                ? GameConfig.WeaponSlot.Primary
-                                : GameConfig.WeaponSlot.Secondary;
-                            this.weaponManager.setCurWeapIndex(index);
+                    //priority list of slots to swap to
+                    const slotTargets = [
+                        GameConfig.WeaponSlot.Primary,
+                        GameConfig.WeaponSlot.Secondary,
+                        GameConfig.WeaponSlot.Melee,
+                    ];
+
+                    const currentTarget = slotTargets.indexOf(this.curWeapIdx);
+                    if (currentTarget != -1) slotTargets.splice(currentTarget, 1);
+
+                    for (let i = 0; i < slotTargets.length; i++) {
+                        const slot = slotTargets[i];
+                        if (this.weapons[slot].type) {
+                            this.weaponManager.setCurWeapIndex(slot);
+                            break;
                         }
                     }
-
                     break;
                 case GameConfig.Input.Interact: {
                     const loot = this.getClosestLoot();
@@ -3378,6 +3364,8 @@ export class Player extends BaseGameObject {
                     ) {
                         this.weaponManager.setCurWeapIndex(
                             this.curWeapIdx ^ 1,
+                            false,
+                            false,
                             false,
                             false,
                         );
@@ -3949,11 +3937,16 @@ export class Player extends BaseGameObject {
     }
 
     /** just used in potato mode, swaps oldWeapon with a random weapon of the same type (mosin -> m9) */
-    randomWeaponSwap(oldWeapon: string): void {
+    randomWeaponSwap(params: DamageParams): void {
+        if (this.dead) return;
+        const oldWeapon = params.weaponSourceType || params.gameSourceType;
+        if (!oldWeapon) return;
+
         const oldWeaponDef = GameObjectDefs[oldWeapon] as
             | GunDef
             | ThrowableDef
             | MeleeDef;
+
         if (oldWeaponDef.noPotatoSwap) return;
         const weaponDefs = WeaponTypeToDefs[oldWeaponDef.type];
         //necessary for type safety since Object.entries() is not type safe and just returns "any"
@@ -3996,6 +3989,12 @@ export class Player extends BaseGameObject {
                     break;
             }
         }
+
+        const slotDef = GameObjectDefs[this.weapons[index].type] as
+            | GunDef
+            | MeleeDef
+            | ThrowableDef;
+        if (slotDef && slotDef.noPotatoSwap) return;
 
         if (index === this.curWeapIdx && this.isReloading()) {
             this.cancelAction();
@@ -4044,6 +4043,8 @@ export class Player extends BaseGameObject {
 
             this.inventoryDirty = true;
         }
+
+        this.setDirty();
 
         this.game.playerBarn.addEmote(
             this.__id,

@@ -52,6 +52,7 @@ export class WeaponManager {
      * @param idx index being swapped to
      * @param cancelAction cancels current action if true
      * @param shouldReload will attempt automatic reload at 0 ammo if true
+     * @param changeCooldown Weather to change the weapons cooldown, used by SwapWeapSlots to keep them the same
      * @returns
      */
     setCurWeapIndex(
@@ -59,6 +60,7 @@ export class WeaponManager {
         cancelAction = true,
         cancelSlowdown = true,
         forceSwitch = false,
+        changeCooldown = true,
     ): void {
         // if current slot is invalid and next too, switch to melee
         if (!this.activeWeapon && !this.weapons[idx].type) {
@@ -73,7 +75,19 @@ export class WeaponManager {
 
         if (idx === this._curWeapIdx) return;
         if (this.weapons[idx].type === "") return;
-        if (this.bursts.length && !forceSwitch) return;
+
+        const curWeaponDef = GameObjectDefs[this.activeWeapon] as
+            | GunDef
+            | MeleeDef
+            | ThrowableDef;
+
+        if (
+            curWeaponDef?.type === "gun" &&
+            curWeaponDef.fireMode === "burst" &&
+            this.bursts.length &&
+            !forceSwitch
+        )
+            return;
 
         this.player.cancelAnim();
 
@@ -90,12 +104,8 @@ export class WeaponManager {
         const nextWeapon = this.weapons[idx];
         let effectiveSwitchDelay = 0;
 
-        if (curWeapon.type && nextWeapon.type) {
+        if (curWeapon.type && nextWeapon.type && changeCooldown) {
             // ensure that player is still holding both weapons (didnt drop one)
-            const curWeaponDef = GameObjectDefs[this.activeWeapon] as
-                | GunDef
-                | MeleeDef
-                | ThrowableDef;
             const nextWeaponDef = GameObjectDefs[this.weapons[idx].type] as
                 | GunDef
                 | MeleeDef
@@ -183,6 +193,7 @@ export class WeaponManager {
         }
 
         if (idx === this.curWeapIdx) {
+            this.bursts.length = 0;
             this.player.setDirty();
         }
 
@@ -999,6 +1010,7 @@ export class WeaponManager {
                     damageType: GameConfig.DamageType.Player,
                     source: this.player,
                     dir: v2.neg(hit.dir),
+                    weaponSourceType: this.activeWeapon,
                 });
                 if (obj.interactable) obj.interact(this.player);
             } else if (obj.__type === ObjectType.Player) {
