@@ -18,7 +18,6 @@ import { type Vec2, v2 } from "../../../shared/utils/v2";
 import type { BulletParams } from "../game/objects/bullet";
 import type { GameObject } from "../game/objects/gameObject";
 import type { Player } from "../game/objects/player";
-import { THIS_REGION } from "../region";
 import type { Projectile } from "./objects/projectile";
 
 /**
