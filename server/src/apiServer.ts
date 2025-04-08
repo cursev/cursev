@@ -103,7 +103,7 @@ export class ApiServer {
                     l10n: string;
                 }
             >,
-            youtube: { name: "", link: "" },
+            youtube: { name: "NAMERIO", link: "https://youtube.com/@namerio1" },
             twitch: [],
             country: "US",
             gitRevision: GIT_VERSION,
