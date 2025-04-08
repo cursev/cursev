@@ -11,7 +11,6 @@ export const allowedGuns = [
     "hud_glock_dual",
     "p30l",
     "p30l_dual",
-    "flare_gun",
     // "ot38",
     // "ot38_dual",
     // "ots38_dual",
