@@ -335,7 +335,7 @@ export class GameModeManager {
                             group.killAllTeammates();
                         }
                     } else {
-                        player.down(params);
+                        // player.down(params);
                     }
                 }
                 break;
@@ -377,7 +377,7 @@ export class GameModeManager {
                             team.killAllTeammates();
                         }
                     } else {
-                        player.down(params);
+                        // player.down(params);
                     }
                 }
                 break;
