@@ -97,10 +97,12 @@ DeatchmatchCobalt.lootTable = {
         { name: "smoke", count: 1, weight: 1 },
         { name: "strobe", count: 1, weight: 0.2 },
         { name: "mirv", count: 2, weight: 0.05 },
+        { name: "mine", count: 3, weight: 1 },
     ],
     tier_airdrop_throwables: [
         { name: "strobe", count: 1, weight: 1 },
         { name: "frag", count: 3, weight: 0.1 },
+        { name: "mine", count: 3, weight: 1 },
     ],
     tier_perks: [
         { name: "broken_arrow", count: 1, weight: 1 },
