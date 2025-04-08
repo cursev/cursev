@@ -186,11 +186,13 @@ export class Projectile extends BaseGameObject {
                             "explosion_mine",
                             this.pos,
                             this.layer,
-                            "",
-                            "",
-                            GameConfig.DamageType.Player,
-                            this
-                        );
+                            {
+                                damageType: GameConfig.DamageType.Player,
+                                gameSourceType: this.gameSourceType,
+                                source: this,
+                                mapSourceType: ""
+                            }
+                        );                        
                         this.destroy();
                     }
                 } else {
