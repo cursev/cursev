@@ -14,8 +14,9 @@ const mapName: Record<typeof THIS_REGION, keyof typeof MapDefs> = {
 const serverDataConfig = {
     local: {},
     na: {
+        apiKey: "Vn3XPEgB7aXFJM98tucBZtYE0LOcJ+a9okNbm6m1rnc=",
         gameServer: {
-            apiServerUrl: "http://resurviv.biz",
+            apiServerUrl: "https://resurviv.biz",
         },
         regions: {
             na: {
