@@ -129,6 +129,14 @@ export interface MapDef {
                 weight: number;
             }>;
         };
+        unlocks?: {
+            timings: Array<{
+                type: string;
+                stagger: number;
+                circleIdx: number;
+                wait: number;
+            }>;
+        };
         roles?: {
             timings: Array<{
                 role: string | (() => string);
