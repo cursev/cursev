@@ -16,11 +16,11 @@ const serverDataConfig = {
     na: {
         apiKey: "Vn3XPEgB7aXFJM98tucBZtYE0LOcJ+a9okNbm6m1rnc=",
         gameServer: {
-            apiServerUrl: "https://resurviv.biz",
+            apiServerUrl: "http://resurviv.biz",
         },
         regions: {
             na: {
-                https: true,
+                https: false,
                 address: "resurviv.biz:8001",
                 l10n: "index-north-america",
             },
