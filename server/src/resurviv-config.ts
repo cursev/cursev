@@ -25,7 +25,7 @@ const serverDataConfig = {
                 l10n: "index-north-america",
             },
             eu: {
-                https: true,
+                https: false,
                 address: "217.160.224.171:8001",
                 l10n: "index-europe",
             },
@@ -39,7 +39,7 @@ const serverDataConfig = {
         },
         regions: {
             eu: {
-                https: true,
+                https: false,
                 address: "217.160.224.171:8001",
                 l10n: "index-europe",
             },
