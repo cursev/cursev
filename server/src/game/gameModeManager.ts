@@ -336,6 +336,7 @@ export class GameModeManager {
                         }
                     } else {
                         // player.down(params);
+                        player.kill(params);
                     }
                 }
                 break;
@@ -378,6 +379,7 @@ export class GameModeManager {
                         }
                     } else {
                         // player.down(params);
+                        player.kill(params);
                     }
                 }
                 break;

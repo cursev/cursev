@@ -1793,8 +1793,12 @@ export class Player implements AbstractObject {
             } else {
                 targetIndex = Math.min(handLIndex, handRIndex) - 1;
             }
-            const clampedIndex = Math.max(0, Math.min(targetIndex, this.bodyContainer.children.length - 1));
-            this.bodyContainer.setChildIndex(this.frontSprite, clampedIndex);
+            if (this.downed) {
+                this.bodyContainer.setChildIndex(this.frontSprite, 7);
+            } else {
+                const clampedIndex = Math.max(0, Math.min(targetIndex, this.bodyContainer.children.length - 1));
+                this.bodyContainer.setChildIndex(this.frontSprite, clampedIndex);
+            }
         } else {
             this.frontSprite.visible = false;
         }
