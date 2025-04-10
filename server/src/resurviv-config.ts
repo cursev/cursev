@@ -35,7 +35,7 @@ const serverDataConfig = {
     eu: {
         apiKey: "CKktmJs28fjACGIT+njM3aSJy7M0Q+1FQ2bg2UIompc=",
         gameServer: {
-            apiServerUrl: "http://resurviv.biz",
+            apiServerUrl: "http://217.160.224.171",
         },
         regions: {
             eu: {
