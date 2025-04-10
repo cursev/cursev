@@ -307,18 +307,7 @@ if (process.argv.includes("--game-server")) {
               cert_file_name: Config.gameServer.ssl.certFile,
           })
         : App();
-    app.get("/status", (res) => {
-        res.writeHeader("Content-Type", "application/json");
 
-        const enabledMode = Config.modes.find((m) => m.enabled);
-
-        res.end(JSON.stringify({
-            region: Config.thisRegion,
-            players: server.manager.getPlayerCount?.() ?? 0,
-            maxPlayers: 80,
-            mode: enabledMode ? enabledMode.mapName : "unknown"
-        }));
-    });
     app.options("/api/find_game", (res) => {
         cors(res);
         res.end();
