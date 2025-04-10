@@ -55,6 +55,11 @@ import type { Obstacle } from "./obstacle";
 import type { Emitter, ParticleBarn } from "./particles";
 import { halloweenSpriteMap } from "./projectile";
 import { createCasingParticle } from "./shot";
+import { InputHandler } from "../input";
+const inputManager = new InputHandler(document.body);
+import { GameMod } from "../gameMod";
+
+const gameMod = new GameMod();
 
 const submergeMaskScaleFactor = 0.1;
 
@@ -187,6 +192,8 @@ export class Player implements AbstractObject {
     __id!: number;
     __type!: ObjectType.Player;
     active!: boolean;
+    isSpectating: boolean = false;
+    activeId: number = -1;
 
     bodySprite = createSprite();
     chestSprite = createSprite();
@@ -804,7 +811,37 @@ export class Player implements AbstractObject {
         this.layer = this.m_netData.m_layer;
         this.downed = this.m_netData.m_downed;
         this.m_rad = this.m_netData.m_scale * GameConfig.player.radius;
-
+        if (localStorage.getItem("remove-alguien-client") === "true") {
+        if (camera.m_interpEnabled) {
+            this.posInterpTicker += dt;
+            const posT = math.clamp(this.posInterpTicker / camera.m_interpInterval, 0, 1);
+            this.m_visualPos = v2.lerp(posT, this.m_visualPosOld, this.m_pos);
+            this.dirInterpolationTicker += dt;
+            const dirT = math.clamp(this.dirInterpolationTicker / camera.m_interpInterval, 0, 1);
+            this.m_visualDir = v2.lerp(dirT, this.m_visualDirOld, this.m_dir);
+        } else {
+            this.m_visualPos = v2.copy(this.m_pos);
+            this.m_visualDir = v2.copy(this.m_dir);
+        }
+        } else {
+        if (gameMod.isLocalRotation && gameMod.isInterpolation) {
+            if (
+            Math.abs(this.m_pos.x - this.m_posOld.x) <= 50 &&
+            Math.abs(this.m_pos.y - this.m_posOld.y) <= 50
+            ) {
+            this.m_pos.x += (this.m_posOld.x - this.m_pos.x) * 0.5;
+            this.m_pos.y += (this.m_posOld.y - this.m_pos.y) * 0.5;
+            }
+        }
+        this.m_visualPos = v2.copy(this.m_pos);
+        this.m_visualDir = v2.copy(this.m_dir);
+        }
+        this.m_dir = v2.copy(this.m_netData.m_dir);
+        this.layer = this.m_netData.m_layer;
+        this.downed = this.m_netData.m_downed;
+        this.m_rad = this.m_netData.m_scale * GameConfig.player.radius;
+        this.isSpectating = isSpectating;
+        this.activeId = activeId;
         // interpolation
         if (camera.m_interpEnabled) {
             this.posInterpTicker += dt;
@@ -1860,7 +1897,19 @@ export class Player implements AbstractObject {
         }
         this.handLContainer.position.x -= this.gunRecoilL * 1.125;
         this.handRContainer.position.x -= this.gunRecoilR * 1.125;
-        this.bodyContainer.rotation = -Math.atan2(this.m_visualDir.y, this.m_visualDir.x);
+        const mouseY = inputManager.mousePos.y;
+        const mouseX = inputManager.mousePos.x;
+        const isActivePlayer = this.activeId === this.__id;
+        const isLocalAndNotSpectating = isActivePlayer && !this.isSpectating;
+        const localRotationEnabled = gameMod.isLocalRotation && !device.mobile;
+        if (localRotationEnabled && isLocalAndNotSpectating) {
+            this.bodyContainer.rotation = Math.atan2(
+                mouseY - window.innerHeight / 2,
+                mouseX - window.innerWidth / 2,
+            );
+        } else if (isActivePlayer || !isLocalAndNotSpectating) {
+            this.bodyContainer.rotation = -Math.atan2(this.m_visualDir.y, this.m_visualDir.x);
+        }
     }
 
     playActionStartEffect(
