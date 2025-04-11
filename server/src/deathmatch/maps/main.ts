@@ -148,10 +148,12 @@ DeatchmatchMain["lootTable"] = {
     tier_airdrop_uncommon: [
         { name: "sv98", count: 1, weight: 1 },
         { name: "outfitGhillie", count: 1, weight: 1 },
+        { name: "lasr_gun", count: 1, weight: 1 },
     ],
     tier_airdrop_rare: [
         { name: "sv98", count: 1, weight: 1 },
         { name: "outfitGhillie", count: 1, weight: 1 },
+        { name: "lasr_gun_dual", count: 1, weight: 1 },
     ],
     tier_throwables: [
         { name: "frag", count: 2, weight: 1 },

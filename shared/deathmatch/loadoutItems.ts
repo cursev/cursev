@@ -21,8 +21,8 @@ export const allowedGuns = [
     "colt45_dual",
     "m1911",
     "m1911_dual",
-    "lasr_gun",
-    "lasr_gun_dual",
+    // "lasr_gun",
+    // "lasr_gun_dual",
 
 
     //Submachine Guns (SMG):

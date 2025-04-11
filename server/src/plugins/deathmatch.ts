@@ -131,6 +131,9 @@ const customReloadPercentage: Record<string, number> = {
     sv98: 10,
     awm: 0,
     pkp: 30,
+    lasr_gun: 7,
+    lasr_gun_dual: 14,
+    
 };
 function calculateAmmoToGive(type: string, currAmmo: number, maxClip: number): number {
     const amount = customReloadPercentage[type] ?? 50;
