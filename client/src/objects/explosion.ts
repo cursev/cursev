@@ -665,5 +665,27 @@ const ExplosionEffectDefs: Record<string, ExplotionDef> = {
         shakeStr: 0.2,
         shakeDur: 0.35,
         lifetime: 2.0
-    }
+    },
+    fire_shot: {
+        burst: {
+          particle: "",
+          scale: 0.2,
+          sound: {
+            grass: "",
+            water: ""
+          }
+        },
+        scatter: {
+          particle: "fire_impact",
+          count: 2,
+          speed: {
+            min: 5,
+            max: 25
+          }
+        },
+        rippleCount: 1,
+        shakeStr: 0,
+        shakeDur: 0,
+        lifetime: 0.5
+      },
 };

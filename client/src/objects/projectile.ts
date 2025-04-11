@@ -110,7 +110,7 @@ class Projectile implements AbstractObject {
             const itemDef = GameObjectDefs[data.type] as ThrowableDef;
             this.layer = data.layer;
             this.type = data.type;
-            // Use a smaller visual radius for collision effects
+
             this.rad = itemDef.rad * 0.5;
         }
 
@@ -154,33 +154,18 @@ class Projectile implements AbstractObject {
 
             // Setup sprite
             let sprite = imgDef.sprite;
-            // @HACK: halloween sprites
-            if (ctx.map.mapDef.gameMode.spookyKillSounds) {
-                sprite = halloweenSpriteMap[sprite] || sprite;
+            if (imgDef.sprites && imgDef.sprites.length > 0) {
+                const frameRate = imgDef.frameRate ?? 15;
+                const frameIndex = Math.floor(performance.now() / 1 * frameRate) % imgDef.sprites.length;
+                sprite = imgDef.sprites[frameIndex];
             }
+    
             this.sprite.texture = PIXI.Texture.from(sprite);
             this.sprite.tint = imgDef.tint;
-            this.sprite.alpha = 1;
-
-            if (this.type === "mine") {
-                const mineSprite = PIXI.Sprite.from("part-strobe-01.img");
-                mineSprite.anchor.set(0.5);
-                mineSprite.tint = 0xFF0000;
-                mineSprite.scale.set(0);
-                this.container.addChild(mineSprite);
-                this.mineEffect.sprite = mineSprite;
-                this.mineEffect.ticker = 0;
-                this.mineEffect.dir = 1;
-                this.mineEffect.scale = 0;
-                this.mineEffect.armed = false;
-            }
-            
-            
-
-            this.container.visible = isVisible;
-
-            // Strobe variables
-            if (data.type == "strobe") {
+            this.sprite.alpha = 100;
+    
+            // Strobe sprite setup
+            if (this.type == "strobe") {
                 if (!this.strobeSprite) {
                     this.strobeSprite = new PIXI.Sprite();
                     this.strobeSprite.texture = PIXI.Texture.from("part-strobe-01.img");
@@ -195,6 +180,7 @@ class Projectile implements AbstractObject {
                 this.strobeDir = 1;
                 this.strobeSpeed = 1.25;
             }
+            this.container.visible = isVisible;
         }
     }
 }
