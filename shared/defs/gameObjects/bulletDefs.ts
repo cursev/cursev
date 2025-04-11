@@ -870,7 +870,7 @@ const SkinDefs: Record<string, BulletDef> = {
         damage: 0,
         obstacleDamage: 1,
         falloff: 1,
-        distance: 1,
+        distance: 4,
         speed: 100,
         variance: 0,
         shrapnel: false,

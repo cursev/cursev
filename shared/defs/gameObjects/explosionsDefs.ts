@@ -251,5 +251,5 @@ export const ExplosionDefs: Record<string, ExplosionDef> = {
         shrapnelType: "shrapnel_frag",
         explosionEffectType: "frag",
         decalType: "decal_frag_explosion"
-      },
+    },
 };
