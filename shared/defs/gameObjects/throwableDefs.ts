@@ -25,7 +25,7 @@ export interface ThrowableDef {
         equip: number;
         attack: number;
     };
-    lootImg?: {
+    lootImg: {
         sprite: string;
         tint: number;
         border: "loot-circle-outer-01.img";
@@ -946,6 +946,13 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
           equip: 0,
           attack: 0
         },
+        lootImg: {
+            sprite: "",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2
+          },
         worldImg: {
           sprite: "proj-40mm-01.img",
           scale: 0.2,
