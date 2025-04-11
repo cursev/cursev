@@ -25,7 +25,7 @@ export interface ThrowableDef {
         equip: number;
         attack: number;
     };
-    lootImg: {
+    lootImg?: {
         sprite: string;
         tint: number;
         border: "loot-circle-outer-01.img";
@@ -920,6 +920,44 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
           alpha: 1,
           tint: 16777215,
           sprite: "player-rainbow-trail.img"
+        }
+    },
+    mm40_granade: {
+        name: "40mm granade",
+        type: "throwable",
+        quality: 0,
+        explosionType: "explosion_40mm_granade",
+        inventoryOrder: 0,
+        noPotatoSwap: true,
+        cookable: false,
+        explodeOnImpact: true,
+        playerCollision: true,
+        fuseTime: 4,
+        aimDistance: 0,
+        rad: 1,
+        throwPhysics: {
+          playerVelMult: 0.6,
+          velZ: 5,
+          speed: 20,
+          spinVel: Math.PI * 10,
+          spinDrag: 1
+        },
+        speed: {
+          equip: 0,
+          attack: 0
+        },
+        worldImg: {
+          sprite: "proj-40mm-01.img",
+          scale: 0.2,
+          tint: 16777215
+        },
+        handImg: {},
+        useThrowParticles: false,
+        sound: {
+          pullPin: "",
+          throwing: "frag_throw_01",
+          pickup: "frag_pickup_01",
+          deploy: "frag_deploy_01"
         }
     },
 };

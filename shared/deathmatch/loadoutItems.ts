@@ -73,4 +73,5 @@ export const allowedGuns = [
     "m1a1",
     // "bugle",
     "m9A17",
+    "m79",
 ];

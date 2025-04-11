@@ -47,6 +47,7 @@ type DefaultItems = {
         "50AE": number;
         "308sub": number;
         flare: number;
+        "40mm": number;
         "45acp": number;
         frag: number;
         smoke: number;
@@ -120,6 +121,7 @@ function createDefaultItems<T extends DefaultItems>(e: DeepPartial<T>): T {
             "50AE": 0,
             "308sub": 0,
             flare: 0,
+            "40mm": 0,
             "45acp": 0,
             frag: 0,
             smoke: 0,

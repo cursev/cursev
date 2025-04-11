@@ -3526,5 +3526,76 @@ export const GunDefs: Record<string, GunDef> = {
             deploy: "potato_smg_switch_01"
         }
     },
+    m79: {
+        name: "M79",
+        type: "gun",
+        quality: 0,
+        fireMode: "single",
+        caseTiming: "shoot",
+        isLauncher: true,
+        noPotatoSwap: true,
+        deployGroup: 3,
+        ammo: "40mm",
+        ammoSpawnCount: 10,
+        ammoInfinite: false,
+        maxClip: 1,
+        maxReload: 1,
+        extendedClip: 1,
+        extendedReload: 1,
+        reloadTime: 2.3,
+        fireDelay: 0,
+        switchDelay: 0.9,
+        barrelLength: 2,
+        barrelOffset: -1,
+        recoilTime: 10000000000,
+        moveSpread: 2,
+        shotSpread: 1,
+        bulletCount: 1,
+        bulletType: "bullet_m79",
+        projType: "mm40_granade",
+        noSplinter: true,
+        headshotMult: 1,
+        speed: {
+          equip: -3,
+          attack: 0
+        },
+        lootImg: {
+          sprite: "loot-weapon-m79.img",
+          tint: 65280,
+          border: "loot-circle-outer-01.img",
+          borderTint: 0,
+          scale: 0.3
+        },
+        worldImg: {
+          sprite: "gun-m79-01.img",
+          scale: {
+            x: 0.5,
+            y: 0.5
+          },
+          tint: 16777215,
+          leftHandOffset: {
+            x: 7,
+            y: 2
+          },
+          gunOffset: {
+            x: -10,
+            y: -4
+          },
+          recoil: 8,
+          handsBelow: true
+        },
+        particle: {
+          shellScale: 1,
+          shellOffset: -1,
+          shellOffsetY: 1
+        },
+        sound: {
+          shoot: "m79_01",
+          reload: "m79_reload_01",
+          pickup: "gun_pickup_01",
+          empty: "empty_fire_01",
+          deploy: "m79_switch_01"
+        }
+    }
 
 };

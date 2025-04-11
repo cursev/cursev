@@ -1690,6 +1690,25 @@ const ParticleDefs: Record<string, ParticleDef> = {
             return util.rgbToInt(util.hsvToRgb(0, 0, util.random(0.9, 0.95)));
         },
     },
+    "40mm": {
+        image: ["part-40mm-01.img"],
+        life: new Range(0.5, 0.75),
+        drag: new Range(3, 4),
+        rotVel: new Range(Math.PI * 3, Math.PI * 3),
+        scale: {
+            start: 0.2,
+            end: 0.09,
+            lerp: new Range(0, 1),
+        },
+        alpha: {
+            start: 1,
+            end: 0,
+            lerp: new Range(0.95, 1),
+        },
+        color: function () {
+            return 16777215;
+        },        
+    },
     "9mm_cursed": {
         image: ["part-shell-01.img"],
         life: new Range(0.5, 0.75),

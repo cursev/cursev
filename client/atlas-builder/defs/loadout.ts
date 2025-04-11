@@ -297,6 +297,7 @@ export const LoadoutAtlas: AtlasDef = {
         "guns/gun-vss-01.svg",
         "guns/gun-lasr-gun.svg",
         "guns/gun-m9a17-01.svg",
+        "guns/gun-m79-01.svg",
         
 
         "loot/loot-ammo-box.svg",
@@ -563,6 +564,8 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-weapon-double-lasr-gun.svg",
         "loot/loot-weapon-lasr-gun.svg",
         "loot/loot-weapon-m9A17.svg",
+        "loot/loot-weapon-m79.svg",
+    
 
 
         "loot/loot-xp-bone-01.svg",
@@ -1124,5 +1127,6 @@ export const LoadoutAtlas: AtlasDef = {
         "proj/proj-strobe-unarmed.svg",
         "proj/proj-wedge-01.svg",
         "proj/proj-mine-01.svg",
+        "proj/proj-40mm-01.svg",
     ],
 };
