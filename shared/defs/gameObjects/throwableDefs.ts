@@ -977,7 +977,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         noPotatoSwap: true,
         forceMaxThrowDistance: true,
         explodeOnImpact: true,
-        playerCollision: false,
+        playerCollision: true,
         fuseTime: 9999,
         aimDistance: 32,
         rad: 1,

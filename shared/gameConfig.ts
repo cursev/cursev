@@ -204,7 +204,7 @@ export const GameConfig = {
                 mirv: 0,
                 mine: 0,
                 snowball: 0,
-                water_balloon: 0,
+                water_balloon: 20,
                 potato: 0,
                 bandage: 0,
                 healthkit: 0,
