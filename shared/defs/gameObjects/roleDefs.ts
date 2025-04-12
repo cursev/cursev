@@ -54,6 +54,7 @@ type DefaultItems = {
         strobe: number;
         mirv: number;
         snowball: number;
+        water_balloon: number;
         potato: number;
         bandage: number;
         healthkit: number;
@@ -128,6 +129,7 @@ function createDefaultItems<T extends DefaultItems>(e: DeepPartial<T>): T {
             strobe: 0,
             mirv: 0,
             snowball: 0,
+            water_balloon: 0,
             potato: 0,
             bandage: 0,
             healthkit: 0,

@@ -196,6 +196,15 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/guns/ak47_reload_01.mp3",
             volume: 1,
         },
+        water_gun_01: {
+            path: "audio/guns/water_gun_01.mp3",
+            volume: 1,
+            maxInstances: 5
+        },
+        water_gun_reload_01: {
+            path: "audio/guns/water_gun_reload_01.mp3",
+            volume: 1
+        },
         ak47_switch_01: {
             path: "audio/guns/ak47_switch_01.mp3",
             volume: 1,
@@ -1285,6 +1294,14 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         frag_water_01: {
             path: "audio/hits/frag_water_01.mp3",
             volume: 1,
+        },
+        water_balloon_throw_01: {
+            path: "audio/sfx/water_balloon_throw_01.mp3",
+            volume: 1
+        },
+        water_balloon_deploy_01: {
+            path: "audio/sfx/water_hit_01.mp3",
+            volume: 1
         },
         strobe_click_01: {
             path: "audio/sfx/strobe_click_01.mp3",

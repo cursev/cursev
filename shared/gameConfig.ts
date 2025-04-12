@@ -204,6 +204,7 @@ export const GameConfig = {
                 mirv: 0,
                 mine: 0,
                 snowball: 0,
+                water_balloon: 20,
                 potato: 0,
                 bandage: 0,
                 healthkit: 0,
@@ -331,6 +332,11 @@ export const GameConfig = {
             saturated: 0xff0000,
             chambered: 0xff0000
         },
+        water: {
+            regular: 3633658,
+            saturated: 3633658,
+            chambered: 3633658
+        },
         shrapnel: { regular: 3355443, saturated: 3355443 },
         frag: { regular: 13303808, saturated: 13303808 },
         invis: { regular: 0, saturated: 0, chambered: 0 },
@@ -367,6 +373,7 @@ export const GameConfig = {
         strobe: [2, 3, 4, 5],
         mirv: [2, 4, 6, 8],
         snowball: [10, 20, 30, 40],
+        water_balloon: [10, 20, 30, 40],
         potato: [10, 20, 30, 40],
         bandage: [5, 10, 15, 30],
         healthkit: [1, 2, 3, 4],

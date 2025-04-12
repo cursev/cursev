@@ -967,4 +967,86 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
           deploy: "frag_deploy_01"
         }
     },
+    water_balloon: {
+        name: "Water Balloon",
+        type: "throwable",
+        quality: 0,
+        explosionType: "explosion_water_balloon",
+        inventoryOrder: 0,
+        cookable: true,
+        noPotatoSwap: true,
+        forceMaxThrowDistance: true,
+        explodeOnImpact: true,
+        playerCollision: false,
+        fuseTime: 9999,
+        aimDistance: 32,
+        rad: 1,
+        throwPhysics: {
+          playerVelMult: 0,
+          velZ: 5,
+          speed: 20,
+          spinVel: Math.PI * 10,
+          spinDrag: 1,
+          fixedCollisionHeight: 0.25
+        },
+        speed: {
+          equip: 0,
+          attack: 0
+        },
+        lootImg: {
+          sprite: "loot-throwable-water.img",
+          tint: 65280,
+          border: "loot-circle-outer-01.img",
+          borderTint: 0,
+          scale: 0.2
+        },
+        worldImg: {
+          sprite: "proj-water-balloon.img",
+          scale: 0.12,
+          tint: 16777215
+        },
+        handImg: {
+          equip: {
+            right: {
+              sprite: "proj-water-balloon.img",
+              pos: {
+                x: 3,
+                y: 4.2
+              },
+              scale: 0.12
+            },
+            left: {
+              sprite: "none"
+            }
+          },
+          cook: {
+            right: {
+              sprite: "proj-water-balloon.img",
+              pos: {
+                x: 3,
+                y: 4.2
+              },
+              scale: 0.12
+            },
+            left: {
+              sprite: "none"
+            }
+          },
+          throwing: {
+            right: {
+              sprite: "none"
+            },
+            left: {
+              sprite: "none"
+            }
+          }
+        },
+        useThrowParticles: false,
+        sound: {
+          pullPin: "",
+          throwing: "water_balloon_throw_01",
+          pickup: "frag_pickup_01",
+          deploy: "water_balloon_throw_01"
+        }
+      },
 };

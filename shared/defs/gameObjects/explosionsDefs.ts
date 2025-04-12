@@ -252,4 +252,17 @@ export const ExplosionDefs: Record<string, ExplosionDef> = {
         explosionEffectType: "frag",
         decalType: "decal_frag_explosion"
     },
+    explosion_water_balloon: {
+        type: "explosion",
+        damage: 2,
+        obstacleDamage: 1,
+        rad: {
+          min: 1.24,
+          max: 1.25
+        },
+        shrapnelCount: 0,
+        shrapnelType: "",
+        explosionEffectType: "water_balloon",
+        decalType: "decal_snowball_explosion"
+      },
 };

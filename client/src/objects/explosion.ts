@@ -688,4 +688,26 @@ const ExplosionEffectDefs: Record<string, ExplotionDef> = {
         shakeDur: 0,
         lifetime: 0.5
       },
+      water_balloon: {
+        burst: {
+            particle: "",
+            scale: 0.75,
+            sound: {
+              grass: "water_balloon_deploy_01",
+              water: "frag_water_01"
+            }
+        },
+        scatter: {
+          particle: "water_balloon_impact",
+          count: 8,
+          speed: {
+            min: 5,
+            max: 25
+          }
+        },
+        rippleCount: 1,
+        shakeStr: 0,
+        shakeDur: 0,
+        lifetime: 1
+    },
 };

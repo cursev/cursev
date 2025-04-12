@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 38" width="128" height="187">
+	<title>map-beach-wet-particle-02</title>
+	<defs>
+		<image  width="21" height="30" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAeCAMAAAD0DqVnAAAAAXNSR0IB2cksfwAAAEhQTFRFAAAAR6fuRqbuR6bvR6fuRqftSKfvRqbuRaXvRqbuRafvQK/vRqftR6fuSKfvRqbvRqfuR6fuR6buR6btRqfuRqbvRqbtRqfvqO8zLwAAABh0Uk5TALDPcP+AIO8wwGAQoL9AUNDf4JDwX49/4sowpgAAAOBJREFUeJxtku0WgiAMhjdBQ1Ty1P3fYqdS0fygBBQB2y94mNu7dyLsgaiO834gCDjFNMMFgA4RzXWeUiHlo71NPi3mxV6T0aPlXjBvDiqk01S8HK1bR6ux2+jWCo6Gmt7eHiW0M5Qg+MFaQ4NUqw7DqltlPKXqyshmiCOTeH+d6PLFfDpRmJGuTVVEuaYz/Ud5Q2K6OsMSGdKL0UDdwkykPWZKO7Fcn4Feswci5HeqtiHFY524SLXnVYqyN7BuB+0ZK72voZbSul6oYz4hdWPrOM/s5kRj390fxXrgn13gD29HSVTqlxNpAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="Background" href="#img1" x="3" y="3"/>
+</svg>

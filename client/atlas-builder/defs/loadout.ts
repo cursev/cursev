@@ -298,6 +298,7 @@ export const LoadoutAtlas: AtlasDef = {
         "guns/gun-lasr-gun.svg",
         "guns/gun-m9a17-01.svg",
         "guns/gun-m79-01.svg",
+        "guns/gun-water-gun.svg",
         
 
         "loot/loot-ammo-box.svg",
@@ -565,6 +566,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-weapon-lasr-gun.svg",
         "loot/loot-weapon-m9A17.svg",
         "loot/loot-weapon-m79.svg",
+        "loot/loot-weapon-water.svg",
     
 
 
@@ -667,6 +669,9 @@ export const LoadoutAtlas: AtlasDef = {
         "particles/part-fire-01.svg",
         "particles/part-fire-02.svg",
         "particles/part-fire-03.svg",
+        "particles/map-beach-wet-particle-01.svg",
+        "particles/map-beach-wet-particle-02.svg",
+        "particles/map-beach-wet-particle-03.svg",
 
         "player/player-armor-base-01.svg",
         "player/player-base-01.svg",
@@ -1128,5 +1133,6 @@ export const LoadoutAtlas: AtlasDef = {
         "proj/proj-wedge-01.svg",
         "proj/proj-mine-01.svg",
         "proj/proj-40mm-01.svg",
+        "proj/proj-water-balloon.svg"
     ],
 };

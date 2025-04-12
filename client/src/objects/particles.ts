@@ -2807,6 +2807,59 @@ const ParticleDefs: Record<string, ParticleDef> = {
         },
         ignoreValueAdjust: true,
     },
+    burning: {
+        image: ["part-boost-basic.img"],
+        life: new Range(0.75, 1),
+        drag: 0,
+        rotVel: new Range(Math.PI * 0.25, Math.PI * 0.5),
+        scale: {
+            start: new Range(0.12, 0.14),
+            end: new Range(0.06, 0.08),
+            lerp: new Range(0, 1),
+        },
+        alpha: {
+            start: 1,
+            end: 0,
+            lerp: new Range(0.7, 1),
+        },
+        alphaIn: {
+            start: 0,
+            end: 1,
+            lerp: new Range(0, 0.05),
+        },
+        color: function () {
+            return util.rgbToInt(util.hsvToRgb(0.3, 1, util.random(0.7, 1)));
+        },
+        ignoreValueAdjust: true,
+    },
+    water_balloon_impact: {
+        image: ["map-beach-wet-particle-01.img", "map-beach-wet-particle-02.img", "map-beach-wet-particle-03.img"],
+        life: new Range(0.5, 1),
+        drag: 0,
+        rotVel: new Range(Math.PI * 0.25, Math.PI * 0.5),
+        scale: {
+            start: new Range(0.1024, 0.1376),
+            end: new Range(0.0192, 0.0416),
+            lerp: new Range(0, 1),
+        },        
+        alpha: {
+            start: 1,
+            end: 0,
+            lerp: new Range(0.9, 1),
+        },
+        alphaIn: {
+            start: 0,
+            end: 1,
+            lerp: new Range(0, 0.05),
+        },
+        color: function () {
+            return 3503816;
+        },        
+        ignoreValueAdjust: true,
+    },
+
+
+    
     boost_star: {
         image: ["part-boost-star.img"],
         life: new Range(0.75, 1),
@@ -3232,6 +3285,15 @@ const EmitterDefs: Record<string, EmitterDef> = {
     boost_basic: {
         particle: "boost_basic",
         rate: new Range(0.3, 0.35),
+        radius: 1.5,
+        speed: new Range(1, 1.5),
+        angle: 0,
+        rot: new Range(0, Math.PI * 2),
+        maxCount: Number.MAX_VALUE,
+    },
+    burning: {
+        particle: "burning",
+        rate: new Range(0.2, 0.4),
         radius: 1.5,
         speed: new Range(1, 1.5),
         angle: 0,
