@@ -1912,11 +1912,6 @@ export class GameMap {
             collided = false;
             v2.set(circle.pos, getPos());
 
-            if (this.game.gas.isOutSideSafeZone(circle.pos)) {
-                collided = true;
-                continue;
-            }
-
             if (this.isOnWater(circle.pos, 0)) {
                 collided = true;
                 continue;
