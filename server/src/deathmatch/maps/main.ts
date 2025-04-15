@@ -87,7 +87,7 @@ export const DeatchmatchMain: MapDef = util.mergeDeep(structuredClone(Main), {
                 mil_crate_03: config.mapSize === "large" ? { odds: 0.4 } : 0,
                 stone_04: 1,
                 tree_02: 3,
-                teahouse_complex_01su: { odds: 0.5 },
+                teahouse_complex_01su: 1,
                 // stone_04: 1,
             },
         ],
