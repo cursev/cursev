@@ -223,7 +223,7 @@ const SkinDefs: Record<string, OutfitDef> = {
         name: "Discord Moderatr",
         noDropOnDeath: true,
         skinImg: {
-            baseTint: 0xffffff,
+            baseTint: 3380187,
             baseSprite: "player-base-outfitDC.img",
             handTint: 9684974,
             handSprite: "player-hands-02.img",
