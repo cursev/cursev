@@ -114,6 +114,7 @@ DeatchmatchMain["lootTable"] = {
     tier_chrys_case: [
         // { name: "tier_katanas", count: 1, weight: 3 },
         { name: "naginata", count: 1, weight: 1 },
+        { name: "m134", count: 1, weight: 1 },
     ],
     tier_police: [
         { name: "saiga", count: 1, weight: 1 },

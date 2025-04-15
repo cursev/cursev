@@ -3658,6 +3658,69 @@ export const GunDefs: Record<string, GunDef> = {
           empty: "empty_fire_02",
           deploy: "ak47_switch_01"
         }
-      },
-
+    },
+    m134: {
+        name: "M134",
+        type: "gun",
+        quality: 1,
+        fireMode: "auto",
+        caseTiming: "shoot",
+        ammo: "762mm",
+        ammoSpawnCount: 100,
+        maxClip: 200,
+        maxReload: 200,
+        extendedClip: 250,
+        extendedReload: 250,
+        reloadTime: 8,
+        fireDelay: 0.055,
+        switchDelay: 0.9,
+        barrelLength: 4.8,
+        barrelOffset: 0,
+        recoilTime: 10000000000,
+        moveSpread: 1,
+        shotSpread: 1,
+        bulletCount: 1,
+        bulletType: "bullet_m134",
+        headshotMult: 1.5,
+        speed: {
+          equip: -3,
+          attack: -6
+        },
+        lootImg: {
+          sprite: "loot-weapon-m134.img",
+          tint: 65280,
+          border: "loot-circle-outer-01.img",
+          borderTint: 0,
+          scale: 0.3
+        },
+        worldImg: {
+          sprite: "gun-m134-01.img",
+          scale: {
+            x: 0.5,
+            y: 0.5
+          },
+          tint: 16777215,
+          leftHandOffset: {
+            x: 13.5,
+            y: -5
+          },
+          gunOffset: {
+            x: 0,
+            y: -4
+          },
+          recoil: 1.33
+        },
+        particle: {
+          shellScale: 1,
+          shellOffset: 0.5875,
+          shellReverse: true
+        },
+        sound: {
+          shoot: "m134_01",
+          reload: "m134_reload_01",
+          pickup: "gun_pickup_01",
+          empty: "empty_fire_02",
+          deploy: "m134_switch_01"
+        }
+    },
 };
