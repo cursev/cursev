@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" width="22" height="22">
+	<title>part-rainbow-2</title>
+	<defs>
+		<image  width="16" height="17" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAARCAMAAADjcdz2AAAAAXNSR0IB2cksfwAAAG9QTFRFAAAAVHvpU33tU4DqVH/oVX/pVX/pVH7qT3vlVH7oVXfdVX7obJDrk67xr8P0n7bzVX7pjqrwmbLxg6LvVYDqfZ7vWoPqVH7oqb70pLvzU37oVH7od5nsZozrcpXsVH/oVH7pVX/pU37oVH/oVYDptiP+CgAAACV0Uk5TADorVp3lq1Udug/W6O7y76zt7+tI6uWe8fCQyOrn6ddzgWXJujS3FMQAAACaSURBVHicVY9ZC8IwEIR3bELiAcazEB/E//+fxAepFcWj0EAltSY94z4sOx+zMANqBvi2h18RULOiARK2szHjwAQfAcB4wmBAKp+V7spqT2WxfquiGj/bJ7KIHyuUvaYNuBiJV69pCx5n83QABL6QFwrBPgklTaFvf2AHsFDrK+hwDg0n10XlQ4qkbtt5dHRs60vt4t6XqS/4A6J4JYph39hEAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="Background" href="#img1" x="3" y="2"/>
+</svg>

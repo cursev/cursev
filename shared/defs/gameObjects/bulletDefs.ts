@@ -806,6 +806,34 @@ export const BaseDefs: Record<string, BulletDef> = {
         tracerWidth: 0.1,
         tracerLength: 0.9
     },
+    bullet_m9A17: {
+        type: "bullet",
+        damage: 0,
+        obstacleDamage: 1,
+        falloff: 0,
+        distance: 1,
+        speed: 100,
+        variance: 0,
+        shrapnel: false,
+        tracerColor: "invis",
+        tracerWidth: 0,
+        tracerLength: 0.9,
+        skipCollision: true
+    },
+    bullet_rainbow: {
+        type: "bullet",
+        damage: 0,
+        obstacleDamage: 0,
+        falloff: 0.75,
+        speed: 90,
+        distance: 1,
+        variance: 0,
+        shrapnel: false,
+        tracerColor: "rainbowTrail",
+        tracerWidth: 0.5,
+        tracerLength: 1.5,
+        skipCollision: true
+    },
 };
 
 const SkinDefs: Record<string, BulletDef> = {

@@ -337,6 +337,13 @@ export const GameConfig = {
             saturated: 3633658,
             chambered: 3633658
         },
+        rainbowTrail: {
+            regular: 16777215,
+            saturated: 16777215,
+            chambered: 16777215,
+            alphaRate: 0.92,
+            alphaMin: 0.14
+        },
         shrapnel: { regular: 3355443, saturated: 3355443 },
         frag: { regular: 13303808, saturated: 13303808 },
         invis: { regular: 0, saturated: 0, chambered: 0 },

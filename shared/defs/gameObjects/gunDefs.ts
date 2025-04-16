@@ -4,7 +4,7 @@ export interface GunDef {
     readonly type: "gun";
     name: string;
     quality?: number;
-    fireMode: "auto" | "single" | "burst";
+    fireMode: "auto" | "single" | "burst" | "blaster";
     caseTiming: "shoot" | "reload";
     ammo: string;
     ammoSpawnCount: number;
@@ -24,19 +24,22 @@ export interface GunDef {
     bulletType: string;
     bulletTypeBonus?: string;
     headshotMult: number;
+    loadTime?: number;
     speed: {
         equip: number;
         attack: number;
+        load?: number;
     };
     lootImg: {
         sprite: string;
         tint: number;
         border: string;
-        borderTint: number;
+        borderTint?: number;
         scale: number;
         innerScale?: number;
         rot?: number;
         mirror?: boolean;
+        noTint?: boolean;
     };
     worldImg: {
         sprite: string;
@@ -50,6 +53,14 @@ export interface GunDef {
             sprite: string;
             pos: Vec2;
             top?: boolean;
+            max_height_adj?: number;
+        };
+        onLoadComplete?: string;
+        loadingBullet?: {
+            sprite: string;
+            pos: Vec2;
+            maxScale: number;
+            top?: boolean;
         };
     };
     particle: {
@@ -58,7 +69,8 @@ export interface GunDef {
         shellOffsetY?: number;
         shellForward?: number;
         shellReverse?: boolean;
-        customParticle?: string
+        customParticle?: string;
+        amount?: number;
     };
     sound: {
         shoot: string;
@@ -3723,4 +3735,89 @@ export const GunDefs: Record<string, GunDef> = {
           deploy: "m134_switch_01"
         }
     },
+    rainbow_blaster: {
+        name: "Rainbow Blaster",
+        type: "gun",
+        quality: 0,
+        fireMode: "blaster",
+        caseTiming: "shoot",
+        ammo: "rainbow_ammo",
+        projType: "rainbow_projectile",
+        noDrop: false,
+        noPotatoSwap: true,
+        ammoSpawnCount: 1,
+        maxClip: 1,
+        maxReload: 1,
+        extendedClip: 1,
+        extendedReload: 1,
+        reloadTime: 0,
+        fireDelay: 0.16,
+        switchDelay: 0.3,
+        barrelLength: 4.6,
+        barrelOffset: 0,
+        recoilTime: 0.5,
+        moveSpread: 6,
+        shotSpread: 2.5,
+        bulletCount: 1,
+        bulletType: "bullet_rainbow",
+        loadTime: 1.5,
+        headshotMult: 2,
+        speed: {
+          equip: 0,
+          attack: 0,
+          load: -0.20000000000004547
+        },
+        lootImg: {
+          sprite: "loot-weapon-rainbow-blaster.img",
+          tint: 65280,
+          border: "loot-circle-outer-07.img",
+          borderTint: 16777215,
+          scale: 0.3,
+          noTint: true
+        },
+        worldImg: {
+          sprite: "gun-rainbow-blaster.img",
+          scale: {
+            x: 0.5,
+            y: 0.5
+          },
+          tint: 16777215,
+          leftHandOffset: {
+            x: 0,
+            y: 0
+          },
+          recoil: 5,
+          handsBelow: true,
+          magImg: {
+            sprite: "gun-rainbow-top.img",
+            pos: {
+              x: 0.5, y: -40.600000000000364
+            },
+            top: true,
+            max_height_adj: 15
+          },
+          onLoadComplete: "gun-rainbow-blater-loaded.img",
+          loadingBullet: {
+            sprite: "rainbow-ball.img",
+            pos: {
+              x: 0.5,
+              y: -65
+            },
+            maxScale: 0.5
+          }
+        },
+        particle: {
+          shellScale: 1,
+          shellOffset: 0.7875,
+          shellReverse: true,
+          amount: 10
+        },
+        sound: {
+          shoot: "rainbow_blaster_01",
+          reload: "rainbow_blaster_loading",
+          pickup: "gun_pickup_01",
+          empty: "empty_fire_01",
+          deploy: "deagle_switch_01"
+        }
+      },
 };

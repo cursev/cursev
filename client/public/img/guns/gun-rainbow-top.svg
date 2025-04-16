@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 62" width="24" height="62">
+	<title>gun-rainbow-top</title>
+	<defs>
+		<image  width="24" height="62" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAA+CAMAAAAGXCvhAAAAAXNSR0IB2cksfwAAADZQTFRFw5uH+hAA1LyOV4yhAJfwYrHREREA2QAA1o0c9qYA7PsEWd4qc4ZuO53Sm0m0jSqfAAAA6+Dr4wFClAAAABJ0Uk5TQG6+kJV/D/////b/yf/1/wAZmga17AAAADhJREFUeJxjZGBkAANGBGb8x8DAzMjIBmQxIgSh+OOoxKjEqMSoxKjE0JUQ+AYp9Bm4Gb4yIAAXADugP1XIAzBHAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="Background" href="#img1" x="0" y="0"/>
+</svg>

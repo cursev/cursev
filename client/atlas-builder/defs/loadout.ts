@@ -300,6 +300,9 @@ export const LoadoutAtlas: AtlasDef = {
         "guns/gun-m79-01.svg",
         "guns/gun-water-gun.svg",
         "guns/gun-m134-01.svg",
+        "guns/gun-rainbow-blaster.svg",
+        "guns/gun-rainbow-top.svg",
+        "guns/gun-rainbow-blater-loaded.svg",
         
 
         "loot/loot-ammo-box.svg",
@@ -312,6 +315,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-circle-outer-04.svg",
         "loot/loot-circle-outer-05.svg",
         "loot/loot-circle-outer-06.svg",
+        "loot/loot-circle-outer-07.svg",
         "loot/loot-helmet-01.svg",
         "loot/loot-helmet-02.svg",
         "loot/loot-helmet-03.svg",
@@ -569,6 +573,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-weapon-m79.svg",
         "loot/loot-weapon-water.svg",
         "loot/loot-weapon-m134.svg",
+        "loot/loot-weapon-rainbow-blaster.svg",
     
 
 
@@ -665,6 +670,7 @@ export const LoadoutAtlas: AtlasDef = {
         "particles/part-splat-02.svg",
         "particles/part-splat-03.svg",
         "particles/part-strobe-01.svg",
+        "particles/rainbow-ball.svg",
         "particles/part-takedown-01.svg",
         "particles/part-wedge-01.svg",
         "particles/part-woodchip-01.svg",
@@ -674,6 +680,13 @@ export const LoadoutAtlas: AtlasDef = {
         "particles/map-beach-wet-particle-01.svg",
         "particles/map-beach-wet-particle-02.svg",
         "particles/map-beach-wet-particle-03.svg",
+        "particles/part-rainbow-1.svg",
+        "particles/part-rainbow-2.svg",
+        "particles/part-rainbow-3.svg",
+        "particles/part-rainbow-4.svg",
+        "particles/part-rainbow-5.svg",
+        "particles/part-rainbow-6.svg",
+
 
         "player/player-armor-base-01.svg",
         "player/player-base-01.svg",

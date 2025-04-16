@@ -189,7 +189,7 @@ export class Projectile extends BaseGameObject {
                             {
                                 damageType: GameConfig.DamageType.Player,
                                 gameSourceType: this.gameSourceType,
-                                source: this,
+                                source: this.game.playerBarn.players.find(p => p.__id === this.playerId),
                                 mapSourceType: ""
                             }
                         );                        

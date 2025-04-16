@@ -264,5 +264,19 @@ export const ExplosionDefs: Record<string, ExplosionDef> = {
         shrapnelType: "",
         explosionEffectType: "water_balloon",
         decalType: "decal_snowball_explosion"
-      },
+    },
+    explosion_rainbow_projectile: {
+        type: "explosion",
+        damage: 1000,
+        obstacleDamage: 1000,
+        teamDamage: false,
+        rad: {
+          min: 1,
+          max: 2
+        },
+        shrapnelCount: 0,
+        shrapnelType: "",
+        explosionEffectType: "rounds",
+        decalType: "decal_rounds_explosion"
+    },
 };
