@@ -122,21 +122,19 @@ export class BulletBarn {
             b.container = new PIXI.Container();
             b.container.pivot.set(14.5, 0);
             b.container.visible = false;
-        
-            const bulletDef = BulletDefs[bullet.bulletType];
-            const isRainbowBlaster = bulletDef.tracerColor === "rainbowTrail";
-        
-            b.bulletTrail = isRainbowBlaster
-                ? PIXI.Sprite.from("player-rainbow-trail.img")
-                : PIXI.Sprite.from("player-bullet-trail-02.img");
-        
+            b.bulletTrail = PIXI.Sprite.from("player-bullet-trail-02.img");
             b.bulletTrail.anchor.set(0.5, 0.5);
             b.container.addChild(b.bulletTrail);
             this.bullets.push(b);
         }
-        
 
         const bulletDef = BulletDefs[bullet.bulletType];
+        const isRainbowBlaster = bulletDef.tracerColor === "rainbowTrail";
+        if (isRainbowBlaster) {
+            b.bulletTrail.texture = PIXI.Texture.from("player-rainbow-trail.img");
+        } else {
+            b.bulletTrail.texture = PIXI.Texture.from("player-bullet-trail-02.img");
+        }        
 
         const variance = 1 + bullet.varianceT * bulletDef.variance;
         const distAdj = math.remap(bullet.distAdjIdx, 0, 16, -1, 1);

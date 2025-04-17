@@ -132,7 +132,7 @@ class Projectile implements AbstractObject {
                 if (data.type === "rainbow_projectile") {
                     this.container.removeChild(this.trail);
                     this.trail = PIXI.Sprite.from("player-rainbow-trail.img");
-                    this.trail.anchor.set(1, 0.5);
+                    this.trail.anchor.set(0.9, 0.5);
                     this.trail.scale.set(1, 1);
                     this.trail.visible = false;
                     this.container.addChildAt(this.trail, 0);

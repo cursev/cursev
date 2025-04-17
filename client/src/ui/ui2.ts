@@ -258,6 +258,7 @@ export class UiManager2 {
             number: HTMLElement;
             image: HTMLImageElement;
             ammo: HTMLElement;
+            loading: HTMLElement;
         }>,
         ammo: {
             current: domElemById("ui-current-clip"),
@@ -369,6 +370,9 @@ export class UiManager2 {
                 ammo: weapon.getElementsByClassName(
                     "ui-weapon-ammo-counter",
                 )[0] as HTMLElement,
+                loading: weapon.getElementsByClassName(
+                    "ui-weapon-loadImage"
+                )[0] as HTMLImageElement,                
             };
             this.dom.weapons.push(weaponData);
         }
@@ -861,11 +865,11 @@ export class UiManager2 {
                 ne.width = 0;
             }
             const ue = inputBinds.getBind(ne.bind);
-            ne.bindStr = ue ? ue.toString() : "";
+            ne.bindStr = ue ? ue.toString() : "";              
         }
         const ge = state.weapons[activePlayer.m_localData.m_curWeapIdx];
         const weaponDef = GameObjectDefs[ge.type] as GunDef | MeleeDef;
-        const we = ge.ammo;
+        const we = ge.ammo;        
         const fe =
             weaponDef.type == "gun"
                 ? weaponDef.ammoInfinite ||
@@ -877,6 +881,22 @@ export class UiManager2 {
         state.ammo.remaining = fe;
         state.ammo.displayCurrent = weaponDef.type != "melee";
         state.ammo.displayRemaining = fe > 0;
+        const curWeapIdx = activePlayer.m_localData.m_curWeapIdx;
+        const weaponSlotDom = this.dom.weapons[curWeapIdx];
+        if (weaponSlotDom?.loading) {
+            if ((weaponDef as GunDef).fireMode === "blaster") {
+                const loadTime = (weaponDef as GunDef).loadTime ?? 1.5;
+                const charge = activePlayer.m_netData.m_loadingBlaster ?? 0;
+                const percentLoaded = Math.min(charge / loadTime, 1);
+                const maxWidth = 100;
+                const clipRight = (1 - percentLoaded) * maxWidth;
+
+                weaponSlotDom.loading.style.clipPath = `inset(0px ${clipRight}% 0px 0px)`;
+            } else {
+                weaponSlotDom.loading.style.clipPath = `inset(60px 0px 0px 0px)`;
+            }
+        }
+
         for (let _e = 0; _e < state.scopes.length; _e++) {
             const be = state.scopes[_e];
             be.visible = activePlayer.m_localData.m_inventory[be.type] > 0;
@@ -1694,6 +1714,7 @@ export function loadStaticDomImages() {
         "ui-loot-flare": "img/loot/loot-ammo-box.svg",
         "ui-loot-45acp": "img/loot/loot-ammo-box.svg",
         // "ui-loot-40mm": "img/loot/loot-ammo-box.svg",
+        // "ui-luck-actual":"img/rainbow_charge.png",
     };
 
     for (const [id, img] of Object.entries(lootImages)) {

@@ -2814,6 +2814,23 @@ img {
   background-repeat: no-repeat;
 }
 
+.ui-weapon-loadImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; 
+  clip-path: inset(0px 100% 0px 0px);
+  transition: clip-path 0.05s linear;
+  pointer-events: none;
+}
+
+.ui-weapon-image {
+  position: relative;
+  z-index: 1;
+}
+
 #ui-weapon-id-4 .ui-weapon-image {
   height: 52px;
   width: 52px;
