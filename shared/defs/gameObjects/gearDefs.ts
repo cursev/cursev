@@ -490,21 +490,21 @@ const AmmoDefs: Record<string, AmmoDef> = {
             pickup: "ammo_pickup_01",
         },
     },
-    "40mm": {
-        name: "40 mm",
-        type: "ammo",
-        special: true,
-        minStackSize: 10,
-        lootImg: {
-          sprite: "loot-ammo-box.img",
-          scale: 0.2,
-          tint: 843179,
-          tintDark: 843179
-        },
-        sound: {
-          pickup: "ammo_pickup_01"
-        }
-    },
+    // "40mm": {
+    //     name: "40 mm",
+    //     type: "ammo",
+    //     special: true,
+    //     minStackSize: 10,
+    //     lootImg: {
+    //       sprite: "loot-ammo-box.img",
+    //       scale: 0.2,
+    //       tint: 843179,
+    //       tintDark: 843179
+    //     },
+    //     sound: {
+    //       pickup: "ammo_pickup_01"
+    //     }
+    // },
     "762mm": {
         name: "7.62mm",
         type: "ammo",
