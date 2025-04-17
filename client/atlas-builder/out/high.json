@@ -19702,8 +19702,8 @@
         },
         "player-bullet-trail-02.img": {
           "frame": {
-            "x": 2066,
-            "y": 1625,
+            "x": 2190,
+            "y": 1755,
             "w": 35,
             "h": 36
           },
@@ -19822,8 +19822,8 @@
         },
         "player-feet-02.img": {
           "frame": {
-            "x": 2190,
-            "y": 1755,
+            "x": 2296,
+            "y": 2015,
             "w": 24,
             "h": 36
           },
@@ -24318,6 +24318,26 @@
           "sourceSize": {
             "w": 160,
             "h": 160
+          }
+        },
+        "player-rainbow-trail.img": {
+          "frame": {
+            "x": 2066,
+            "y": 1625,
+            "w": 34,
+            "h": 36
+          },
+          "rotated": false,
+          "trimmed": true,
+          "spriteSourceSize": {
+            "x": 3,
+            "y": 2,
+            "w": 34,
+            "h": 36
+          },
+          "sourceSize": {
+            "w": 39,
+            "h": 41
           }
         },
         "player-ripple-01.img": {

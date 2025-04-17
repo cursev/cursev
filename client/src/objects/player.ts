@@ -113,15 +113,18 @@ const mobileZoomRads = Object.values(GameConfig.scopeZoomRadius.mobile);
 class Gun {
     gunBarrel = createSprite();
     gunMag = createSprite();
+    gunBall = createSprite();
 
     container = new PIXI.Container();
     magTop = false;
+    maxScaleShoot: number;
 
     constructor() {
         this.container.addChild(this.gunBarrel);
         this.container.addChild(this.gunMag);
         this.container.rotation = Math.PI * 0.5;
         this.container.visible = false;
+        this.maxScaleShoot = 0.0;
     }
 
     setVisible(vis: boolean) {
@@ -132,6 +135,7 @@ class Gun {
         const gunDef = GameObjectDefs[type] as GunDef;
         const imgDef = gunDef.worldImg;
         this.gunBarrel.texture = PIXI.Texture.from(imgDef.sprite);
+
         this.gunBarrel.anchor.set(0.5, 1);
         this.gunBarrel.position.set(0, 0);
         this.gunBarrel.scale.set((imgDef.scale.x * 0.5) / t, (imgDef.scale.y * 0.5) / t);
@@ -157,12 +161,35 @@ class Gun {
 
         this.magTop = imgDef.magImg?.top!;
 
+        
+        if (imgDef.loadingBullet) {
+            var ballDef = imgDef.loadingBullet;
+            this.gunBall.texture = PIXI.Texture.from(ballDef.sprite);
+            this.gunBall.anchor.set(0.5, 0.5);
+            this.gunBall.position.set(ballDef.pos.x / t, ballDef.pos.y / t);
+            this.gunBall.scale.set(0.25 / t, 0.25 / t);
+            this.gunBall.tint = 0xffffff;
+            this.gunBall.visible = true;
+
+            this.maxScaleShoot = imgDef.loadingBullet.maxScale;
+
+            if (ballDef.top) {
+                this.container.addChild(this.gunBall);
+            } else {
+                this.container.addChildAt(this.gunBall, 0);
+            }
+        } else {
+            this.gunBall.visible = false;
+        }
+
         const handOffset = gunDef.isDual ? v2.create(-5.95, 0) : v2.create(-4.25, -1.75);
         if (imgDef.gunOffset) {
             handOffset.x += imgDef.gunOffset.x;
             handOffset.y += imgDef.gunOffset.y;
         }
         this.container.position.set(handOffset.x, handOffset.y);
+
+        
     }
 }
 
@@ -222,6 +249,8 @@ export class Player implements AbstractObject {
     frontSprite = createSprite();
     handLContainer = new PIXI.Container();
     handRContainer = new PIXI.Container();
+
+    soundLoadingInstance = null;
 
     footLContainer = new PIXI.Container();
     footRContainer = new PIXI.Container();
@@ -289,6 +318,8 @@ export class Player implements AbstractObject {
     gunRecoilR = 0;
     fireDelay = 0;
 
+    loadedSprite = false;
+
     throwableState = "equip";
     lastThrowablePickupSfxTicker = 0;
 
@@ -352,6 +383,8 @@ export class Player implements AbstractObject {
             type: string;
             droppable: boolean;
         }>;
+        m_loadingBlaster: number;
+        m_gunLoaded: boolean;
     };
 
     m_localData!: {
@@ -506,6 +539,8 @@ export class Player implements AbstractObject {
             m_scale: 1,
             m_role: "",
             m_perks: [],
+            m_loadingBlaster: 0.0,
+            m_gunLoaded: false,
         };
 
         this.m_localData = {
@@ -803,6 +838,30 @@ export class Player implements AbstractObject {
     ) {
         const curWeapDef = GameObjectDefs[this.m_netData.m_activeWeapon];
         const isActivePlayer = this.__id == activeId;
+        if (inputBinds.isBindDown(Input.Fire)) {
+            this.m_netData.m_loadingBlaster += dt;
+            const loadTime = (curWeapDef as GunDef).loadTime ?? 1.5;
+        
+            if (this.m_netData.m_loadingBlaster >= loadTime) {
+                this.m_netData.m_loadingBlaster = loadTime; // Cap at max
+        
+                if (!this.m_netData.m_gunLoaded) {
+                    this.m_netData.m_gunLoaded = true;
+                    if (audioManager.isSoundPlaying(this.cycleSoundInstance!)) {
+                        audioManager.stopSound(this.cycleSoundInstance!);
+                    }
+                }
+            }
+        } else {
+            if (this.m_netData.m_loadingBlaster > 0 || this.m_netData.m_gunLoaded) {
+                this.m_netData.m_loadingBlaster = 0;
+                this.m_netData.m_gunLoaded = false;
+                if (audioManager.isSoundPlaying(this.cycleSoundInstance!)) {
+                    audioManager.stopSound(this.cycleSoundInstance!);
+                }
+            }
+        }
+        
         const activePlayer = playerBarn.getPlayerById(activeId)!;
         this.m_posOld = v2.copy(this.m_pos);
         this.m_dirOld = v2.copy(this.m_dir);
@@ -1076,6 +1135,10 @@ export class Player implements AbstractObject {
         ) {
             const lastWeapIdx = this.lastSwapIdx;
             this.lastSwapIdx = this.m_localData.m_curWeapIdx;
+            if (audioManager.isSoundPlaying(this.cycleSoundInstance!)) {
+                audioManager.stopSound(this.cycleSoundInstance!);
+                this.soundLoadingInstance = null;
+            }
             const itemDef = GameObjectDefs[this.m_netData.m_activeWeapon] as
                 | GunDef
                 | MeleeDef
@@ -1331,6 +1394,77 @@ export class Player implements AbstractObject {
         );
 
         this.isNew = false;
+        if (
+            curWeapDef &&
+            this.m_netData.m_loadingBlaster > 0.0 &&
+            (curWeapDef as GunDef).fireMode === "blaster" &&
+            !this.m_netData.m_gunLoaded &&
+            !audioManager.isSoundPlaying(this.cycleSoundInstance!)
+        ) {
+            if (curWeapDef.type === "gun") {
+                this.cycleSoundInstance = audioManager.playSound(curWeapDef.sound.reload, {
+                    channel: isActivePlayer ? "activePlayer" : "otherPlayers",
+                    soundPos: this.m_pos,
+                    layer: this.layer,
+                    delay: 30,
+                    volumeScale: 0.75,
+                });
+            }
+        }
+        if (
+            curWeapDef &&
+            (curWeapDef as GunDef).fireMode === "blaster"
+        ) {
+            const gunDef = curWeapDef as GunDef;
+            if (this.gunRSprites?.gunBarrel && gunDef.worldImg?.onLoadComplete) {
+                if (this.m_netData.m_gunLoaded) {
+                    this.gunRSprites.gunBarrel.texture = PIXI.Texture.from(gunDef.worldImg.onLoadComplete);
+                } else {
+                    this.gunRSprites.gunBarrel.texture = PIXI.Texture.from(gunDef.worldImg.sprite);
+                }
+            }
+        }
+        if (
+            this.m_netData.m_gunLoaded &&
+            audioManager.isSoundPlaying(this.cycleSoundInstance!)
+        ) {
+            audioManager.stopSound(this.cycleSoundInstance!);
+        }
+        if (
+            curWeapDef &&
+            (curWeapDef as GunDef).fireMode === "blaster"
+        ) {
+        const gunDef = curWeapDef as GunDef;
+
+            if (this.gunRSprites?.gunBall && gunDef.worldImg?.loadingBullet) {
+                const maxScale = this.gunRSprites.maxScaleShoot ?? gunDef.worldImg.loadingBullet?.maxScale ?? 0.5;
+                const bodyScale = this.m_bodyRad / GameConfig.player.radius;
+                const loadTime = gunDef.loadTime ?? 1.5;
+                const charge = this.m_netData.m_loadingBlaster;
+
+                const minScale = 0.1;
+                const scale = (charge / loadTime) * maxScale / bodyScale;
+
+                if (!this.m_netData.m_gunLoaded) {
+                    this.gunRSprites.gunBall.scale.set(Math.max(minScale, scale), Math.max(minScale, scale));
+                    this.gunRSprites.gunBall.visible = true;
+                }
+
+                const fastFlicker = Math.random() < 0.5 ? 1.0 : 0.2;
+                this.gunRSprites.gunBall.alpha = fastFlicker;
+            }
+
+            if (this.gunRSprites?.gunMag && gunDef.worldImg?.magImg) {
+                const heightAdj = gunDef.worldImg.magImg?.max_height_adj ?? 15;
+                const posY = gunDef.worldImg.magImg?.pos.y ?? 0;
+                let charge = this.m_netData.m_loadingBlaster;
+                const loadTime = gunDef.loadTime ?? 1.5;
+                if (charge > loadTime) charge = loadTime;
+                const magHeight = (charge / loadTime) * heightAdj;
+                this.gunRSprites.gunMag.height = magHeight;
+                this.gunRSprites.gunMag.y = magHeight / 2 + posY;
+            }
+        }
     }
 
     render(camera: Camera, debug: DebugOptions) {

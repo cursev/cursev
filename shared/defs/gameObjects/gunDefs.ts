@@ -3782,17 +3782,12 @@ export const GunDefs: Record<string, GunDef> = {
             y: 0.5
           },
           tint: 16777215,
-          leftHandOffset: {
-            x: 0,
-            y: 0
-          },
+          leftHandOffset: {x: 0, y: 0 },
           recoil: 5,
           handsBelow: true,
           magImg: {
             sprite: "gun-rainbow-top.img",
-            pos: {
-              x: 0.5, y: -40.600000000000364
-            },
+            pos: { x: 0.5, y: -40.600000000000364 },
             top: true,
             max_height_adj: 15
           },

@@ -1084,7 +1084,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
           scale: 0.2
         },
         worldImg: {
-          sprite: "",
+          sprite: "rainbow-ball.img.img", // not suppsoe to do this but we cant leave it blank
           scale: 0.075,
           tint: 16777215
         },
@@ -1101,7 +1101,6 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
           width: 0.8,
           alpha: 1,
           tint: 16777215,
-          sprite: "player-rainbow-trail.img"
         }
     },
 };

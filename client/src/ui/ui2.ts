@@ -211,6 +211,7 @@ class UiState {
     health = GameConfig.player.health as number;
     boost = 0;
     downed = false;
+    loading: number = 0;
 }
 
 interface EventListeners<
@@ -824,6 +825,7 @@ export class UiManager2 {
         );
         state.interaction.key = this.getInteractionKey(interactionType);
         state.interaction.usable = interactionUsable && !spectating;
+        state.loading = activePlayer.m_netData.m_loadingBlaster;
         for (let oe = 0; oe < activePlayer.m_localData.m_weapons.length; oe++) {
             const se = activePlayer.m_localData.m_weapons[oe];
             const ne = state.weapons[oe];
