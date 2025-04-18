@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 32" width="31" height="32">
+	<title>part-teleport-01</title>
+	<defs>
+		<image  width="23" height="28" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAcCAMAAAC9M9RRAAAAAXNSR0IB2cksfwAAAT5QTFRFAAAA/9cA/98A/9YA/88A/9cA/9YA/9IA/9YA/9YA/9UA6+Ey/9gA/9cA/9UAxPNz/9YA/9YA/9YAqvyF/9UA/98A/9YA5+M8rv2W/9cA/9YA/9YA/9UA/9YA5OVCy/us8N8p/9cA/9UA/9cA/9gA/9UA/9gAy/Fs7/rS5OZB/9kA/9cA/9UAxPWD9/3n0e5i/9YA/9gA/9cA/9YA0Pqk9/3swfV5/9YA/9cA/9YA6OI5y/FrzveZ1Pqq4frA9/jS8/nM0PmjzPaM99sW/9UA/9YA4eZJ2+1n4PSW8PjH6fi/3epQ6OM6/9YA0fmj/9cA/9UA/9UA/9gA/9UA/9YA1Pih/9cA/9cA1fKC1+ta/9gAyvFt9fvd4udI2utX8/rX3uhR/9cA4OdN7PrN2+pZ0/qzxfulwfmUvfZ62OtYQzGydgAAAGp0Uk5TAEAIkBAg4Cg4/zD/T2eA/1dQoP+wEG/V/5N3wBjf+P/aYO9HJ9Cr///6Lz9W////5mF/zf///7Zlr9///////////8afcOD7////9drZ/7lnT2+M9v9Gev/4dfz/4uH/yl/T/7j//////3O4abQAAAGKSURBVHicbZFNSwJRFIbPmRl1GM0+bAJzLAyjJBDrL5Rtwk0/QDAi6BcVBLVwWcsIomjRJog2IVgIppj0gaY1xk2dcW53FD9GfOHee3g4vOecexD6QjoQdx7OYBffAhB0CwebBmBvAjgaVi7WwSb8gWAnQ/k2ghIlLmJYOYzV3Kjyrm9L3ckquAwRNcMgZtznPKrjyPTBz1TNChwqn5rZ4mzRKyB+TSPNseKtBoIwD/jimSj6WbpacVaW33xPRtuHC1WJkoUgYmaJnbre8+dCz5H0CmIqjA96tx9cdWBbxGnw2BCxktLa+XJ542ad8bLM+K0nT3s+gmvBdx19Vwubr3OZdLd/IYaPkYstzKsFiJ3bW/60yTm7r6BJVFnDbBDPlFoJHMGM1plLFn9IOIR4SeniXbvBjr+7RkVhm811XwxArvc/MpQgkYzjqe7Nglwa/GdO+t3F/FXixLpfkJp6NHBEpamilbO94l6SgGTdI8fpIMUPAZShfFP7B/14kO8cj+ZudTTv1jT1D494hiHc7gMHAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="Background" href="#img1" x="4" y="2"/>
+</svg>

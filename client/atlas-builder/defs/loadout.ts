@@ -324,6 +324,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-medical-heart.svg",
         "loot/loot-medical-pill.svg",
         "loot/loot-medical-soda.svg",
+        "loot/loot-luck-bottle.svg",
 
 
         "loot/loot-melee-bayonet-rugged.svg",
@@ -416,6 +417,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-perk-turkey_shoot.svg",
         "loot/loot-perk-windwalk.svg",
         "loot/loot-pulseBox.svg",
+        "loot/loot-perk-leprechaun.svg",
 
         "loot/loot-scope-00.svg",
         "loot/loot-scope-01.svg",
@@ -686,6 +688,11 @@ export const LoadoutAtlas: AtlasDef = {
         "particles/part-rainbow-4.svg",
         "particles/part-rainbow-5.svg",
         "particles/part-rainbow-6.svg",
+        "particles/part-teleport-01.svg",
+        "particles/part-teleport-02.svg",
+        "particles/part-teleport-03.svg",
+        "particles/part-teleport-04.svg",
+
 
 
         "player/player-armor-base-01.svg",
