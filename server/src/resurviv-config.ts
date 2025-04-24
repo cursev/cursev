@@ -1,6 +1,6 @@
 import type { MapDefs } from "../../shared/defs/mapDefs";
 import { GameConfig } from "../../shared/gameConfig";
-import type { ConfigType, DeepPartial } from "./config";
+import type { ConfigType, DeepPartial } from "../../configType";
 import { THIS_REGION } from "./region";
 
 const BACKPACK_LEVEL = 3;
@@ -13,46 +13,12 @@ const mapName: Record<typeof THIS_REGION, keyof typeof MapDefs> = {
 
 const serverDataConfig = {
     local: {},
-    na: {
-        apiKey: "Vn3XPEgB7aXFJM98tucBZtYE0LOcJ+a9okNbm6m1rnc=",
-        gameServer: {
-            apiServerUrl: "http://resurviv.biz",
-        },
-        regions: {
-            na: {
-                https: false,
-                address: "resurviv.biz:8001",
-                l10n: "index-north-america",
-            },
-            eu: {
-                https: false,
-                address: "217.160.224.171:8001",
-                l10n: "index-europe",
-            },
-        },
-        thisRegion: "na",
-    },
-    eu: {
-        apiKey: "CKktmJs28fjACGIT+njM3aSJy7M0Q+1FQ2bg2UIompc=",
-        gameServer: {
-            apiServerUrl: "http://resurviv.biz",
-        },
-        regions: {
-            eu: {
-                https: false,
-                address: "217.160.224.171:8001",
-                l10n: "index-europe",
-            },
-        },
-        thisRegion: "eu",
-    },
+    na: { },
+    eu: { },
 };
 
 export const CustomConfig: DeepPartial<ConfigType> = {
     ...serverDataConfig[THIS_REGION],
-    client: {
-        theme: "main",
-    },
     modes: [
         {
             mapName: "main",
