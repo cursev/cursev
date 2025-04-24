@@ -19,6 +19,7 @@ const serverDataConfig = {
 
 export const CustomConfig: DeepPartial<ConfigType> = {
     ...serverDataConfig[THIS_REGION],
+    clientTheme: "main",
     modes: [
         {
             mapName: "main",
