@@ -12,6 +12,8 @@ interface StageData {
     damage: number;
 }
 
+const GAME_TIME_IN_MINUTES = 6;
+
 const GasStages: StageData[] = [
     {
         mode: GasMode.Inactive,
@@ -21,99 +23,15 @@ const GasStages: StageData[] = [
     },
     {
         mode: GasMode.Waiting,
-        duration: 80,
-        rad: 0.45,
-        damage: 1.4,
+        duration: GAME_TIME_IN_MINUTES * 60,
+        rad: 0.7425,
+        damage: 20,
     },
     {
         mode: GasMode.Moving,
-        duration: 30,
-        rad: 0.45,
-        damage: 1.4,
-    },
-    {
-        mode: GasMode.Waiting,
-        duration: 65,
-        rad: 0.3125,
-        damage: 2.2,
-    },
-    {
-        mode: GasMode.Moving,
-        duration: 25,
-        rad: 0.3125,
-        damage: 2.2,
-    },
-    {
-        mode: GasMode.Waiting,
-        duration: 50,
-        rad: 0.2125,
-        damage: 3.5,
-    },
-    {
-        mode: GasMode.Moving,
-        duration: 20,
-        rad: 0.2125,
-        damage: 3.5,
-    },
-    {
-        mode: GasMode.Waiting,
-        duration: 40,
-        rad: 0.1375,
-        damage: 7.5,
-    },
-    {
-        mode: GasMode.Moving,
-        duration: 15,
-        rad: 0.1375,
-        damage: 7.5,
-    },
-    {
-        mode: GasMode.Waiting,
-        duration: 30,
-        rad: 0.075,
-        damage: 10,
-    },
-    {
-        mode: GasMode.Moving,
-        duration: 10,
-        rad: 0.075,
-        damage: 10,
-    },
-    {
-        mode: GasMode.Waiting,
-        duration: 25,
-        rad: 0.045,
-        damage: 14,
-    },
-    {
-        mode: GasMode.Moving,
-        duration: 5,
-        rad: 0.045,
-        damage: 14,
-    },
-    {
-        mode: GasMode.Waiting,
-        duration: 20,
-        rad: 0.0225,
-        damage: 40,
-    },
-    {
-        mode: GasMode.Moving,
-        duration: 6,
-        rad: 0.0225,
-        damage: 40,
-    },
-    {
-        mode: GasMode.Waiting,
-        duration: 15,
+        duration: 60,
         rad: 0,
-        damage: 60,
-    },
-    {
-        mode: GasMode.Moving,
-        duration: 15,
-        rad: 0,
-        damage: 60,
+        damage: 55,
     },
 ];
 

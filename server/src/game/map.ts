@@ -5,7 +5,7 @@ import type {
     ObstacleDef,
     StructureDef,
 } from "../../../shared/defs/mapObjectsTyping";
-import { GameConfig, TeamMode } from "../../../shared/gameConfig";
+import { GameConfig, GasMode, TeamMode } from "../../../shared/gameConfig";
 import * as net from "../../../shared/net/net";
 import { MsgStream, MsgType } from "../../../shared/net/net";
 import { ObjectType } from "../../../shared/net/objectSerializeFns";
@@ -1867,13 +1867,18 @@ export class GameMap {
         let getPos: () => Vec2;
 
         if (!group?.spawnLeader) {
+          if ( this.game.gas.stage === GasMode.Moving) {
+               getPos = () => {
+                   return v2.add(this.game.gas.currentPos, util.randomPointInCircle(this.game.gas.currentRad))
+               }
+           } else {
             const spawnMin = v2.create(this.shoreInset, this.shoreInset);
             const spawnMax = v2.create(
                 this.width - this.shoreInset,
                 this.height - this.shoreInset,
             );
             let spawnAabb: { min: Vec2; max: Vec2 } = collider.createAabb(
-                spawnMin,
+                this.game.gas.stage === GasMode.Moving ? this.game.gas.currentPos : spawnMin,
                 spawnMax,
             );
 
@@ -1892,6 +1897,7 @@ export class GameMap {
             getPos = () => {
                 return util.randomPointInAabb(spawnAabb);
             };
+           }
         } else {
             const rad = GameConfig.player.teammateSpawnRadius;
             const pos = group.spawnLeader.pos;
