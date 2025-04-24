@@ -214,7 +214,7 @@ export const GameConfig = {
                 "1xscope": 1,
                 "2xscope": 0,
                 "4xscope": 0,
-                "8xscope": 1,
+                "8xscope": 0,
                 "15xscope": 0,
             } as Record<string, number>,
         },
