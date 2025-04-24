@@ -2,8 +2,8 @@ import { platform } from "os";
 import NanoTimer from "nanotimer";
 import { Config } from "../config";
 import { logErrorToWebhook } from "../utils/serverHelpers";
-import { Game } from "./game";
 import { type ProcessMsg, ProcessMsgType } from "../utils/types";
+import { Game } from "./game";
 
 let game: Game | undefined;
 
@@ -17,7 +17,8 @@ process.on("disconnect", () => {
 
 const socketMsgs: Array<{
     socketId: string;
-    data: ArrayBuffer;
+    data: Uint8Array;
+    ip: string;
 }> = [];
 
 let lastMsgTime = Date.now();
@@ -35,6 +36,7 @@ process.on("message", async (msg: ProcessMsg) => {
                 socketMsgs.push({
                     socketId: id,
                     data,
+                    ip: "",
                 });
             },
             (id, reason) => {
@@ -62,10 +64,11 @@ process.on("message", async (msg: ProcessMsg) => {
 
     switch (msg.type) {
         case ProcessMsgType.AddJoinToken:
-            game.addJoinToken(msg.token, msg.autoFill, msg.playerCount);
+            game.addJoinTokens(msg.tokens, msg.autoFill);
             break;
         case ProcessMsgType.SocketMsg:
-            game.handleMsg(msg.msgs[0].data, msg.msgs[0].socketId);
+            const sMsg = msg.msgs[0];
+            game.handleMsg(sMsg.data as ArrayBuffer, sMsg.socketId, sMsg.ip);
             break;
         case ProcessMsgType.SocketClose:
             game.handleSocketClose(msg.socketId);
