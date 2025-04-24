@@ -20,7 +20,7 @@ import type { OutfitDef } from "../../../../shared/defs/gameObjects/outfitDefs";
 import { PerkProperties } from "../../../../shared/defs/gameObjects/perkDefs";
 import type { RoleDef } from "../../../../shared/defs/gameObjects/roleDefs";
 import type { ThrowableDef } from "../../../../shared/defs/gameObjects/throwableDefs";
-import { UnlockDefs } from "../../../../shared/defs/gameObjects/unlockDefs";
+import { isItemInLoadout, UnlockDefs } from "../../../../shared/defs/gameObjects/unlockDefs";
 import {
     type Action,
     type Anim,
@@ -1485,7 +1485,7 @@ export class Player extends BaseGameObject {
                     }
                     if (this.actionItem === "pulseBox") {
                         this.usePulseEffect();
-                    }                    
+                    }
                     this.inventory[this.actionItem]--;
                     this.inventoryDirty = true;
                 } else if (this.isReloading()) {
@@ -1666,7 +1666,7 @@ export class Player extends BaseGameObject {
             this.moveVel.y = -this.pushBack.y * this.speed * 0.5;  // Apply knockback direction to moveVel
             this.pushBackTime -= dt;  // Reduce knockback time each frame
         }
-        
+
         //
         // Calculate new speed, position and check for collision with obstacles
         //
@@ -3135,7 +3135,7 @@ export class Player extends BaseGameObject {
             (this.hasPerk("aoe_heal") ? 0.75 : 1) * itemDef.useTime,
         );
     }
-    
+
     usePulseEffect(): void {
         const origin = this.pos;
         const rad = 300;
@@ -3161,7 +3161,7 @@ export class Player extends BaseGameObject {
             const dy = proj.pos.y - origin.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist > rad || dist === 0) continue;
-    
+
             const f = (1 - dist / rad) * force;
             const nx = dx / dist;
             const ny = dy / dist;
@@ -3174,11 +3174,11 @@ export class Player extends BaseGameObject {
             const dy = loot.pos.y - origin.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist > rad || dist === 0) continue;
-    
+
             const f = (1 - dist / rad) * force;
             const nx = dx / dist;
             const ny = dy / dist;
-    
+
             if (typeof loot.push === "function") {
                 loot.push(v2.create(nx, ny), f);
             } else if (loot.vel) {
@@ -3452,7 +3452,7 @@ export class Player extends BaseGameObject {
             case "soda":
             case "pulseBox":
             this.usePulseItem(msg.useItem);
-            break;            
+            break;
             case "painkiller":
                 this.useBoostItem(msg.useItem);
                 break;
@@ -4138,6 +4138,26 @@ export class Player extends BaseGameObject {
         }
     }
 
+    customDropItem(dropMsg: net.DropItemMsg): void {
+        const itemDef = GameObjectDefs[dropMsg.item] as LootDef;
+        switch (itemDef.type) {
+            case "gun":
+                if (isItemInLoadout(dropMsg.item, "gun")) break;
+                this.weaponManager.dropGun(dropMsg.weapIdx);
+                break;
+            case "melee":
+                if (isItemInLoadout(dropMsg.item, "melee")) break;
+                this.weaponManager.dropMelee();
+                break;
+        }
+
+        const reloading = this.isReloading();
+        this.cancelAction();
+
+        if (reloading && this.weapons[this.curWeapIdx].ammo == 0) {
+            this.weaponManager.tryReload();
+        }
+    }
     dropItem(dropMsg: net.DropItemMsg): void {
         if (this.dead) return;
 
@@ -4625,7 +4645,7 @@ export class Player extends BaseGameObject {
         const itemDef = GameObjectDefs[item];
         if (!itemDef || itemDef.type !== "boost") return;
         if (!this.inventory[item]) return;
-    
+
         this.cancelAction();
         this.doAction(
             item,
@@ -4633,5 +4653,5 @@ export class Player extends BaseGameObject {
             itemDef.useTime,
         );
     }
-    
+
 }
