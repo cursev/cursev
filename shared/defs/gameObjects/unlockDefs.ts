@@ -82,7 +82,7 @@ const _allowedOutfits = [
     // "outfitKhaki",
     "outfitParma",
     "outfitParmaPrestige",
-    // "outfitCasanova",
+    "outfitCasanova",
     // "outfitPrisoner",
     // "outfitJester",
     "outfitWoodland",
