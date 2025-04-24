@@ -231,39 +231,39 @@ export const ExplosionDefs: Record<string, ExplosionDef> = {
         obstacleDamage: 1.25,
         teamDamage: false,
         rad: {
-          min: 1.25,
-          max: 1.75
+            min: 1.25,
+            max: 1.75,
         },
         shrapnelCount: 0,
         shrapnelType: "",
         explosionEffectType: "fire_shot",
-        decalType: ""
+        decalType: "",
     },
     explosion_40mm_granade: {
         type: "explosion",
         damage: 125,
         obstacleDamage: 1.1,
         rad: {
-          min: 5,
-          max: 12
+            min: 5,
+            max: 12,
         },
         shrapnelCount: 12,
         shrapnelType: "shrapnel_frag",
         explosionEffectType: "frag",
-        decalType: "decal_frag_explosion"
+        decalType: "decal_frag_explosion",
     },
     explosion_water_balloon: {
         type: "explosion",
         damage: 2,
         obstacleDamage: 1,
         rad: {
-          min: 1.24,
-          max: 1.25
+            min: 1.24,
+            max: 1.25,
         },
         shrapnelCount: 0,
         shrapnelType: "",
         explosionEffectType: "water_balloon",
-        decalType: "decal_snowball_explosion"
+        decalType: "decal_snowball_explosion",
     },
     explosion_rainbow_projectile: {
         type: "explosion",
@@ -271,12 +271,12 @@ export const ExplosionDefs: Record<string, ExplosionDef> = {
         obstacleDamage: 1000,
         teamDamage: false,
         rad: {
-          min: 1,
-          max: 2
+            min: 1,
+            max: 2,
         },
         shrapnelCount: 0,
         shrapnelType: "",
         explosionEffectType: "rounds",
-        decalType: "decal_rounds_explosion"
+        decalType: "decal_rounds_explosion",
     },
 };

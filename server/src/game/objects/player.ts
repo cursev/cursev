@@ -20,7 +20,10 @@ import type { OutfitDef } from "../../../../shared/defs/gameObjects/outfitDefs";
 import { PerkProperties } from "../../../../shared/defs/gameObjects/perkDefs";
 import type { RoleDef } from "../../../../shared/defs/gameObjects/roleDefs";
 import type { ThrowableDef } from "../../../../shared/defs/gameObjects/throwableDefs";
-import { isItemInLoadout, UnlockDefs } from "../../../../shared/defs/gameObjects/unlockDefs";
+import {
+    UnlockDefs,
+    isItemInLoadout,
+} from "../../../../shared/defs/gameObjects/unlockDefs";
 import {
     type Action,
     type Anim,
@@ -1662,9 +1665,9 @@ export class Player extends BaseGameObject {
 
         if (this.pushBackTime > 0) {
             // Move player backward using knockback direction
-            this.moveVel.x = -this.pushBack.x * this.speed * 0.5;  // Apply knockback direction to moveVel
-            this.moveVel.y = -this.pushBack.y * this.speed * 0.5;  // Apply knockback direction to moveVel
-            this.pushBackTime -= dt;  // Reduce knockback time each frame
+            this.moveVel.x = -this.pushBack.x * this.speed * 0.5; // Apply knockback direction to moveVel
+            this.moveVel.y = -this.pushBack.y * this.speed * 0.5; // Apply knockback direction to moveVel
+            this.pushBackTime -= dt; // Reduce knockback time each frame
         }
 
         //
@@ -3451,8 +3454,8 @@ export class Player extends BaseGameObject {
                 break;
             case "soda":
             case "pulseBox":
-            this.usePulseItem(msg.useItem);
-            break;
+                this.usePulseItem(msg.useItem);
+                break;
             case "painkiller":
                 this.useBoostItem(msg.useItem);
                 break;
@@ -4647,11 +4650,6 @@ export class Player extends BaseGameObject {
         if (!this.inventory[item]) return;
 
         this.cancelAction();
-        this.doAction(
-            item,
-            GameConfig.Action.UseItem,
-            itemDef.useTime,
-        );
+        this.doAction(item, GameConfig.Action.UseItem, itemDef.useTime);
     }
-
 }

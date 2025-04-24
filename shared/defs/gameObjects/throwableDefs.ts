@@ -820,36 +820,36 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
             tint: 65280,
             border: "loot-circle-outer-01.img",
             borderTint: 0,
-            scale: 0.2
+            scale: 0.2,
         },
         worldImg: {
             sprite: "proj-mine-01.img",
             scale: 0.12,
-            tint: 16777215
+            tint: 16777215,
         },
         handImg: {
             equip: {
                 right: {
-                  sprite: "proj-mine-01.img",
-                  pos: { x: 4.2, y: 4.2 },
-                  scale: 0.14
+                    sprite: "proj-mine-01.img",
+                    pos: { x: 4.2, y: 4.2 },
+                    scale: 0.14,
                 },
                 left: {
-                  sprite: "none"
-                }
-              },
+                    sprite: "none",
+                },
+            },
             cook: {
                 right: {
                     sprite: "proj-mine-01.img",
                     pos: {
-                      x: 4.2,
-                      y: 4.2
+                        x: 4.2,
+                        y: 4.2,
                     },
-                    scale: 0.14
-                  },
-                  left: {
-                    sprite: "none"
-                  }
+                    scale: 0.14,
+                },
+                left: {
+                    sprite: "none",
+                },
             },
             throwing: {
                 right: { sprite: "none" },
@@ -880,47 +880,47 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         aimDistance: 32,
         rad: 1,
         throwPhysics: {
-          playerVelMult: 0,
-          velZ: 1,
-          speed: 50,
-          spinVel: Math.PI * 9,
-          spinDrag: 1,
-          fixedCollisionHeight: 0.25,
-          randomizeSpinDir: true
+            playerVelMult: 0,
+            velZ: 1,
+            speed: 50,
+            spinVel: Math.PI * 9,
+            spinDrag: 1,
+            fixedCollisionHeight: 0.25,
+            randomizeSpinDir: true,
         },
         speed: {
-          equip: 0,
-          attack: 0
+            equip: 0,
+            attack: 0,
         },
         lootImg: {
-          sprite: "loot-throwable-potato.img",
-          tint: 65280,
-          border: "loot-circle-outer-01.img",
-          borderTint: 0,
-          scale: 0.2
+            sprite: "loot-throwable-potato.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
         },
         worldImg: {
-          sprite: "part-fire-01.img",
-          scale: 0.3,
-          tint: 16777215,
-          sprites: ["part-fire-01.img", "part-fire-02.img", "part-fire-03.img"],
-          frameRate: 0.5
+            sprite: "part-fire-01.img",
+            scale: 0.3,
+            tint: 16777215,
+            sprites: ["part-fire-01.img", "part-fire-02.img", "part-fire-03.img"],
+            frameRate: 0.5,
         },
         handImg: {},
         useThrowParticles: false,
         sound: {
-          pullPin: "",
-          throwing: "frag_throw_01",
-          pickup: "frag_pickup_01",
-          deploy: "frag_deploy_01"
+            pullPin: "",
+            throwing: "frag_throw_01",
+            pickup: "frag_pickup_01",
+            deploy: "frag_deploy_01",
         },
         trail: {
-          maxLength: 40,
-          width: 0,
-          alpha: 1,
-          tint: 16777215,
-          sprite: "player-rainbow-trail.img"
-        }
+            maxLength: 40,
+            width: 0,
+            alpha: 1,
+            tint: 16777215,
+            sprite: "player-rainbow-trail.img",
+        },
     },
     mm40_granade: {
         name: "40mm granade",
@@ -936,36 +936,36 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         aimDistance: 0,
         rad: 1,
         throwPhysics: {
-          playerVelMult: 0.6,
-          velZ: 5,
-          speed: 34,
-          spinVel: Math.PI * 10,
-          spinDrag: 1
+            playerVelMult: 0.6,
+            velZ: 5,
+            speed: 34,
+            spinVel: Math.PI * 10,
+            spinDrag: 1,
         },
         speed: {
-          equip: 0,
-          attack: 0
+            equip: 0,
+            attack: 0,
         },
         lootImg: {
             sprite: "",
             tint: 65280,
             border: "loot-circle-outer-01.img",
             borderTint: 0,
-            scale: 0.2
-          },
+            scale: 0.2,
+        },
         worldImg: {
-          sprite: "proj-40mm-01.img",
-          scale: 0.2,
-          tint: 16777215
+            sprite: "proj-40mm-01.img",
+            scale: 0.2,
+            tint: 16777215,
         },
         handImg: {},
         useThrowParticles: false,
         sound: {
-          pullPin: "",
-          throwing: "frag_throw_01",
-          pickup: "frag_pickup_01",
-          deploy: "frag_deploy_01"
-        }
+            pullPin: "",
+            throwing: "frag_throw_01",
+            pickup: "frag_pickup_01",
+            deploy: "frag_deploy_01",
+        },
     },
     water_balloon: {
         name: "Water Balloon",
@@ -982,72 +982,72 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         aimDistance: 32,
         rad: 1,
         throwPhysics: {
-          playerVelMult: 0,
-          velZ: 5,
-          speed: 20,
-          spinVel: Math.PI * 10,
-          spinDrag: 1,
-          fixedCollisionHeight: 0.25
+            playerVelMult: 0,
+            velZ: 5,
+            speed: 20,
+            spinVel: Math.PI * 10,
+            spinDrag: 1,
+            fixedCollisionHeight: 0.25,
         },
         speed: {
-          equip: 0,
-          attack: 0
+            equip: 0,
+            attack: 0,
         },
         lootImg: {
-          sprite: "loot-throwable-water.img",
-          tint: 65280,
-          border: "loot-circle-outer-01.img",
-          borderTint: 0,
-          scale: 0.2
+            sprite: "loot-throwable-water.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
         },
         worldImg: {
-          sprite: "proj-water-balloon.img",
-          scale: 0.12,
-          tint: 16777215
+            sprite: "proj-water-balloon.img",
+            scale: 0.12,
+            tint: 16777215,
         },
         handImg: {
-          equip: {
-            right: {
-              sprite: "proj-water-balloon.img",
-              pos: {
-                x: 3,
-                y: 4.2
-              },
-              scale: 0.12
+            equip: {
+                right: {
+                    sprite: "proj-water-balloon.img",
+                    pos: {
+                        x: 3,
+                        y: 4.2,
+                    },
+                    scale: 0.12,
+                },
+                left: {
+                    sprite: "none",
+                },
             },
-            left: {
-              sprite: "none"
-            }
-          },
-          cook: {
-            right: {
-              sprite: "proj-water-balloon.img",
-              pos: {
-                x: 3,
-                y: 4.2
-              },
-              scale: 0.12
+            cook: {
+                right: {
+                    sprite: "proj-water-balloon.img",
+                    pos: {
+                        x: 3,
+                        y: 4.2,
+                    },
+                    scale: 0.12,
+                },
+                left: {
+                    sprite: "none",
+                },
             },
-            left: {
-              sprite: "none"
-            }
-          },
-          throwing: {
-            right: {
-              sprite: "none"
+            throwing: {
+                right: {
+                    sprite: "none",
+                },
+                left: {
+                    sprite: "none",
+                },
             },
-            left: {
-              sprite: "none"
-            }
-          }
         },
         useThrowParticles: false,
         sound: {
-          pullPin: "",
-          throwing: "water_balloon_throw_01",
-          pickup: "frag_pickup_01",
-          deploy: "water_balloon_throw_01"
-        }
+            pullPin: "",
+            throwing: "water_balloon_throw_01",
+            pickup: "frag_pickup_01",
+            deploy: "water_balloon_throw_01",
+        },
     },
     rainbow_projectile: {
         name: "Rainbow Blaster",
@@ -1065,42 +1065,42 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         aimDistance: 250,
         rad: 0.6,
         throwPhysics: {
-          playerVelMult: 0,
-          velZ: 25,
-          speed: 85,
-          spinVel: Math.PI * 9,
-          spinDrag: 1,
-          fixedCollisionHeight: 0.25
+            playerVelMult: 0,
+            velZ: 25,
+            speed: 85,
+            spinVel: Math.PI * 9,
+            spinDrag: 1,
+            fixedCollisionHeight: 0.25,
         },
         speed: {
-          equip: 0,
-          attack: 0
+            equip: 0,
+            attack: 0,
         },
         lootImg: {
-          sprite: "loot-throwable-potato.img",
-          tint: 65280,
-          border: "loot-circle-outer-01.img",
-          borderTint: 0,
-          scale: 0.2
+            sprite: "loot-throwable-potato.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
         },
         worldImg: {
-          sprite: "rainbow-ball.img.img", // not suppsoe to do this but we cant leave it blank
-          scale: 0.075,
-          tint: 16777215
+            sprite: "rainbow-ball.img.img", // not suppsoe to do this but we cant leave it blank
+            scale: 0.075,
+            tint: 16777215,
         },
         handImg: {},
         useThrowParticles: false,
         sound: {
-          pullPin: "",
-          throwing: "frag_throw_01",
-          pickup: "frag_pickup_01",
-          deploy: "frag_deploy_01"
+            pullPin: "",
+            throwing: "frag_throw_01",
+            pickup: "frag_pickup_01",
+            deploy: "frag_deploy_01",
         },
         trail: {
-          maxLength: 40,
-          width: 0.8,
-          alpha: 1,
-          tint: 16777215,
-        }
+            maxLength: 40,
+            width: 0.8,
+            alpha: 1,
+            tint: 16777215,
+        },
     },
 };

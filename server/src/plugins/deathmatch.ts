@@ -92,9 +92,9 @@ export default class DeathMatchPlugin extends GamePlugin {
                 killer.inventory["frag"] = Math.min(killer.inventory["frag"] + 3, 12);
                 killer.inventory["mirv"] = Math.min(killer.inventory["mirv"] + 1, 4);
                 if (Math.random() < 0.2) {
-                  const itemToGive = Math.random() < 0.5 ? "strobe" : "mine";
+                    const itemToGive = Math.random() < 0.5 ? "strobe" : "mine";
                     killer.inventory[itemToGive] = Math.min(
-                      killer.inventory[itemToGive] + 1,
+                        killer.inventory[itemToGive] + 1,
                         1,
                     );
                 }
@@ -134,7 +134,6 @@ const customReloadPercentage: Record<string, number> = {
     pkp: 30,
     lasr_gun: 7,
     lasr_gun_dual: 14,
-
 };
 function calculateAmmoToGive(type: string, currAmmo: number, maxClip: number): number {
     const amount = customReloadPercentage[type] ?? 50;

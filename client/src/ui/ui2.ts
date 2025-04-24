@@ -331,8 +331,6 @@ export class UiManager2 {
         public localization: Localization,
         public inputBinds: InputBinds,
     ) {
-        const itemAction = this;
-
         // KillFeed
         for (let i = 0; i < maxKillFeedLines; i++) {
             // Search for an existing line; if we don't find one, create it
@@ -371,8 +369,8 @@ export class UiManager2 {
                     "ui-weapon-ammo-counter",
                 )[0] as HTMLElement,
                 loading: weapon.getElementsByClassName(
-                    "ui-weapon-loadImage"
-                )[0] as HTMLImageElement,                
+                    "ui-weapon-loadImage",
+                )[0] as HTMLImageElement,
             };
             this.dom.weapons.push(weaponData);
         }
@@ -563,7 +561,7 @@ export class UiManager2 {
             // Add an input handler specifically to handle fullscreen on Firefox;
             // "requestFullscreen() must be called from inside a short running user-generated event handler."
             const keyCode = e.which || e.keyCode;
-            const bind = itemAction.inputBinds.getBind(Input.Fullscreen);
+            const bind = this.inputBinds.getBind(Input.Fullscreen);
             if (bind && keyCode == bind.code) {
                 helpers.toggleFullScreen();
             }
@@ -865,11 +863,11 @@ export class UiManager2 {
                 ne.width = 0;
             }
             const ue = inputBinds.getBind(ne.bind);
-            ne.bindStr = ue ? ue.toString() : "";              
+            ne.bindStr = ue ? ue.toString() : "";
         }
         const ge = state.weapons[activePlayer.m_localData.m_curWeapIdx];
         const weaponDef = GameObjectDefs[ge.type] as GunDef | MeleeDef;
-        const we = ge.ammo;        
+        const we = ge.ammo;
         const fe =
             weaponDef.type == "gun"
                 ? weaponDef.ammoInfinite ||

@@ -304,7 +304,7 @@ export class WeaponManager {
         const itemDef = GameObjectDefs[this.activeWeapon] as GunDef;
         const player = this.player;
         const weapon = this.weapons[this.curWeapIdx];
-    
+
         switch (itemDef.fireMode) {
             case "auto":
                 if (player.shootHold && weapon.cooldown <= 0) {
@@ -337,29 +337,28 @@ export class WeaponManager {
                     }
                 }
                 break;
-                case "blaster":
-                    if (this.wasHolding && !player.shootHold && weapon.cooldown <= 0) {
-                        const loadTime = itemDef.loadTime ?? 1.5;
-                        if (this.loadingBlasterCharge >= loadTime) {
-                            this.fireWeapon(this.offHand); // 🔥 Fire the rainbow projectile
-                            this.offHand = !this.offHand;
-                        }
-                        this.loadingBlasterCharge = 0; // ✅ Reset the charge
+            case "blaster":
+                if (this.wasHolding && !player.shootHold && weapon.cooldown <= 0) {
+                    const loadTime = itemDef.loadTime ?? 1.5;
+                    if (this.loadingBlasterCharge >= loadTime) {
+                        this.fireWeapon(this.offHand); // 🔥 Fire the rainbow projectile
+                        this.offHand = !this.offHand;
                     }
-                    if (player.shootHold) {
-                        this.loadingBlasterCharge += dt;
-                        const loadTime = itemDef.loadTime ?? 1.5;
-                        if (this.loadingBlasterCharge > loadTime) {
-                            this.loadingBlasterCharge = loadTime;
-                        }
-                    } else {
-                        this.loadingBlasterCharge = 0;
+                    this.loadingBlasterCharge = 0; // ✅ Reset the charge
+                }
+                if (player.shootHold) {
+                    this.loadingBlasterCharge += dt;
+                    const loadTime = itemDef.loadTime ?? 1.5;
+                    if (this.loadingBlasterCharge > loadTime) {
+                        this.loadingBlasterCharge = loadTime;
                     }
-                    this.wasHolding = player.shootHold;
-                    break;
-                  
+                } else {
+                    this.loadingBlasterCharge = 0;
+                }
+                this.wasHolding = player.shootHold;
+                break;
         }
-    }    
+    }
 
     meleeUpdate(dt: number) {
         const itemDef = GameObjectDefs[this.activeWeapon] as MeleeDef;

@@ -327,22 +327,22 @@ export const GameConfig = {
             saturated: 15183103,
             chambered: 11862271,
         },
-        "laser": {
+        laser: {
             regular: 0xff0000,
             saturated: 0xff0000,
-            chambered: 0xff0000
+            chambered: 0xff0000,
         },
         water: {
             regular: 3633658,
             saturated: 3633658,
-            chambered: 3633658
+            chambered: 3633658,
         },
         rainbowTrail: {
             regular: 16777215,
             saturated: 16777215,
             chambered: 16777215,
             alphaRate: 0.92,
-            alphaMin: 0.14
+            alphaMin: 0.14,
         },
         shrapnel: { regular: 3355443, saturated: 3355443 },
         frag: { regular: 13303808, saturated: 13303808 },

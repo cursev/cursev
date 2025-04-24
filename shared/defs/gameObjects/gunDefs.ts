@@ -3390,33 +3390,33 @@ export const GunDefs: Record<string, GunDef> = {
         headshotMult: 2.0,
         speed: {
             equip: 0.0,
-            attack: 0.0
+            attack: 0.0,
         },
         lootImg: {
             sprite: "loot-weapon-lasr-gun.img",
             tint: 0x00ff00,
             border: "loot-circle-outer-01.img",
             borderTint: 0x000000,
-            scale: 0.3
+            scale: 0.3,
         },
         worldImg: {
             sprite: "gun-lasr-gun.img",
             scale: { x: 0.5, y: 0.5 },
-            tint: 0xFFFFFF,
+            tint: 0xffffff,
             leftHandOffset: { x: 0.0, y: 0.0 },
-            recoil: 1.0
+            recoil: 1.0,
         },
         particle: {
             shellScale: 0.0,
-            shellOffset: 0.0
+            shellOffset: 0.0,
         },
         sound: {
             shoot: "lasr_01",
             reload: "lasr_gun_reload_01",
             pickup: "gun_pickup_01",
             empty: "empty_fire_01",
-            deploy: "deagle_switch_01"
-        }
+            deploy: "deagle_switch_01",
+        },
     },
     lasr_gun_dual: {
         name: "Dual Lasr Gun",
@@ -3447,33 +3447,33 @@ export const GunDefs: Record<string, GunDef> = {
         headshotMult: 2.0,
         speed: {
             equip: 0.0,
-            attack: 0.0
+            attack: 0.0,
         },
         lootImg: {
             sprite: "loot-weapon-double-lasr-gun.img",
             tint: 0x00ff00,
             border: "loot-circle-outer-01.img",
             borderTint: 0x000000,
-            scale: 0.3
+            scale: 0.3,
         },
         worldImg: {
             sprite: "gun-lasr-gun.img",
             scale: { x: 0.5, y: 0.5 },
-            tint: 0xFFFFFF,
+            tint: 0xffffff,
             leftHandOffset: { x: 0.0, y: 0.0 },
-            recoil: 1.0
+            recoil: 1.0,
         },
         particle: {
             shellScale: 0.0,
-            shellOffset: 0.0
+            shellOffset: 0.0,
         },
         sound: {
             shoot: "lasr_01",
             reload: "lasr_gun_reload_01",
             pickup: "gun_pickup_01",
             empty: "empty_fire_01",
-            deploy: "deagle_switch_01"
-        }
+            deploy: "deagle_switch_01",
+        },
     },
     m9A17: {
         name: "Flamethrower",
@@ -3503,41 +3503,41 @@ export const GunDefs: Record<string, GunDef> = {
         noSplinter: true,
         headshotMult: 2,
         speed: {
-          equip: 0,
-          attack: 0
+            equip: 0,
+            attack: 0,
         },
         lootImg: {
-          sprite: "loot-weapon-m9A17.img",
-          tint: 65280,
-          border: "loot-circle-outer-01.img",
-          borderTint: 0,
-          scale: 0.3
+            sprite: "loot-weapon-m9A17.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.3,
         },
         worldImg: {
-          sprite: "gun-m9a17-01.img",
-          scale: {
-            x: 0.5,
-            y: 0.4
-          },
-          tint: 16777215,
-          recoil: 0.3,
-          handsBelow: false,
-          leftHandOffset: {
-            x: 15,
-            y: -10
-          }
+            sprite: "gun-m9a17-01.img",
+            scale: {
+                x: 0.5,
+                y: 0.4,
+            },
+            tint: 16777215,
+            recoil: 0.3,
+            handsBelow: false,
+            leftHandOffset: {
+                x: 15,
+                y: -10,
+            },
         },
         particle: {
-          shellScale: 0,
-          shellOffset: 0
+            shellScale: 0,
+            shellOffset: 0,
         },
         sound: {
             shoot: "m9a17_01",
             reload: "m9a17_reload_01",
             pickup: "gun_pickup_01",
             empty: "empty_fire_01",
-            deploy: "potato_smg_switch_01"
-        }
+            deploy: "potato_smg_switch_01",
+        },
     },
     m79: {
         name: "M79",
@@ -3569,46 +3569,46 @@ export const GunDefs: Record<string, GunDef> = {
         noSplinter: true,
         headshotMult: 1,
         speed: {
-          equip: -3,
-          attack: 0
+            equip: -3,
+            attack: 0,
         },
         lootImg: {
-          sprite: "loot-weapon-m79.img",
-          tint: 65280,
-          border: "loot-circle-outer-01.img",
-          borderTint: 0,
-          scale: 0.3
+            sprite: "loot-weapon-m79.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.3,
         },
         worldImg: {
-          sprite: "gun-m79-01.img",
-          scale: {
-            x: 0.5,
-            y: 0.5
-          },
-          tint: 16777215,
-          leftHandOffset: {
-            x: 7,
-            y: 2
-          },
-          gunOffset: {
-            x: -10,
-            y: -4
-          },
-          recoil: 8,
-          handsBelow: true
+            sprite: "gun-m79-01.img",
+            scale: {
+                x: 0.5,
+                y: 0.5,
+            },
+            tint: 16777215,
+            leftHandOffset: {
+                x: 7,
+                y: 2,
+            },
+            gunOffset: {
+                x: -10,
+                y: -4,
+            },
+            recoil: 8,
+            handsBelow: true,
         },
         particle: {
-          shellScale: 1,
-          shellOffset: -1,
-          shellOffsetY: 1
+            shellScale: 1,
+            shellOffset: -1,
+            shellOffsetY: 1,
         },
         sound: {
-          shoot: "m79_01",
-          reload: "m79_reload_01",
-          pickup: "gun_pickup_01",
-          empty: "empty_fire_01",
-          deploy: "m79_switch_01"
-        }
+            shoot: "m79_01",
+            reload: "m79_reload_01",
+            pickup: "gun_pickup_01",
+            empty: "empty_fire_01",
+            deploy: "m79_switch_01",
+        },
     },
     waterGun: {
         name: "Water Gun",
@@ -3635,41 +3635,41 @@ export const GunDefs: Record<string, GunDef> = {
         bulletType: "bullet_water",
         headshotMult: 2,
         speed: {
-          equip: 0,
-          attack: 0
+            equip: 0,
+            attack: 0,
         },
         lootImg: {
-          sprite: "loot-weapon-water.img",
-          tint: 65280,
-          border: "loot-circle-outer-01.img",
-          borderTint: 0,
-          scale: 0.3
+            sprite: "loot-weapon-water.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.3,
         },
         worldImg: {
-          sprite: "gun-water-gun.img",
-          scale: {
-            x: 0.5,
-            y: 0.435
-          },
-          tint: 16777215,
-          leftHandOffset: {
-            x: 2.8,
-            y: 0
-          },
-          recoil: 2
+            sprite: "gun-water-gun.img",
+            scale: {
+                x: 0.5,
+                y: 0.435,
+            },
+            tint: 16777215,
+            leftHandOffset: {
+                x: 2.8,
+                y: 0,
+            },
+            recoil: 2,
         },
         particle: {
-          shellScale: 1,
-          shellOffset: 0.45,
-          customParticle: "water_shot"
+            shellScale: 1,
+            shellOffset: 0.45,
+            customParticle: "water_shot",
         },
         sound: {
-          shoot: "water_gun_01",
-          reload: "water_gun_reload_01",
-          pickup: "gun_pickup_01",
-          empty: "empty_fire_02",
-          deploy: "ak47_switch_01"
-        }
+            shoot: "water_gun_01",
+            reload: "water_gun_reload_01",
+            pickup: "gun_pickup_01",
+            empty: "empty_fire_02",
+            deploy: "ak47_switch_01",
+        },
     },
     m134: {
         name: "M134",
@@ -3695,45 +3695,45 @@ export const GunDefs: Record<string, GunDef> = {
         bulletType: "bullet_m134",
         headshotMult: 1.5,
         speed: {
-          equip: -3,
-          attack: -6
+            equip: -3,
+            attack: -6,
         },
         lootImg: {
-          sprite: "loot-weapon-m134.img",
-          tint: 65280,
-          border: "loot-circle-outer-01.img",
-          borderTint: 0,
-          scale: 0.3
+            sprite: "loot-weapon-m134.img",
+            tint: 65280,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.3,
         },
         worldImg: {
-          sprite: "gun-m134-01.img",
-          scale: {
-            x: 0.5,
-            y: 0.5
-          },
-          tint: 16777215,
-          leftHandOffset: {
-            x: 13.5,
-            y: -5
-          },
-          gunOffset: {
-            x: 0,
-            y: -4
-          },
-          recoil: 1.33
+            sprite: "gun-m134-01.img",
+            scale: {
+                x: 0.5,
+                y: 0.5,
+            },
+            tint: 16777215,
+            leftHandOffset: {
+                x: 13.5,
+                y: -5,
+            },
+            gunOffset: {
+                x: 0,
+                y: -4,
+            },
+            recoil: 1.33,
         },
         particle: {
-          shellScale: 1,
-          shellOffset: 0.5875,
-          shellReverse: true
+            shellScale: 1,
+            shellOffset: 0.5875,
+            shellReverse: true,
         },
         sound: {
-          shoot: "m134_01",
-          reload: "m134_reload_01",
-          pickup: "gun_pickup_01",
-          empty: "empty_fire_02",
-          deploy: "m134_switch_01"
-        }
+            shoot: "m134_01",
+            reload: "m134_reload_01",
+            pickup: "gun_pickup_01",
+            empty: "empty_fire_02",
+            deploy: "m134_switch_01",
+        },
     },
     rainbow_blaster: {
         name: "Rainbow Blaster",
@@ -3763,56 +3763,56 @@ export const GunDefs: Record<string, GunDef> = {
         loadTime: 1.5,
         headshotMult: 2,
         speed: {
-          equip: 0,
-          attack: 0,
-          load: -0.20000000000004547
+            equip: 0,
+            attack: 0,
+            load: -0.20000000000004547,
         },
         lootImg: {
-          sprite: "loot-weapon-rainbow-blaster.img",
-          tint: 65280,
-          border: "loot-circle-outer-07.img",
-          borderTint: 16777215,
-          scale: 0.3,
-          noTint: true
+            sprite: "loot-weapon-rainbow-blaster.img",
+            tint: 65280,
+            border: "loot-circle-outer-07.img",
+            borderTint: 16777215,
+            scale: 0.3,
+            noTint: true,
         },
         worldImg: {
-          sprite: "gun-rainbow-blaster.img",
-          scale: {
-            x: 0.5,
-            y: 0.5
-          },
-          tint: 16777215,
-          leftHandOffset: {x: 0, y: 0 },
-          recoil: 5,
-          handsBelow: true,
-          magImg: {
-            sprite: "gun-rainbow-top.img",
-            pos: { x: 0.5, y: -40.600000000000364 },
-            top: true,
-            max_height_adj: 15
-          },
-          onLoadComplete: "gun-rainbow-blater-loaded.img",
-          loadingBullet: {
-            sprite: "rainbow-ball.img",
-            pos: {
-              x: 0.5,
-              y: -65
+            sprite: "gun-rainbow-blaster.img",
+            scale: {
+                x: 0.5,
+                y: 0.5,
             },
-            maxScale: 0.5
-          }
+            tint: 16777215,
+            leftHandOffset: { x: 0, y: 0 },
+            recoil: 5,
+            handsBelow: true,
+            magImg: {
+                sprite: "gun-rainbow-top.img",
+                pos: { x: 0.5, y: -40.600000000000364 },
+                top: true,
+                max_height_adj: 15,
+            },
+            onLoadComplete: "gun-rainbow-blater-loaded.img",
+            loadingBullet: {
+                sprite: "rainbow-ball.img",
+                pos: {
+                    x: 0.5,
+                    y: -65,
+                },
+                maxScale: 0.5,
+            },
         },
         particle: {
-          shellScale: 1,
-          shellOffset: 0.7875,
-          shellReverse: true,
-          amount: 10
+            shellScale: 1,
+            shellOffset: 0.7875,
+            shellReverse: true,
+            amount: 10,
         },
         sound: {
-          shoot: "rainbow_blaster_01",
-          reload: "rainbow_blaster_loading",
-          pickup: "gun_pickup_01",
-          empty: "empty_fire_01",
-          deploy: "deagle_switch_01"
-        }
-      },
+            shoot: "rainbow_blaster_01",
+            reload: "rainbow_blaster_loading",
+            pickup: "gun_pickup_01",
+            empty: "empty_fire_01",
+            deploy: "deagle_switch_01",
+        },
+    },
 };

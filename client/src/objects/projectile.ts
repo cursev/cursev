@@ -128,7 +128,7 @@ class Projectile implements AbstractObject {
             const itemDef = GameObjectDefs[data.type] as ThrowableDef;
             if (isNew) {
                 const itemDef = GameObjectDefs[data.type] as ThrowableDef;
-            
+
                 if (data.type === "rainbow_projectile") {
                     this.container.removeChild(this.trail);
                     this.trail = PIXI.Sprite.from("player-rainbow-trail.img");
@@ -137,7 +137,7 @@ class Projectile implements AbstractObject {
                     this.trail.visible = false;
                     this.container.addChildAt(this.trail, 0);
                 }
-            }            
+            }
             const imgDef = itemDef.worldImg;
             this.imgScale = imgDef.scale;
             this.rot = 0;
@@ -168,14 +168,16 @@ class Projectile implements AbstractObject {
             let sprite = imgDef.sprite;
             if (imgDef.sprites && imgDef.sprites.length > 0) {
                 const frameRate = imgDef.frameRate ?? 15;
-                const frameIndex = Math.floor(performance.now() / 1 * frameRate) % imgDef.sprites.length;
+                const frameIndex =
+                    Math.floor((performance.now() / 1) * frameRate) %
+                    imgDef.sprites.length;
                 sprite = imgDef.sprites[frameIndex];
             }
-    
+
             this.sprite.texture = PIXI.Texture.from(sprite);
             this.sprite.tint = imgDef.tint;
             this.sprite.alpha = 100;
-    
+
             // Strobe sprite setup
             if (this.type == "strobe") {
                 if (!this.strobeSprite) {
@@ -341,7 +343,6 @@ export class ProjectileBarn {
 
                 // Strobe effects
                 if (p.type == "strobe" && p.strobeSprite) {
-                    
                     p.strobeTicker = math.clamp(
                         p.strobeTicker + dt * p.strobeDir * p.strobeSpeed,
                         0,
@@ -355,13 +356,12 @@ export class ProjectileBarn {
                 }
                 // Mine effect
                 if (p.type === "mine" && p.mineEffect.sprite) {
-
-                    const m = p.mineEffect;    
+                    const m = p.mineEffect;
                     m.ticker = math.clamp(m.ticker + dt * m.dir * m.speed, 0, 1);
                     m.scale = m.armed
                         ? m.scaleMax / 2
                         : math.easeInExpo(m.ticker) * m.scaleMax;
-                
+
                     m.sprite!.scale.set(m.scale);
                     if (m.scale >= m.scaleMax || m.ticker <= 0) {
                         m.dir *= -1;

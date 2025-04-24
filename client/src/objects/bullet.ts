@@ -134,7 +134,7 @@ export class BulletBarn {
             b.bulletTrail.texture = PIXI.Texture.from("player-rainbow-trail.img");
         } else {
             b.bulletTrail.texture = PIXI.Texture.from("player-bullet-trail-02.img");
-        }        
+        }
 
         const variance = 1 + bullet.varianceT * bulletDef.variance;
         const distAdj = math.remap(bullet.distAdjIdx, 0, 16, -1, 1);

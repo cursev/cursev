@@ -38,6 +38,7 @@ import { debugLines } from "../debugLines";
 import { device } from "../device";
 import type { Ctx } from "../game";
 import { helpers } from "../helpers";
+import { InputHandler } from "../input";
 import type { SoundHandle } from "../lib/createJS";
 import type { Map } from "../map";
 import type { Renderer } from "../renderer";
@@ -55,7 +56,6 @@ import type { Obstacle } from "./obstacle";
 import type { Emitter, ParticleBarn } from "./particles";
 import { halloweenSpriteMap } from "./projectile";
 import { createCasingParticle } from "./shot";
-import { InputHandler } from "../input";
 const inputManager = new InputHandler(document.body);
 import { GameMod } from "../gameMod";
 
@@ -161,7 +161,6 @@ class Gun {
 
         this.magTop = imgDef.magImg?.top!;
 
-        
         if (imgDef.loadingBullet) {
             var ballDef = imgDef.loadingBullet;
             this.gunBall.texture = PIXI.Texture.from(ballDef.sprite);
@@ -188,8 +187,6 @@ class Gun {
             handOffset.y += imgDef.gunOffset.y;
         }
         this.container.position.set(handOffset.x, handOffset.y);
-
-        
     }
 }
 
@@ -841,10 +838,10 @@ export class Player implements AbstractObject {
         if (inputBinds.isBindDown(Input.Fire)) {
             this.m_netData.m_loadingBlaster += dt;
             const loadTime = (curWeapDef as GunDef).loadTime ?? 1.5;
-        
+
             if (this.m_netData.m_loadingBlaster >= loadTime) {
                 this.m_netData.m_loadingBlaster = loadTime; // Cap at max
-        
+
                 if (!this.m_netData.m_gunLoaded) {
                     this.m_netData.m_gunLoaded = true;
                     if (audioManager.isSoundPlaying(this.cycleSoundInstance!)) {
@@ -861,7 +858,7 @@ export class Player implements AbstractObject {
                 }
             }
         }
-        
+
         const activePlayer = playerBarn.getPlayerById(activeId)!;
         this.m_posOld = v2.copy(this.m_pos);
         this.m_dirOld = v2.copy(this.m_dir);
@@ -871,29 +868,37 @@ export class Player implements AbstractObject {
         this.downed = this.m_netData.m_downed;
         this.m_rad = this.m_netData.m_scale * GameConfig.player.radius;
         if (localStorage.getItem("remove-alguien-client") === "true") {
-        if (camera.m_interpEnabled) {
-            this.posInterpTicker += dt;
-            const posT = math.clamp(this.posInterpTicker / camera.m_interpInterval, 0, 1);
-            this.m_visualPos = v2.lerp(posT, this.m_visualPosOld, this.m_pos);
-            this.dirInterpolationTicker += dt;
-            const dirT = math.clamp(this.dirInterpolationTicker / camera.m_interpInterval, 0, 1);
-            this.m_visualDir = v2.lerp(dirT, this.m_visualDirOld, this.m_dir);
+            if (camera.m_interpEnabled) {
+                this.posInterpTicker += dt;
+                const posT = math.clamp(
+                    this.posInterpTicker / camera.m_interpInterval,
+                    0,
+                    1,
+                );
+                this.m_visualPos = v2.lerp(posT, this.m_visualPosOld, this.m_pos);
+                this.dirInterpolationTicker += dt;
+                const dirT = math.clamp(
+                    this.dirInterpolationTicker / camera.m_interpInterval,
+                    0,
+                    1,
+                );
+                this.m_visualDir = v2.lerp(dirT, this.m_visualDirOld, this.m_dir);
+            } else {
+                this.m_visualPos = v2.copy(this.m_pos);
+                this.m_visualDir = v2.copy(this.m_dir);
+            }
         } else {
+            if (gameMod.isLocalRotation && gameMod.isInterpolation) {
+                if (
+                    Math.abs(this.m_pos.x - this.m_posOld.x) <= 50 &&
+                    Math.abs(this.m_pos.y - this.m_posOld.y) <= 50
+                ) {
+                    this.m_pos.x += (this.m_posOld.x - this.m_pos.x) * 0.5;
+                    this.m_pos.y += (this.m_posOld.y - this.m_pos.y) * 0.5;
+                }
+            }
             this.m_visualPos = v2.copy(this.m_pos);
             this.m_visualDir = v2.copy(this.m_dir);
-        }
-        } else {
-        if (gameMod.isLocalRotation && gameMod.isInterpolation) {
-            if (
-            Math.abs(this.m_pos.x - this.m_posOld.x) <= 50 &&
-            Math.abs(this.m_pos.y - this.m_posOld.y) <= 50
-            ) {
-            this.m_pos.x += (this.m_posOld.x - this.m_pos.x) * 0.5;
-            this.m_pos.y += (this.m_posOld.y - this.m_pos.y) * 0.5;
-            }
-        }
-        this.m_visualPos = v2.copy(this.m_pos);
-        this.m_visualDir = v2.copy(this.m_dir);
         }
         this.m_dir = v2.copy(this.m_netData.m_dir);
         this.layer = this.m_netData.m_layer;
@@ -1402,25 +1407,29 @@ export class Player implements AbstractObject {
             !audioManager.isSoundPlaying(this.cycleSoundInstance!)
         ) {
             if (curWeapDef.type === "gun") {
-                this.cycleSoundInstance = audioManager.playSound(curWeapDef.sound.reload, {
-                    channel: isActivePlayer ? "activePlayer" : "otherPlayers",
-                    soundPos: this.m_pos,
-                    layer: this.layer,
-                    delay: 30,
-                    volumeScale: 0.75,
-                });
+                this.cycleSoundInstance = audioManager.playSound(
+                    curWeapDef.sound.reload,
+                    {
+                        channel: isActivePlayer ? "activePlayer" : "otherPlayers",
+                        soundPos: this.m_pos,
+                        layer: this.layer,
+                        delay: 30,
+                        volumeScale: 0.75,
+                    },
+                );
             }
         }
-        if (
-            curWeapDef &&
-            (curWeapDef as GunDef).fireMode === "blaster"
-        ) {
+        if (curWeapDef && (curWeapDef as GunDef).fireMode === "blaster") {
             const gunDef = curWeapDef as GunDef;
             if (this.gunRSprites?.gunBarrel && gunDef.worldImg?.onLoadComplete) {
                 if (this.m_netData.m_gunLoaded) {
-                    this.gunRSprites.gunBarrel.texture = PIXI.Texture.from(gunDef.worldImg.onLoadComplete);
+                    this.gunRSprites.gunBarrel.texture = PIXI.Texture.from(
+                        gunDef.worldImg.onLoadComplete,
+                    );
                 } else {
-                    this.gunRSprites.gunBarrel.texture = PIXI.Texture.from(gunDef.worldImg.sprite);
+                    this.gunRSprites.gunBarrel.texture = PIXI.Texture.from(
+                        gunDef.worldImg.sprite,
+                    );
                 }
             }
         }
@@ -1430,23 +1439,26 @@ export class Player implements AbstractObject {
         ) {
             audioManager.stopSound(this.cycleSoundInstance!);
         }
-        if (
-            curWeapDef &&
-            (curWeapDef as GunDef).fireMode === "blaster"
-        ) {
-        const gunDef = curWeapDef as GunDef;
+        if (curWeapDef && (curWeapDef as GunDef).fireMode === "blaster") {
+            const gunDef = curWeapDef as GunDef;
 
             if (this.gunRSprites?.gunBall && gunDef.worldImg?.loadingBullet) {
-                const maxScale = this.gunRSprites.maxScaleShoot ?? gunDef.worldImg.loadingBullet?.maxScale ?? 0.5;
+                const maxScale =
+                    this.gunRSprites.maxScaleShoot ??
+                    gunDef.worldImg.loadingBullet?.maxScale ??
+                    0.5;
                 const bodyScale = this.m_bodyRad / GameConfig.player.radius;
                 const loadTime = gunDef.loadTime ?? 1.5;
                 const charge = this.m_netData.m_loadingBlaster;
 
                 const minScale = 0.1;
-                const scale = (charge / loadTime) * maxScale / bodyScale;
+                const scale = ((charge / loadTime) * maxScale) / bodyScale;
 
                 if (!this.m_netData.m_gunLoaded) {
-                    this.gunRSprites.gunBall.scale.set(Math.max(minScale, scale), Math.max(minScale, scale));
+                    this.gunRSprites.gunBall.scale.set(
+                        Math.max(minScale, scale),
+                        Math.max(minScale, scale),
+                    );
                     this.gunRSprites.gunBall.visible = true;
                 }
 
@@ -1875,8 +1887,8 @@ export class Player implements AbstractObject {
         if (this.downed) {
             this.backpackSprite.visible = false;
         }
-        
-        // aura visual thing 
+
+        // aura visual thing
 
         if (this.m_action.type === Action.UseItem && this.m_action.item === "pulseBox") {
             const sprite = "part-aura-circle-02.img";
@@ -1910,7 +1922,9 @@ export class Player implements AbstractObject {
                 this.auraPulseDir = 1;
                 this.auraCircle.visible = false;
             } else {
-                const actionItemDef = GameObjectDefs[this.m_action.item] as HealDef | BoostDef;
+                const actionItemDef = GameObjectDefs[this.m_action.item] as
+                    | HealDef
+                    | BoostDef;
                 const sprite = actionItemDef?.aura?.sprite ?? "part-aura-circle-01.img";
                 const tint = actionItemDef?.aura?.tint ?? 0xff00ff;
                 const auraScale = 0.125;
@@ -1967,16 +1981,25 @@ export class Player implements AbstractObject {
             if (this.downed) {
                 this.bodyContainer.setChildIndex(this.frontSprite, 7);
             } else {
-                const clampedIndex = Math.max(0, Math.min(targetIndex, this.bodyContainer.children.length - 1));
+                const clampedIndex = Math.max(
+                    0,
+                    Math.min(targetIndex, this.bodyContainer.children.length - 1),
+                );
                 this.bodyContainer.setChildIndex(this.frontSprite, clampedIndex);
             }
         } else {
             this.frontSprite.visible = false;
         }
-        
+
         // Force helmet + visor on top to prevent flickering during shooting/switching
-        this.bodyContainer.setChildIndex(this.helmetSprite, this.bodyContainer.children.length - 1);
-        this.bodyContainer.setChildIndex(this.visorSprite, this.bodyContainer.children.length - 1);
+        this.bodyContainer.setChildIndex(
+            this.helmetSprite,
+            this.bodyContainer.children.length - 1,
+        );
+        this.bodyContainer.setChildIndex(
+            this.visorSprite,
+            this.bodyContainer.children.length - 1,
+        );
 
         this.bodyContainer.scale.set(bodyScale, bodyScale);
     }
@@ -2042,7 +2065,10 @@ export class Player implements AbstractObject {
                 mouseX - window.innerWidth / 2,
             );
         } else if (isActivePlayer || !isLocalAndNotSpectating) {
-            this.bodyContainer.rotation = -Math.atan2(this.m_visualDir.y, this.m_visualDir.x);
+            this.bodyContainer.rotation = -Math.atan2(
+                this.m_visualDir.y,
+                this.m_visualDir.x,
+            );
         }
     }
 

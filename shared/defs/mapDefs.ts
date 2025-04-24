@@ -1,14 +1,15 @@
+import { DeatchmatchCobalt } from "../../server/src/deathmatch/maps/cobalt";
 import { DeatchmatchDesert } from "../../server/src/deathmatch/maps/desert";
 import { gun_game } from "../../server/src/deathmatch/maps/gun_game";
 import { DeatchmatchHalloween } from "../../server/src/deathmatch/maps/halloween";
 import { DeatchmatchMain } from "../../server/src/deathmatch/maps/main";
-import { DeatchmatchCobalt } from "../../server/src/deathmatch/maps/cobalt";
 import { DeatchmatchSnow } from "../../server/src/deathmatch/maps/snow";
 import { DeatchmatchWoods as Woods } from "../../server/src/deathmatch/maps/woods";
 import type { Vec2 } from "../utils/v2";
 import { Faction } from "./maps/factionDefs";
 import { MainSpring } from "./maps/mainSpringDefs";
 import { MainSummer } from "./maps/mainSummerDefs";
+import { May } from "./maps/mayDefs";
 import { Potato } from "./maps/potatoDefs";
 import { PotatoSpring } from "./maps/potatoSpringDefs";
 import { Savannah } from "./maps/savannahDefs";
@@ -16,7 +17,6 @@ import { Turkey } from "./maps/turkeyDefs";
 import { WoodsSnow } from "./maps/woodsSnowDefs";
 import { WoodsSpring } from "./maps/woodsSpringDefs";
 import { WoodsSummer } from "./maps/woodsSummerDefs";
-import { May } from "./maps/mayDefs";
 
 export const MapDefs = {
     main: DeatchmatchMain,

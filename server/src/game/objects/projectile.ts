@@ -14,7 +14,6 @@ import { BaseGameObject } from "./gameObject";
 // and exploding, from recorded packets from the original game
 const gravity = 10.5;
 
-
 export class ProjectileBarn {
     projectiles: Projectile[] = [];
     constructor(readonly game: Game) {}
@@ -92,7 +91,6 @@ export class Projectile extends BaseGameObject {
 
     private activateTime: number = 0;
     private triggeredTime: number | null = null;
-
 
     strobe?: {
         strobeTicker: number;
@@ -189,10 +187,12 @@ export class Projectile extends BaseGameObject {
                             {
                                 damageType: GameConfig.DamageType.Player,
                                 gameSourceType: this.gameSourceType,
-                                source: this.game.playerBarn.players.find(p => p.__id === this.playerId),
-                                mapSourceType: ""
-                            }
-                        );                        
+                                source: this.game.playerBarn.players.find(
+                                    (p) => p.__id === this.playerId,
+                                ),
+                                mapSourceType: "",
+                            },
+                        );
                         this.destroy();
                     }
                 } else {
@@ -225,8 +225,6 @@ export class Projectile extends BaseGameObject {
                 }
             }
         }
-        
-        
 
         const def = GameObjectDefs[this.type] as ThrowableDef;
         //

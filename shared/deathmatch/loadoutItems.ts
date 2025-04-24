@@ -24,7 +24,6 @@ export const allowedGuns = [
     // "lasr_gun",
     // "lasr_gun_dual",
 
-
     //Submachine Guns (SMG):
     "mp5",
     "mac10",

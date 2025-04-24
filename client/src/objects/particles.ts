@@ -1707,7 +1707,7 @@ const ParticleDefs: Record<string, ParticleDef> = {
         },
         color: function () {
             return 16777215;
-        },        
+        },
     },
     "9mm_cursed": {
         image: ["part-shell-01.img"],
@@ -1879,21 +1879,28 @@ const ParticleDefs: Record<string, ParticleDef> = {
         color: 0xffffff,
     },
     rainbow_ammo: {
-        image: ["part-rainbow-1.img", "part-rainbow-2.img", "part-rainbow-3.img", "part-rainbow-4.img", "part-rainbow-5.img", "part-rainbow-6.img"],
+        image: [
+            "part-rainbow-1.img",
+            "part-rainbow-2.img",
+            "part-rainbow-3.img",
+            "part-rainbow-4.img",
+            "part-rainbow-5.img",
+            "part-rainbow-6.img",
+        ],
         life: new Range(0.5, 0.75),
         drag: new Range(3, 4),
         rotVel: new Range(Math.PI * 3, Math.PI * 3),
         scale: {
-          start: 0.45,
-          end: 0.1,
-          lerp: new Range(0, 1)
+            start: 0.45,
+            end: 0.1,
+            lerp: new Range(0, 1),
         },
         alpha: {
-          start: 1,
-          end: 0,
-          lerp: new Range(0.95, 1)
+            start: 1,
+            end: 0,
+            lerp: new Range(0.95, 1),
         },
-        color: 16777215
+        color: 16777215,
     },
     bugle_ammo: {
         image: ["part-note-02.img"],
@@ -2850,7 +2857,11 @@ const ParticleDefs: Record<string, ParticleDef> = {
         ignoreValueAdjust: true,
     },
     water_balloon_impact: {
-        image: ["map-beach-wet-particle-01.img", "map-beach-wet-particle-02.img", "map-beach-wet-particle-03.img"],
+        image: [
+            "map-beach-wet-particle-01.img",
+            "map-beach-wet-particle-02.img",
+            "map-beach-wet-particle-03.img",
+        ],
         life: new Range(0.5, 1),
         drag: 0,
         rotVel: new Range(Math.PI * 0.25, Math.PI * 0.5),
@@ -2858,7 +2869,7 @@ const ParticleDefs: Record<string, ParticleDef> = {
             start: new Range(0.1024, 0.1376),
             end: new Range(0.0192, 0.0416),
             lerp: new Range(0, 1),
-        },        
+        },
         alpha: {
             start: 1,
             end: 0,
@@ -2871,12 +2882,10 @@ const ParticleDefs: Record<string, ParticleDef> = {
         },
         color: function () {
             return 3503816;
-        },        
+        },
         ignoreValueAdjust: true,
     },
 
-
-    
     boost_star: {
         image: ["part-boost-star.img"],
         life: new Range(0.75, 1),

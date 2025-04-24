@@ -804,7 +804,7 @@ export const BaseDefs: Record<string, BulletDef> = {
         shrapnel: false,
         tracerColor: "762mm",
         tracerWidth: 0.1,
-        tracerLength: 0.9
+        tracerLength: 0.9,
     },
     bullet_m9A17: {
         type: "bullet",
@@ -818,7 +818,7 @@ export const BaseDefs: Record<string, BulletDef> = {
         tracerColor: "invis",
         tracerWidth: 0,
         tracerLength: 0.9,
-        skipCollision: true
+        skipCollision: true,
     },
     bullet_rainbow: {
         type: "bullet",
@@ -832,7 +832,7 @@ export const BaseDefs: Record<string, BulletDef> = {
         tracerColor: "rainbowTrail",
         tracerWidth: 0.5,
         tracerLength: 1.5,
-        skipCollision: true
+        skipCollision: true,
     },
 };
 
@@ -890,7 +890,7 @@ const SkinDefs: Record<string, BulletDef> = {
         shrapnel: false,
         tracerColor: "laser",
         tracerWidth: 0.12,
-        tracerLength: 0.8
+        tracerLength: 0.8,
     },
     bullet_m9A17: {
         type: "bullet",
@@ -904,7 +904,7 @@ const SkinDefs: Record<string, BulletDef> = {
         tracerColor: "invis",
         tracerWidth: 0,
         tracerLength: 0.9,
-        skipCollision: true
+        skipCollision: true,
     },
     bullet_m79: {
         type: "bullet",
@@ -918,7 +918,7 @@ const SkinDefs: Record<string, BulletDef> = {
         tracerColor: "frag",
         tracerWidth: 0,
         tracerLength: 1.2,
-        skipCollision: true
+        skipCollision: true,
     },
     bullet_water: {
         type: "bullet",
@@ -932,8 +932,8 @@ const SkinDefs: Record<string, BulletDef> = {
         tracerColor: "water",
         tracerWidth: 0.1,
         tracerLength: 2.5,
-        onHit: "explosion_water_balloon"
-      },
+        onHit: "explosion_water_balloon",
+    },
 };
 
 export const BulletDefs: Record<string, BulletDef> = { ...BaseDefs, ...SkinDefs };

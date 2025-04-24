@@ -1867,37 +1867,42 @@ export class GameMap {
         let getPos: () => Vec2;
 
         if (!group?.spawnLeader) {
-          if ( this.game.gas.stage === GasMode.Moving) {
-               getPos = () => {
-                   return v2.add(this.game.gas.currentPos, util.randomPointInCircle(this.game.gas.currentRad))
-               }
-           } else {
-            const spawnMin = v2.create(this.shoreInset, this.shoreInset);
-            const spawnMax = v2.create(
-                this.width - this.shoreInset,
-                this.height - this.shoreInset,
-            );
-            let spawnAabb: { min: Vec2; max: Vec2 } = collider.createAabb(
-                this.game.gas.stage === GasMode.Moving ? this.game.gas.currentPos : spawnMin,
-                spawnMax,
-            );
+            if (this.game.gas.stage === GasMode.Moving) {
+                getPos = () => {
+                    return v2.add(
+                        this.game.gas.currentPos,
+                        util.randomPointInCircle(this.game.gas.currentRad),
+                    );
+                };
+            } else {
+                const spawnMin = v2.create(this.shoreInset, this.shoreInset);
+                const spawnMax = v2.create(
+                    this.width - this.shoreInset,
+                    this.height - this.shoreInset,
+                );
+                let spawnAabb: { min: Vec2; max: Vec2 } = collider.createAabb(
+                    this.game.gas.stage === GasMode.Moving
+                        ? this.game.gas.currentPos
+                        : spawnMin,
+                    spawnMax,
+                );
 
-            if (this.factionMode && team) {
-                const rad = math.oriToRad(this.factionModeSplitOri ^ 1);
-                const vec = v2.create(Math.cos(rad), Math.sin(rad));
-                const idx = team.teamId - 1;
+                if (this.factionMode && team) {
+                    const rad = math.oriToRad(this.factionModeSplitOri ^ 1);
+                    const vec = v2.create(Math.cos(rad), Math.sin(rad));
+                    const idx = team.teamId - 1;
 
-                //farthest fifth from the center of the team's half. 1/5 * 1/2 = 1/10 hence the 10 divisions
-                const divisions = 10;
-                spawnAabb = coldet.divideAabb(spawnAabb, vec, divisions)[
-                    idx * (divisions - 1)
-                ];
+                    //farthest fifth from the center of the team's half. 1/5 * 1/2 = 1/10 hence the 10 divisions
+                    const divisions = 10;
+                    spawnAabb = coldet.divideAabb(spawnAabb, vec, divisions)[
+                        idx * (divisions - 1)
+                    ];
+                }
+
+                getPos = () => {
+                    return util.randomPointInAabb(spawnAabb);
+                };
             }
-
-            getPos = () => {
-                return util.randomPointInAabb(spawnAabb);
-            };
-           }
         } else {
             const rad = GameConfig.player.teammateSpawnRadius;
             const pos = group.spawnLeader.pos;

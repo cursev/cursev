@@ -33,11 +33,11 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         },
         m9a17_reload_01: {
             path: "audio/guns/m9a17_reload_01.mp3",
-            volume: 1
+            volume: 1,
         },
         m9a17_01: {
             path: "audio/guns/m9a17_01.mp3",
-            volume: 1
+            volume: 1,
         },
         m9_reload_01: {
             path: "audio/guns/m9_reload_01.mp3",
@@ -199,11 +199,11 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         water_gun_01: {
             path: "audio/guns/water_gun_01.mp3",
             volume: 1,
-            maxInstances: 5
+            maxInstances: 5,
         },
         water_gun_reload_01: {
             path: "audio/guns/water_gun_reload_01.mp3",
-            volume: 1
+            volume: 1,
         },
         ak47_switch_01: {
             path: "audio/guns/ak47_switch_01.mp3",
@@ -300,15 +300,15 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         m134_01: {
             path: "audio/guns/m134_01.mp3",
             volume: 1,
-            maxInstances: 5
+            maxInstances: 5,
         },
         m134_reload_01: {
             path: "audio/guns/m134_reload_01.mp3",
-            volume: 1
+            volume: 1,
         },
         m134_switch_01: {
             path: "audio/guns/pkp_switch_01.mp3",
-            volume: 1
+            volume: 1,
         },
         m870_01: {
             path: "audio/guns/m870_01.mp3",
@@ -785,12 +785,12 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         rainbow_blaster_01: {
             path: "audio/guns/rainbow_blaster_01.mp3",
             volume: 1,
-            maxInstances: 1
+            maxInstances: 1,
         },
         rainbow_blaster_loading: {
             path: "audio/guns/rainbow_blaster_loading.mp3",
             volume: 1,
-            maxInstances: 1
+            maxInstances: 1,
         },
         potato_smg_switch_01: {
             path: "audio/guns/potato_smg_switch_01.mp3",
@@ -829,15 +829,15 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         m79_01: {
             path: "audio/guns/potato_cannon_01.mp3",
             volume: 1,
-            maxInstances: 5
+            maxInstances: 5,
         },
         m79_reload_01: {
             path: "audio/guns/potato_cannon_reload_01.mp3",
-            volume: 1
+            volume: 1,
         },
         m79_switch_01: {
             path: "audio/guns/potato_cannon_switch_01.mp3",
-            volume: 1
+            volume: 1,
         },
         bandage_use_01: {
             path: "audio/ui/bandage_use_01.mp3",
@@ -863,7 +863,6 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             path: "audio/ui/stow_weapon_01.mp3",
             volume: 1,
         },
-
     },
     hits: {
         stone_bullet_hit_01: {
@@ -1078,7 +1077,7 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         },
         lasr_hit_01: {
             path: "audio/hits/lasr_hit_01.mp3",
-            volume: 1.0
+            volume: 1.0,
         },
     },
     sfx: {
@@ -1288,7 +1287,7 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         },
         lasr_swing_01: {
             path: "audio/sfx/lasr_swing_01.mp3",
-            volume: 1.0
+            volume: 1.0,
         },
         bullet_whiz_01: {
             path: "audio/sfx/bullet_whiz_01.mp3",
@@ -1320,11 +1319,11 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         },
         water_balloon_throw_01: {
             path: "audio/sfx/water_balloon_throw_01.mp3",
-            volume: 1
+            volume: 1,
         },
         water_balloon_deploy_01: {
             path: "audio/sfx/water_hit_01.mp3",
-            volume: 1
+            volume: 1,
         },
         strobe_click_01: {
             path: "audio/sfx/strobe_click_01.mp3",
@@ -1966,9 +1965,9 @@ const Groups: Record<string, { channel: string; sounds: string[] }> = {
         channel: "hits",
         sounds: ["organic_hit_01"],
     },
-    "lasr_hit": {
+    lasr_hit: {
         channel: "hits",
-        sounds: ["lasr_hit_01"]
+        sounds: ["lasr_hit_01"],
     },
     piano_hit: {
         channel: "hits",
