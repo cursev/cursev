@@ -1,13 +1,18 @@
-import { GameConfig, TeamMode } from "../../../shared/gameConfig";
+import { TeamMode } from "../../../shared/gameConfig";
 import * as net from "../../../shared/net/net";
 import { math } from "../../../shared/utils/math";
 import { v2 } from "../../../shared/utils/v2";
 import { Config } from "../config";
 import { Logger } from "../utils/logger";
 import { fetchApiServer } from "../utils/serverHelpers";
-import type { FindGamePrivateBody, SaveGameBody, ServerGameConfig } from "../utils/types";
+import {
+    type FindGamePrivateBody,
+    ProcessMsgType,
+    type SaveGameBody,
+    type ServerGameConfig,
+    type UpdateDataMsg,
+} from "../utils/types";
 import { GameModeManager } from "./gameModeManager";
-import { ProcessMsgType, type UpdateDataMsg } from "./gameProcessManager";
 import { Grid } from "./grid";
 import { GameMap } from "./map";
 import { AirdropBarn } from "./objects/airdrop";
@@ -26,17 +31,8 @@ import { SmokeBarn } from "./objects/smoke";
 import { PluginManager } from "./pluginManager";
 import { Profiler } from "./profiler";
 
-export interface GroupData {
-    hash: string;
-    autoFill: boolean;
-}
-
 export interface JoinTokenData {
-    autoFill: boolean;
-    playerCount: number;
-    availableUses: number;
     expiresAt: number;
-    groupHashToJoin: string;
     userId: string | null;
     findGameIp: string;
     groupData: {
@@ -334,7 +330,6 @@ export class Game {
     }
 
     get canJoin(): boolean {
-        return !this.over;
         return (
             this.aliveCount < this.map.mapDef.gameMode.maxPlayers &&
             !this.over &&
@@ -401,7 +396,7 @@ export class Game {
         };
     }
 
-    handleMsg(buff: ArrayBuffer | Buffer, socketId: string): void {
+    handleMsg(buff: ArrayBuffer | Buffer, socketId: string, ip: string): void {
         if (!(buff instanceof ArrayBuffer)) return;
 
         const player = this.playerBarn.socketIdToPlayer.get(socketId);
@@ -421,7 +416,7 @@ export class Game {
         if (!msg) return;
 
         if (type === net.MsgType.Join && !player) {
-            this.playerBarn.addPlayer(socketId, msg as net.JoinMsg);
+            this.playerBarn.addPlayer(socketId, msg as net.JoinMsg, ip);
             return;
         }
 
@@ -440,7 +435,7 @@ export class Game {
                 break;
             }
             case net.MsgType.DropItem: {
-                player.customDropItem(msg as net.DropItemMsg);
+                player.dropItem(msg as net.DropItemMsg);
                 break;
             }
             case net.MsgType.Spectate: {
@@ -467,10 +462,7 @@ export class Game {
         player.spectating = undefined;
         player.dir = v2.create(0, 0);
         player.setPartDirty();
-        if (
-            (player.timeAlive < GameConfig.player.minActiveTime && !player.downed) ||
-            true
-        ) {
+        if (player.canDespawn() || true) {
             player.game.playerBarn.removePlayer(player);
         }
     }

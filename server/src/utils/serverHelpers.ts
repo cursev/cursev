@@ -1,4 +1,6 @@
 import { isIP } from "net";
+import type { Context } from "hono";
+import ProxyCheck, { type IPAddressInfo } from "proxycheck-ts";
 import type { HttpRequest, HttpResponse } from "uWebSockets.js";
 import { Constants } from "../../../shared/net/net";
 import { Config } from "../config";
@@ -19,8 +21,21 @@ export function cors(res: HttpResponse): void {
         .writeHeader("Access-Control-Max-Age", "3600");
 }
 
+export function getHonoIp(c: Context, proxyHeader?: string): string | undefined {
+    const ip = proxyHeader
+        ? c.req.header(proxyHeader)
+        : c.env?.incoming?.socket?.remoteAddress;
+
+    if (!ip || isIP(ip) == 0) return undefined;
+    if (ip.includes("::ffff:")) return ip.split("::ffff:")[1];
+    return ip;
+}
+
 export function forbidden(res: HttpResponse): void {
-    res.writeStatus("403 Forbidden").end("403 Forbidden");
+    res.cork(() => {
+        if (res.aborted) return;
+        res.writeStatus("403 Forbidden").end("403 Forbidden");
+    });
 }
 
 export function returnJson(res: HttpResponse, data: Record<string, unknown>): void {
@@ -92,6 +107,17 @@ const badWordsFilter = [
     /ch[i1líĩî|!]nks?/i,
 ];
 
+export function checkForBadWords(name: string) {
+    const santized = name.replace(/[^a-zA-Z0-9|$|@]|\^/g, "");
+
+    for (const regex of badWordsFilter) {
+        if (name.match(regex) || santized.match(regex)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 const allowedCharsRegex =
     /[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g;
 
@@ -123,7 +149,10 @@ export function validateUserName(name: string): {
             validName: defaultName,
         };
 
-    return name;
+    return {
+        originalWasInvalid: false,
+        validName: name,
+    };
 }
 
 const textDecoder = new TextDecoder();

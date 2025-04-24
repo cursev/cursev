@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { GameObjectDefs } from "../../../shared/defs/gameObjectDefs";
+import type { GunDef } from "../../../shared/defs/gameObjects/gunDefs";
 import { UnlockDefs } from "../../../shared/defs/gameObjects/unlockDefs";
 import { GameConfig } from "../../../shared/gameConfig";
 import type { JoinMsg } from "../../../shared/net/joinMsg";
@@ -65,6 +66,90 @@ export function setLoadout(joinMsg: JoinMsg, player: Player) {
      * Checks if an item is present in the player's loadout
      */
     const isItemInLoadout = (item: string, category: string) => {
+        if (!UnlockDefs.unlock_default.unlocks.includes(item)) return false;
+
+        const def = GameObjectDefs[item];
+        if (!def || def.type !== category) return false;
+
+        return true;
+    };
+
+    if (
+        isItemInLoadout(joinMsg.loadout.outfit, "outfit") &&
+        joinMsg.loadout.outfit !== "outfitBase"
+    ) {
+        player.setOutfit(joinMsg.loadout.outfit);
+    } else {
+        player.setOutfit(defaultItems.outfit);
+    }
+
+    if (
+        isItemInLoadout(joinMsg.loadout.melee, "melee") &&
+        joinMsg.loadout.melee != "fists"
+    ) {
+        player.weapons[GameConfig.WeaponSlot.Melee].type = joinMsg.loadout.melee;
+    }
+
+    const loadout = player.loadout;
+
+    if (isItemInLoadout(joinMsg.loadout.heal, "heal")) {
+        loadout.heal = joinMsg.loadout.heal;
+    }
+    if (isItemInLoadout(joinMsg.loadout.boost, "boost")) {
+        loadout.boost = joinMsg.loadout.boost;
+    }
+
+    const emotes = joinMsg.loadout.emotes;
+    for (let i = 0; i < emotes.length; i++) {
+        const emote = emotes[i];
+        if (i > GameConfig.EmoteSlot.Count) break;
+
+        if (emote === "" || !isItemInLoadout(emote, "emote")) {
+            continue;
+        }
+
+        loadout.emotes[i] = emote;
+    }
+
+    // Normal mode: Initialize primary weapon
+    if (isItemInLoadout(joinMsg.loadout.primary, "gun")) {
+        const slot = GameConfig.WeaponSlot.Primary;
+        player.weapons[slot].type = joinMsg.loadout.primary;
+        const gunDef = GameObjectDefs[player.weapons[slot].type] as GunDef;
+        player.weapons[slot].ammo = gunDef.maxClip;
+    }
+
+    // Normal mode: Initialize secondary weapon
+    if (isItemInLoadout(joinMsg.loadout.secondary, "gun")) {
+        const slot = GameConfig.WeaponSlot.Secondary;
+        player.weapons[slot].type = joinMsg.loadout.secondary;
+
+        // Disable dual spas in normal mode
+        if (
+            player.weapons[GameConfig.WeaponSlot.Primary].type === "spas12" &&
+            player.weapons[slot].type === "spas12"
+        ) {
+            player.weapons[slot].type = "mosin";
+        }
+
+        const gunDef = GameObjectDefs[player.weapons[slot].type] as GunDef;
+        player.weapons[slot].ammo = gunDef.maxClip;
+    }
+
+    // Add "inspiration" perk if using "bugle"
+    if (
+        player.weapons[GameConfig.WeaponSlot.Primary].type == "bugle" ||
+        player.weapons[GameConfig.WeaponSlot.Secondary].type == "bugle"
+    ) {
+        player.addPerk("inspiration", false);
+    }
+
+    return;
+
+    /**
+     * Checks if an item is present in the player's loadout
+     */
+    const _isItemInLoadout = (item: string, category: string) => {
         if (!decryptedLoadout && !UnlockDefs.unlock_default.unlocks.includes(item))
             return false;
 
@@ -97,7 +182,7 @@ export function setLoadout(joinMsg: JoinMsg, player: Player) {
         player.loadout.boost = processedLoadout.boost;
     }
 
-    const emotes = processedLoadout.emotes;
+    const _emotes = processedLoadout.emotes;
     for (let i = 0; i < emotes.length; i++) {
         const emote = emotes[i];
         if (i > GameConfig.EmoteSlot.Count) break;

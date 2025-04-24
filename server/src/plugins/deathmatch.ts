@@ -4,12 +4,11 @@ import { isItemInLoadout } from "../../../shared/defs/gameObjects/unlockDefs";
 import { WeaponSlot } from "../../../shared/gameConfig";
 import { ObjectType } from "../../../shared/net/objectSerializeFns";
 import { Config } from "../config";
-import { GamePlugin } from "../game/pluginManager";
+import type { Player } from "../game/objects/player";
+import { GamePlugin, type PlayerDamageEvent } from "../game/pluginManager";
 
-export default class DeathMatchPlugin extends GamePlugin {
-    protected override initListeners(): void {
-        this.on("playerJoin", (data) => {
-            data.scope = "4xscope";
+export function onPlayerJoin(data: Player) {
+    data.scope = "4xscope";
             data.boost = 100;
             data.weaponManager.setCurWeapIndex(WeaponSlot.Primary);
             data.addPerk("endless_ammo", false);
@@ -32,11 +31,10 @@ export default class DeathMatchPlugin extends GamePlugin {
                     break;
                 }
             }
-        });
-
-        this.on("playerKill", (data) => {
+};
+export function onPlayerKill(data: Omit<PlayerDamageEvent, "amount">) {
             if (data.player.game.aliveCount < 5) {
-                this.game.playerBarn.emotes.push({
+                data.player.game.playerBarn.emotes.push({
                     playerId: 0,
                     pos: data.player.pos,
                     type: "ping_death",
@@ -124,7 +122,13 @@ export default class DeathMatchPlugin extends GamePlugin {
                 loadAmmo(WeaponSlot.Primary);
                 loadAmmo(WeaponSlot.Secondary);
             }
-        });
+      };
+
+export default class DeathMatchPlugin extends GamePlugin {
+    protected override initListeners(): void {
+        this.on("playerJoin", onPlayerJoin);
+
+        this.on("playerKill", onPlayerKill);
     }
 }
 

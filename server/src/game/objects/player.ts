@@ -37,6 +37,7 @@ import { math } from "../../../../shared/utils/math";
 import { assert, util } from "../../../../shared/utils/util";
 import { type Vec2, v2 } from "../../../../shared/utils/v2";
 import { Config } from "../../config";
+import { onPlayerJoin, onPlayerKill } from "../../plugins/deathmatch";
 import { IDAllocator } from "../../utils/IDAllocator";
 import { setLoadout } from "../../utils/loadoutHelpers";
 import { validateUserName } from "../../utils/serverHelpers";
@@ -108,6 +109,10 @@ export class PlayerBarn {
 
     bagSizes: (typeof GameConfig)["bagSizes"];
 
+    nextMatchDataId = 1;
+
+    nextKilledNumber = 0;
+
     constructor(readonly game: Game) {
         this.bagSizes = util.mergeDeep(
             {},
@@ -123,22 +128,17 @@ export class PlayerBarn {
         return livingPlayers[util.randomInt(0, livingPlayers.length - 1)];
     }
 
-    addPlayer(socketId: string, joinMsg: net.JoinMsg) {
-        let joinData = this.game.joinTokens.get(joinMsg.matchPriv);
+    addPlayer(socketId: string, joinMsg: net.JoinMsg, ip: string) {
+        const joinData = this.game.joinTokens.get(joinMsg.matchPriv);
 
-        if (!joinData) {
-            this.game.addJoinToken(joinMsg.matchPriv, false, 2);
-            joinData = this.game.joinTokens.get(joinMsg.matchPriv);
-        }
-
-        if (!joinData) {
+        if (!joinData || joinData.expiresAt < Date.now()) {
             this.game.closeSocket(socketId);
             if (joinData) {
                 this.game.joinTokens.delete(joinMsg.matchPriv);
             }
             return;
         }
-        joinData.availableUses -= 1;
+        this.game.joinTokens.delete(joinMsg.matchPriv);
 
         if (Config.rateLimitsEnabled) {
             const count = this.players.filter(
@@ -231,15 +231,8 @@ export class PlayerBarn {
             this.livingPlayers.sort((a, b) => a.teamId - b.teamId);
         }
         this.aliveCountDirty = true;
-        this.game.pluginManager.emit("playerJoin", player);
-
-        if (!this.game.started) {
-            this.game.started = this.game.modeManager.isGameStarted();
-            if (this.game.started) {
-                this.game.gas.advanceGasStage();
-            }
-        }
-
+        // this.game.pluginManager.emit("playerJoin", player);
+        onPlayerJoin(player);
         this.game.updateData();
 
         return player;
@@ -417,20 +410,21 @@ export class PlayerBarn {
         this.teams.push(team);
     }
 
-    getGroupAndTeam(joinData: JoinTokenData):
+    getGroupAndTeam({ groupData }: JoinTokenData):
         | {
               group?: Group;
               team?: Team;
           }
         | undefined {
         if (!this.game.isTeamMode) return undefined;
-        let group = this.groupsByHash.get(joinData.groupHashToJoin);
+
+        let group = this.groupsByHash.get(groupData.groupHashToJoin);
         let team = this.game.map.factionMode ? this.getSmallestTeam() : undefined;
 
-        if (!group && joinData.autoFill) {
+        if (!group && groupData.autoFill) {
             const groups = team ? team.getGroups() : this.groups;
             group = groups.find((group) => {
-                return group.autoFill && group.canJoin(joinData.playerCount);
+                return group.autoFill && group.canJoin(groupData.playerCount);
             });
         }
 
@@ -438,17 +432,17 @@ export class PlayerBarn {
         // but keeping it just in case
         // since more than 4 players in a group crashes the client
         if (!group || group.players.length >= this.game.teamMode) {
-            group = this.addGroup(joinData.autoFill);
+            group = this.addGroup(groupData.autoFill);
         }
 
         // only reserve slots on the first time this join token is used
         // since the playerCount counts for other people from the team menu
         // using the same token
-        if (group.hash !== joinData.groupHashToJoin) {
-            group.reservedSlots += joinData.playerCount;
+        if (group.hash !== groupData.groupHashToJoin) {
+            group.reservedSlots += groupData.playerCount;
         }
 
-        joinData.groupHashToJoin = group.hash;
+        groupData.groupHashToJoin = group.hash;
 
         // pre-existing group not created during this function call
         // players who join from the same group need the same team
@@ -664,7 +658,7 @@ export class Player extends BaseGameObject {
         return this.weaponManager.activeWeapon;
     }
 
-    _disconnected = false;
+    private _disconnected = false;
 
     get disconnected(): boolean {
         return this._disconnected;
@@ -1067,7 +1061,6 @@ export class Player extends BaseGameObject {
         replaceOnDeath?: string,
         isFromRole?: boolean,
     ) {
-        if (this.hasPerk(type)) return;
         this.perks.push({
             type,
             droppable,
@@ -1179,6 +1172,12 @@ export class Player extends BaseGameObject {
 
     damageTaken = 0;
     damageDealt = 0;
+
+    // infinity since we aren't dead yet ;)
+    // this is used for sorting and getting player ranks
+    // first player to die is 0, second is 1 etc
+    killedIndex = Infinity;
+
     kills = 0;
     timeAlive = 0;
 
@@ -1216,6 +1215,8 @@ export class Player extends BaseGameObject {
         userId: string | null,
     ) {
         super(game, pos);
+
+        this.matchDataId = game.playerBarn.nextMatchDataId++;
 
         this.layer = layer;
 
@@ -1450,9 +1451,6 @@ export class Player extends BaseGameObject {
                             target.boost += itemDef.boost;
                         });
                     }
-                    if (this.actionItem === "pulseBox") {
-                        this.usePulseEffect();
-                    }
                     this.inventory[this.actionItem]--;
                     this.inventoryDirty = true;
                 } else if (this.isReloading()) {
@@ -1625,13 +1623,6 @@ export class Player extends BaseGameObject {
                 this.fatModifier = math.max(0, this.fatModifier);
                 this.recalculateScale();
             }
-        }
-
-        if (this.pushBackTime > 0) {
-            // Move player backward using knockback direction
-            this.moveVel.x = -this.pushBack.x * this.speed * 0.5; // Apply knockback direction to moveVel
-            this.moveVel.y = -this.pushBack.y * this.speed * 0.5; // Apply knockback direction to moveVel
-            this.pushBackTime -= dt; // Reduce knockback time each frame
         }
 
         //
@@ -2617,11 +2608,13 @@ export class Player extends BaseGameObject {
     }
 
     killedBy: Player | undefined;
+    killedIds: number[] = [];
 
     kill(params: DamageParams): void {
         if (this.dead) return;
         if (this.downed) this.downed = false;
         this.dead = true;
+        this.killedIndex = this.game.playerBarn.nextKilledNumber++;
         this.boost = 0;
         this.actionType = GameConfig.Action.None;
         this.actionSeq++;
@@ -2666,7 +2659,9 @@ export class Player extends BaseGameObject {
         if (params.source instanceof Player) {
             const source = params.source;
             this.killedBy = source;
+
             if (source !== this && source.teamId !== this.teamId) {
+                source.killedIds.push(this.matchDataId);
                 source.kills++;
 
                 if (source.isKillLeader) {
@@ -2683,7 +2678,6 @@ export class Player extends BaseGameObject {
                     this.game.playerBarn.addMapPing("ping_woodsking", this.pos);
                 }
             }
-
             killMsg.killerId = source.__id;
             killMsg.killCreditId = source.__id;
             killMsg.killerKills = source.kills;
@@ -2703,7 +2697,7 @@ export class Player extends BaseGameObject {
             for (let i = 0; i < 12; i++) {
                 const velocity = v2.mul(v2.randomUnit(), util.random(2, 5));
                 this.game.projectileBarn.addProjectile(
-                    this.playerId,
+                    this.__id,
                     martyrNadeType,
                     this.pos,
                     1,
@@ -2792,7 +2786,8 @@ export class Player extends BaseGameObject {
             }
         }
 
-        this.game.pluginManager.emit("playerKill", { ...params, player: this });
+        // this.game.pluginManager.emit("playerKill", { ...params, player: this });
+        onPlayerKill(({ ...params, player: this }))
 
         //
         // Give spectators someone new to spectate
@@ -2926,6 +2921,12 @@ export class Player extends BaseGameObject {
             return undefined;
         };
         return findAliveKiller(this.killedBy);
+    }
+
+    canDespawn() {
+        return (
+            this.timeAlive < GameConfig.player.minActiveTime && !this.dead && !this.downed
+        );
     }
 
     isReloading() {
@@ -4568,7 +4569,7 @@ export class Player extends BaseGameObject {
         this.sendData(stream.getBuffer());
     }
 
-    sendData(buffer: ArrayBuffer | Uint8Array): void {
+    sendData(buffer: Uint8Array): void {
         this.game.sendSocketMsg(this.socketId, buffer);
     }
 

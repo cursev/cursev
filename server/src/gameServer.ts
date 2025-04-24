@@ -1,6 +1,8 @@
-
+import { randomUUID } from "crypto";
 import { App, SSLApp, type WebSocket } from "uWebSockets.js";
 import { version } from "../../package.json";
+import { GameConfig } from "../../shared/gameConfig";
+import * as net from "../../shared/net/net";
 import { Config } from "./config";
 import { SingleThreadGameManager } from "./game/gameManager";
 import { GameProcessManager } from "./game/gameProcessManager";
@@ -10,44 +12,21 @@ import {
     HTTPRateLimit,
     WebSocketRateLimit,
     cors,
+    fetchApiServer,
     forbidden,
     getIp,
+    isBehindProxy,
     readPostedJSON,
     returnJson,
 } from "./utils/serverHelpers";
+import {
+    type FindGamePrivateBody,
+    type FindGamePrivateRes,
+    type GameSocketData,
+    zFindGamePrivateBody,
+} from "./utils/types";
 
-export interface FindGameBody {
-    region: string;
-    zones: string[];
-    version: number;
-    playerCount: number;
-    autoFill: boolean;
-    gameModeIdx: number;
-}
-
-export type FindGameResponse = {
-    res: Array<
-        | {
-              zone: string;
-              gameId: string;
-              useHttps: boolean;
-              hosts: string[];
-              addrs: string[];
-              data: string;
-          }
-        | { err: string }
-    >;
-};
-
-export interface GameSocketData {
-    gameId: string;
-    id: string;
-    closed: boolean;
-    rateLimit: Record<symbol, number>;
-    ip: string;
-}
-
-export class GameServer {
+class GameServer {
     readonly logger = new Logger("GameServer");
 
     readonly region = Config.regions[Config.gameServer.thisRegion];
@@ -60,7 +39,6 @@ export class GameServer {
 
     async findGame(body: FindGamePrivateBody): Promise<FindGamePrivateRes> {
         const parsed = zFindGamePrivateBody.safeParse(body);
-
         if (!parsed.success || !parsed.data) {
             this.logger.warn("/api/find_game: Invalid body");
             return {
@@ -158,40 +136,43 @@ app.post("/api/find_game", async (res, req) => {
 const gameHTTPRateLimit = new HTTPRateLimit(5, 1000);
 const gameWsRateLimit = new WebSocketRateLimit(500, 1000, 5);
 
-        app.ws<GameSocketData>("/play", {
-            idleTimeout: 30,
-            /**
-             * Upgrade the connection to WebSocket.
-             */
-            upgrade(res, req, context) {
-                res.onAborted((): void => {});
+app.ws<GameSocketData>("/play", {
+    idleTimeout: 30,
+    maxPayloadLength: 1024,
 
-                const ip = getIp(res, req, Config.gameServer.proxyIPHeader);
+    async upgrade(res, req, context): Promise<void> {
+        res.onAborted((): void => {
+            res.aborted = true;
+        });
+        const wskey = req.getHeader("sec-websocket-key");
+        const wsProtocol = req.getHeader("sec-websocket-protocol");
+        const wsExtensions = req.getHeader("sec-websocket-extensions");
 
-                if (!ip) {
-                    server.logger.warn(`Invalid IP Found`);
-                    res.end();
-                    return;
-                }
+        const ip = getIp(res, req, Config.gameServer.proxyIPHeader);
 
-                if (
-                    gameHTTPRateLimit.isRateLimited(ip) ||
-                    gameWsRateLimit.isIpRateLimited(ip)
-                ) {
-                    res.writeStatus("429 Too Many Requests");
-                    res.write("429 Too Many Requests");
-                    res.end();
-                    return;
-                }
+        if (!ip) {
+            server.logger.warn(`Invalid IP Found`);
+            res.end();
+            return;
+        }
 
-                const searchParams = new URLSearchParams(req.getQuery());
-                const gameId = searchParams.get("gameId");
+        if (gameHTTPRateLimit.isRateLimited(ip) || gameWsRateLimit.isIpRateLimited(ip)) {
+            res.cork(() => {
+                res.writeStatus("429 Too Many Requests");
+                res.write("429 Too Many Requests");
+                res.end();
+            });
+            return;
+        }
 
-                if (!gameId || !server.manager.getById(gameId)) {
-                    forbidden(res);
-                    return;
-                }
-                gameWsRateLimit.ipConnected(ip);
+        const searchParams = new URLSearchParams(req.getQuery());
+        const gameId = searchParams.get("gameId");
+
+        if (!gameId || !server.manager.getById(gameId)) {
+            forbidden(res);
+            return;
+        }
+        gameWsRateLimit.ipConnected(ip);
 
         const socketId = randomUUID();
         let disconnectReason = "";
@@ -220,85 +201,81 @@ const gameWsRateLimit = new WebSocketRateLimit(500, 1000, 5);
         });
     },
 
-            /**
-             * Handle opening of the socket.
-             * @param socket The socket being opened.
-             */
-            open(socket: WebSocket<GameSocketData>) {
-                server.manager.onOpen(socket.getUserData().id, socket);
-            },
+    open(socket: WebSocket<GameSocketData>) {
+        const data = socket.getUserData();
 
-            /**
-             * Handle messages coming from the socket.
-             * @param socket The socket in question.
-             * @param message The message to handle.
-             */
-            message(socket: WebSocket<GameSocketData>, message) {
-                if (gameWsRateLimit.isRateLimited(socket.getUserData().rateLimit)) {
-                    socket.close();
-                    return;
-                }
-                server.manager.onMsg(socket.getUserData().id, message);
-            },
-
-            /**
-             * Handle closing of the socket.
-             * @param socket The socket being closed.
-             */
-            close(socket: WebSocket<GameSocketData>) {
-                const data = socket.getUserData();
-                data.closed = true;
-                server.manager.onClose(data.id);
-                gameWsRateLimit.ipDisconnected(data.ip);
-            },
-        });
-
-        const pingHTTPRateLimit = new HTTPRateLimit(1, 3000);
-        const pingWsRateLimit = new WebSocketRateLimit(50, 1000, 10);
-
-        interface pingSocketData {
-            rateLimit: Record<symbol, number>;
-            ip: string;
+        if (data.disconnectReason) {
+            const disconnectMsg = new net.DisconnectMsg();
+            disconnectMsg.reason = data.disconnectReason;
+            const stream = new net.MsgStream(new ArrayBuffer(128));
+            stream.serializeMsg(net.MsgType.Disconnect, disconnectMsg);
+            socket.send(stream.getBuffer(), true, false);
+            socket.end();
+            return;
         }
 
-        // ping test
-        app.ws<pingSocketData>("/ptc", {
-            idleTimeout: 10,
-            maxPayloadLength: 2,
+        server.manager.onOpen(data.id, socket);
+    },
 
-            upgrade(res, req, context) {
-                res.onAborted((): void => {});
+    message(socket: WebSocket<GameSocketData>, message) {
+        if (gameWsRateLimit.isRateLimited(socket.getUserData().rateLimit)) {
+            socket.close();
+            return;
+        }
+        server.manager.onMsg(socket.getUserData().id, message);
+    },
 
-                const ip = getIp(res, req, Config.gameServer.proxyIPHeader);
+    close(socket: WebSocket<GameSocketData>) {
+        const data = socket.getUserData();
+        data.closed = true;
+        server.manager.onClose(data.id);
+        gameWsRateLimit.ipDisconnected(data.ip);
+    },
+});
 
-                if (!ip) {
-                    server.logger.warn(`Invalid IP Found`);
-                    res.end();
-                    return;
-                }
+const pingHTTPRateLimit = new HTTPRateLimit(1, 3000);
+const pingWsRateLimit = new WebSocketRateLimit(50, 1000, 10);
 
-                if (
-                    pingHTTPRateLimit.isRateLimited(ip) ||
-                    pingWsRateLimit.isIpRateLimited(ip)
-                ) {
-                    res.writeStatus("429 Too Many Requests");
-                    res.write("429 Too Many Requests");
-                    res.end();
-                    return;
-                }
-                pingWsRateLimit.ipConnected(ip);
+interface pingSocketData {
+    rateLimit: Record<symbol, number>;
+    ip: string;
+}
 
-                res.upgrade(
-                    {
-                        rateLimit: {},
-                        ip,
-                    },
-                    req.getHeader("sec-websocket-key"),
-                    req.getHeader("sec-websocket-protocol"),
-                    req.getHeader("sec-websocket-extensions"),
-                    context,
-                );
+// ping test
+app.ws<pingSocketData>("/ptc", {
+    idleTimeout: 10,
+    maxPayloadLength: 2,
+
+    upgrade(res, req, context) {
+        res.onAborted((): void => {});
+
+        const ip = getIp(res, req, Config.gameServer.proxyIPHeader);
+
+        if (!ip) {
+            server.logger.warn(`Invalid IP Found`);
+            res.end();
+            return;
+        }
+
+        if (pingHTTPRateLimit.isRateLimited(ip) || pingWsRateLimit.isIpRateLimited(ip)) {
+            res.writeStatus("429 Too Many Requests");
+            res.write("429 Too Many Requests");
+            res.end();
+            return;
+        }
+        pingWsRateLimit.ipConnected(ip);
+
+        res.upgrade(
+            {
+                rateLimit: {},
+                ip,
             },
+            req.getHeader("sec-websocket-key"),
+            req.getHeader("sec-websocket-protocol"),
+            req.getHeader("sec-websocket-extensions"),
+            context,
+        );
+    },
 
     message(socket: WebSocket<pingSocketData>, message) {
         if (pingWsRateLimit.isRateLimited(socket.getUserData().rateLimit)) {

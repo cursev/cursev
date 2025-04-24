@@ -1,6 +1,7 @@
 {
   "name": "@survev/server",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "tsx src/build.ts",
     "typecheck": "tsc",

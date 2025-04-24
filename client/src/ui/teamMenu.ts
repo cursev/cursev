@@ -1,18 +1,19 @@
 import $ from "jquery";
 import { GameConfig } from "../../../shared/gameConfig";
 import * as net from "../../../shared/net/net";
+import type { FindGameMatchData } from "../../../shared/types/api";
 import type {
     RoomData,
     ServerToClientTeamMsg,
+    TeamMenuErrorType,
     TeamPlayGameMsg,
     TeamStateMsg,
-} from "../../../shared/net/team";
+} from "../../../shared/types/team";
 import { api } from "../api";
 import type { AudioManager } from "../audioManager";
 import type { ConfigManager } from "../config";
 import { device } from "../device";
 import { helpers } from "../helpers";
-import type { MatchData } from "../main";
 import type { PingTest } from "../pingTest";
 import type { SiteInfo } from "../siteInfo";
 import type { Localization } from "./localization";
@@ -30,7 +31,9 @@ function errorTypeToString(type: string, localization: Localization) {
         find_game_invalid_protocol: localization.translate("index-invalid-protocol"),
         find_game_invalid_captcha: localization.translate("index-invalid-captcha"),
         kicked: localization.translate("index-team-kicked"),
-    };
+        banned: localization.translate("index-ip-banned"),
+        behind_proxy: "behind_proxy", // this will get passed to the main app to show a modal
+    } as Record<TeamMenuErrorType, string>;
     return typeMap[type as keyof typeof typeMap] || typeMap.lost_conn;
 }
 
@@ -79,7 +82,7 @@ export class TeamMenu {
         public siteInfo: SiteInfo,
         public localization: Localization,
         public audioManager: AudioManager,
-        public joinGameCb: (data: MatchData) => void,
+        public joinGameCb: (data: FindGameMatchData) => void,
         public leaveCb: (err: string) => void,
     ) {
         // Listen for ui modifications
@@ -95,7 +98,7 @@ export class TeamMenu {
             this.setRoomProperty("gameModeIdx", 2);
         });
         this.fillAuto.click(() => {
-            this.setRoomProperty("autoFill", false);
+            this.setRoomProperty("autoFill", true);
         });
         this.fillNone.click(() => {
             this.setRoomProperty("autoFill", false);
@@ -180,7 +183,6 @@ export class TeamMenu {
             const url = `w${
                 window.location.protocol === "https:" ? "ss" : "s"
             }://${roomHost}/team_v2`;
-
             this.active = true;
             this.joined = false;
             this.create = create;
@@ -211,7 +213,6 @@ export class TeamMenu {
 
             try {
                 this.ws = new WebSocket(url);
-
                 this.ws.onerror = (_e) => {
                     this.ws?.close();
                 };
@@ -315,7 +316,7 @@ export class TeamMenu {
             }
             case "joinGame":
                 this.joiningGame = true;
-                this.joinGameCb(data as MatchData);
+                this.joinGameCb(data as FindGameMatchData);
                 break;
             case "keepAlive":
                 break;

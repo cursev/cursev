@@ -1,27 +1,37 @@
-
-import type {
-    ClientToServerTeamMsg,
-    RoomData,
-    ServerToClientTeamMsg,
-    TeamErrorMsg,
-    TeamMenuPlayer,
-} from "../../shared/net/team";
-import type { ApiServer } from "./apiServer";
+import { randomUUID } from "crypto";
+import type { Hono } from "hono";
+import { getCookie } from "hono/cookie";
+import type { UpgradeWebSocket, WSContext } from "hono/ws";
+import type { FindGameError } from "../../shared/types/api";
+import {
+    type ClientRoomData,
+    type ClientToServerTeamMsg,
+    type RoomData,
+    type ServerToClientTeamMsg,
+    type TeamErrorMsg,
+    type TeamMenuErrorType,
+    type TeamMenuPlayer,
+    type TeamPlayGameMsg,
+    zTeamClientMsg,
+} from "../../shared/types/team";
+import { assert } from "../../shared/utils/util";
+import type { ApiServer } from "./api/apiServer";
+import { validateSessionToken } from "./api/auth";
+import { isBanned } from "./api/routes/private/ModerationRouter";
 import { Config } from "./config";
 import { Logger } from "./utils/logger";
 import {
     HTTPRateLimit,
     WebSocketRateLimit,
-    getIp,
+    getHonoIp,
+    isBehindProxy,
     validateUserName,
     verifyTurnsStile,
 } from "./utils/serverHelpers";
 
-export interface TeamSocketData {
-    sendMsg: (response: string) => void;
-    closeSocket: () => void;
-    roomUrl: string;
+interface SocketData {
     rateLimit: Record<symbol, number>;
+    player: Player;
     ip: string;
 }
 
@@ -99,6 +109,8 @@ class Room {
         maxPlayers: 4,
     };
 
+    groupHash: string = "";
+
     constructor(
         public teamMenu: TeamMenu,
         public id: string,
@@ -151,8 +163,8 @@ class Room {
                 break;
             }
             case "playGame": {
-                if (!player.isLeader) break;
-                this.findGame(msg.data);
+                // if (!player.isLeader) break;
+                this.findGame(player, msg.data);
                 break;
             }
         }
@@ -214,11 +226,11 @@ class Room {
 
     findGameCooldown = 0;
 
-    async findGame(data: TeamPlayGameMsg["data"]) {
+    async findGame(player: Player, data: TeamPlayGameMsg["data"]) {
         if (this.data.findingGame) return;
-        if (this.players.some((p) => p.inGame)) return;
+        // if (this.players.some((p) => p.inGame)) return;
         const roomLeader = this.players[0];
-        if (!roomLeader) return;
+        // if (!roomLeader) return;
 
         this.data.findingGame = true;
         this.sendState();
@@ -384,17 +396,12 @@ export class TeamMenu {
         const teamMenu = this;
 
         const httpRateLimit = new HTTPRateLimit(1, 2000);
-        const wsRateLimit = new WebSocketRateLimit(5, 1000, 10);
+        const wsRateLimit = new WebSocketRateLimit(5, 1000, 5);
 
-        app.ws("/team_v2", {
-            idleTimeout: 30,
-            /**
-             * Upgrade the connection to WebSocket.
-             */
-            upgrade(res, req, context) {
-                res.onAborted((): void => {});
-
-                const ip = getIp(res, req, Config.apiServer.proxyIPHeader);
+        app.get(
+            "/team_v2",
+            upgradeWebSocket(async (c) => {
+                const ip = getHonoIp(c, Config.apiServer.proxyIPHeader);
 
                 let closeReason: TeamMenuErrorType | undefined;
 
@@ -498,10 +505,11 @@ export class TeamMenu {
     onMsg(ws: WSContext<SocketData>, data: string) {
         let msg: ClientToServerTeamMsg;
         try {
-            parsedMessage = JSON.parse(new TextDecoder().decode(message));
-            this.validateMsg(parsedMessage);
+            assert(data.length < 1024);
+            msg = JSON.parse(data);
+            zTeamClientMsg.parse(msg);
         } catch {
-            localPlayerData.closeSocket();
+            ws.close();
             return;
         }
 
@@ -523,187 +531,71 @@ export class TeamMenu {
                         break;
                     }
 
-                const activeCodes = new Set(this.rooms.keys());
-                let roomUrl = `#${randomString(4)}`;
-                while (activeCodes.has(roomUrl)) {
-                    roomUrl = `#${randomString(4)}`;
-                }
+                    player.setName(msg.data.playerData.name);
 
-                localPlayerData.roomUrl = roomUrl;
+                    const room = this.createRoom(msg.data.roomData);
+                    room.addPlayer(player);
 
-                const room = this.addRoom(roomUrl, parsedMessage.data.roomData, player);
-                if (!room) {
-                    response = teamErrorMsg("create_failed");
-                    this.sendResponse(response, player);
                     break;
                 }
+                case "join": {
+                    const room = this.rooms.get(msg.data.roomUrl);
+                    if (!room) {
+                        player.send("error", { type: "join_not_found" });
+                        break;
+                    }
 
-                this.sendRoomState(room);
-                break;
-            }
-            case "join": {
-                const roomUrl = `#${parsedMessage.data.roomUrl}`;
-                const room = this.rooms.get(roomUrl);
-                // join fail if room doesnt exist or if room is already full
-                if (!room) {
-                    response = teamErrorMsg("join_failed");
-                    localPlayerData.sendMsg(JSON.stringify(response));
-                    break;
+                    if (room.players.length >= room.data.maxPlayers) {
+                        player.send("error", { type: "join_full" });
+                        break;
+                    }
+
+                    room.addPlayer(player);
                 }
-                if (room.roomData.maxPlayers == room.players.length) {
-                    response = teamErrorMsg("join_full");
-                    localPlayerData.sendMsg(JSON.stringify(response));
-                    break;
-                }
-
-                const name = validateUserName(parsedMessage.data.playerData.name);
-
-                const player = {
-                    name,
-                    isLeader: false,
-                    inGame: false,
-                    playerId: room.players.length,
-                    socketData: localPlayerData,
-                } as RoomPlayer;
-                room.players.push(player);
-
-                localPlayerData.roomUrl = roomUrl;
-
-                this.sendRoomState(room);
-                break;
-            }
-            case "changeName": {
-                const newName = validateUserName(parsedMessage.data.name);
-                const room = this.rooms.get(localPlayerData.roomUrl)!;
-                const player = room.players.find(
-                    (p) => p.socketData === localPlayerData,
-                )!;
-                player.name = newName;
-
-                this.sendRoomState(room);
-                break;
-            }
-            case "setRoomProps": {
-                const newRoomData = parsedMessage.data;
-                const room = this.rooms.get(localPlayerData.roomUrl)!;
-                const player = room.players.find(
-                    (p) => p.socketData === localPlayerData,
-                )!;
-                if (!player.isLeader) {
-                    return;
-                }
-
-                // do nothing if player tries to select disabled gamemode
-                if (
-                    !room.roomData.enabledGameModeIdxs.includes(newRoomData.gameModeIdx)
-                ) {
-                    return;
-                }
-
-                this.modifyRoom(newRoomData, room);
-                this.sendRoomState(room);
-                break;
-            }
-            case "kick": {
-                const room = this.rooms.get(localPlayerData.roomUrl)!;
-                const player = room.players.find(
-                    (p) => p.socketData === localPlayerData,
-                )!;
-                if (!player.isLeader) {
-                    return;
-                }
-                const pToKick = room.players[parsedMessage.data.playerId];
-                if (!pToKick || pToKick === player) {
-                    return;
-                }
-
-                response = {
-                    type: "kicked",
-                    data: {},
-                };
-                this.sendResponse(response, pToKick);
-                // player is removed and new room state is sent when the socket is inevitably closed after the kick
-                break;
-            }
-            case "keepAlive": {
-                const room = this.rooms.get(localPlayerData.roomUrl);
-                if (!room) return;
-                response = {
-                    type: "keepAlive",
-                    data: {},
-                };
-                this.sendResponses(response, room.players);
-                break;
-            }
-            case "playGame": {
-                // this message can only ever be sent by the leader
-                const room = this.rooms.get(localPlayerData.roomUrl)!;
-                const player = room.players.find(
-                    (p) => p.socketData === localPlayerData,
-                )!;
-
-                // if (!player.isLeader) {
-                //     return;
-                // }
-
-                room.roomData.findingGame = true;
-                this.sendRoomState(room);
-
-                const data = parsedMessage.data;
-                const playData = (
-                    await this.server.findGame({
-                        version: data.version,
-                        region: data.region,
-                        zones: data.zones,
-                        gameModeIdx: room.roomData.gameModeIdx,
-                        autoFill: room.roomData.autoFill,
-                        playerCount: room.players.length,
-                    })
-                ).res[0];
-
-                if ("err" in playData) {
-                    response = teamErrorMsg("find_game_error");
-                    this.sendResponse(response, player);
-                    return;
-                }
-
-                if (room.groupHash) {
-                    playData.data = room.groupHash;
-                } else {
-                    room.groupHash = playData.data;
-                }
-
-                response = {
-                    type: "joinGame",
-                    data: {
-                        ...playData,
-                        data: playData.data,
-                    },
-                };
-                // this.sendResponses(response, room.players);
-
-                // room.players.forEach((p) => {
-                //     p.inGame = true;
-                // });
-                this.sendResponse(response, player);
-                player.inGame = true;
-                room.roomData.findingGame = false;
-
-                this.sendRoomState(room);
-                break;
-            }
-            case "gameComplete": {
-                // doesn't necessarily mean game is over, sent when player leaves game and returns to team menu
-                const room = this.rooms.get(localPlayerData.roomUrl)!;
-                const player = room.players.find(
-                    (p) => p.socketData === localPlayerData,
-                )!;
-                player.inGame = false;
-                room.roomData.findingGame = false;
-
-                this.sendRoomState(room);
-                break;
             }
         }
+
+        // player.room is set on room.addPlayer
+        // if we don't have a room at this point it meant both creation and joining failed
+        // so close the socket
+        if (!player.room) {
+            ws.close();
+            return;
+        }
+
+        // handle messages for when the player is already inside a room
+        player.room.onMsg(player, msg);
+    }
+
+    onClose(ws: WSContext<SocketData>) {
+        const player = ws.raw?.player;
+
+        if (!player) {
+            ws.close();
+            return;
+        }
+
+        // meh just to make sure we dont keep timeouts with references hanging
+        // not like it matters because its 5 seconds...
+        clearTimeout(player.disconnectTimeout);
+
+        if (player.room) {
+            player.room.removePlayer(player);
+        }
+    }
+
+    createRoom(data: ClientRoomData) {
+        let roomUrl = randomString(4);
+        while (this.rooms.has(roomUrl)) {
+            roomUrl = randomString(4);
+        }
+
+        const room = new Room(this, roomUrl, data);
+        this.rooms.set(roomUrl, room);
+        return room;
+    }
+
+    removeRoom(room: Room) {
+        this.rooms.delete(room.id);
     }
 }

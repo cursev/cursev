@@ -1,11 +1,11 @@
 import $ from "jquery";
 import { MapDefs } from "../../shared/defs/mapDefs";
 import { TeamMode } from "../../shared/gameConfig";
+import type { Info } from "../../shared/types/api";
 import { api } from "./api";
 import type { ConfigManager } from "./config";
 import { device } from "./device";
 import type { Localization } from "./ui/localization";
-import type { Info } from "../../shared/types/api";
 
 export class SiteInfo {
     info: Info = {} as Info;

@@ -9,7 +9,6 @@ import type {
     FindGameResponse,
 } from "../../shared/types/api";
 import { math } from "../../shared/utils/math";
-import { errorLogManager } from "./errorLogs";
 import { Account } from "./account";
 import { Ambiance } from "./ambiance";
 import { api } from "./api";
@@ -97,7 +96,7 @@ class Application {
 
     constructor() {
         this.account = new Account(this.config);
-        this.loadoutMenu = new LoadoutMenu(this.account, this.localization);
+        this.loadoutMenu = new LoadoutMenu(this.account, this.localization, this.config);
         this.pass = new Pass(this.account, this.loadoutMenu, this.localization);
         this.profileUi = new ProfileUi(
             this.account,

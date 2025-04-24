@@ -2,14 +2,9 @@ import $ from "jquery";
 import { GameObjectDefs } from "../../shared/defs/gameObjectDefs";
 import type { MeleeDef } from "../../shared/defs/gameObjects/meleeDefs";
 import type { OutfitDef } from "../../shared/defs/gameObjects/outfitDefs";
+import { MapDefs } from "../../shared/defs/mapDefs";
 import * as net from "../../shared/net/net";
 import { device } from "./device";
-const truncateCanvas = document.createElement("canvas");
-
-export function getParameterByName(name: string, url?: string) {
-    const searchParams = new URLSearchParams(url || window.location.search);
-    return searchParams.get(name) || "";
-}
 
 type Ads = "728x90" | "300x250_2" | "300x600";
 
@@ -19,7 +14,35 @@ const lastTimeSinceLastRefresh: Record<Ads, number | null> = {
     "300x600": null,
 };
 
+function refreshPageAds(ads: Ads[] = ["728x90"]) {
+    try {
+        const now = Date.now();
+        const ONE_MINUTE = 60 * 1000;
+
+        for (let i = 0; i < ads.length; i++) {
+            const ad = ads[i];
+            const adsEle = document.querySelector(`#surviv-io_${ad}`);
+            const lastRefresh = lastTimeSinceLastRefresh[ad];
+
+            if (!adsEle || (lastRefresh && now - lastRefresh < ONE_MINUTE)) continue;
+
+            adsEle.innerHTML = adsEle.innerHTML;
+            lastTimeSinceLastRefresh[ad] = now;
+        }
+    } catch (e) {
+        console.error("Failed to refresh ads", e);
+    }
+}
+
+const truncateCanvas = document.createElement("canvas");
+
+export function getParameterByName<T extends string>(name: string, url?: string): T {
+    const searchParams = new URLSearchParams(url || window.location.search);
+    return (searchParams.get(name) || "") as T;
+}
+
 export const helpers = {
+    refreshPageAds,
     getParameterByName,
     getCookie: function (cname: string) {
         const name = `${cname}=`;
@@ -38,6 +61,37 @@ export const helpers = {
         }
         return "";
     },
+    getGameModes: function () {
+        const gameModes: {
+            mapId: number;
+            desc: {
+                buttonCss: string;
+                icon: string;
+                name: string;
+            };
+        }[] = [];
+
+        // Gather unique mapIds and assosciated map descriptions from the list of maps
+        const mapKeys = Object.keys(MapDefs);
+        for (let i = 0; i < mapKeys.length; i++) {
+            const mapKey = mapKeys[i];
+            const mapDef = MapDefs[mapKey as unknown as keyof typeof MapDefs];
+            if (
+                !gameModes.find((x) => {
+                    return x.mapId == mapDef.mapId;
+                })
+            ) {
+                gameModes.push({
+                    mapId: mapDef.mapId,
+                    desc: mapDef.desc,
+                });
+            }
+        }
+        gameModes.sort((a, b) => {
+            return a.mapId - b.mapId;
+        });
+        return gameModes;
+    },
     sanitizeNameInput: function (input: string) {
         let name = input.trim();
         if (name.length > net.Constants.PlayerNameMaxLen) {
@@ -52,25 +106,6 @@ export const helpers = {
         return `rgba(${(color >> 16) & 255}, ${(color >> 8) & 255}, ${
             color & 255
         }, ${alpha})`;
-    },
-    refreshPageAds(ads: Ads[] = ["728x90"]) {
-        try {
-            const now = Date.now();
-            const ONE_MINUTE = 60 * 1000;
-
-            for (let i = 0; i < ads.length; i++) {
-                const ad = ads[i];
-                const adsEle = document.querySelector(`#surviv-io_${ad}`);
-                const lastRefresh = lastTimeSinceLastRefresh[ad];
-
-                if (!adsEle || (lastRefresh && now - lastRefresh < ONE_MINUTE)) continue;
-
-                adsEle.innerHTML = adsEle.innerHTML;
-                lastTimeSinceLastRefresh[ad] = now;
-            }
-        } catch (e) {
-            console.error("Failed to refresh ads", e);
-        }
     },
     htmlEscape: function (str = "") {
         return str
