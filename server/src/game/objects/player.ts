@@ -2787,7 +2787,7 @@ export class Player extends BaseGameObject {
         }
 
         // this.game.pluginManager.emit("playerKill", { ...params, player: this });
-        onPlayerKill(({ ...params, player: this }))
+        onPlayerKill({ ...params, player: this });
 
         //
         // Give spectators someone new to spectate
