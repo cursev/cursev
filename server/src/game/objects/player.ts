@@ -20,13 +20,11 @@ import type { OutfitDef } from "../../../../shared/defs/gameObjects/outfitDefs";
 import { PerkProperties } from "../../../../shared/defs/gameObjects/perkDefs";
 import type { RoleDef } from "../../../../shared/defs/gameObjects/roleDefs";
 import type { ThrowableDef } from "../../../../shared/defs/gameObjects/throwableDefs";
-import {
-    UnlockDefs,
-    isItemInLoadout,
-} from "../../../../shared/defs/gameObjects/unlockDefs";
+import { isItemInLoadout } from "../../../../shared/defs/gameObjects/unlockDefs";
 import {
     type Action,
     type Anim,
+    EmoteSlot,
     GameConfig,
     type HasteType,
 } from "../../../../shared/gameConfig";
@@ -40,6 +38,7 @@ import { assert, util } from "../../../../shared/utils/util";
 import { type Vec2, v2 } from "../../../../shared/utils/v2";
 import { Config } from "../../config";
 import { IDAllocator } from "../../utils/IDAllocator";
+import { setLoadout } from "../../utils/loadoutHelpers";
 import { validateUserName } from "../../utils/serverHelpers";
 import type { Game, JoinTokenData } from "../game";
 import { Group } from "../group";
@@ -94,6 +93,9 @@ export class PlayerBarn {
         time: number;
     }> = [];
 
+    sendWinEmoteTicker = 0;
+    sentWinEmotes = false;
+
     teams: Team[] = [];
     groups: Group[] = [];
     groupsByHash = new Map<string, Group>();
@@ -138,16 +140,21 @@ export class PlayerBarn {
         }
         joinData.availableUses -= 1;
 
-        if (joinMsg.protocol !== GameConfig.protocolVersion) {
-            const disconnectMsg = new net.DisconnectMsg();
-            disconnectMsg.reason = "index-invalid-protocol";
-            const stream = new net.MsgStream(new ArrayBuffer(128));
-            stream.serializeMsg(net.MsgType.Disconnect, disconnectMsg);
-            this.game.sendSocketMsg(socketId, stream.getBuffer());
+        if (Config.rateLimitsEnabled) {
+            const count = this.players.filter(
+                (p) =>
+                    p.ip === ip ||
+                    p.findGameIp == joinData.findGameIp ||
+                    (joinData.userId !== null && p.userId === joinData.userId),
+            );
+            if (count.length >= 3) {
+                this.game.closeSocket(socketId, "rate_limited");
+                return;
+            }
+        }
 
-            setTimeout(() => {
-                this.game.closeSocket(socketId);
-            }, 250);
+        if (joinMsg.protocol !== GameConfig.protocolVersion) {
+            this.game.closeSocket(socketId, "index-invalid-protocol");
             return;
         }
 
@@ -171,7 +178,16 @@ export class PlayerBarn {
             layer = 0;
         }
 
-        const player = new Player(this.game, pos, layer, socketId, joinMsg);
+        const player = new Player(
+            this.game,
+            pos,
+            layer,
+            socketId,
+            joinMsg,
+            ip,
+            joinData.findGameIp,
+            joinData.userId,
+        );
 
         this.socketIdToPlayer.set(socketId, player);
 
@@ -205,7 +221,7 @@ export class PlayerBarn {
             group.spawnLeader = player;
         }
 
-        this.game.logger.log(`Player ${player.name} joined`);
+        this.game.logger.info(`Player ${player.name} joined`);
 
         this.newPlayers.push(player);
         this.game.objectRegister.register(player);
@@ -230,8 +246,22 @@ export class PlayerBarn {
     }
 
     update(dt: number) {
+        let sendWinEmote = false;
+        if (this.game.over && !this.sentWinEmotes) {
+            this.sendWinEmoteTicker -= dt;
+            if (this.sendWinEmoteTicker <= 0) {
+                sendWinEmote = true;
+                this.sentWinEmotes = true;
+            }
+        }
+
         for (let i = 0; i < this.players.length; i++) {
-            this.players[i].update(dt);
+            const player = this.players[i];
+            player.update(dt);
+
+            if (!player.dead && sendWinEmote) {
+                player.emoteFromSlot(EmoteSlot.Win);
+            }
         }
 
         // doing this after updates ensures that gameover msgs sent are always accurate
@@ -463,13 +493,23 @@ export class PlayerBarn {
             .sort((a, b) => b.kills - a.kills)[0];
     }
 
-    addEmote(playerId: number, pos: Vec2, type: string, isPing: boolean, itemType = "") {
+    addEmote(type: string, playerId: number, itemType = "") {
         this.emotes.push({
+            isPing: false,
             playerId,
-            pos,
+            pos: v2.create(0, 0),
             type,
-            isPing,
             itemType,
+        });
+    }
+
+    addMapPing(type: string, pos: Vec2, playerId = 0) {
+        this.emotes.push({
+            isPing: true,
+            type,
+            pos,
+            playerId,
+            itemType: "",
         });
     }
 }
@@ -781,7 +821,7 @@ export class Player extends BaseGameObject {
     promoteToRole(role: string) {
         const roleDef = GameObjectDefs[role] as RoleDef;
         if (!roleDef || roleDef.type !== "role") {
-            console.warn(`Invalid role type: ${role}`);
+            this.game.logger.warn(`Invalid role type: ${role}`);
             return;
         }
 
@@ -862,17 +902,17 @@ export class Player extends BaseGameObject {
                 if (newOutfit) this.setOutfit(newOutfit);
             }
 
-            // armor
-            if (this.helmet && !this.hasRoleHelmet) {
-                // this.dropArmor(this.helmet);
-            }
-
             const roleHelmet =
                 roleDef.defaultItems.helmet instanceof Function
                     ? roleDef.defaultItems.helmet(clampedTeamId)
                     : roleDef.defaultItems.helmet;
 
             if (roleHelmet) {
+                // armor
+                if (this.helmet && !this.hasRoleHelmet) {
+                    this.dropArmor(this.helmet);
+                }
+
                 this.helmet = roleHelmet;
                 this.hasRoleHelmet = true;
             }
@@ -883,7 +923,9 @@ export class Player extends BaseGameObject {
                 }
                 this.chest = roleDef.defaultItems.chest;
             }
-            // this.backpack = roleDef.defaultItems.backpack;
+            if (roleDef.defaultItems.backpack) {
+                this.backpack = roleDef.defaultItems.backpack;
+            }
 
             // weapons
             for (let i = 0; i < roleDef.defaultItems.weapons.length; i++) {
@@ -959,6 +1001,9 @@ export class Player extends BaseGameObject {
         if (this.group && !this.group.spawnLeader) {
             this.group.spawnLeader = this;
         }
+
+        this.game.grid.updateObject(this);
+        this.setDirty();
     }
 
     removeRole(): void {
@@ -1063,6 +1108,9 @@ export class Player extends BaseGameObject {
             }
         } else if (type === "fabricate") {
             this.fabricateRefillTicker = 0;
+        } else if (type === "firepower") {
+            this.weaponManager.reload(GameConfig.WeaponSlot.Primary);
+            this.weaponManager.reload(GameConfig.WeaponSlot.Secondary);
         }
 
         this.recalculateScale();
@@ -1144,20 +1192,39 @@ export class Player extends BaseGameObject {
 
     obstacleOutfit?: Obstacle;
 
+    /**
+     * Only used for match data saving!
+     * __id is for the game itself, __id can be reused when a player despawns
+     * which can break the matchData
+     */
+    matchDataId: number;
+
+    userId: string | null = null;
+    ip: string;
+    // see comment on server/src/api/schema.ts
+    // about logging find_game IP's
+    findGameIp: string;
+
     constructor(
         game: Game,
         pos: Vec2,
         layer: number,
         socketId: string,
         joinMsg: net.JoinMsg,
+        ip: string,
+        findGameIp: string,
+        userId: string | null,
     ) {
         super(game, pos);
 
         this.layer = layer;
 
         this.socketId = socketId;
+        this.ip = ip;
+        this.findGameIp = findGameIp;
+        this.userId = userId;
 
-        this.name = validateUserName(joinMsg.name);
+        this.name = validateUserName(joinMsg.name).validName;
 
         this.isMobile = joinMsg.isMobile;
 
@@ -1221,111 +1288,10 @@ export class Player extends BaseGameObject {
             this.addPerk(perk.type, perk.droppable);
         }
 
-        /**
-         * Checks if an item is present in the player's loadout
-         */
-        const isItemInLoadout = (item: string, category: string) => {
-            if (!UnlockDefs.unlock_default.unlocks.includes(item)) return false;
-
-            const def = GameObjectDefs[item];
-            if (!def || def.type !== category) return false;
-
-            return true;
-        };
-
-        if (
-            isItemInLoadout(joinMsg.loadout.outfit, "outfit") &&
-            joinMsg.loadout.outfit !== "outfitBase"
-        ) {
-            this.setOutfit(joinMsg.loadout.outfit);
-        } else {
-            this.setOutfit(defaultItems.outfit);
-        }
-
-        if (
-            isItemInLoadout(joinMsg.loadout.melee, "melee") &&
-            joinMsg.loadout.melee != "fists"
-        ) {
-            this.weapons[GameConfig.WeaponSlot.Melee].type = joinMsg.loadout.melee;
-        }
-
-        const loadout = this.loadout;
-
-        if (isItemInLoadout(joinMsg.loadout.heal, "heal")) {
-            loadout.heal = joinMsg.loadout.heal;
-        }
-        if (isItemInLoadout(joinMsg.loadout.boost, "boost")) {
-            loadout.boost = joinMsg.loadout.boost;
-        }
-
-        const emotes = joinMsg.loadout.emotes;
-        for (let i = 0; i < emotes.length; i++) {
-            const emote = emotes[i];
-            if (i > GameConfig.EmoteSlot.Count) break;
-
-            if (emote === "" || !isItemInLoadout(emote, "emote")) {
-                continue;
-            }
-
-            loadout.emotes[i] = emote;
-        }
-
-        // Normal mode: Initialize primary weapon
-        if (isItemInLoadout(joinMsg.loadout.primary, "gun")) {
-            const slot = GameConfig.WeaponSlot.Primary;
-            this.weapons[slot].type = joinMsg.loadout.primary;
-            const gunDef = GameObjectDefs[this.weapons[slot].type] as GunDef;
-            this.weapons[slot].ammo = gunDef.maxClip;
-        }
-
-        // Normal mode: Initialize secondary weapon
-        if (isItemInLoadout(joinMsg.loadout.secondary, "gun")) {
-            const slot = GameConfig.WeaponSlot.Secondary;
-            this.weapons[slot].type = joinMsg.loadout.secondary;
-
-            // Disable dual spas in normal mode
-            if (
-                this.weapons[GameConfig.WeaponSlot.Primary].type === "spas12" &&
-                this.weapons[slot].type === "spas12"
-            ) {
-                this.weapons[slot].type = "mosin";
-            }
-
-            const gunDef = GameObjectDefs[this.weapons[slot].type] as GunDef;
-            this.weapons[slot].ammo = gunDef.maxClip;
-        }
-
-        // Add "inspiration" perk if using "bugle"
-        if (
-            this.weapons[GameConfig.WeaponSlot.Primary].type == "bugle" ||
-            this.weapons[GameConfig.WeaponSlot.Secondary].type == "bugle"
-        ) {
-            this.addPerk("inspiration", false);
-        }
+        setLoadout(joinMsg, this);
 
         this.weaponManager.showNextThrowable();
         this.recalculateScale();
-    }
-
-    override serializeFull(): void {
-        if (!this.activeWeapon) {
-            console.error(
-                "Invalid active weapon, curIdx:",
-                this.curWeapIdx,
-                "lastIdx:",
-                this.weaponManager.lastWeaponIdx,
-                "weaps:",
-                this.weapons,
-            );
-            this.weapons[GameConfig.WeaponSlot.Melee].type ||= "fists";
-            this.weaponManager.setCurWeapIndex(
-                GameConfig.WeaponSlot.Melee,
-                undefined,
-                undefined,
-                true,
-            );
-        }
-        super.serializeFull();
     }
 
     update(dt: number): void {
@@ -1443,10 +1409,8 @@ export class Player extends BaseGameObject {
             const emotes = Object.keys(EmotesDefs);
 
             this.game.playerBarn.addEmote(
-                this.__id,
-                this.pos,
                 emotes[Math.floor(Math.random() * emotes.length)],
-                false,
+                this.__id,
             );
         }
 
@@ -1809,25 +1773,6 @@ export class Player extends BaseGameObject {
                         this.pickupLoot(closestLoot);
                         break;
                 }
-            }
-
-            // hacky hack to figure out the crash!!
-            if (!this.activeWeapon) {
-                console.error(
-                    "Mobile auto pickup: invalid active weapon, curIdx:",
-                    this.curWeapIdx,
-                    "lastIdx:",
-                    this.weaponManager.lastWeaponIdx,
-                    "weaps:",
-                    this.weapons,
-                );
-                this.weapons[GameConfig.WeaponSlot.Melee].type ||= "fists";
-                this.weaponManager.setCurWeapIndex(
-                    GameConfig.WeaponSlot.Melee,
-                    undefined,
-                    undefined,
-                    true,
-                );
             }
 
             const obstacles = this.getInteractableObstacles();
@@ -2289,33 +2234,52 @@ export class Player extends BaseGameObject {
             updateMsg.groupStatusDirty = true;
         }
 
-        for (let i = 0; i < playerBarn.emotes.length; i++) {
-            const emote = playerBarn.emotes[i];
+        const shouldSendEmote = (emote: Emote) => {
             const emotePlayer = game.objectRegister.getById(emote.playerId) as
                 | Player
                 | undefined;
+
+            const emoteDef = GameObjectDefs[emote.type];
+
             if (emotePlayer) {
-                const seeNormalEmote =
-                    !emote.isPing && player.visibleObjects.has(emotePlayer);
-
-                const partOfGroup = emotePlayer.groupId === player.groupId;
-
-                if ((GameObjectDefs[emote.type] as EmoteDef)?.teamOnly && !partOfGroup) {
-                    continue;
+                if (!emote.isPing && !player.visibleObjects.has(emotePlayer)) {
+                    return false;
                 }
 
-                const isTeamLeader =
-                    emotePlayer.role == "leader" && emotePlayer.teamId === player.teamId;
-                const seePing =
-                    (emote.isPing || emote.itemType) && (partOfGroup || isTeamLeader);
-                if (seeNormalEmote || seePing) {
-                    updateMsg.emotes.push(emote);
+                // regular emotes: always send if visible
+                if (!emote.isPing && !(emoteDef as EmoteDef).teamOnly) {
+                    return true;
                 }
-            } else if (emote.playerId === 0 && emote.isPing) {
-                // map pings generated by the game like airdrops
+
+                // part of the same group
+                if (emotePlayer?.groupId === player.groupId) {
+                    return true;
+                }
+
+                // faction team leader
+                if (
+                    emotePlayer.role === "leader" &&
+                    emotePlayer.teamId === player.teamId
+                ) {
+                    return true;
+                }
+            }
+
+            // always send map events pings
+            if (emote.isPing && emoteDef.type === "ping" && emoteDef.mapEvent) {
+                return true;
+            }
+
+            return false;
+        };
+
+        for (let i = 0; i < playerBarn.emotes.length; i++) {
+            const emote = playerBarn.emotes[i];
+            if (shouldSendEmote(emote)) {
                 updateMsg.emotes.push(emote);
             }
         }
+
         if (updateMsg.emotes.length > 255) {
             this.game.logger.warn(
                 "Too many new emotes created!",
@@ -2475,6 +2439,8 @@ export class Player extends BaseGameObject {
         if (this._health < 0) this._health = 0;
         if (this.dead) return;
         if (this.downed && this.downedDamageTicker > 0) return;
+        // cobalt players on role picker menu
+        if (this.game.map.perkMode && !this.role) return;
 
         const sourceIsPlayer = params.source?.__type === ObjectType.Player;
 
@@ -2547,7 +2513,9 @@ export class Player extends BaseGameObject {
 
         this.damageTaken += finalDamage;
         if (sourceIsPlayer && params.source !== this) {
-            (params.source as Player).damageDealt += finalDamage;
+            if ((params.source as Player).groupId !== this.groupId) {
+                (params.source as Player).damageDealt += finalDamage;
+            }
             this.lastDamagedBy = params.source as Player;
         }
 
@@ -2605,6 +2573,11 @@ export class Player extends BaseGameObject {
         this.downedDamageTicker = GameConfig.player.downedDamageBuffer;
         this.boost = 0;
         this.health = 100;
+
+        if (this.game.gas.currentRad <= 0.1) {
+            this.health = 50;
+        }
+
         this.animType = GameConfig.Anim.None;
         this.setDirty();
 
@@ -2707,7 +2680,7 @@ export class Player extends BaseGameObject {
                 }
 
                 if (source.role === "woods_king") {
-                    this.game.playerBarn.addEmote(0, this.pos, "ping_woodsking", true);
+                    this.game.playerBarn.addMapPing("ping_woodsking", this.pos);
                 }
             }
 
@@ -2907,14 +2880,7 @@ export class Player extends BaseGameObject {
         this.perkTypes.length = 0;
 
         // death emote
-        if (this.loadout.emotes[GameConfig.EmoteSlot.Death] != "") {
-            this.game.playerBarn.addEmote(
-                this.__id,
-                this.pos,
-                this.loadout.emotes[GameConfig.EmoteSlot.Death],
-                false,
-            );
-        }
+        this.emoteFromSlot(GameConfig.EmoteSlot.Death);
 
         // Building gore region (club pool)
         const objs = this.game.grid.intersectCollider(this.collider);
@@ -3082,7 +3048,7 @@ export class Player extends BaseGameObject {
 
         // medics always emote the healing/boost item they're using
         if (this.role == "medic") {
-            this.game.playerBarn.addEmote(this.__id, this.pos, "emote_loot", false, item);
+            this.game.playerBarn.addEmote("emote_loot", this.__id, item);
         }
 
         this.cancelAction();
@@ -3128,7 +3094,7 @@ export class Player extends BaseGameObject {
 
         // medics always emote the healing/boost item they're using
         if (this.role == "medic") {
-            this.game.playerBarn.addEmote(this.__id, this.pos, "emote_loot", false, item);
+            this.game.playerBarn.addEmote("emote_loot", this.__id, item);
         }
 
         this.cancelAction();
@@ -3218,6 +3184,7 @@ export class Player extends BaseGameObject {
         this.ack = msg.seq;
 
         if (this.dead) return;
+        if (this.game.map.perkMode && !this.role) return;
 
         if (!v2.eq(this.dir, msg.toMouseDir)) {
             this.setPartDirty();
@@ -3421,27 +3388,6 @@ export class Player extends BaseGameObject {
                     this.revive(playerToRevive);
                 }
             }
-        }
-
-        // hacky hack to figure out the crash!!
-        if (!this.activeWeapon) {
-            console.error(
-                "InputMsg: invalid active weapon, curIdx:",
-                this.curWeapIdx,
-                "lastIdx:",
-                this.weaponManager.lastWeaponIdx,
-                "weaps:",
-                this.weapons,
-                "inputs:",
-                msg.inputs.map((input) => GameConfig.Input[input]).join(", "),
-            );
-            this.weapons[GameConfig.WeaponSlot.Melee].type ||= "fists";
-            this.weaponManager.setCurWeapIndex(
-                GameConfig.WeaponSlot.Melee,
-                undefined,
-                undefined,
-                true,
-            );
         }
 
         // no exceptions for any perks or roles
@@ -3881,7 +3827,7 @@ export class Player extends BaseGameObject {
 
                 const emoteType = `emote_${type}`;
                 if (GameObjectDefs[`emote_${type}`]) {
-                    this.game.playerBarn.addEmote(this.__id, this.pos, emoteType, false);
+                    this.game.playerBarn.addEmote(emoteType, this.__id);
                 }
 
                 const perkSlotType = this.perks.find(
@@ -4088,13 +4034,7 @@ export class Player extends BaseGameObject {
 
         this.setDirty();
 
-        this.game.playerBarn.addEmote(
-            this.__id,
-            this.pos,
-            "emote_loot",
-            false,
-            chosenWeaponType,
-        );
+        this.game.playerBarn.addEmote("emote_loot", this.__id, chosenWeaponType);
     }
 
     dropLoot(type: string, count = 1, useCountForAmmo?: boolean) {
@@ -4163,6 +4103,7 @@ export class Player extends BaseGameObject {
     }
     dropItem(dropMsg: net.DropItemMsg): void {
         if (this.dead) return;
+        if (this.game.map.perkMode && !this.role) return;
 
         const itemDef = GameObjectDefs[dropMsg.item] as LootDef;
         if (!itemDef) return;
@@ -4267,33 +4208,11 @@ export class Player extends BaseGameObject {
         if (reloading && this.weapons[this.curWeapIdx].ammo == 0) {
             this.weaponManager.tryReload();
         }
-
-        // hacky hack to figure out the crash!!
-        if (!this.activeWeapon) {
-            console.error(
-                "DropItemMsg: invalid active weapon, curIdx:",
-                this.curWeapIdx,
-                "lastIdx:",
-                this.weaponManager.lastWeaponIdx,
-                "weaps:",
-                this.weapons,
-                "item:",
-                dropMsg.item,
-                "weapIdx:",
-                dropMsg.weapIdx,
-            );
-            this.weapons[GameConfig.WeaponSlot.Melee].type ||= "fists";
-            this.weaponManager.setCurWeapIndex(
-                GameConfig.WeaponSlot.Melee,
-                undefined,
-                undefined,
-                true,
-            );
-        }
     }
 
     emoteFromMsg(msg: net.EmoteMsg) {
         if (this.dead) return;
+        if (this.game.map.perkMode && !this.role) return;
         if (this.emoteHardTicker > 0) return;
 
         const emoteMsg = msg as net.EmoteMsg;
@@ -4308,6 +4227,8 @@ export class Player extends BaseGameObject {
             if (emoteDef.mapEvent) {
                 return;
             }
+
+            this.game.playerBarn.addMapPing(emoteMsg.type, emoteMsg.pos, this.__id);
         } else {
             if (emoteDef.type !== "emote") {
                 return;
@@ -4315,6 +4236,12 @@ export class Player extends BaseGameObject {
 
             if (!emoteDef.teamOnly && (emoteIdx < 0 || emoteIdx > 3)) {
                 return;
+            }
+
+            if (emoteDef.teamOnly) {
+                this.game.playerBarn.addEmote(emoteMsg.type, this.__id);
+            } else {
+                this.emoteFromSlot(emoteIdx);
             }
         }
 
@@ -4325,17 +4252,6 @@ export class Player extends BaseGameObject {
                     ? this.emoteHardTicker
                     : GameConfig.player.emoteHardCooldown * 1.5;
         }
-
-        if (this.game.map.potatoMode && emoteDef.type === "emote") {
-            emoteMsg.type = "emote_potato";
-        }
-
-        this.game.playerBarn.addEmote(
-            this.__id,
-            emoteMsg.pos,
-            emoteMsg.type,
-            emoteMsg.isPing,
-        );
     }
 
     processEditMsg(msg: net.EditMsg) {
@@ -4515,6 +4431,18 @@ export class Player extends BaseGameObject {
         this.animSeq++;
         this._animTicker = 0;
         this.setDirty();
+    }
+
+    emoteFromSlot(slot: EmoteSlot) {
+        let emote = this.loadout.emotes[slot];
+
+        if (!emote) return;
+
+        if (this.game.map.potatoMode) {
+            emote = "emote_potato";
+        }
+
+        this.game.playerBarn.addEmote(emote, this.__id);
     }
 
     recalculateScale() {

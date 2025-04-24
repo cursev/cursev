@@ -1,9 +1,12 @@
-import { defineConfig } from "vite";
-import stripBlockPlugin from "vite-plugin-strip-block";
+import { resolve } from "node:path";
+import { type Plugin, type ServerOptions, defineConfig } from "vite";
+import { getConfig } from "../config";
 import { version } from "../package.json";
-import { Config } from "../server/src/config";
 import { GIT_VERSION } from "../server/src/utils/gitRevision";
 import { codefendPlugin } from "./vite-plugins/codefendPlugin";
+import { ejsPlugin } from "./vite-plugins/ejsPlugin";
+
+import stripBlockPlugin from "vite-plugin-strip-block";
 
 export const SplashThemes = {
     main: {
@@ -30,17 +33,22 @@ export const SplashThemes = {
         MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
         SPLASH_BG: "/img/main_splash_7_3.png",
     },
-    cobalt: {
-        MENU_MUSIC: "audio/ambient/menu_music_01.mp3",
-        SPLASH_BG: "/img/cobalt_splash.png",
-    },
 };
 
-const selectedTheme = SplashThemes[Config.client.theme];
+export default defineConfig(({ mode }) => {
+    const isDev = mode === "development";
 
-const AdsVars = {
-    VITE_ADIN_PLAY_SCRIPT: `
-    <script async src="//api.adinplay.com/libs/aiptag/pub/SNP/${Config.client.AIP_ID}/tag.min.js"></script>
+    const Config = getConfig(!isDev, "");
+
+    const selectedTheme = SplashThemes[Config.clientTheme];
+
+    process.env.VITE_ADIN_PLAY_SCRIPT = "";
+    process.env.VITE_AIP_PLACEMENT_ID = "";
+    process.env.VITE_TURNSTILE_SCRIPT = "";
+
+    if (Config.secrets.AIP_ID) {
+        process.env.VITE_ADIN_PLAY_SCRIPT = `
+    <script async src="//api.adinplay.com/libs/aiptag/pub/SNP/${Config.secrets.AIP_PLACEMENT_ID}/tag.min.js"></script>
     <script>
         window.aiptag = window.aiptag || { cmd: [] };
         aiptag.cmd.display = aiptag.cmd.display || [];
@@ -53,45 +61,71 @@ const AdsVars = {
             buttonPosition: "bottom-left", // bottom-left, bottom-right, top-left, top-right
         };
     </script>
-    `,
-    VITE_AIP_PLACEMENT_ID: Config.client.AIP_PLACEMENT_ID,
-};
-
-if (!Config.client.AIP_ID) {
-    for (const key in AdsVars) {
-        AdsVars[key] = "";
+    `;
+        process.env.VITE_AIP_PLACEMENT_ID = Config.secrets.AIP_PLACEMENT_ID;
     }
-}
 
-export default defineConfig(({ mode }) => {
+    if (Config.secrets.TURNSTILE_SITE_KEY) {
+        process.env.VITE_TURNSTILE_SCRIPT = `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>`;
+    }
+
     process.env = {
         ...process.env,
         VITE_GAME_VERSION: version,
         VITE_BACKGROUND_IMG: selectedTheme.SPLASH_BG,
-        ...AdsVars,
     };
 
-    const isDev = mode === "development";
+    const plugins: Plugin[] = [ejsPlugin()];
 
-    const regions = {
-        ...Config.regions,
-        ...(isDev
-            ? {
-                  local: {
-                      https: false,
-                      address: `${Config.devServer.host}:${Config.devServer.port}`,
-                      l10n: "index-local",
-                  },
-              }
-            : {}),
+    if (!isDev) {
+        plugins.push(codefendPlugin());
+
+        plugins.push(
+            stripBlockPlugin({
+                start: "STRIP_FROM_PROD_CLIENT:START",
+                end: "STRIP_FROM_PROD_CLIENT:END",
+            }),
+        );
+    }
+
+    const serverOptions: ServerOptions = {
+        port: Config.vite.port,
+        host: Config.vite.host,
+        proxy: {
+            // regex that matches /stats, /stats/slug but doesn't match /stats/
+            // since if it matches /stats/ it will infinite loop :p
+            // also why does vite not work without trailing slashes at the end of paths 😭
+            "^/stats(?!/$).*": {
+                target: `http://${Config.vite.host}:${Config.vite.port}`,
+                rewrite: (path) => path.replace(/^\/stats(?!\/$).*/, "/stats/"),
+                changeOrigin: true,
+                secure: false,
+            },
+            "/api": {
+                target: `http://${Config.apiServer.host}:${Config.apiServer.port}`,
+                changeOrigin: true,
+                secure: false,
+            },
+            "/team_v2": {
+                target: `http://${Config.apiServer.host}:${Config.apiServer.port}`,
+                changeOrigin: true,
+                secure: false,
+                ws: true,
+            },
+        },
     };
 
     return {
+        appType: "mpa",
         base: "",
         build: {
             target: "es2022",
             chunkSizeWarningLimit: 2000,
             rollupOptions: {
+                input: {
+                    main: resolve(import.meta.dirname, "index.html"),
+                    stats: resolve(import.meta.dirname, "stats/index.html"),
+                },
                 output: {
                     assetFileNames(assetInfo) {
                         if (assetInfo.names[0]?.endsWith(".css")) {
@@ -99,13 +133,8 @@ export default defineConfig(({ mode }) => {
                         }
                         return "assets/[name]-[hash][extname]";
                     },
-                    entryFileNames: "js/app-[hash].js",
-                    chunkFileNames: "js/[name]-[hash].js",
-                    manualChunks(id, _chunkInfo) {
-                        if (id.includes("node_modules")) {
-                            return "vendor";
-                        }
-                    },
+                    entryFileNames: "js/[hash].js",
+                    chunkFileNames: "js/[hash].js",
                 },
             },
         },
@@ -113,9 +142,9 @@ export default defineConfig(({ mode }) => {
             extensions: [".ts", ".js"],
         },
         define: {
-            GAME_REGIONS: regions,
+            GAME_REGIONS: Config.regions,
             GIT_VERSION: JSON.stringify(GIT_VERSION),
-            PING_TEST_URLS: Object.entries(regions).map(([key, data]) => {
+            PING_TEST_URLS: Object.entries(Config.regions).map(([key, data]) => {
                 return {
                     region: key,
                     zone: key,
@@ -124,54 +153,22 @@ export default defineConfig(({ mode }) => {
                 };
             }),
             MENU_MUSIC: JSON.stringify(selectedTheme.MENU_MUSIC),
-            AIP_PLACEMENT_ID: JSON.stringify(Config.client.AIP_PLACEMENT_ID),
+            AIP_PLACEMENT_ID: JSON.stringify(Config.secrets.AIP_PLACEMENT_ID),
             IS_DEV: isDev,
+            GOOGLE_LOGIN_SUPPORTED: JSON.stringify(
+                Config.secrets.GOOGLE_CLIENT_ID && Config.secrets.GOOGLE_SECRET_ID,
+            ),
+            DISCORD_LOGIN_SUPPORTED: JSON.stringify(
+                Config.secrets.DISCORD_CLIENT_ID && Config.secrets.DISCORD_SECRET_ID,
+            ),
+            MOCK_LOGIN_SUPPORTED: JSON.stringify(Config.debug.allowMockAccount),
+            TURNSTILE_SITE_KEY: JSON.stringify(Config.secrets.TURNSTILE_SITE_KEY),
         },
-        plugins: !isDev
-            ? [
-                  codefendPlugin(),
-                  stripBlockPlugin({
-                      start: "STRIP_FROM_PROD_CLIENT:START",
-                      end: "STRIP_FROM_PROD_CLIENT:END",
-                  }),
-              ]
-            : undefined,
+        plugins,
         json: {
             stringify: true,
         },
-        server: {
-            port: 3000,
-            host: "0.0.0.0",
-            proxy: {
-                "/api": {
-                    target: `http://${Config.devServer.host}:${Config.devServer.port}`,
-                    changeOrigin: true,
-                    secure: false,
-                },
-                "/team_v2": {
-                    target: `http://${Config.devServer.host}:${Config.devServer.port}`,
-                    changeOrigin: true,
-                    secure: false,
-                    ws: true,
-                },
-            },
-        },
-        preview: {
-            port: 3000,
-            host: "0.0.0.0",
-            proxy: {
-                "/api": {
-                    target: `http://${Config.apiServer.host}:${Config.apiServer.port}`,
-                    changeOrigin: true,
-                    secure: false,
-                },
-                "/team_v2": {
-                    target: `http://${Config.apiServer.host}:${Config.apiServer.port}`,
-                    changeOrigin: true,
-                    secure: false,
-                    ws: true,
-                },
-            },
-        },
+        server: serverOptions,
+        preview: serverOptions,
     };
 });

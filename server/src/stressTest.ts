@@ -428,8 +428,8 @@ void (async () => {
                     }),
                 })
             ).json()) as FindGameResponse;
-            if ("err" in response.res[0]) {
-                console.log("Failed finding game, err:", response.res[0].err);
+            if ("error" in response || "banned" in response) {
+                console.log("Failed finding game, error:", response.error);
                 return;
             }
 

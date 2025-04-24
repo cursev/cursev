@@ -106,10 +106,10 @@ function createDefaultItems<T extends DefaultItems>(e: DeepPartial<T>): T {
         weapons: [
             { type: "", ammo: 0 },
             { type: "", ammo: 0 },
-            { type: "fists", ammo: 0 },
+            { type: "", ammo: 0 },
             { type: "", ammo: 0 },
         ],
-        backpack: "backpack00",
+        backpack: "",
         helmet: "",
         chest: "",
         outfit: "",

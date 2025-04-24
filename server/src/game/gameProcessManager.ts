@@ -3,15 +3,9 @@ import { randomBytes } from "crypto";
 import type { WebSocket } from "uWebSockets.js";
 import { type MapDef, MapDefs } from "../../../shared/defs/mapDefs";
 import type { TeamMode } from "../../../shared/gameConfig";
-import { Config } from "../config";
-import type { FindGameBody, GameSocketData } from "../gameServer";
+import * as net from "../../../shared/net/net";
 import { Logger } from "../utils/logger";
-import type {
-    FindGameResponse,
-    GameData,
-    GameManager,
-    ServerGameConfig,
-} from "./gameManager";
+import type { GameData, GameManager, ServerGameConfig } from "./gameManager";
 
 let path: string;
 let args: string[];
@@ -162,6 +156,14 @@ class GameProcess implements GameData {
                 case ProcessMsgType.SocketClose:
                     const socket = this.manager.sockets.get(msg.socketId);
                     if (socket && !socket.getUserData().closed) {
+                        if (msg.reason) {
+                            const disconnectMsg = new net.DisconnectMsg();
+                            disconnectMsg.reason = msg.reason;
+                            const stream = new net.MsgStream(new ArrayBuffer(128));
+                            stream.serializeMsg(net.MsgType.Disconnect, disconnectMsg);
+                            socket.send(stream.getBuffer());
+                        }
+
                         socket.close();
                     }
                     break;
@@ -191,7 +193,7 @@ class GameProcess implements GameData {
         this.avaliableSlots = mapDef.gameMode.maxPlayers;
     }
 
-    addJoinToken(token: string, autoFill: boolean, playerCount: number) {
+    addJoinTokens(tokens: FindGamePrivateBody["playerData"], autoFill: boolean) {
         this.send({
             type: ProcessMsgType.AddJoinToken,
             token,
@@ -230,8 +232,6 @@ export class GameProcessManager implements GameManager {
     readonly logger = new Logger("Game Process Manager");
 
     constructor() {
-        this.newGame(Config.modes[0]);
-
         process.on("beforeExit", () => {
             for (const gameProc of this.processes) {
                 gameProc.process.kill();
@@ -245,16 +245,18 @@ export class GameProcessManager implements GameManager {
                 });
 
                 if (Date.now() - gameProc.lastMsgTime > 10000) {
-                    this.logger.log(
-                        `Game ${gameProc.id} did not send a message in more 10 seconds, killing`,
+                    this.logger.warn(
+                        `Process ${gameProc.process.pid} - #${gameProc.id.substring(0, 4)} did not send a message in more 10 seconds, killing`,
                     );
-                    this.killProcess(gameProc);
+                    // sigquit can dump a core of the process
+                    // useful for debugging infinite loops
+                    this.killProcess(gameProc, "SIGQUIT");
                 } else if (
                     gameProc.stopped &&
                     Date.now() - gameProc.stoppedTime > 60000
                 ) {
-                    this.logger.log(
-                        `Game ${gameProc.id} stopped more than a minute ago, killing`,
+                    this.logger.warn(
+                        `Process ${gameProc.process.pid} - #${gameProc.id.substring(0, 4)} stopped more than a minute ago, killing`,
                     );
                     this.killProcess(gameProc);
                 }
@@ -294,6 +296,7 @@ export class GameProcessManager implements GameManager {
             gameProc.process.on("disconnect", () => {
                 this.killProcess(gameProc!);
             });
+            this.logger.info("Created new process with PID", gameProc.process.pid);
         } else {
             this.processById.delete(gameProc.id);
             gameProc.create(id, config);
@@ -310,7 +313,7 @@ export class GameProcessManager implements GameManager {
         }
     }
 
-    killProcess(gameProc: GameProcess): void {
+    killProcess(gameProc: GameProcess, signal: NodeJS.Signals = "SIGTERM"): void {
         for (const [, socket] of this.sockets) {
             const data = socket.getUserData();
             if (data.closed) continue;
@@ -319,7 +322,7 @@ export class GameProcessManager implements GameManager {
         }
 
         // send SIGTERM, if still hasn't terminated after 5 seconds, send SIGKILL >:3
-        gameProc.process.kill();
+        gameProc.process.kill(signal);
         setTimeout(() => {
             if (!gameProc.process.killed) {
                 gameProc.process.kill("SIGKILL");
@@ -337,16 +340,14 @@ export class GameProcessManager implements GameManager {
         return this.processById.get(id);
     }
 
-    async findGame(body: FindGameBody): Promise<FindGameResponse> {
-        const mode = Config.modes[body.gameModeIdx];
-
+    async findGame(body: FindGamePrivateBody): Promise<string> {
         let game = this.processes
             .filter((proc) => {
                 return (
                     proc.canJoin &&
                     proc.avaliableSlots > 0 &&
-                    proc.teamMode === mode.teamMode &&
-                    proc.mapName === mode.mapName
+                    proc.teamMode === body.teamMode &&
+                    proc.mapName === body.mapName
                 );
             })
             .sort((a, b) => {
@@ -357,8 +358,8 @@ export class GameProcessManager implements GameManager {
 
         if (!game) {
             game = await this.newGame({
-                teamMode: mode.teamMode,
-                mapName: mode.mapName,
+                teamMode: body.teamMode,
+                mapName: body.mapName as keyof typeof MapDefs,
             });
         }
 

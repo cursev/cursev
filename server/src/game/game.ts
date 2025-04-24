@@ -1,9 +1,11 @@
 import { GameConfig, TeamMode } from "../../../shared/gameConfig";
 import * as net from "../../../shared/net/net";
+import { math } from "../../../shared/utils/math";
 import { v2 } from "../../../shared/utils/v2";
 import { Config } from "../config";
 import { Logger } from "../utils/logger";
-import type { ServerGameConfig } from "./gameManager";
+import { fetchApiServer } from "../utils/serverHelpers";
+import type { FindGamePrivateBody, SaveGameBody, ServerGameConfig } from "../utils/types";
 import { GameModeManager } from "./gameModeManager";
 import { ProcessMsgType, type UpdateDataMsg } from "./gameProcessManager";
 import { Grid } from "./grid";
@@ -22,6 +24,7 @@ import { PlayerBarn } from "./objects/player";
 import { ProjectileBarn } from "./objects/projectile";
 import { SmokeBarn } from "./objects/smoke";
 import { PluginManager } from "./pluginManager";
+import { Profiler } from "./profiler";
 
 export interface GroupData {
     hash: string;
@@ -34,14 +37,23 @@ export interface JoinTokenData {
     availableUses: number;
     expiresAt: number;
     groupHashToJoin: string;
+    userId: string | null;
+    findGameIp: string;
+    groupData: {
+        autoFill: boolean;
+        playerCount: number;
+        groupHashToJoin: string;
+    };
 }
 
 export class Game {
     started = false;
     stopped = false;
-    allowJoin = true;
+    allowJoin = false;
     over = false;
+    sentWinEMotes = false;
     startedTime = 0;
+    stopTicker = 0;
     id: string;
     teamMode: TeamMode;
     mapName: string;
@@ -49,6 +61,12 @@ export class Game {
     config: ServerGameConfig;
     pluginManager = new PluginManager(this);
     modeManager: GameModeManager;
+
+    tickTimeWarnThreshold = (1000 / Config.gameTps) * 4;
+    gameTickWarnings = 0;
+
+    netSyncWarnThreshold = (1000 / Config.netSyncTps) * 4;
+    netSyncWarnings = 0;
 
     grid: Grid<GameObject>;
     objectRegister: ObjectRegister;
@@ -94,16 +112,18 @@ export class Game {
 
     start = Date.now();
 
+    profiler = new Profiler();
+
     constructor(
         id: string,
         config: ServerGameConfig,
-        readonly sendSocketMsg: (id: string, data: ArrayBuffer) => void,
-        readonly closeSocket: (id: string) => void,
+        readonly sendSocketMsg: (id: string, data: Uint8Array) => void,
+        readonly closeSocket: (id: string, reason?: string) => void,
         readonly sendData?: (data: UpdateDataMsg) => void,
     ) {
         this.id = id;
         this.logger = new Logger(`Game #${this.id.substring(0, 4)}`);
-        this.logger.log("Creating");
+        this.logger.info("Creating");
 
         this.config = config;
 
@@ -142,53 +162,127 @@ export class Game {
 
     async init() {
         await this.pluginManager.loadPlugins();
-        this.pluginManager.emit("gameCreated", this);
         this.map.init();
+        this.pluginManager.emit("gameCreated", this);
 
         this.allowJoin = true;
-        this.logger.log(`Created in ${Date.now() - this.start} ms`);
+        this.logger.info(`Created in ${Date.now() - this.start} ms`);
 
         this.updateData();
     }
 
     update(): void {
-        const now = Date.now();
+        if (!this.allowJoin) return;
+        this.profiler.flush();
+
+        const now = performance.now();
         if (!this.now) this.now = now;
-        const dt = (now - this.now) / 1000;
+        const dt = math.clamp((now - this.now) / 1000, 0.001, 1 / 8);
+
         this.now = now;
+
+        if (this.over) {
+            this.stopTicker -= dt;
+            if (this.stopTicker <= 0) {
+                this.stop();
+                return;
+            }
+        }
+
+        if (!this.started) {
+            this.started = this.modeManager.isGameStarted();
+            if (this.started) {
+                this.gas.advanceGasStage();
+            }
+        }
 
         if (this.started) this.startedTime += dt;
 
         //
         // Update modules
         //
+        this.profiler.addSample("gas");
         this.gas.update(dt);
-        this.playerBarn.update(dt);
-        this.map.update(dt);
-        this.lootBarn.update(dt);
-        this.bulletBarn.update(dt);
-        this.projectileBarn.update(dt);
-        this.explosionBarn.update();
-        this.smokeBarn.update(dt);
-        this.airdropBarn.update(dt);
-        this.deadBodyBarn.update(dt);
-        this.decalBarn.update(dt);
-        this.planeBarn.update(dt);
+        this.profiler.endSample();
 
-        if (Config.perfLogging.enabled) {
-            // Record performance and start the next tick
-            // THIS TICK COUNTER IS WORKING CORRECTLY!
-            // It measures the time it takes to calculate a tick, not the time between ticks.
-            const tickTime = Date.now() - this.now;
+        this.profiler.addSample("players");
+        this.playerBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("map");
+        this.map.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("loot");
+        this.lootBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("bullets");
+        this.bulletBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("projectiles");
+        this.projectileBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("explosions");
+        this.explosionBarn.update();
+        this.profiler.endSample();
+
+        this.profiler.addSample("smoke");
+        this.smokeBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("airdrops");
+        this.airdropBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("deadBodies");
+        this.deadBodyBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("decals");
+        this.decalBarn.update(dt);
+        this.profiler.endSample();
+
+        this.profiler.addSample("planes");
+        this.planeBarn.update(dt);
+        this.profiler.endSample();
+
+        const tickTime = performance.now() - this.now;
+
+        if (tickTime > 1000) {
+            let errString = `Tick took over 1 second! ${tickTime.toFixed(2)}ms\n`;
+            errString += "Profiler stats:\n";
+            errString += this.profiler.getStats();
+            this.logger.error(errString);
+        } else if (tickTime > this.tickTimeWarnThreshold) {
+            this.logger.warn(
+                `Tick took over ${this.tickTimeWarnThreshold}ms! ${tickTime.toFixed(2)}ms`,
+            );
+            this.gameTickWarnings++;
+
+            if (this.gameTickWarnings > 20) {
+                let errString = `Server is overloaded! Increasing tickTimeWarnThreshold.\n`;
+                errString += "Profiler stats:\n";
+                errString += this.profiler.getStats();
+                this.logger.warn(errString);
+
+                this.gameTickWarnings = 0;
+                this.tickTimeWarnThreshold *= 2;
+            }
+        }
+
+        if (Config.logging.debugLogs) {
             this.tickTimes.push(tickTime);
 
             this.perfTicker += dt;
-            if (this.perfTicker >= Config.perfLogging.time) {
+            if (this.perfTicker >= 15) {
                 this.perfTicker = 0;
                 const mspt =
                     this.tickTimes.reduce((a, b) => a + b) / this.tickTimes.length;
 
-                this.logger.log(
+                this.logger.debug(
                     `Avg ms/tick: ${mspt.toFixed(2)} | Load: ${((mspt / (1000 / Config.gameTps)) * 100).toFixed(1)}%`,
                 );
                 this.tickTimes = [];
@@ -197,6 +291,10 @@ export class Game {
     }
 
     netSync() {
+        if (!this.allowJoin) return;
+
+        const start = performance.now();
+
         // serialize objects and send msgs
         this.objectRegister.serializeObjs();
         this.playerBarn.sendMsgs();
@@ -214,12 +312,33 @@ export class Game {
         this.mapIndicatorBarn.flush();
 
         this.msgsToSend.stream.index = 0;
+
+        const syncTime = performance.now() - start;
+        if (syncTime > 1000) {
+            this.logger.error(`Tick took over 1 second! ${syncTime.toFixed(2)}ms`);
+        } else if (syncTime > this.netSyncWarnThreshold) {
+            this.logger.warn(
+                `Tick took over ${this.netSyncWarnThreshold}ms! ${syncTime.toFixed(2)}ms`,
+            );
+            this.netSyncWarnings++;
+
+            if (this.netSyncWarnings > 20) {
+                this.logger.warn(
+                    `Server is overloaded! Increasing netSyncWarnThreshold.`,
+                );
+
+                this.netSyncWarnings = 0;
+                this.netSyncWarnThreshold *= 2;
+            }
+        }
     }
 
     get canJoin(): boolean {
         return !this.over;
         return (
-            this.aliveCount < this.map.mapDef.gameMode.maxPlayers && !this.over // && this.gas.stage < 2
+            this.aliveCount < this.map.mapDef.gameMode.maxPlayers &&
+            !this.over &&
+            this.startedTime < 60
         );
     }
 
@@ -295,8 +414,7 @@ export class Game {
             msg = deserialized.msg;
             type = deserialized.type;
         } catch (err) {
-            this.logger.warn("Failed to deserialize msg: ");
-            console.error(err);
+            this.logger.error("Failed to deserialize msg: ", err);
             return;
         }
 
@@ -343,7 +461,7 @@ export class Game {
     handleSocketClose(socketId: string): void {
         const player = this.playerBarn.socketIdToPlayer.get(socketId);
         if (!player) return;
-        this.logger.log(`"${player.name}" left`);
+        this.logger.info(`"${player.name}" left`);
         player.disconnected = true;
         player.group?.checkPlayers();
         player.spectating = undefined;
@@ -364,23 +482,34 @@ export class Game {
     checkGameOver(): void {
         if (this.over) return;
         const didGameEnd: boolean = this.modeManager.handleGameEnd();
+
         if (didGameEnd) {
             this.over = true;
+
+            // send win emoji after 1 second
+            this.playerBarn.sendWinEmoteTicker = 1;
+            // stop game after 2
+            this.stopTicker = 2;
+
             this.updateData();
-            setTimeout(() => {
-                this.stop();
-            }, 750);
         }
     }
 
-    addJoinToken(id: string, autoFill: boolean, playerCount: number) {
-        this.joinTokens.set(id, {
-            autoFill,
-            playerCount,
-            availableUses: playerCount,
-            expiresAt: Date.now() + 15000,
+    addJoinTokens(tokens: FindGamePrivateBody["playerData"], autoFill: boolean) {
+        const groupData = {
+            playerCount: tokens.length,
             groupHashToJoin: "",
-        });
+            autoFill,
+        };
+
+        for (const token of tokens) {
+            this.joinTokens.set(token.token, {
+                expiresAt: Date.now() + 10000,
+                userId: token.userId,
+                groupData,
+                findGameIp: token.ip,
+            });
+        }
     }
 
     updateData() {
@@ -405,7 +534,84 @@ export class Game {
                 this.closeSocket(player.socketId);
             }
         }
-        this.logger.log("Game Ended");
+        this.logger.info("Game Ended");
         this.updateData();
+        this._saveGameToDatabase();
+    }
+
+    private async _saveGameToDatabase() {
+        const players = this.modeManager.getPlayersSortedByRank();
+        /**
+         * teamTotal is for total teams that started the match, i hope?
+         *
+         * it also seems to be unused by the client so we could also remove it?
+         */
+        const teamTotal = new Set(players.map(({ player }) => player.teamId)).size;
+
+        const values: SaveGameBody["matchData"] = players.map(({ player, rank }) => {
+            return {
+                // *NOTE: userId is optional; we save the game stats for non logged users too
+                userId: player.userId,
+                region: Config.gameServer.thisRegion,
+                username: player.name,
+                playerId: player.matchDataId,
+                teamMode: this.teamMode,
+                teamCount: player.group?.totalCount ?? 1,
+                teamTotal: teamTotal,
+                teamId: player.teamId,
+                timeAlive: Math.round(player.timeAlive),
+                died: player.dead,
+                kills: player.kills,
+                damageDealt: Math.round(player.damageDealt),
+                damageTaken: Math.round(player.damageTaken),
+                killerId: player.killedBy?.matchDataId || 0,
+                gameId: this.id,
+                mapId: this.map.mapId,
+                mapSeed: this.map.seed,
+                killedIds: player.killedIds,
+                rank: rank,
+                ip: player.ip,
+                findGameIp: player.findGameIp,
+            };
+        });
+
+        // only save the game if it has more than 2 players lol
+        if (values.length < 2) return;
+
+        // FIXME: maybe move this to the parent game server process?
+        // to avoid blocking the game from being GC'd until this request is done
+        // and opening a database in each process if it fails
+        // etc
+        const res = await fetchApiServer<SaveGameBody, { error: string }>(
+            "private/save_game",
+            {
+                matchData: values,
+            },
+        );
+
+        if (!res || res.error) {
+            this.logger.warn(`Failed to save game data, saving locally instead`);
+
+            // we dump the game  to a local db if we failed to save;
+            // avoid importing sqlite and creating the database at process startup
+            // since this code should rarely run anyway
+            const sqliteDb = (await import("better-sqlite3")).default(
+                "lost_game_data.db",
+            );
+
+            sqliteDb
+                .prepare(`
+                    CREATE TABLE IF NOT EXISTS lost_game_data (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        data TEXT NOT NULL,
+                        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                    )
+                `)
+                .run();
+
+            sqliteDb
+                .prepare("INSERT INTO lost_game_data (data) VALUES (?)")
+                .run(JSON.stringify(values));
+        }
     }
 }

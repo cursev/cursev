@@ -3,7 +3,7 @@ import { platform } from "os";
 import NanoTimer from "nanotimer";
 import type { WebSocket } from "uWebSockets.js";
 import type { MapDefs } from "../../../shared/defs/mapDefs";
-import type { TeamMode } from "../../../shared/gameConfig";
+import * as net from "../../../shared/net/net";
 import { Config } from "../config";
 import type { FindGameBody, GameSocketData } from "../gameServer";
 import { Game } from "./game";
@@ -82,8 +82,6 @@ export class SingleThreadGameManager implements GameManager {
                 this.netSync();
             }, 1000 / Config.netSyncTps);
         }
-
-        this.newGame(Config.modes[0]);
     }
 
     update(): void {
@@ -122,9 +120,16 @@ export class SingleThreadGameManager implements GameManager {
             (id, data) => {
                 this.sockets.get(id)?.send(data, true, false);
             },
-            (id) => {
+            (id, reason) => {
                 const socket = this.sockets.get(id);
                 if (socket && !socket.getUserData().closed) {
+                    if (reason) {
+                        const disconnectMsg = new net.DisconnectMsg();
+                        disconnectMsg.reason = reason;
+                        const stream = new net.MsgStream(new ArrayBuffer(128));
+                        stream.serializeMsg(net.MsgType.Disconnect, disconnectMsg);
+                        socket.send(stream.getBuffer());
+                    }
                     socket.close();
                 }
             },
@@ -139,26 +144,23 @@ export class SingleThreadGameManager implements GameManager {
         return this.gamesById.get(id);
     }
 
-    async findGame(body: FindGameBody): Promise<FindGameResponse> {
-        const config = Config.modes[body.gameModeIdx];
-
+    async findGame(body: FindGamePrivateBody): Promise<string> {
         let game = this.games
             .filter((game) => {
                 return (
                     game.canJoin &&
-                    game.teamMode === config.teamMode &&
-                    game.mapName === config.mapName
+                    game.teamMode === body.teamMode &&
+                    game.mapName === body.mapName
                 );
             })
             .sort((a, b) => {
                 return a.startedTime - b.startedTime;
             })[0];
 
-        const mode = Config.modes[body.gameModeIdx];
         if (!game) {
             game = await this.newGame({
-                teamMode: mode.teamMode,
-                mapName: mode.mapName,
+                teamMode: body.teamMode,
+                mapName: body.mapName as keyof typeof MapDefs,
             });
         }
 

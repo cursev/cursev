@@ -50,6 +50,23 @@ const mapDef: PartialMapDef = {
             ],
         },
     },
+    lootTable: {
+        // disable outfits from spawning
+        tier_outfits: [
+            { name: "chest02", count: 1, weight: 1 },
+            { name: "helmet02", count: 1, weight: 1 },
+        ],
+        tier_mansion_floor: [{ name: "tier_outfits", count: 1, weight: 1 }],
+        tier_vault_floor: [{ name: "tier_outfits", count: 1, weight: 1 }],
+        tier_police_floor: [{ name: "tier_outfits", count: 1, weight: 1 }],
+        tier_conch: [{ name: "tier_outfits", count: 1, weight: 1 }],
+        tier_noir_outfit: [{ name: "tier_outfits", count: 1, weight: 1 }],
+        tier_khaki_outfit: [{ name: "tier_outfits", count: 1, weight: 1 }],
+        tier_islander_outfit: [{ name: "tier_outfits", count: 1, weight: 1 }],
+        tier_imperial_outfit: [{ name: "tier_outfits", count: 1, weight: 1 }],
+
+        tier_airdrop_outfits: [{ name: "outfitGhillie", count: 1, weight: 1 }],
+    },
     /* STRIP_FROM_PROD_CLIENT:START */
     mapGen: {
         map: {
@@ -64,6 +81,14 @@ const mapDef: PartialMapDef = {
                     {
                         pos: v2.create(0.5, 0.5),
                         rad: 100,
+                    },
+                    {
+                        rad: 100,
+                        genOnShore: true,
+                    },
+                    {
+                        rad: 100,
+                        genOnShore: true,
                     },
                 ],
             },
@@ -98,7 +123,6 @@ const mapDef: PartialMapDef = {
                 outhouse_01: 5,
                 loot_tier_1: 24,
                 loot_tier_beach: 4,
-                class_shell_01: 15,
             },
         ],
         fixedSpawns: [
@@ -122,13 +146,13 @@ const mapDef: PartialMapDef = {
                 chest_01cb: 1,
                 chest_03cb: { odds: 0.2 },
                 mil_crate_02: { odds: 0.25 },
-                tree_02: 3,
                 teahouse_complex_01su: {
                     small: 1,
                     large: 2,
                 },
                 stone_04: 1,
                 club_complex_01: 1,
+                class_shell_01: 40,
                 cache_log_13: 1, // recorder crate
             },
         ],
@@ -141,7 +165,11 @@ const mapDef: PartialMapDef = {
                 stone_03: "stone_03cb",
             },
         ],
-        importantSpawns: ["bunker_structure_09"],
+        importantSpawns: [
+            "club_complex_01",
+            "warehouse_complex_01",
+            "bunker_structure_09",
+        ],
     },
     /* STRIP_FROM_PROD_CLIENT:END */
     gameMode: {

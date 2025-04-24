@@ -1,7 +1,6 @@
-import { randomBytes } from "crypto";
-import { App, SSLApp, type TemplatedApp, type WebSocket } from "uWebSockets.js";
+
+import { App, SSLApp, type WebSocket } from "uWebSockets.js";
 import { version } from "../../package.json";
-import { math } from "../../shared/utils/math";
 import { Config } from "./config";
 import { SingleThreadGameManager } from "./game/gameManager";
 import { GameProcessManager } from "./game/gameProcessManager";
@@ -51,29 +50,113 @@ export interface GameSocketData {
 export class GameServer {
     readonly logger = new Logger("GameServer");
 
-    readonly region = Config.regions[Config.thisRegion];
-    readonly regionId = Config.thisRegion;
+    readonly region = Config.regions[Config.gameServer.thisRegion];
+    readonly regionId = Config.gameServer.thisRegion;
 
     readonly manager =
         Config.processMode === "single"
             ? new SingleThreadGameManager()
             : new GameProcessManager();
 
-    constructor() {}
+    async findGame(body: FindGamePrivateBody): Promise<FindGamePrivateRes> {
+        const parsed = zFindGamePrivateBody.safeParse(body);
 
-    init(app: TemplatedApp): void {
-        setInterval(() => {
-            const memoryUsage = process.memoryUsage().rss;
+        if (!parsed.success || !parsed.data) {
+            this.logger.warn("/api/find_game: Invalid body");
+            return {
+                error: "full",
+            };
+        }
+        const data = parsed.data;
 
-            const perfString = `Memory usage: ${Math.round((memoryUsage / 1024 / 1024) * 100) / 100} MB`;
+        if (data.version !== GameConfig.protocolVersion) {
+            return {
+                error: "invalid_protocol",
+            };
+        }
 
-            this.logger.log(perfString);
-        }, 60000);
+        if (data.region !== this.regionId) {
+            return {
+                error: "full",
+            };
+        }
 
-        const server = this;
+        const gameId = await this.manager.findGame({
+            region: data.region,
+            version: data.version,
+            autoFill: data.autoFill,
+            mapName: data.mapName,
+            teamMode: data.teamMode,
+            playerData: data.playerData,
+        });
 
-        const gameHTTPRateLimit = new HTTPRateLimit(5, 1000);
-        const gameWsRateLimit = new WebSocketRateLimit(500, 1000, 10);
+        return {
+            gameId,
+            useHttps: this.region.https,
+            hosts: [this.region.address],
+            addrs: [this.region.address],
+        };
+    }
+
+    sendData() {
+        fetchApiServer("private/update_region", {
+            data: {
+                playerCount: this.manager.getPlayerCount(),
+            },
+            regionId: Config.gameServer.thisRegion,
+        });
+    }
+}
+
+const server = new GameServer();
+
+const app = Config.gameServer.ssl
+    ? SSLApp({
+          key_file_name: Config.gameServer.ssl.keyFile,
+          cert_file_name: Config.gameServer.ssl.certFile,
+      })
+    : App();
+
+app.options("/api/find_game", (res) => {
+    cors(res);
+    res.end();
+});
+
+app.post("/api/find_game", async (res, req) => {
+    res.onAborted(() => {
+        res.aborted = true;
+    });
+
+    if (req.getHeader("survev-api-key") !== Config.secrets.SURVEV_API_KEY) {
+        forbidden(res);
+        return;
+    }
+
+    readPostedJSON(
+        res,
+        async (body: FindGamePrivateBody) => {
+            try {
+                if (res.aborted) return;
+
+                const parsed = zFindGamePrivateBody.safeParse(body);
+                if (!parsed.success || !parsed.data) {
+                    returnJson(res, { error: "full" });
+                    return;
+                }
+
+                returnJson(res, await server.findGame(parsed.data));
+            } catch (error) {
+                server.logger.warn("API find_game error: ", error);
+            }
+        },
+        () => {
+            server.logger.warn("/api/find_game: Error retrieving body");
+        },
+    );
+});
+
+const gameHTTPRateLimit = new HTTPRateLimit(5, 1000);
+const gameWsRateLimit = new WebSocketRateLimit(500, 1000, 5);
 
         app.ws<GameSocketData>("/play", {
             idleTimeout: 30,
@@ -110,21 +193,32 @@ export class GameServer {
                 }
                 gameWsRateLimit.ipConnected(ip);
 
-                const socketId = randomBytes(20).toString("hex");
-                res.upgrade(
-                    {
-                        gameId,
-                        id: socketId,
-                        closed: false,
-                        rateLimit: {},
-                        ip,
-                    },
-                    req.getHeader("sec-websocket-key"),
-                    req.getHeader("sec-websocket-protocol"),
-                    req.getHeader("sec-websocket-extensions"),
-                    context,
-                );
-            },
+        const socketId = randomUUID();
+        let disconnectReason = "";
+
+        if (await isBehindProxy(ip)) {
+            disconnectReason = "behind_proxy";
+        }
+
+        if (res.aborted) return;
+        res.cork(() => {
+            if (res.aborted) return;
+            res.upgrade(
+                {
+                    gameId,
+                    id: socketId,
+                    closed: false,
+                    rateLimit: {},
+                    ip,
+                    disconnectReason,
+                },
+                wskey,
+                wsProtocol,
+                wsExtensions,
+                context,
+            );
+        });
+    },
 
             /**
              * Handle opening of the socket.
@@ -206,149 +300,28 @@ export class GameServer {
                 );
             },
 
-            message(socket: WebSocket<pingSocketData>, message) {
-                if (pingWsRateLimit.isRateLimited(socket.getUserData().rateLimit)) {
-                    socket.close();
-                    return;
-                }
-                socket.send(message, true, false);
-            },
-            close(ws) {
-                pingWsRateLimit.ipDisconnected(ws.getUserData().ip);
-            },
-        });
-    }
-
-    async findGame(body: FindGameBody): Promise<FindGameResponse> {
-        if (body.region !== this.regionId) {
-            this.logger.warn("/api/find_game: Invalid region");
-            return {
-                res: [
-                    {
-                        err: "Invalid Region",
-                    },
-                ],
-            };
+    message(socket: WebSocket<pingSocketData>, message) {
+        if (pingWsRateLimit.isRateLimited(socket.getUserData().rateLimit)) {
+            socket.close();
+            return;
         }
+        socket.send(message, true, false);
+    },
 
-        // sanitize the body
-        if (typeof body.gameModeIdx !== "number") {
-            body.gameModeIdx = 0;
-        }
-        if (typeof body.autoFill !== "boolean") {
-            body.autoFill = true;
-        }
+    close(ws) {
+        pingWsRateLimit.ipDisconnected(ws.getUserData().ip);
+    },
+});
 
-        const mode = Config.modes[body.gameModeIdx];
+server.sendData();
+setInterval(() => {
+    server.sendData();
+}, 20 * 1000);
 
-        if (!mode || !mode.enabled) {
-            return {
-                res: [
-                    {
-                        err: "Invalid game mode index",
-                    },
-                ],
-            };
-        }
-
-        if (typeof body.playerCount !== "number") {
-            body.playerCount = 1;
-        } else {
-            body.playerCount = math.clamp(body.playerCount ?? 1, 1, mode.teamMode);
-        }
-
-        const data = await this.manager.findGame(body);
-
-        let response: FindGameResponse["res"][0] = {
-            zone: "",
-            data: data.data,
-            gameId: data.gameId,
-            useHttps: this.region.https,
-            hosts: [this.region.address],
-            addrs: [this.region.address],
-        };
-
-        return { res: [response] };
-    }
-
-    async fetchApiServer(route: string, body: object) {
-        const url = `${Config.gameServer.apiServerUrl}/${route}`;
-        fetch(url, {
-            body: JSON.stringify({
-                ...body,
-                apiKey: Config.apiKey,
-            }),
-            method: "post",
-            headers: {
-                "Content-type": "application/json",
-            },
-            signal: AbortSignal.timeout(5000),
-        }).catch((error) => {
-            this.logger.warn(`Failed to fetch "${url}" error:`, error);
-        });
-    }
-
-    sendData() {
-        this.fetchApiServer("api/update_region", {
-            data: {
-                playerCount: this.manager.getPlayerCount(),
-            },
-            regionId: Config.thisRegion,
-        });
-    }
-}
-
-if (process.argv.includes("--game-server")) {
-    const server = new GameServer();
-
-    const app = Config.gameServer.ssl
-        ? SSLApp({
-              key_file_name: Config.gameServer.ssl.keyFile,
-              cert_file_name: Config.gameServer.ssl.certFile,
-          })
-        : App();
-
-    app.options("/api/find_game", (res) => {
-        cors(res);
-        res.end();
-    });
-    app.post("/api/find_game", async (res) => {
-        res.onAborted(() => {
-            res.aborted = true;
-        });
-        cors(res);
-
-        readPostedJSON(
-            res,
-            async (body: FindGameBody & { apiKey: string }) => {
-                try {
-                    if (res.aborted) return;
-                    if (body.apiKey !== Config.apiKey) {
-                        forbidden(res);
-                        return;
-                    }
-                    returnJson(res, await server.findGame(body));
-                } catch (error) {
-                    server.logger.warn("API find_game error: ", error);
-                }
-            },
-            () => {
-                server.logger.warn("/api/find_game: Error retrieving body");
-            },
-        );
-    });
-
-    app.listen(Config.gameServer.host, Config.gameServer.port, () => {
-        server.logger.log(`Survev Game Server v${version} - GIT ${GIT_VERSION}`);
-        server.logger.log(
-            `Listening on ${Config.gameServer.host}:${Config.gameServer.port}`,
-        );
-        server.logger.log("Press Ctrl+C to exit.");
-
-        server.init(app);
-
-        setInterval(() => {
-            server.sendData();
-        }, 10 * 3000);
-    });
-}
+app.listen(Config.gameServer.host, Config.gameServer.port, () => {
+    server.logger.info(`Survev Game Server v${version} - GIT ${GIT_VERSION}`);
+    server.logger.info(
+        `Listening on ${Config.gameServer.host}:${Config.gameServer.port}`,
+    );
+    server.logger.info("Press Ctrl+C to exit.");
+});

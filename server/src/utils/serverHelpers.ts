@@ -2,6 +2,7 @@ import { isIP } from "net";
 import type { HttpRequest, HttpResponse } from "uWebSockets.js";
 import { Constants } from "../../../shared/net/net";
 import { Config } from "../config";
+import { defaultLogger } from "./logger";
 
 /**
  * Apply CORS headers to a response.
@@ -91,24 +92,37 @@ const badWordsFilter = [
     /ch[i1líĩî|!]nks?/i,
 ];
 
-export function validateUserName(name: string) {
-    if (!name || typeof name !== "string") return "Player";
+const allowedCharsRegex =
+    /[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g;
+
+export function validateUserName(name: string): {
+    originalWasInvalid: boolean;
+    validName: string;
+} {
+    const randomNumber = Math.random().toString(10).slice(2, 6);
+
+    const defaultName = Config.randomizeDefaultPlayerName
+        ? `Player#${randomNumber}`
+        : "Player";
+
+    if (!name || typeof name !== "string")
+        return {
+            originalWasInvalid: true,
+            validName: defaultName,
+        };
 
     name = name
         .trim()
         .substring(0, Constants.PlayerNameMaxLen)
         // remove extended ascii etc
-        .replace(/[^A-Za-z 0-9 \.,\?""!@#\$%\^&\*\(\)-_=\+;:<>\/\\\|\}\{\[\]`~]*/g, "");
+        .replace(allowedCharsRegex, "");
 
-    if (!name.length) return "Player";
+    if (!name.length || checkForBadWords(name))
+        return {
+            originalWasInvalid: true,
+            validName: defaultName,
+        };
 
-    const santized = name.replace(/[^a-zA-Z0-9|$|@]|\^/g, "");
-
-    for (const regex of badWordsFilter) {
-        if (name.match(regex) || santized.match(regex)) {
-            return "Player";
-        }
-    }
     return name;
 }
 
@@ -119,7 +133,7 @@ const textDecoder = new TextDecoder();
  */
 export function getIp(res: HttpResponse, req: HttpRequest, proxyHeader?: string) {
     const ip = proxyHeader
-        ? req.getHeader(proxyHeader)
+        ? req.getHeader(proxyHeader.toLowerCase())
         : textDecoder.decode(res.getRemoteAddressAsText());
 
     if (!ip || isIP(ip) == 0) return undefined;
@@ -256,5 +270,152 @@ export class HTTPRateLimit {
         } else {
             return ++ipData.count > this.limit;
         }
+    }
+}
+
+const proxyCheck = Config.secrets.PROXYCHECK_KEY
+    ? new ProxyCheck({
+          api_key: Config.secrets.PROXYCHECK_KEY,
+      })
+    : undefined;
+
+const proxyCheckCache = new Map<
+    string,
+    {
+        info: IPAddressInfo;
+        expiresAt: number;
+    }
+>();
+
+export async function isBehindProxy(ip: string): Promise<boolean> {
+    if (!proxyCheck) return false;
+
+    let info: IPAddressInfo | undefined = undefined;
+    const cached = proxyCheckCache.get(ip);
+    if (cached && cached.expiresAt > Date.now()) {
+        info = cached.info;
+    }
+    if (!info) {
+        try {
+            const proxyRes = await proxyCheck.checkIP(ip);
+            switch (proxyRes.status) {
+                case "ok":
+                case "warning":
+                    info = proxyRes[ip];
+                    if (proxyRes.status === "warning") {
+                        defaultLogger.warn(`ProxyCheck warning, res:`, proxyRes);
+                    }
+                    break;
+                case "denied":
+                case "error":
+                    defaultLogger.error(`Failed to check for ip ${ip}:`, proxyRes);
+                    break;
+            }
+        } catch (error) {
+            defaultLogger.error(`Proxycheck error:`, error);
+            return true;
+        }
+    }
+    if (!info) {
+        return true;
+    }
+    proxyCheckCache.set(ip, {
+        info,
+        expiresAt: Date.now() + 60 * 60 * 24, // a day
+    });
+
+    return info.proxy === "yes" || info.vpn === "yes";
+}
+
+export async function verifyTurnsStile(token: string, ip: string): Promise<boolean> {
+    const url = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+    const result = await fetch(url, {
+        body: JSON.stringify({
+            secret: Config.secrets.TURNSTILE_SECRET_KEY,
+            response: token,
+            remoteip: ip,
+        }),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    const outcome = await result.json();
+
+    if (!outcome.success) {
+        return false;
+    }
+    return true;
+}
+
+export async function fetchApiServer<
+    Body extends object = object,
+    Res extends object = object,
+>(route: string, body: Body): Promise<Res | undefined> {
+    const url = `${Config.gameServer.apiServerUrl}/${route}`;
+
+    try {
+        const res = await fetch(url, {
+            method: "post",
+            headers: {
+                "content-type": "application/json",
+                "survev-api-key": Config.secrets.SURVEV_API_KEY,
+            },
+            body: JSON.stringify(body),
+            signal: AbortSignal.timeout(5000),
+        });
+
+        if (res.ok) {
+            return res as Res;
+        }
+
+        defaultLogger.warn(
+            `Error fetching API server ${route}`,
+            res.status,
+            res.statusText,
+        );
+    } catch (err) {
+        defaultLogger.error(`Error fetching API server ${route}`, err);
+    }
+
+    return undefined;
+}
+
+// @TODO: format the errors sent better
+export async function logErrorToWebhook(from: "server" | "client", ...messages: any[]) {
+    if (!Config.errorLoggingWebhook) return;
+
+    try {
+        const msg = messages
+            .map((msg) => {
+                if (msg instanceof Error) {
+                    return `\`\`\`${msg.cause}\n${msg.stack}\`\`\``;
+                }
+                if (typeof msg == "object") {
+                    return `\`\`\`json\n${JSON.stringify(msg, null, 2)}\`\`\``;
+                }
+                return `\`${msg}\``;
+            })
+            .join("\n");
+
+        let content = `Error from: \`${from}\`
+Region: \`${Config.gameServer.thisRegion}\`
+Timestamp: \`${new Date().toISOString()}\`
+`;
+        content += msg;
+
+        await fetch(Config.errorLoggingWebhook, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                content,
+            }),
+        });
+    } catch (err) {
+        // dont use defaultLogger.error here to not log it recursively :)
+        console.error("Failed to log error to webhook", err);
     }
 }

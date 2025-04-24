@@ -5,33 +5,7 @@ import { api } from "./api";
 import type { ConfigManager } from "./config";
 import { device } from "./device";
 import type { Localization } from "./ui/localization";
-
-interface Info {
-    country: string;
-    gitRevision: string;
-    modes: Array<{
-        mapName: string;
-        teamMode: TeamMode;
-        enabled: boolean;
-    }>;
-    pops: Record<
-        string,
-        {
-            playerCount: string;
-            l10n: string;
-        }
-    >;
-    youtube: {
-        name: string;
-        link: string;
-    };
-    twitch: Array<{
-        name: string;
-        viewers: number;
-        url: string;
-        img: string;
-    }>;
-}
+import type { Info } from "../../shared/types/api";
 
 export class SiteInfo {
     info: Info = {} as Info;
@@ -126,10 +100,10 @@ export class SiteInfo {
                     }
                 }
 
-                if (!style.enabled) {
-                    btn.addClass("btn-disabled-main");
-                }
+                btn.toggle(style.enabled);
             }
+            const supportsTeam = this.info.modes.some((s) => s.enabled && s.teamMode > 1);
+            $("#btn-join-team, #btn-create-team").toggle(supportsTeam);
 
             // Region pops
             const pops = this.info.pops;
