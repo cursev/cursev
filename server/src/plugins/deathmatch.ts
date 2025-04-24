@@ -92,8 +92,9 @@ export default class DeathMatchPlugin extends GamePlugin {
                 killer.inventory["frag"] = Math.min(killer.inventory["frag"] + 3, 12);
                 killer.inventory["mirv"] = Math.min(killer.inventory["mirv"] + 1, 4);
                 if (Math.random() < 0.2) {
-                    killer.inventory["strobe"] = Math.min(
-                        killer.inventory["strobe"] + 1,
+                  const itemToGive = Math.random() < 0.5 ? "strobe" : "mine";
+                    killer.inventory[itemToGive] = Math.min(
+                      killer.inventory[itemToGive] + 1,
                         1,
                     );
                 }

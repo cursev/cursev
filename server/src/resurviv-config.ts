@@ -79,7 +79,7 @@ export const CustomConfig: DeepPartial<ConfigType> = {
             frag: 3,
             smoke: 1,
             strobe: 1,
-            mine: 5,
+            mine: 0,
             mirv: 1,
             bandage: GameConfig.bagSizes["bandage"][BACKPACK_LEVEL],
             healthkit: GameConfig.bagSizes["healthkit"][BACKPACK_LEVEL],
