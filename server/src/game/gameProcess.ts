@@ -3,7 +3,7 @@ import NanoTimer from "nanotimer";
 import { Config } from "../config";
 import { logErrorToWebhook } from "../utils/serverHelpers";
 import { Game } from "./game";
-import { type ProcessMsg, ProcessMsgType } from "./gameProcessManager";
+import { type ProcessMsg, ProcessMsgType } from "../utils/types";
 
 let game: Game | undefined;
 
