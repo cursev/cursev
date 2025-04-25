@@ -179,23 +179,15 @@ export class Game {
                     this.m_sendMessage(net.MsgType.Join, joinMessage, 8192);
                 };
                 this.m_ws.onmessage = (e) => {
-                    if (typeof e.data === "string") {
-                        console.warn("Skipped non-binary data: string");
-                        console.log("String content from server:", e.data); 
-                        return;
-                    }
-                    try {
-                        const msgStream = new net.MsgStream(e.data);
-                        while (true) {
-                            const type = msgStream.deserializeMsgType();
-                            if (type === net.MsgType.None) break;
-                            this.m_onMsg(type, msgStream.getStream());
+                    const msgStream = new net.MsgStream(e.data);
+                    while (true) {
+                        const type = msgStream.deserializeMsgType();
+                        if (type == net.MsgType.None) {
+                            break;
                         }
-                    } catch (err) {
-                        console.error("Error parsing message:", err);
+                        this.m_onMsg(type, msgStream.getStream());
                     }
                 };
-                
                 this.m_ws.onclose = () => {
                     const displayingStats = this.m_uiManager?.displayingStats;
                     const connecting = this.connecting;
