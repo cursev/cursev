@@ -179,35 +179,15 @@ export class Game {
                     this.m_sendMessage(net.MsgType.Join, joinMessage, 8192);
                 };
                 this.m_ws.onmessage = (e) => {
-                    if (typeof e.data === "string") {
-                        const trimmed = e.data.trim();
-                        console.warn("[WebSocket] Received non-binary message:", trimmed);
-                
-                        if (trimmed.includes("rate_limited")) {
-                            console.error("[WebSocket] You are rate-limited. Show error or retry later.");
-                            this.onQuit("You are rate-limited. Try again later.");
+                    const msgStream = new net.MsgStream(e.data);
+                    while (true) {
+                        const type = msgStream.deserializeMsgType();
+                        if (type == net.MsgType.None) {
+                            break;
                         }
-                        try {
-                            const json = JSON.parse(trimmed);
-                            console.log("[WebSocket] Parsed JSON:", json);
-                        } catch {
-                        }
-                        return;
-                    }
-                
-                    try {
-                        const msgStream = new net.MsgStream(e.data);
-                        while (true) {
-                            const type = msgStream.deserializeMsgType();
-                            if (type == net.MsgType.None) break;
-                            this.m_onMsg(type, msgStream.getStream());
-                        }
-                    } catch (err) {
-                        console.error("[WebSocket] Failed to handle binary message:", err);
+                        this.m_onMsg(type, msgStream.getStream());
                     }
                 };
-                
-                
                 this.m_ws.onclose = () => {
                     const displayingStats = this.m_uiManager?.displayingStats;
                     const connecting = this.connecting;
