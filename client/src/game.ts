@@ -179,15 +179,17 @@ export class Game {
                     this.m_sendMessage(net.MsgType.Join, joinMessage, 8192);
                 };
                 this.m_ws.onmessage = (e) => {
+                    if (!(e.data instanceof ArrayBuffer || e.data instanceof Uint8Array)) {
+                        console.warn("Received non-binary data:", typeof e.data);
+                        return; 
+                    }
                     const msgStream = new net.MsgStream(e.data);
                     while (true) {
                         const type = msgStream.deserializeMsgType();
-                        if (type == net.MsgType.None) {
-                            break;
-                        }
+                        if (type === net.MsgType.None) break;
                         this.m_onMsg(type, msgStream.getStream());
                     }
-                };
+                };              
                 this.m_ws.onclose = () => {
                     const displayingStats = this.m_uiManager?.displayingStats;
                     const connecting = this.connecting;
