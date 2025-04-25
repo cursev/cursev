@@ -181,7 +181,7 @@ export class Game {
                 this.m_ws.onmessage = (e) => {
                     if (!(e.data instanceof ArrayBuffer || e.data instanceof Uint8Array)) {
                         console.warn("Received non-binary data:", typeof e.data);
-                        return; 
+                        return;
                     }
                     const msgStream = new net.MsgStream(e.data);
                     while (true) {
@@ -189,7 +189,7 @@ export class Game {
                         if (type === net.MsgType.None) break;
                         this.m_onMsg(type, msgStream.getStream());
                     }
-                };              
+                };                           
                 this.m_ws.onclose = () => {
                     const displayingStats = this.m_uiManager?.displayingStats;
                     const connecting = this.connecting;
