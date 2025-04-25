@@ -179,11 +179,11 @@ export class Game {
                     this.m_sendMessage(net.MsgType.Join, joinMessage, 8192);
                 };
                 this.m_ws.onmessage = (e) => {
-                    if (!(e.data instanceof ArrayBuffer || e.data instanceof Uint8Array)) {
-                        console.warn("Skipped non-binary data:", typeof e.data);
+                    if (typeof e.data === "string") {
+                        console.warn("Skipped non-binary data: string");
+                        console.log("String content from server:", e.data); 
                         return;
                     }
-                
                     try {
                         const msgStream = new net.MsgStream(e.data);
                         while (true) {
@@ -194,7 +194,8 @@ export class Game {
                     } catch (err) {
                         console.error("Error parsing message:", err);
                     }
-                };                       
+                };
+                
                 this.m_ws.onclose = () => {
                     const displayingStats = this.m_uiManager?.displayingStats;
                     const connecting = this.connecting;
