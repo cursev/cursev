@@ -211,21 +211,25 @@ export class MsgStream {
     arrayBuf: ArrayBuffer;
 
     constructor(buf: ArrayBuffer | Uint8Array) {
+        if (!(buf instanceof ArrayBuffer) && !(buf instanceof Uint8Array)) {
+            throw new Error(`Invalid buf provided: ${typeof buf}`);
+        }
+    
         const arrayBuf =
             buf instanceof ArrayBuffer
                 ? buf
                 : buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-
+    
         if (!(arrayBuf instanceof ArrayBuffer)) {
             throw new Error(
-                `Invalid buf type ${
-                    typeof buf === "undefined" ? "undefined" : typeof buf
-                }`,
+                `Invalid buf type ${typeof buf === "undefined" ? "undefined" : typeof buf}`,
             );
         }
+    
         this.arrayBuf = arrayBuf;
         this.stream = new BitStream(arrayBuf);
     }
+    
 
     getBuffer() {
         return new Uint8Array(this.arrayBuf, 0, this.stream.byteIndex);
