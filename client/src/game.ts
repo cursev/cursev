@@ -179,15 +179,29 @@ export class Game {
                     this.m_sendMessage(net.MsgType.Join, joinMessage, 8192);
                 };
                 this.m_ws.onmessage = (e) => {
-                    const msgStream = new net.MsgStream(e.data);
-                    while (true) {
-                        const type = msgStream.deserializeMsgType();
-                        if (type == net.MsgType.None) {
-                            break;
+                    if (typeof e.data === "string") {
+                        console.warn("[WebSocket] Received a string instead of binary:", e.data);
+                        try {
+                            const json = JSON.parse(e.data);
+                            console.log("[WebSocket] Parsed JSON:", json);
+                        } catch (err) {
+                            console.error("[WebSocket] Failed to parse string message:", e.data);
                         }
-                        this.m_onMsg(type, msgStream.getStream());
+                        return;
+                    }
+                
+                    try {
+                        const msgStream = new net.MsgStream(e.data);
+                        while (true) {
+                            const type = msgStream.deserializeMsgType();
+                            if (type == net.MsgType.None) break;
+                            this.m_onMsg(type, msgStream.getStream());
+                        }
+                    } catch (err) {
+                        console.error("[WebSocket] Failed to handle binary message:", err);
                     }
                 };
+                
                 this.m_ws.onclose = () => {
                     const displayingStats = this.m_uiManager?.displayingStats;
                     const connecting = this.connecting;
