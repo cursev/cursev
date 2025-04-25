@@ -19,6 +19,8 @@ export const loadoutSchema = z.object({
     heal: z.string(),
     boost: z.string(),
     player_icon: z.string(),
+    primary: z.string(),
+    secondary: z.string(),
     crosshair: z.object({
         type: z.string(),
         color: z.number(),
@@ -72,6 +74,8 @@ export const loadout = {
             heal: getGameType("heal_effect", mergedLoadout.heal, "heal_basic"),
             boost: getGameType("boost_effect", mergedLoadout.boost, "boost_basic"),
             player_icon: getGameType("emote", mergedLoadout.player_icon, ""),
+            primary: getGameType("gun", mergedLoadout.primary, "mosin"),
+            secondary: getGameType("gun", mergedLoadout.secondary, "mosin"),
             crosshair: {
                 type: getGameType(
                     "crosshair",
@@ -115,7 +119,7 @@ export const loadout = {
             },
             ...userLoadout,
         };
-        const itemsToCheck = ["outfit", "melee", "heal", "boost", "player_icon"] as const;
+        const itemsToCheck = ["outfit", "melee", "primary", "secondary", "heal", "boost", "player_icon"] as const;
 
         itemsToCheck.forEach((item) => {
             newLoadout[item] = checkTypeExists(newLoadout[item]);
