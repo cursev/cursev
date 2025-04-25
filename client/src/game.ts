@@ -180,12 +180,17 @@ export class Game {
                 };
                 this.m_ws.onmessage = (e) => {
                     if (typeof e.data === "string") {
-                        console.warn("[WebSocket] Received a string instead of binary:", e.data);
+                        const trimmed = e.data.trim();
+                        console.warn("[WebSocket] Received non-binary message:", trimmed);
+                
+                        if (trimmed.includes("rate_limited")) {
+                            console.error("[WebSocket] You are rate-limited. Show error or retry later.");
+                            this.onQuit("You are rate-limited. Try again later.");
+                        }
                         try {
-                            const json = JSON.parse(e.data);
+                            const json = JSON.parse(trimmed);
                             console.log("[WebSocket] Parsed JSON:", json);
-                        } catch (err) {
-                            console.error("[WebSocket] Failed to parse string message:", e.data);
+                        } catch {
                         }
                         return;
                     }
@@ -201,6 +206,7 @@ export class Game {
                         console.error("[WebSocket] Failed to handle binary message:", err);
                     }
                 };
+                
                 
                 this.m_ws.onclose = () => {
                     const displayingStats = this.m_uiManager?.displayingStats;
