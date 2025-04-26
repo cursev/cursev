@@ -140,18 +140,18 @@ export class PlayerBarn {
         }
         this.game.joinTokens.delete(joinMsg.matchPriv);
 
-        if (Config.rateLimitsEnabled) {
-            const count = this.players.filter(
-                (p) =>
-                    p.ip === ip ||
-                    p.findGameIp == joinData.findGameIp ||
-                    (joinData.userId !== null && p.userId === joinData.userId),
-            );
-            if (count.length >= 3) {
-                this.game.closeSocket(socketId, "rate_limited");
-                return;
-            }
-        }
+        // if (Config.rateLimitsEnabled) {
+        //     const count = this.players.filter(
+        //         (p) =>
+        //             p.ip === ip ||
+        //             p.findGameIp == joinData.findGameIp ||
+        //             (joinData.userId !== null && p.userId === joinData.userId),
+        //     );
+        //     if (count.length >= 10) {
+        //         this.game.closeSocket(socketId, "rate_limited");
+        //         return;
+        //     }
+        // }
 
         if (joinMsg.protocol !== GameConfig.protocolVersion) {
             this.game.closeSocket(socketId, "index-invalid-protocol");

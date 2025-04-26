@@ -335,7 +335,7 @@ export class Game {
         return (
             this.aliveCount < this.map.mapDef.gameMode.maxPlayers &&
             !this.over &&
-            this.startedTime < 60
+            this.startedTime < 370
         );
     }
 
@@ -464,7 +464,7 @@ export class Game {
         player.spectating = undefined;
         player.dir = v2.create(0, 0);
         player.setPartDirty();
-        if (player.canDespawn() || true) {
+        if (player.canDespawn()) {
             player.game.playerBarn.removePlayer(player);
         }
     }

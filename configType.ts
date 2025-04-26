@@ -380,3 +380,5 @@ type DeepPartial<T> = T extends object
       }
     : T;
 export type PartialConfig = DeepPartial<ConfigType>;
+export type { DeepPartial };
+
