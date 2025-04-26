@@ -101,9 +101,9 @@ class Room {
     data: RoomData = {
         roomUrl: "",
         findingGame: false,
-        lastError: "",
+        lastError:  "",
         region: "",
-        autoFill: true,
+        autoFill: false,
         enabledGameModeIdxs: [],
         gameModeIdx: 1,
         maxPlayers: 4,
@@ -190,7 +190,7 @@ class Room {
         this.data.gameModeIdx = gameModeIdx;
 
         this.data.maxPlayers = modes[gameModeIdx].teamMode;
-        this.data.autoFill = props.autoFill;
+        this.data.autoFill = false; //  props.autoFill;
 
         // kick players that don't fit on the new max players
         while (this.players.length > this.data.maxPlayers) {

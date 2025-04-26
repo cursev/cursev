@@ -98,7 +98,7 @@ export class TeamMenu {
             this.setRoomProperty("gameModeIdx", 2);
         });
         this.fillAuto.click(() => {
-            this.setRoomProperty("autoFill", true);
+            this.setRoomProperty("autoFill", false);
         });
         this.fillNone.click(() => {
             this.setRoomProperty("autoFill", false);
