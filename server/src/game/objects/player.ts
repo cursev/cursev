@@ -2517,7 +2517,7 @@ export class Player extends BaseGameObject {
         }
 
         if (this._health === 0) {
-            if (!this.downed && this.hasPerk("self_revive")) {
+            if (false || (!this.downed && this.hasPerk("self_revive"))) {
                 this.down(params);
             } else {
                 this.game.modeManager.handlePlayerDeath(this, params);
