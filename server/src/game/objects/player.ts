@@ -2878,7 +2878,7 @@ export class Player extends BaseGameObject {
         this.emoteFromSlot(GameConfig.EmoteSlot.Death);
 
         // Building gore region (club pool)
-        const objs = this.game.grid.intersectCollider(this.collider);
+        const objs = this.game.grid.intersectGameObject(this);
         for (const obj of objs) {
             if (
                 obj.__type === ObjectType.Building &&
