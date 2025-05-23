@@ -141,13 +141,13 @@ export class PlayerBarn {
         this.game.joinTokens.delete(joinMsg.matchPriv);
 
         // if (Config.rateLimitsEnabled) {
-        //     const count = this.players.filter(
+        //     const count = this.livingPlayers.filter(
         //         (p) =>
         //             p.ip === ip ||
         //             p.findGameIp == joinData.findGameIp ||
         //             (joinData.userId !== null && p.userId === joinData.userId),
         //     );
-        //     if (count.length >= 10) {
+        //     if (count.length >= 3) {
         //         this.game.closeSocket(socketId, "rate_limited");
         //         return;
         //     }
@@ -178,10 +178,27 @@ export class PlayerBarn {
             layer = 0;
         }
 
+        const originalName = validateUserName(joinMsg.name).validName;
+        let finalName = originalName;
+
+        if (Config.uniqueInGameNames) {
+            let count = 0;
+
+            while (this.game.playerBarn.players.find((p) => p.name === finalName)) {
+                const postFix = `-${++count}`;
+                const trimmed = originalName.substring(
+                    0,
+                    net.Constants.PlayerNameMaxLen - postFix.length,
+                );
+                finalName = trimmed + postFix;
+            }
+        }
+
         const player = new Player(
             this.game,
             pos,
             layer,
+            finalName,
             socketId,
             joinMsg,
             ip,
@@ -1208,6 +1225,7 @@ export class Player extends BaseGameObject {
         game: Game,
         pos: Vec2,
         layer: number,
+        name: string,
         socketId: string,
         joinMsg: net.JoinMsg,
         ip: string,
@@ -1220,12 +1238,11 @@ export class Player extends BaseGameObject {
 
         this.layer = layer;
 
+        this.name = name;
         this.socketId = socketId;
         this.ip = ip;
         this.findGameIp = findGameIp;
         this.userId = userId;
-
-        this.name = validateUserName(joinMsg.name).validName;
 
         this.isMobile = joinMsg.isMobile;
 
@@ -2111,6 +2128,10 @@ export class Player extends BaseGameObject {
         } else {
             // spectating someone currently who is still alive
             player = this.spectating;
+        }
+        // temporary guard while the spectating code is not fixed
+        if (!player) {
+            player = this;
         }
 
         const radius = player.cullingZoom + 4;

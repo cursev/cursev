@@ -23,6 +23,7 @@ import { type MapSprite, MapSpriteBarn } from "../objects/mapSprite";
 import type { ParticleBarn } from "../objects/particles";
 import type { PlaneBarn } from "../objects/plane";
 import type { Player, PlayerBarn } from "../objects/player";
+import { SDK } from "../sdk";
 import type { InputBindUi, InputBinds } from "./../inputBinds";
 import type { Localization } from "./localization";
 import { PieTimer } from "./pieTimer";
@@ -359,7 +360,7 @@ export class UiManager {
 
         // Display full screen
         let showFullScreen = device.os == "ios" ? "none" : "block";
-        if (device.touch) {
+        if (device.touch || SDK.isAnySDK) {
             showFullScreen = "none";
         }
         $("#btn-game-fullscreen").css("display", showFullScreen);
@@ -1281,6 +1282,8 @@ export class UiManager {
     }
 
     removeAds() {
+        SDK.removeAllAds();
+
         if (!window.aiptag) return;
         const ads = ["728x90", "300x250_2"];
         for (let i = 0; i < ads.length; i++) {
@@ -1292,8 +1295,15 @@ export class UiManager {
     }
 
     refreshMainPageAds() {
-        if (!window.aiptag) return;
         const ads = ["728x90"];
+
+        if (SDK.isCrazyGames) {
+            for (let i = 0; i < ads.length; i++) {
+                SDK.requestAd(ads[i]);
+            }
+        }
+
+        if (!window.aiptag) return;
         for (let i = 0; i < ads.length; i++) {
             const ad = ads[i];
             window.aiptag.cmd.display.push(() => {

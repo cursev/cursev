@@ -119,7 +119,15 @@ export const loadout = {
             },
             ...userLoadout,
         };
-        const itemsToCheck = ["outfit", "melee", "primary", "secondary", "heal", "boost", "player_icon"] as const;
+        const itemsToCheck = [
+            "outfit",
+            "melee",
+            "primary",
+            "secondary",
+            "heal",
+            "boost",
+            "player_icon",
+        ] as const;
 
         itemsToCheck.forEach((item) => {
             newLoadout[item] = checkTypeExists(newLoadout[item]);

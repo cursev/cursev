@@ -318,6 +318,13 @@ export class LoadoutMenu {
                 const _elements = document.getElementsByClassName(
                     "customize-list-item-selected",
                 );
+                if (_elements.length > 0 && window.self === window.top) {
+                    _elements[0].scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                        inline: "nearest",
+                    });
+                }
             });
             $("#crosshair-size").on("input", () => {
                 this.updateLoadoutFromDOM();
@@ -1183,7 +1190,9 @@ export class LoadoutMenu {
         }
         this.modalCustomizeList.html("");
         this.modalCustomizeList.append(listItems);
-        this.modalCustomizeList.scrollTop(0);
+        if (window.self === window.top) {
+            this.modalCustomizeList.scrollTop(0);
+        }
 
         // Set itemInfo for equipped emotes
         if (category.loadoutType == "emote") {

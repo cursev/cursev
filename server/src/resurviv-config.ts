@@ -1,6 +1,6 @@
+import type { ConfigType, DeepPartial } from "../../configType";
 import type { MapDefs } from "../../shared/defs/mapDefs";
 import { GameConfig } from "../../shared/gameConfig";
-import type { ConfigType, DeepPartial } from "../../configType";
 import { THIS_REGION } from "./region";
 
 const BACKPACK_LEVEL = 3;
@@ -13,8 +13,8 @@ const mapName: Record<typeof THIS_REGION, keyof typeof MapDefs> = {
 
 const serverDataConfig = {
     local: {},
-    na: { },
-    eu: { },
+    na: {},
+    eu: {},
 };
 
 export const CustomConfig: DeepPartial<ConfigType> = {

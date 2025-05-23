@@ -2,6 +2,7 @@ import $ from "jquery";
 import { util } from "../../shared/utils/util";
 import { api } from "./api";
 import type { ConfigManager } from "./config";
+import { proxy } from "./proxy";
 import loadouts, { type ItemStatus, type Loadout } from "./ui/loadouts";
 
 type DataOrCallback =
@@ -22,6 +23,9 @@ function ajaxRequest(
         url: api.resolveUrl(url),
         type: "POST",
         timeout: 10 * 1000,
+        xhrFields: {
+            withCredentials: proxy.anyLoginSupported(),
+        },
         headers: {
             // Set a header to guard against CSRF attacks.
             //
@@ -108,6 +112,7 @@ export class Account {
         }
         this.requestsInFlight++;
         this.emit("request", this);
+
         ajaxRequest(url, data, (err, res) => {
             cb!(err, res);
             this.requestsInFlight--;
