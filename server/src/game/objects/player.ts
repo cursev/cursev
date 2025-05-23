@@ -449,7 +449,7 @@ export class PlayerBarn {
         // but keeping it just in case
         // since more than 4 players in a group crashes the client
         if (!group || group.players.length >= this.game.teamMode) {
-            group = this.addGroup(groupData.autoFill);
+            group = this.addGroup(groupData.groupHashToJoin, groupData.autoFill);
         }
 
         // only reserve slots on the first time this join token is used
@@ -459,7 +459,7 @@ export class PlayerBarn {
             group.reservedSlots += groupData.playerCount;
         }
 
-        groupData.groupHashToJoin = group.hash;
+        // groupData.groupHashToJoin = group.hash;
 
         // pre-existing group not created during this function call
         // players who join from the same group need the same team
@@ -470,10 +470,9 @@ export class PlayerBarn {
         return { group, team };
     }
 
-    addGroup(autoFill: boolean) {
+    addGroup(hash: string, autoFill: boolean) {
         // not using nodejs crypto because i want it to run in the browser too
         // and doesn't need to be cryptographically secure lol
-        const hash = Math.random().toString(16).slice(2);
         const groupId = this.groupIdAllocator.getNextId();
         const group = new Group(hash, groupId, autoFill, this.game.teamMode);
         this.groups.push(group);

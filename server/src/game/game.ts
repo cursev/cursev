@@ -464,7 +464,7 @@ export class Game {
         player.spectating = undefined;
         player.dir = v2.create(0, 0);
         player.setPartDirty();
-        if (player.canDespawn()) {
+        if (player.canDespawn() || true) {
             player.game.playerBarn.removePlayer(player);
         }
     }
@@ -489,16 +489,20 @@ export class Game {
         }
     }
 
-    addJoinTokens(tokens: FindGamePrivateBody["playerData"], autoFill: boolean) {
+    addJoinTokens(
+        tokens: FindGamePrivateBody["playerData"],
+        autoFill: boolean,
+        groupHash: FindGamePrivateBody["groupHash"],
+    ) {
         const groupData = {
             playerCount: tokens.length,
-            groupHashToJoin: "",
+            groupHashToJoin: groupHash!,
             autoFill,
         };
 
         for (const token of tokens) {
             this.joinTokens.set(token.token, {
-                expiresAt: Date.now() + 10000,
+                expiresAt: Infinity,
                 userId: token.userId,
                 groupData,
                 findGameIp: token.ip,

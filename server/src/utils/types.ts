@@ -47,6 +47,7 @@ export const zFindGamePrivateBody = z.object({
     autoFill: z.boolean(),
     mapName: z.string(),
     teamMode: z.number(),
+    groupHash: z.string().optional(),
     playerData: z.array(
         z.object({
             token: z.string(),
