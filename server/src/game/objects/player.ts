@@ -175,6 +175,9 @@ export class PlayerBarn {
             layer = spawnBuilding.layer;
         } else {
             pos = this.game.map.getSpawnPos(group, team);
+            if (group && !group.spawnPosition) {
+                group.spawnPosition = v2.copy(pos);
+            }
             layer = 0;
         }
 
@@ -232,10 +235,6 @@ export class PlayerBarn {
              * if this timer reaches 0, we know for a fact the client timer didn't end when it should've
              */
             player.roleMenuTicker = GameConfig.player.perkModeRoleSelectDuration + 5;
-        }
-
-        if (!this.game.map.perkMode && group && !group.spawnLeader) {
-            group.spawnLeader = player;
         }
 
         this.game.logger.info(`Player ${player.name} joined`);
@@ -1006,11 +1005,10 @@ export class Player extends BaseGameObject {
         this.promoteToRole(role);
         //v2.set() necessary since this.collider.pos is linked to this.pos by reference
         v2.set(this.pos, this.game.map.getSpawnPos(this.group, this.team));
-        this.layer = 0; //player was underground before this
-
-        if (this.group && !this.group.spawnLeader) {
-            this.group.spawnLeader = this;
+        if (this.group && !this.group.spawnPosition) {
+            this.group.spawnPosition = v2.copy(this.pos);
         }
+        this.layer = 0; // player was underground before this
 
         this.game.grid.updateObject(this);
         this.setDirty();
@@ -1719,6 +1717,25 @@ export class Player extends BaseGameObject {
         }
 
         this.mapIndicator?.updatePosition(this.pos);
+
+        // if we are the group leader and new players can still join the group
+        // update the group spawn position to our current position every 1 second
+        // if we are in a valid spawn position (not on water, inside a building, etc)
+        if (
+            this.group?.players[0] === this &&
+            this.game.canJoin &&
+            this.group.players.length < this.group.maxPlayers
+        ) {
+            this.group.spawnPositionTicker -= dt;
+
+            if (this.group.spawnPositionTicker <= 0) {
+                this.group.spawnPositionTicker = 1;
+
+                if (this.game.map.canPlayerSpawn(this.pos)) {
+                    this.group.spawnPosition = v2.copy(this.pos);
+                }
+            }
+        }
 
         this.pickupTicker -= dt;
 
@@ -2642,6 +2659,7 @@ export class Player extends BaseGameObject {
         this.hasteSeq++;
         this.animType = GameConfig.Anim.None;
         this.animSeq++;
+        this.healEffect = false;
         this.setDirty();
 
         this.shootHold = false;
@@ -4036,6 +4054,9 @@ export class Player extends BaseGameObject {
             if (this.inventory[chosenWeaponDef.ammo] < ammo) {
                 this.inventory[chosenWeaponDef.ammo] = ammo;
                 this.inventoryDirty = true;
+            }
+            if (index === this.curWeapIdx) {
+                this.shotSlowdownTimer = 0;
             }
         } else if (chosenWeaponDef.type == "throwable") {
             const backpackLevel = this.getGearLevel(this.backpack);

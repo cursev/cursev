@@ -1125,8 +1125,14 @@ export class GameMap {
                         1,
                     ) as AABB;
 
-                    // check all 4 corners of the AABB
+                    // check all 4 corners + center of the AABB
                     const points = collider.getPoints(bound);
+                    points.push(
+                        v2.create(
+                            bound.min.x + (bound.max.x - bound.min.x) / 2,
+                            bound.min.y + (bound.max.y - bound.min.y) / 2,
+                        ),
+                    );
 
                     for (let j = 0; j < points.length; j++) {
                         if (this.isOnWater(points[j], 0)) {
@@ -1146,8 +1152,14 @@ export class GameMap {
                         1,
                     ) as AABB;
 
-                    // check all 4 corners of the AABB
+                    // check all 4 corners + center of the AABB
                     const points = collider.getPoints(bound);
+                    points.push(
+                        v2.create(
+                            bound.min.x + (bound.max.x - bound.min.x) / 2,
+                            bound.min.y + (bound.max.y - bound.min.y) / 2,
+                        ),
+                    );
 
                     for (let j = 0; j < points.length; j++) {
                         if (!this.isOnWater(points[j], 0)) return false;
@@ -1967,26 +1979,16 @@ export class GameMap {
 
         let getPos: () => Vec2;
 
-        if (!group?.spawnLeader) {
-            if (this.game.gas.stage === GasMode.Moving) {
-                getPos = () => {
-                    return v2.add(
-                        this.game.gas.currentPos,
-                        util.randomPointInCircle(this.game.gas.currentRad),
-                    );
-                };
-            } else {
-                const spawnMin = v2.create(this.shoreInset, this.shoreInset);
-                const spawnMax = v2.create(
-                    this.width - this.shoreInset,
-                    this.height - this.shoreInset,
-                );
-                let spawnAabb: { min: Vec2; max: Vec2 } = collider.createAabb(
-                    this.game.gas.stage === GasMode.Moving
-                        ? this.game.gas.currentPos
-                        : spawnMin,
-                    spawnMax,
-                );
+        if (!group?.spawnPosition) {
+            const spawnMin = v2.create(this.shoreInset, this.shoreInset);
+            const spawnMax = v2.create(
+                this.width - this.shoreInset,
+                this.height - this.shoreInset,
+            );
+            let spawnAabb: { min: Vec2; max: Vec2 } = collider.createAabb(
+                spawnMin,
+                spawnMax,
+            );
 
                 if (this.factionMode && team) {
                     const rad = math.oriToRad(this.factionModeSplitOri ^ 1);
@@ -2004,80 +2006,104 @@ export class GameMap {
                     return util.randomPointInAabb(spawnAabb);
                 };
             }
-        } else {
+            else {
             const rad = GameConfig.player.teammateSpawnRadius;
-            const pos = group.spawnLeader.pos;
+            const pos = group.spawnPosition;
             getPos = () => {
                 return v2.add(pos, util.randomPointInCircle(rad));
             };
         }
-        return this.getRandomSpawnPos(getPos);
+        return this.getRandomSpawnPos(getPos, group, team);
     }
 
     getRandomSpawnPos(getPos: () => Vec2, group?: Group, team?: Team): Vec2 {
-        let attempts = 0;
-        let collided = true;
+        let pos = getPos();
 
-        const circle = collider.createCircle(getPos(), GameConfig.player.radius);
+        this.trySpawn(
+            "player",
+            () => {
+                v2.set(pos, getPos());
 
-        while (attempts++ < 500 && collided) {
-            collided = false;
-            v2.set(circle.pos, getPos());
-
-            if (this.isOnWater(circle.pos, 0)) {
-                collided = true;
-                continue;
-            }
-
-            const objs = this.grid.intersectCollider(circle);
-
-            for (let i = 0; i < objs.length; i++) {
-                const obj = objs[i];
-                if (obj.layer !== 0) continue;
-                if (obj.type !== "obstacle") continue;
-                if (coldet.test(circle, obj.collision)) {
-                    collided = true;
-                    break;
+                if (!this.canPlayerSpawn(pos)) {
+                    return false;
                 }
-            }
 
-            for (let i = 0; i < this.game.playerBarn.livingPlayers.length; i++) {
-                const player = this.game.playerBarn.livingPlayers[i];
-                if (group && player.groupId === group.groupId) continue;
-                if (team && player.teamId === team.teamId) continue;
+                for (let i = 0; i < this.game.playerBarn.livingPlayers.length; i++) {
+                    const player = this.game.playerBarn.livingPlayers[i];
+                    if (group && player.groupId === group.groupId) continue;
+                    if (team && player.teamId === team.teamId) continue;
 
-                if (v2.distance(player.pos, circle.pos) < GameConfig.player.minSpawnRad) {
-                    collided = true;
-                    break;
+                    if (v2.distance(player.pos, pos) < GameConfig.player.minSpawnRad) {
+                        return false;
+                    }
                 }
-            }
 
-            // prevent players from spawning bellow airdrops or grenades
+                // prevent players from spawning bellow airdrops or grenades
 
-            for (let i = 0; i < this.game.airdropBarn.airdrops.length; i++) {
-                const airdrop = this.game.airdropBarn.airdrops[i];
-                if (v2.distance(airdrop.pos, circle.pos) < 8) {
-                    collided = true;
-                    break;
+                for (let i = 0; i < this.game.airdropBarn.airdrops.length; i++) {
+                    const airdrop = this.game.airdropBarn.airdrops[i];
+                    if (v2.distance(airdrop.pos, pos) < 8) {
+                        return false;
+                    }
                 }
-            }
 
-            for (let i = 0; i < this.game.projectileBarn.projectiles.length; i++) {
-                const projectile = this.game.projectileBarn.projectiles[i];
-                if (projectile.layer !== 0) continue;
-                const player = this.game.objectRegister.getById(projectile.playerId);
-                if (player?.__type !== ObjectType.Player) continue;
-                if (group && player.groupId === group.groupId) continue;
-                if (team && player.teamId === team.teamId) continue;
+                for (let i = 0; i < this.game.projectileBarn.projectiles.length; i++) {
+                    const projectile = this.game.projectileBarn.projectiles[i];
+                    if (projectile.layer !== 0) continue;
+                    const player = this.game.objectRegister.getById(projectile.playerId);
+                    if (player?.__type !== ObjectType.Player) continue;
+                    if (group && player.groupId === group.groupId) continue;
+                    if (team && player.teamId === team.teamId) continue;
 
-                if (v2.distance(projectile.pos, circle.pos) < 16) {
-                    collided = true;
-                    break;
+                    if (v2.distance(projectile.pos, pos) < 16) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            500,
+        );
+
+        return pos;
+    }
+
+    canPlayerSpawn(pos: Vec2) {
+        const circle = collider.createCircle(pos, GameConfig.player.radius);
+
+        if (this.isOnWater(pos, 0)) {
+            return false;
+        }
+
+        const objs = this.game.grid.intersectCollider(circle);
+
+        for (let i = 0; i < objs.length; i++) {
+            const obj = objs[i];
+            if (obj.layer !== 0) continue;
+            if (obj.__type === ObjectType.Obstacle) {
+                if (obj.collidable && coldet.test(circle, obj.collider)) {
+                    return false;
+                }
+            } else if (obj.__type === ObjectType.Building) {
+                for (let j = 0; j < obj.surfaces.length; j++) {
+                    const surface = obj.surfaces[j];
+                    for (let k = 0; k < surface.colliders.length; k++) {
+                        if (coldet.test(circle, surface.colliders[k])) {
+                            return false;
+                        }
+                    }
+                }
+
+                for (let j = 0; j < obj.zoomRegions.length; j++) {
+                    const zoomRegion = obj.zoomRegions[j];
+                    if (zoomRegion.zoomIn && coldet.test(circle, zoomRegion.zoomIn)) {
+                        return false;
+                    }
                 }
             }
         }
 
-        return circle.pos;
+        return true;
     }
 
     clampToMapBounds(pos: Vec2, rad = 0) {
