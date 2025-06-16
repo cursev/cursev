@@ -15,9 +15,9 @@ interface StageData {
 const GasStages: StageData[] = [
     {
         mode: GasMode.Waiting,
-        duration: 60,
+        duration: Infinity,
         rad: 0,
-        damage: 55,
+        damage: 0,
     },
 ];
 
