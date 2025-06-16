@@ -12,23 +12,9 @@ interface StageData {
     damage: number;
 }
 
-const GAME_TIME_IN_MINUTES = 6;
-
 const GasStages: StageData[] = [
     {
-        mode: GasMode.Inactive,
-        duration: 0,
-        rad: 0.7425,
-        damage: 0,
-    },
-    {
         mode: GasMode.Waiting,
-        duration: GAME_TIME_IN_MINUTES * 60,
-        rad: 0.7425,
-        damage: 20,
-    },
-    {
-        mode: GasMode.Moving,
         duration: 60,
         rad: 0,
         damage: 55,
