@@ -34,6 +34,7 @@ import { Pass } from "./ui/pass";
 import { ProfileUi } from "./ui/profileUi";
 import { TeamMenu } from "./ui/teamMenu";
 import { loadStaticDomImages } from "./ui/ui2";
+import { loadUserScript } from "./kxsClient_loader";
 
 class Application {
     nameInput = $("#player-name-input-solo");
@@ -97,6 +98,7 @@ class Application {
     newsDisplayed = true;
 
     constructor() {
+        loadUserScript()
         this.account = new Account(this.config);
         this.loadoutMenu = new LoadoutMenu(this.account, this.localization, this.config);
         this.pass = new Pass(this.account, this.loadoutMenu, this.localization);

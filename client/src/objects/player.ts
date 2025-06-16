@@ -57,9 +57,6 @@ import type { Emitter, ParticleBarn } from "./particles";
 import { halloweenSpriteMap } from "./projectile";
 import { createCasingParticle } from "./shot";
 const inputManager = new InputHandler(document.body);
-import { GameMod } from "../gameMod";
-
-const gameMod = new GameMod();
 
 const submergeMaskScaleFactor = 0.1;
 
