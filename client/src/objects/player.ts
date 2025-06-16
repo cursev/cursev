@@ -885,14 +885,12 @@ export class Player implements AbstractObject {
                 this.m_visualDir = v2.copy(this.m_dir);
             }
         } else {
-            if (gameMod.isLocalRotation && gameMod.isInterpolation) {
-                if (
-                    Math.abs(this.m_pos.x - this.m_posOld.x) <= 50 &&
-                    Math.abs(this.m_pos.y - this.m_posOld.y) <= 50
-                ) {
-                    this.m_pos.x += (this.m_posOld.x - this.m_pos.x) * 0.5;
-                    this.m_pos.y += (this.m_posOld.y - this.m_pos.y) * 0.5;
-                }
+            if (
+                Math.abs(this.m_pos.x - this.m_posOld.x) <= 50 &&
+                Math.abs(this.m_pos.y - this.m_posOld.y) <= 50
+            ) {
+                this.m_pos.x += (this.m_posOld.x - this.m_pos.x) * 0.5;
+                this.m_pos.y += (this.m_posOld.y - this.m_pos.y) * 0.5;
             }
             this.m_visualPos = v2.copy(this.m_pos);
             this.m_visualDir = v2.copy(this.m_dir);
@@ -2055,7 +2053,7 @@ export class Player implements AbstractObject {
         const mouseX = inputManager.mousePos.x;
         const isActivePlayer = this.activeId === this.__id;
         const isLocalAndNotSpectating = isActivePlayer && !this.isSpectating;
-        const localRotationEnabled = gameMod.isLocalRotation && !device.mobile;
+        const localRotationEnabled = true && !device.mobile;
         if (localRotationEnabled && isLocalAndNotSpectating) {
             this.bodyContainer.rotation = Math.atan2(
                 mouseY - window.innerHeight / 2,
@@ -2744,7 +2742,7 @@ export class PlayerBarn {
     playerStatus: Record<number, PlayerStatus> = {};
     anonPlayerNames = false;
 
-    onMapLoad(_e: unknown) {}
+    onMapLoad(_e: unknown) { }
 
     m_update(
         dt: number,
@@ -2839,7 +2837,7 @@ export class PlayerBarn {
 
             const fade =
                 !status.dead ||
-                (playerInfo.teamId != activeInfo.teamId && status.role != "leader")
+                    (playerInfo.teamId != activeInfo.teamId && status.role != "leader")
                     ? 0
                     : 0.6;
 
