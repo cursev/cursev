@@ -17,7 +17,7 @@ const templates = {
     language,
 };
 
-type AcceptedLocales = "en" | "es";
+type AcceptedLocales = "en";
 
 type Routes = "player" | "main";
 
@@ -33,8 +33,8 @@ class Ads {
         survevio_300x250_playerprofile_top: "survevio_300x250_playerprofile",
         survevio_300x250_playerprofile_bottom: "survevio_300x250_playerprofile",
     };
-    showFreestarAds(_slotIds: unknown) {}
-    getFreestarSlotPlacement(_slotId: unknown) {}
+    showFreestarAds(_slotIds: unknown) { }
+    getFreestarSlotPlacement(_slotId: unknown) { }
 }
 
 export class App {
@@ -65,15 +65,15 @@ export class App {
                     .css("display", "block")
                     .attr("href", `/stats/?slug=${config.profile.slug}`);
             }
-        } catch (_err) {}
+        } catch (_err) { }
         // Ignore
         // Load config
         this.config = new ConfigManager();
-        this.config.load(() => {});
+        this.config.load(() => { });
 
         this.localization = new Localization(
             "en",
-            ["en", "es"],
+            ["en"],
             {
                 en: EnJs as unknown as Record<string, string>,
             },
