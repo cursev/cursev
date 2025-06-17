@@ -260,7 +260,11 @@ process.on("message", async (data: MainToWorkerMsg) => {
             res: res as AtlasRes,
             data: builder.atlasJson,
         } satisfies WorkerToMainMsg);
+
+        await new Promise(resolve => setTimeout(resolve, 100));
     }
+    await new Promise(resolve => setTimeout(resolve, 500));
+
 
     process.exit();
 });

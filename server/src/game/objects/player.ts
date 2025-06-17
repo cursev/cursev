@@ -297,7 +297,7 @@ export class PlayerBarn {
 
                     const randomPlayer =
                         promotablePlayers[
-                            util.randomInt(0, promotablePlayers.length - 1)
+                        util.randomInt(0, promotablePlayers.length - 1)
                         ];
                     randomPlayer.promoteToRole(scheduledRole.role);
                 }
@@ -428,9 +428,9 @@ export class PlayerBarn {
 
     getGroupAndTeam({ groupData }: JoinTokenData):
         | {
-              group?: Group;
-              team?: Team;
-          }
+            group?: Group;
+            team?: Team;
+        }
         | undefined {
         if (!this.game.isTeamMode) return undefined;
 
@@ -1683,12 +1683,12 @@ export class Player extends BaseGameObject {
         //can't collide with objects in spectator mode
         const objs = this.debug.spectatorMode
             ? //so spectators can go underground, need to be able to interact with stairs
-              this.game.grid
-                  .intersectCollider(circle)
-                  .filter(
-                      (o): o is Structure =>
-                          o.__type == ObjectType.Structure && o.stairs.length != 0,
-                  )
+            this.game.grid
+                .intersectCollider(circle)
+                .filter(
+                    (o): o is Structure =>
+                        o.__type == ObjectType.Structure && o.stairs.length != 0,
+                )
             : this.game.grid.intersectCollider(circle);
 
         for (let i = 0; i < steps; i++) {
@@ -1788,9 +1788,9 @@ export class Player extends BaseGameObject {
                         if (
                             this.bagSizes[closestLoot.type] &&
                             this.inventory[closestLoot.type] >=
-                                this.bagSizes[closestLoot.type][
-                                    this.getGearLevel(this.backpack)
-                                ]
+                            this.bagSizes[closestLoot.type][
+                            this.getGearLevel(this.backpack)
+                            ]
                         ) {
                             break;
                         }
@@ -2232,7 +2232,7 @@ export class Player extends BaseGameObject {
         if (
             player.playerStatusDirty ||
             player.playerStatusTicker >
-                net.getPlayerStatusUpdateRate(this.game.map.factionMode)
+            net.getPlayerStatusUpdateRate(this.game.map.factionMode)
         ) {
             let statuses = this.game.modeManager.getPlayerStatuses(player);
             if (statuses.length > 255) {
@@ -3047,7 +3047,7 @@ export class Player extends BaseGameObject {
 
         return (
             this.game.modeManager.getIdContext(medic) ==
-                this.game.modeManager.getIdContext(this) &&
+            this.game.modeManager.getIdContext(this) &&
             !!util.sameLayer(medic.layer, this.layer) &&
             v2.lengthSqr(v2.sub(medic.pos, this.pos)) <= effectRange * effectRange
         );
@@ -3213,9 +3213,9 @@ export class Player extends BaseGameObject {
     shouldAcceptInput(input: number): boolean {
         return this.downed
             ? (input === GameConfig.Input.Revive && this.hasPerk("self_revive")) || // Players can revive themselves if they have the self-revive perk.
-                  (input === GameConfig.Input.Cancel &&
-                      this.game.modeManager.isReviving(this)) || // Players can cancel their own revives (if they are reviving themself, which is only true if they have the perk).
-                  input === GameConfig.Input.Interact // Players can interact with obstacles while downed.
+            (input === GameConfig.Input.Cancel &&
+                this.game.modeManager.isReviving(this)) || // Players can cancel their own revives (if they are reviving themself, which is only true if they have the perk).
+            input === GameConfig.Input.Interact // Players can interact with obstacles while downed.
             : true;
     }
 
@@ -3449,6 +3449,12 @@ export class Player extends BaseGameObject {
             case "4xscope":
             case "8xscope":
             case "15xscope":
+            case "30xscope":
+            case "60xscope":
+            case "120xscope":
+            case "240xscope":
+            case "580xscope":
+            case "1160xscope":
                 if (this.inventory[msg.useItem]) {
                     this.scope = msg.useItem;
                     this.inventoryDirty = true;
@@ -3986,9 +3992,9 @@ export class Player extends BaseGameObject {
             string,
             GunDef | ThrowableDef | MeleeDef,
         ]) => boolean = this.hasPerk("rare_potato")
-            ? ([_type, def]) =>
-                  !def.noPotatoSwap && def.quality == PerkProperties.rare_potato.quality
-            : ([_type, def]) => !def.noPotatoSwap;
+                ? ([_type, def]) =>
+                    !def.noPotatoSwap && def.quality == PerkProperties.rare_potato.quality
+                : ([_type, def]) => !def.noPotatoSwap;
 
         const weaponChoices = enumerableDefs.filter(filterCb);
         const [chosenWeaponType, chosenWeaponDef] =

@@ -720,6 +720,96 @@ const ScopeDefs: Record<string, ScopeDef> = {
             pickup: "scope_pickup_01",
         },
     },
+    "30xscope": {
+        name: "30x Scope",
+        type: "scope",
+        level: 30,
+        lootImg: {
+            sprite: "loot-scope-05.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "scope_pickup_01",
+        },
+    },
+    "60xscope": {
+        name: "60x Scope",
+        type: "scope",
+        level: 60,
+        lootImg: {
+            sprite: "loot-scope-06.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "scope_pickup_01",
+        },
+    },
+    "120xscope": {
+        name: "120x Scope",
+        type: "scope",
+        level: 120,
+        lootImg: {
+            sprite: "loot-scope-07.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "scope_pickup_01",
+        },
+    },
+    "240xscope": {
+        name: "240x Scope",
+        type: "scope",
+        level: 240,
+        lootImg: {
+            sprite: "loot-scope-08.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "scope_pickup_01",
+        },
+    },
+    "580xscope": {
+        name: "580x Scope",
+        type: "scope",
+        level: 580,
+        lootImg: {
+            sprite: "loot-scope-09.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "scope_pickup_01",
+        },
+    },
+    "1160xscope": {
+        name: "1160x Scope",
+        type: "scope",
+        level: 1160,
+        lootImg: {
+            sprite: "loot-scope-10.img",
+            tint: 0xffffff,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0,
+            scale: 0.2,
+        },
+        sound: {
+            pickup: "scope_pickup_01",
+        },
+    }
 };
 
 const SkinDefs = {

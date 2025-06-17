@@ -20,24 +20,7 @@ export function downloadFile(
 }
 
 const Locales = {
-    da: "Dansk",
-    de: "Deutsch",
     en: "English",
-    es: "Español",
-    fr: "Français",
-    it: "Italiano",
-    nl: "Nederlands",
-    pl: "Polski",
-    pt: "Português",
-    ru: "Русский",
-    sv: "Svenska",
-    vn: "Tiếng Việt",
-    tr: "Türkçe",
-    jp: "日本語",
-    ko: "한국어",
-    th: "ภาษาไทย",
-    "zh-cn": "中文简体",
-    "zh-tw": "中文繁體",
 };
 
 export type Locale = keyof typeof Locales;

@@ -13,8 +13,8 @@ export const AtlasesConfig = {
     // change filesDir to ../public/img
     // and loaderFormat to .png
     // if you want to use svgs instead of cached pngs
-    filesDir: "./pngs/",
-    loaderFormat: ".png",
+    filesDir: "../public/img",
+    loaderFormat: ".svg",
 };
 
 export interface AtlasDef {

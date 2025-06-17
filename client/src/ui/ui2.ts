@@ -441,6 +441,7 @@ export class UiManager2 {
                 fn,
             });
             elem.addEventListener(event, fn);
+            console.log(event, fn)
         };
 
         const addItemAction = (

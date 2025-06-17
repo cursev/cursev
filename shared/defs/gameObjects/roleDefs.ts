@@ -29,8 +29,8 @@ function getTeamHelmet(
 
 type DeepPartial<T> = T extends object
     ? {
-          [P in keyof T]?: DeepPartial<T[P]>;
-      }
+        [P in keyof T]?: DeepPartial<T[P]>;
+    }
     : T;
 
 type DefaultItems = {
@@ -65,6 +65,12 @@ type DefaultItems = {
         "4xscope": number;
         "8xscope": number;
         "15xscope": number;
+        "30xscope": number;
+        "60xscope": number;
+        "120xscope": number;
+        "240xscope": number;
+        "580xscope": number;
+        "1160xscope": number;
     };
 };
 
@@ -140,6 +146,12 @@ function createDefaultItems<T extends DefaultItems>(e: DeepPartial<T>): T {
             "4xscope": 0,
             "8xscope": 0,
             "15xscope": 0,
+            "30xscope": 0,
+            "60xscope": 0,
+            "120xscope": 0,
+            "240xscope": 0,
+            "580xscope": 0,
+            "1160xscope": 0,
         },
     };
     return util.mergeDeep(defaultItems, e || {});
