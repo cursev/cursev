@@ -124,13 +124,13 @@ export function setLoadout(joinMsg: JoinMsg, player: Player) {
         const slot = GameConfig.WeaponSlot.Secondary;
         player.weapons[slot].type = joinMsg.loadout.secondary;
 
-        // Disable dual spas in normal mode
-        if (
-            player.weapons[GameConfig.WeaponSlot.Primary].type === "spas12" &&
-            player.weapons[slot].type === "spas12"
-        ) {
-            player.weapons[slot].type = "mosin";
-        }
+        // // Disable dual spas in normal mode
+        // if (
+        //     player.weapons[GameConfig.WeaponSlot.Primary].type === "spas12" &&
+        //     player.weapons[slot].type === "spas12"
+        // ) {
+        //     player.weapons[slot].type = "mosin";
+        // }
 
         const gunDef = GameObjectDefs[player.weapons[slot].type] as GunDef;
         player.weapons[slot].ammo = gunDef.maxClip;
