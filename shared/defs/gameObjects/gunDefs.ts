@@ -3192,6 +3192,66 @@ export const GunDefs: Record<string, GunDef> = {
             deploy: "gun_switch_01",
         },
     },
+    flare_gun_01: {
+        name: "FLARESTORM UHQ 1337",
+        type: "gun",
+        quality: 5,
+        fireMode: "auto", // 🔁 Rafale continue
+        caseTiming: "shoot",
+        ammo: "flare",
+        dualWieldType: "flare_gun_dual",
+        pistol: false,
+        outsideOnly: true, // Peut rester si tu veux éviter l'abus en intérieur
+        ammoSpawnCount: 10,
+        ignoreEndlessAmmo: false,
+        maxClip: 1200,
+        maxReload: 1200,
+        extendedClip: 15000,
+        extendedReload: 1200,
+        reloadTime: 0.5, // Plus long pour équilibrer la folie
+        fireDelay: 0.06, // 🔫 16.6 tirs/seconde
+        switchDelay: 0.5,
+        barrelLength: 2.8,
+        barrelOffset: 0,
+        recoilTime: 1e10, // Pas de recul de tir
+        moveSpread: 10,
+        shotSpread: 0.8,
+        bulletCount: 1,
+        bulletType: "bullet_flare", // ✅ Balle classique
+        noSplinter: true,
+        headshotMult: 2.5,
+        speed: { equip: -5, attack: -10 },
+        lootImg: {
+            sprite: "loot-weapon-flare-gun.img",
+            tint: 0xff3300,
+            border: "loot-circle-outer-01.img",
+            borderTint: 0xff6600,
+            scale: 0.35,
+        },
+        worldImg: {
+            sprite: "gun-short-01.img",
+            scale: { x: 0.6, y: 0.55 },
+            tint: 0xff5500,
+            leftHandOffset: { x: 4, y: 0 },
+            recoil: 0.75,
+            magImg: {
+                sprite: "gun-pkp-bot-01.img",
+                pos: { x: 0, y: -14 },
+            },
+        },
+        particle: {
+            shellScale: 1.2,
+            shellOffset: 0.35,
+            shellReverse: true,
+        },
+        sound: {
+            shoot: "flare_gun_01", // ✅ Son classique
+            reload: "flare_gun_reload_01",
+            pickup: "gun_pickup_01",
+            empty: "empty_fire_01",
+            deploy: "gun_switch_01",
+        },
+    },
     flare_gun_dual: {
         name: "Dual Flare Gun",
         type: "gun",
