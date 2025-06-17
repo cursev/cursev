@@ -106,13 +106,20 @@ export class BitStream extends bb.BitStream {
 
     writeFloat(f: number, min: number, max: number, bits: number) {
         assert(bits > 0 && bits < 31);
-        assert(
-            f >= min && f <= max,
-            `writeFloat: value out of range: ${f}, range: [${min}, ${max}]`,
-        );
+        
+        // Handle overflow by wrapping the value around the range
+        if (f > max || f < min) {
+            const range_size = max - min;
+            f = min + ((f - min) % range_size);
+            
+            // Handle negative values after modulo
+            if (f < min) {
+                f += range_size;
+            }
+        }
+        
         const range = (1 << bits) - 1;
-        const x = math.clamp(f, min, max);
-        const t = (x - min) / (max - min);
+        const t = (f - min) / (max - min);
         const v = t * range + 0.5;
         this.writeBits(v, bits);
     }
@@ -122,7 +129,19 @@ export class BitStream extends bb.BitStream {
         const range = (1 << bits) - 1;
         const x = this.readBits(bits);
         const t = x / range;
-        const v = min + t * (max - min);
+        let v = min + t * (max - min);
+        
+        // Apply wrapping behavior for values that exceed the range
+        if (v > max || v < min) {
+            const range_size = max - min;
+            v = min + ((v - min) % range_size);
+            
+            // Handle negative values after modulo
+            if (v < min) {
+                v += range_size;
+            }
+        }
+        
         return v;
     }
 
