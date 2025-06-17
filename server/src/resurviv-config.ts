@@ -28,7 +28,7 @@ export const CustomConfig: DeepPartial<ConfigType> = {
         },
         {
             mapName: mapName[THIS_REGION],
-            teamMode: 2,
+            teamMode: 1, //1 solo, 2 duo, 4 squad
             enabled: true,
         },
         {
