@@ -1093,7 +1093,7 @@ const BaseDefs: Record<string, MeleeDef> = {
     },
 };
 
-const SkinDefs: Record<string, MeleeDef> = {
+export const SkinDefs: Record<string, MeleeDef> = {
     fists: defineMeleeSkin("fists", {
         name: "Fists",
         rarity: 0,
@@ -1351,3 +1351,4 @@ const SkinDefs: Record<string, MeleeDef> = {
 };
 
 export const MeleeDefs: Record<string, MeleeDef> = { ...BaseDefs, ...SkinDefs };
+export const SkinDefsForMele = SkinDefs;

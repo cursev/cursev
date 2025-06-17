@@ -66,7 +66,7 @@ const BaseDefs: Record<string, OutfitDef> = {
     },
 };
 
-const SkinDefs: Record<string, OutfitDef> = {
+export const SkinDefs: Record<string, OutfitDef> = {
     outfitBase: defineOutfitSkin("outfitBase", {
         noDropOnDeath: true,
         name: "Basic Outfit",
