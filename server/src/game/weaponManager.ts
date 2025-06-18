@@ -628,13 +628,13 @@ export class WeaponManager {
         weapon.cooldown = itemDef.fireDelay;
         weapon.recoilTime = itemDef.recoilTime;
 
-        // Check firing location
-        if (itemDef.outsideOnly && this.player.indoors) {
-            const msg = new net.PickupMsg();
-            msg.type = net.PickupMsgType.GunCannotFire;
-            this.player.msgsToSend.push({ type: net.MsgType.Pickup, msg });
-            return;
-        }
+        // // Check firing location
+        // if (itemDef.outsideOnly && this.player.indoors) {
+        //     const msg = new net.PickupMsg();
+        //     msg.type = net.PickupMsgType.GunCannotFire;
+        //     this.player.msgsToSend.push({ type: net.MsgType.Pickup, msg });
+        //     return;
+        // }
 
         const direction = this.player.dir;
         const toMouseLen = this.player.toMouseLen;
