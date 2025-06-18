@@ -17,7 +17,7 @@ const esbuildConfig: BuildOptions = {
     logLevel: "info",
     format: "esm",
     define: {
-        "process.env.NODE_ENV": "'production'",
+        "process.env.NODE_ENV": "'local'",
     },
 };
 
