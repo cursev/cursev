@@ -16,8 +16,8 @@ export class AirdropBarn {
     constructor(readonly game: Game) { }
 
     addAirdrop(pos: Vec2, type: string) {
-        if (this.airdrops.length >= 20) {
-            console.warn(`Airdrop limit reached: ${this.airdrops.length}/20 airdrops active`);
+        if (this.airdrops.length >= 50) {
+            console.warn(`Airdrop limit reached: ${this.airdrops.length}/50 airdrops active`);
             return;
         }
         
@@ -26,7 +26,7 @@ export class AirdropBarn {
         this.game.playerBarn.addMapPing("ping_airdrop", pos);
         this.game.objectRegister.register(airdrop);
         
-        console.log(`Airdrop created: ${this.airdrops.length}/20 airdrops active`);
+        console.log(`Airdrop created: ${this.airdrops.length}/50 airdrops active`);
     }
 
     update(dt: number) {
