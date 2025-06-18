@@ -20,19 +20,33 @@ export const Main: MapDef = {
             { name: "log_11", channel: "sfx" },
             { name: "log_12", channel: "sfx" },
         ],
-        atlases: ["gradient", "loadout", "shared", "main"],
+        atlases: [
+            "gradient",
+            "loadout",
+            "shared",
+            "main",
+            "desert",
+            "faction",
+            "halloween",
+            "potato",
+            "snow",
+            "woods",
+            "cobalt",
+            "savannah",
+            "may"
+        ],
     },
     biome: {
         colors: {
-            background: 0x20536e,
-            water: 0x3282ab,
-            waterRipple: 0xb3f0ff,
-            beach: 0xcdb35b,
-            riverbank: 0x905e24,
-            grass: 0x80af49,
-            underground: 0x1b0d03,
-            playerSubmerge: 0x2b8ca4,
-            playerGhillie: 0x83af50,
+            background: 0x0a1b26,       // bleu nuit très sombre
+            water: 0x1a3b55,            // bleu profond
+            waterRipple: 0x4c7d8f,      // bleu-gris adouci
+            beach: 0x7a6b30,            // sable terni
+            riverbank: 0x5a3b1a,        // brun foncé
+            grass: 0x3d5e2b,            // vert mousse foncé
+            underground: 0x0e0603,      // quasi-noir brun
+            playerSubmerge: 0x1a4c5c,   // bleu-vert assombri
+            playerGhillie: 0x4a6b3c,    // vert olive mat
         },
         valueAdjust: 1,
         sound: { riverShore: "sand" },
@@ -45,8 +59,8 @@ export const Main: MapDef = {
         },
     },
     gameMode: {
-        maxPlayers: 80,
-        killLeaderEnabled: true,
+        maxPlayers: 200,
+        killLeaderEnabled: false,
     },
     gameConfig: {
         planes: {
@@ -767,8 +781,8 @@ export const Main: MapDef = {
 
 type DeepPartial<T> = T extends object
     ? {
-          [P in keyof T]?: DeepPartial<T[P]>;
-      }
+        [P in keyof T]?: DeepPartial<T[P]>;
+    }
     : T;
 
 export type PartialMapDef = DeepPartial<MapDef>;
