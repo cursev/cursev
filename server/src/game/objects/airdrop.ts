@@ -16,8 +16,8 @@ export class AirdropBarn {
     constructor(readonly game: Game) { }
 
     addAirdrop(pos: Vec2, type: string) {
-        const airdrop = new Airdrop(this.game, pos, type);
         if (this.addAirdrop.length < 50) {
+            const airdrop = new Airdrop(this.game, pos, type);
             this.airdrops.push(airdrop);
             this.game.playerBarn.addMapPing("ping_airdrop", pos);
             this.game.objectRegister.register(airdrop);
