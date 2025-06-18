@@ -39,6 +39,34 @@ export class PlaneBarn {
     /** bounds where the plane can exist, not the bounds of the plane itself */
     planeBounds = collider.createAabb(v2.create(-512, -512), v2.create(1536, 1536));
 
+    private getNextId(): number | null {
+        // First try to use a free ID
+        if (this.freeIds.length > 0) {
+            return this.freeIds.shift()!;
+        }
+        
+        // Then try to get the next sequential ID
+        if (this.idNext <= MAX_ID) {
+            return this.idNext++;
+        }
+        
+        // No IDs available
+        return null;
+    }
+
+    private resetIdSystem(): void {
+        // Reset the ID system when we run out of IDs
+        this.idNext = 1;
+        this.freeIds = [];
+        
+        // Reassign IDs to existing planes
+        for (let i = 0; i < this.planes.length; i++) {
+            this.planes[i].id = this.idNext++;
+        }
+        
+        this.game.logger.warn(`Plane ID system reset. Active planes: ${this.planes.length}`);
+    }
+
     scheduledPlanes: Array<{
         time: number;
         options: PlaneOptions;
@@ -57,6 +85,17 @@ export class PlaneBarn {
     };
 
     constructor(readonly game: Game) {}
+    
+    private cleanupFreeIds(): void {
+        // Remove duplicate IDs and sort for better performance
+        this.freeIds = [...new Set(this.freeIds)].sort((a, b) => a - b);
+        
+        // Limit the number of free IDs to prevent memory bloat
+        if (this.freeIds.length > MAX_ID / 2) {
+            this.freeIds = this.freeIds.slice(0, MAX_ID / 2);
+        }
+    }
+    
     update(dt: number) {
         for (let i = 0; i < this.planes.length; i++) {
             const plane = this.planes[i];
@@ -74,6 +113,11 @@ export class PlaneBarn {
                 i--;
                 this.freeIds.push(plane.id);
             }
+        }
+        
+        // Cleanup free IDs periodically (every ~10 seconds at 20 TPS)
+        if (this.game.now % 200 === 0) {
+            this.cleanupFreeIds();
         }
 
         for (let i = 0; i < this.airstrikeZones.length; i++) {
@@ -257,20 +301,17 @@ export class PlaneBarn {
     }
 
     addAirdrop(pos: Vec2, type?: string) {
-        let id = 1;
-        if (this.idNext < MAX_ID) {
-            id = this.idNext++;
-        } else {
-            if (this.freeIds.length > 0) {
-                id = this.freeIds.shift()!;
-            } else {
-                assert(false, `Ran out of plane ids`);
+        let id = this.getNextId();
+        
+        if (id === null) {
+            // Try to reset the ID system once
+            this.resetIdSystem();
+            id = this.getNextId();
+            
+            if (id === null) {
+                this.game.logger.error("Plane Barn: Unable to allocate ID even after reset");
+                return;
             }
-        }
-
-        if (!id) {
-            this.game.logger.warn("Plane Barn: ran out of IDs");
-            return;
         }
 
         type ||= util.weightedRandom(this.game.map.mapDef.gameConfig.planes.crates).name;
@@ -400,20 +441,17 @@ export class PlaneBarn {
     }
 
     addAirStrike(pos: Vec2, dir: Vec2, playerId?: number) {
-        let id = 1;
-        if (this.idNext < MAX_ID) {
-            id = this.idNext++;
-        } else {
-            if (this.freeIds.length > 0) {
-                id = this.freeIds.shift()!;
-            } else {
-                assert(false, `Ran out of plane ids`);
+        let id = this.getNextId();
+        
+        if (id === null) {
+            // Try to reset the ID system once
+            this.resetIdSystem();
+            id = this.getNextId();
+            
+            if (id === null) {
+                this.game.logger.error("Plane Barn: Unable to allocate ID even after reset");
+                return;
             }
-        }
-
-        if (!id) {
-            this.game.logger.warn("Plane Barn: ran out of IDs");
-            return;
         }
 
         //necessary since something like projectile.pos could get passed in which would keep the reference.

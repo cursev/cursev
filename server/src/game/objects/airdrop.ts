@@ -16,12 +16,17 @@ export class AirdropBarn {
     constructor(readonly game: Game) { }
 
     addAirdrop(pos: Vec2, type: string) {
-        if (this.airdrops.length < 80) {
-            const airdrop = new Airdrop(this.game, pos, type);
-            this.airdrops.push(airdrop);
-            this.game.playerBarn.addMapPing("ping_airdrop", pos);
-            this.game.objectRegister.register(airdrop);
+        if (this.airdrops.length >= 20) {
+            console.warn(`Airdrop limit reached: ${this.airdrops.length}/20 airdrops active`);
+            return;
         }
+        
+        const airdrop = new Airdrop(this.game, pos, type);
+        this.airdrops.push(airdrop);
+        this.game.playerBarn.addMapPing("ping_airdrop", pos);
+        this.game.objectRegister.register(airdrop);
+        
+        console.log(`Airdrop created: ${this.airdrops.length}/20 airdrops active`);
     }
 
     update(dt: number) {
@@ -35,6 +40,7 @@ export class AirdropBarn {
         for (let i = 0; i < this.airdrops.length; i++) {
             const airdrop = this.airdrops[i];
             if (airdrop.landed) {
+                airdrop.destroy();
                 this.airdrops.splice(i, 1);
                 i--;
             }
@@ -57,6 +63,13 @@ export class Airdrop extends BaseGameObject {
 
     constructor(game: Game, pos: Vec2, obstacleType: string) {
         super(game, pos);
+        
+        // Vérification de sécurité du type d'obstacle
+        if (!MapObjectDefs[obstacleType]) {
+            console.error(`Airdrop: Type d'obstacle invalide dans le constructeur: ${obstacleType}`);
+            obstacleType = "crate_01"; // Type par défaut
+        }
+        
         this.obstacleType = obstacleType;
         const def = MapObjectDefs[this.obstacleType] as ObstacleDef;
         this.crateCollision = collider.transform(def.collision, this.pos, 0, 1);
@@ -103,7 +116,14 @@ export class Airdrop extends BaseGameObject {
                 }
             }
 
-            this.game.map.genObstacle(this.obstacleType, this.pos, 0);
+            // Vérification de sécurité pour éviter les crashes
+            if (MapObjectDefs[this.obstacleType]) {
+                this.game.map.genObstacle(this.obstacleType, this.pos, 0);
+            } else {
+                console.error(`Airdrop: Type d'obstacle invalide: ${this.obstacleType}`);
+                // Utiliser un type par défaut si le type est invalide
+                this.game.map.genObstacle("crate_01", this.pos, 0);
+            }
         } else {
             // airdrops parachute fallT only needs to be sent once to clients
             // but still need to be serialized for new clients that will get them into their FOV
