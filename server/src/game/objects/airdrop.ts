@@ -13,13 +13,16 @@ import { BaseGameObject } from "./gameObject";
 export class AirdropBarn {
     airdrops: Airdrop[] = [];
 
-    constructor(readonly game: Game) {}
+    constructor(readonly game: Game) { }
 
     addAirdrop(pos: Vec2, type: string) {
         const airdrop = new Airdrop(this.game, pos, type);
-        this.airdrops.push(airdrop);
-        this.game.playerBarn.addMapPing("ping_airdrop", pos);
-        this.game.objectRegister.register(airdrop);
+        if (this.addAirdrop.length < 100) {
+            this.airdrops.push(airdrop);
+            this.game.playerBarn.addMapPing("ping_airdrop", pos);
+            this.game.objectRegister.register(airdrop);
+
+        }
     }
 
     update(dt: number) {
