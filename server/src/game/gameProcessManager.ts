@@ -279,25 +279,31 @@ export class GameProcessManager implements GameManager {
     }
 
     async findGame(body: FindGamePrivateBody): Promise<string> {
-        let game = this.processes
-            .filter((proc) => {
-                return (
-                    proc.canJoin &&
-                    proc.avaliableSlots > 0 &&
-                    proc.teamMode === body.teamMode &&
-                    proc.mapName === body.mapName
-                );
-            })
-            .sort((a, b) => {
-                return a.startedTime - b.startedTime;
-            })[0];
-
-        if (!game) {
-            game = await this.newGame({
-                teamMode: body.teamMode,
-                mapName: body.mapName as keyof typeof MapDefs,
-            });
+        // S'il y a déjà une partie active, tout le monde la rejoint
+        const activeProcesses = this.processes.filter(p => !p.stopped);
+        if (activeProcesses.length > 0) {
+            const game = activeProcesses[0]; // Prendre la première partie active
+            
+            // if the game has not finished creating
+            // wait for it to be created to send the find game response
+            if (!game.created) {
+                return new Promise((resolve) => {
+                    game.onCreatedCbs.push((game) => {
+                        game.addJoinTokens(body.playerData, body.autoFill);
+                        resolve(game.id);
+                    });
+                });
+            }
+            
+            game.addJoinTokens(body.playerData, body.autoFill);
+            return game.id;
         }
+        
+        // Sinon créer une nouvelle partie
+        const game = await this.newGame({
+            teamMode: body.teamMode,
+            mapName: body.mapName as keyof typeof MapDefs,
+        });
 
         // if the game has not finished creating
         // wait for it to be created to send the find game response

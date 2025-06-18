@@ -68,22 +68,29 @@ class GameServer {
             };
         }
 
-        const gameId = await this.manager.findGame({
-            region: data.region,
-            version: data.version,
-            autoFill: data.autoFill,
-            mapName: data.mapName,
-            teamMode: data.teamMode,
-            playerData: data.playerData,
-            groupHash: data.groupHash,
-        });
+        try {
+            const gameId = await this.manager.findGame({
+                region: data.region,
+                version: data.version,
+                autoFill: data.autoFill,
+                mapName: data.mapName,
+                teamMode: data.teamMode,
+                playerData: data.playerData,
+                groupHash: data.groupHash,
+            });
 
-        return {
-            gameId,
-            useHttps: this.region.https,
-            hosts: [this.region.address],
-            addrs: [this.region.address],
-        };
+            return {
+                gameId,
+                useHttps: this.region.https,
+                hosts: [this.region.address],
+                addrs: [this.region.address],
+            };
+        } catch (error) {
+            this.logger.info(`/api/find_game: ${error instanceof Error ? error.message : 'Une erreur est survenue'}`);
+            return {
+                error: "game_in_progress"
+            };
+        }
     }
 
     sendData() {

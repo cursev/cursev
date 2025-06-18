@@ -782,6 +782,7 @@ class Application {
             invalid_captcha: this.localization.translate("index-invalid-captcha"),
             join_game_failed: this.localization.translate("index-failed-joining-game"),
             rate_limited: this.localization.translate("index-rate-limited"),
+            game_in_progress: "Une partie est déjà en cours. Veuillez attendre qu'elle se termine.",
         };
         if (err == "invalid_protocol") {
             this.showInvalidProtocolModal();

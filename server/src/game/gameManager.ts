@@ -130,24 +130,19 @@ export class SingleThreadGameManager implements GameManager {
     }
 
     async findGame(body: FindGamePrivateBody): Promise<string> {
-        let game = this.games
-            .filter((game) => {
-                return (
-                    game.canJoin &&
-                    game.teamMode === body.teamMode &&
-                    game.mapName === body.mapName
-                );
-            })
-            .sort((a, b) => {
-                return a.startedTime - b.startedTime;
-            })[0];
-
-        if (!game) {
-            game = await this.newGame({
-                teamMode: body.teamMode,
-                mapName: body.mapName as keyof typeof MapDefs,
-            });
+        // S'il y a déjà une partie active, tout le monde la rejoint
+        const activeGames = this.games.filter(g => !g.stopped);
+        if (activeGames.length > 0) {
+            const game = activeGames[0]; // Prendre la première partie active
+            game.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
+            return game.id;
         }
+        
+        // Sinon créer une nouvelle partie
+        const game = await this.newGame({
+            teamMode: body.teamMode,
+            mapName: body.mapName as keyof typeof MapDefs,
+        });
 
         game.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
 
