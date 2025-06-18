@@ -40,7 +40,7 @@ export const SplashThemes = {
 };
 
 export default defineConfig(({ mode }) => {
-    const isDev = mode === "development";
+    const isDev = true// mode === "development";
 
     const Config = getConfig(!isDev, "");
 
