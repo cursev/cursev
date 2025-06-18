@@ -5,7 +5,7 @@ import { util } from "../../shared/utils/util";
 const isProd = process.env["NODE_ENV"] === "production";
 export const serverConfigPath = isProd ? "../../" : "";
 // to remove "server/dist" from the path to load the config from...
-export const Config = getConfig(isProd, serverConfigPath);
+export const Config = getConfig(false, serverConfigPath);
 
 const BACKPACK_LEVEL = 3;
 
