@@ -63,7 +63,6 @@ declare global {
         }
     >;
 
-    const IS_DEV: boolean;
 
     const GIT_VERSION: string | undefined;
 

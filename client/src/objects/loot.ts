@@ -186,7 +186,7 @@ export class LootBarn {
                     const pos = loot.pos;
                     const rad = device.touch
                         ? activePlayer.m_rad +
-                          loot.rad * GameConfig.player.touchLootRadMult
+                        loot.rad * GameConfig.player.touchLootRadMult
                         : loot.rad;
                     const toPlayer = v2.sub(activePlayer.m_pos, pos);
                     const distSq = v2.lengthSqr(toPlayer);
@@ -235,7 +235,7 @@ export class LootBarn {
                 loot.container.position.set(screenPos.x, screenPos.y);
                 loot.container.scale.set(screenScale, screenScale);
 
-                if (IS_DEV && debug.render.loot && activePlayer.layer === loot.layer) {
+                if (debug.render.loot && activePlayer.layer === loot.layer) {
                     debugLines.addCircle(loot.pos, loot.rad, 0xff0000, 0);
                 }
             }

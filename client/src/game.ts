@@ -147,10 +147,10 @@ export class Game {
     ) {
         if (!this.connecting && !this.connected && !this.initialized) {
             if (this.m_ws) {
-                this.m_ws.onerror = function () {};
-                this.m_ws.onopen = function () {};
-                this.m_ws.onmessage = function () {};
-                this.m_ws.onclose = function () {};
+                this.m_ws.onerror = function () { };
+                this.m_ws.onopen = function () { };
+                this.m_ws.onmessage = function () { };
+                this.m_ws.onclose = function () { };
                 this.m_ws.close();
                 this.m_ws = null;
             }
@@ -256,9 +256,7 @@ export class Game {
         // this.audioManager,
         // this.uiManager
 
-        if (IS_DEV) {
-            this.editor = new Editor(this.m_config);
-        }
+        this.editor = new Editor(this.m_config);
 
         // Register types
         const TypeToPool = {
@@ -345,7 +343,7 @@ export class Game {
 
     free() {
         if (this.m_ws) {
-            this.m_ws.onmessage = function () {};
+            this.m_ws.onmessage = function () { };
             this.m_ws.close();
             this.m_ws = null;
         }
@@ -387,23 +385,15 @@ export class Game {
     }
 
     update(dt: number) {
-        if (IS_DEV) {
-            if (this.m_input.keyPressed(Key.Tilde)) {
-                this.editor.setEnabled(!this.editor.enabled);
-            }
-            if (this.editor.enabled) {
-                this.editor.m_update(dt, this.m_input, this.m_activePlayer, this.m_map);
-            }
+        if (this.m_input.keyPressed(Key.Tilde)) {
+            this.editor.setEnabled(!this.editor.enabled);
+        }
+        if (this.editor.enabled) {
+            this.editor.m_update(dt, this.m_input, this.m_activePlayer, this.m_map);
         }
 
-        let debug: DebugOptions;
-        if (IS_DEV) {
-            debug = this.m_config.get("debug")!;
-        } else {
-            debug = {
-                render: {},
-            } as DebugOptions;
-        }
+        let debug = this.m_config.get("debug")!;
+
 
         const smokeParticles = this.m_smokeBarn.m_particles;
 
@@ -476,11 +466,11 @@ export class Game {
         const playerPos = this.m_activePlayer.m_pos;
         const mousePos = v2.create(
             this.m_activePlayer.m_pos.x +
-                (this.m_input.mousePos.x - this.m_camera.m_screenWidth * 0.5) /
-                    this.m_camera.m_z(),
+            (this.m_input.mousePos.x - this.m_camera.m_screenWidth * 0.5) /
+            this.m_camera.m_z(),
             this.m_activePlayer.m_pos.y +
-                (this.m_camera.m_screenHeight * 0.5 - this.m_input.mousePos.y) /
-                    this.m_camera.m_z(),
+            (this.m_camera.m_screenHeight * 0.5 - this.m_input.mousePos.y) /
+            this.m_camera.m_z(),
         );
         // const mousePos = this.m_camera.m_screenToPoint(this.m_input.mousePos);
         const toMousePos = v2.sub(mousePos, playerPos);
@@ -653,7 +643,7 @@ export class Game {
                         };
                         const input =
                             weapIdxToInput[
-                                e.data as unknown as keyof typeof weapIdxToInput
+                            e.data as unknown as keyof typeof weapIdxToInput
                             ];
                         if (input) {
                             inputMsg.addInput(input);
@@ -696,8 +686,8 @@ export class Game {
                             uiEvent.data == "helmet"
                                 ? this.m_activePlayer.m_netData.m_helmet
                                 : uiEvent.data == "chest"
-                                  ? this.m_activePlayer.m_netData.m_chest
-                                  : uiEvent.data;
+                                    ? this.m_activePlayer.m_netData.m_chest
+                                    : uiEvent.data;
                         dropMsg.item = item as string;
                     }
                     if (dropMsg.item != "") {
@@ -794,7 +784,7 @@ export class Game {
         // Clear cached data
         this.m_ui2Manager.flushInput();
 
-        if (IS_DEV && this.editor.enabled && this.editor.sendMsg) {
+        if (this.editor.enabled && this.editor.sendMsg) {
             var msg = this.editor.getMsg();
             this.m_sendMessage(net.MsgType.Edit, msg);
             this.editor.postSerialization();
@@ -1031,13 +1021,11 @@ export class Game {
             debug,
         );
         this.m_emoteBarn.m_render(this.m_camera);
-        if (IS_DEV) {
-            this.m_debugDisplay.clear();
-            if (debug.render.enabled) {
-                debugLines.m_render(this.m_camera, this.m_debugDisplay);
-            }
-            debugLines.flush();
+        this.m_debugDisplay.clear();
+        if (debug.render.enabled) {
+            debugLines.m_render(this.m_camera, this.m_debugDisplay);
         }
+        debugLines.flush();
     }
 
     updateAmbience() {

@@ -276,19 +276,19 @@ export class Building implements AbstractObject {
                 this.ceiling.zoomRegions?.push({
                     zoomIn: region.zoomIn
                         ? collider.transform(
-                              region.zoomIn,
-                              this.pos,
-                              this.rot,
-                              this.scale,
-                          )
+                            region.zoomIn,
+                            this.pos,
+                            this.rot,
+                            this.scale,
+                        )
                         : null,
                     zoomOut: region.zoomOut
                         ? collider.transform(
-                              region.zoomOut,
-                              this.pos,
-                              this.rot,
-                              this.scale,
-                          )
+                            region.zoomOut,
+                            this.pos,
+                            this.rot,
+                            this.scale,
+                        )
                         : null,
                 });
             }
@@ -661,7 +661,7 @@ export class Building implements AbstractObject {
     }
 
     render(_camera: Camera, debug: DebugOptions, layer: number) {
-        if (IS_DEV && layer === this.layer) {
+        if (layer === this.layer) {
             if (debug.render.buildings?.buildingBounds) {
                 renderMapBuildingBounds(this);
             }

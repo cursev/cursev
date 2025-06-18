@@ -173,7 +173,6 @@ export default defineConfig(({ mode }) => {
             MENU_MUSIC: JSON.stringify(selectedTheme.menuMusic),
             AIP_PLACEMENT_ID: JSON.stringify(Config.secrets.AIP_PLACEMENT_ID),
             VITE_GAMEMONETIZE_ID: JSON.stringify(Config.secrets.GAMEMONETIZE_ID),
-            IS_DEV: isDev,
             PROXY_DEFS: JSON.stringify(Config.proxies),
             TURNSTILE_SITE_KEY: JSON.stringify(Config.secrets.TURNSTILE_SITE_KEY),
         },

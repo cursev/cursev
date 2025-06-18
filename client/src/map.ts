@@ -125,10 +125,10 @@ export class Map {
         }>;
         groundPatches: GroundPatch[];
     } = {
-        places: [],
-        objects: [],
-        groundPatches: [],
-    };
+            places: [],
+            objects: [],
+            groundPatches: [],
+        };
 
     mapLoaded = false;
     mapTexture: PIXI.RenderTexture | null = null;
@@ -150,7 +150,7 @@ export class Map {
 
     cameraEmitter: Emitter | null = null;
 
-    constructor(public decalBarn: DecalBarn) {}
+    constructor(public decalBarn: DecalBarn) { }
 
     m_free() {
         // Buildings need to stop sound emitters
@@ -307,7 +307,7 @@ export class Map {
             );
         }
 
-        if (IS_DEV && debug.render.rivers) {
+        if (debug.render.rivers) {
             for (const river of this.terrain!.rivers) {
                 renderRiverDebug(river, camera.m_pos);
             }
@@ -476,8 +476,8 @@ export class Map {
                         ? def.collision
                         : def.ceiling.zoomRegions.length > 0 &&
                             def.ceiling.zoomRegions[0].zoomIn
-                          ? def.ceiling.zoomRegions[0].zoomIn
-                          : mapHelpers.getBoundingCollider(obj.type))
+                            ? def.ceiling.zoomRegions[0].zoomIn
+                            : mapHelpers.getBoundingCollider(obj.type))
             ) {
                 shapes.push({
                     collider: collider.copy(col) as CircleWithHeight,
@@ -746,8 +746,8 @@ export class Map {
                     ? this.mapDef.biome.sound.riverShore
                     : "grass"
                 : math.pointInsidePolygon(pos, this.terrain?.shore!)
-                  ? "sand"
-                  : "water",
+                    ? "sand"
+                    : "water",
         );
     }
 

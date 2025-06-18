@@ -176,7 +176,7 @@ class Explosion {
                         0,
                         null,
                     ),
-                def.scatter)
+                    def.scatter)
             ) {
                 for (let i = 0; i < def.scatter.count; i++) {
                     const particle = particleBarn.addParticle(
@@ -318,7 +318,7 @@ export class ExplosionBarn {
                     e.free();
                 }
 
-                if (IS_DEV && debug.render.explosions) {
+                if (debug.render.explosions) {
                     const def = GameObjectDefs[e.type] as ExplosionDef;
                     debugLines.addCircle(e.pos, def.rad.min, 0xff0000, 0);
                     debugLines.addCircle(e.pos, def.rad.max, 0xff9900, 0);

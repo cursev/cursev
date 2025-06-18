@@ -390,9 +390,9 @@ export class Obstacle implements AbstractObject {
             this.dead &&
             !this.exploded &&
             (map.deadObstacleIds.push(this.__id),
-            (this.exploded = true),
-            this.smokeEmitter && (this.smokeEmitter.stop(), (this.smokeEmitter = null)),
-            !this.isNew)
+                (this.exploded = true),
+                this.smokeEmitter && (this.smokeEmitter.stop(), (this.smokeEmitter = null)),
+                !this.isNew)
         ) {
             const def = MapObjectDefs[this.type] as ObstacleDef;
 
@@ -405,8 +405,8 @@ export class Obstacle implements AbstractObject {
                 const vel = v2.mul(v2.randomUnit(), util.random(5, 15));
                 const particle = Array.isArray(this.explodeParticle)
                     ? this.explodeParticle[
-                          Math.floor(Math.random() * this.explodeParticle.length)
-                      ]
+                    Math.floor(Math.random() * this.explodeParticle.length)
+                    ]
                     : this.explodeParticle;
                 particleBarn.addParticle(particle, this.layer, center, vel);
             }
@@ -494,7 +494,7 @@ export class Obstacle implements AbstractObject {
             this.door.casingSprite.visible = !this.dead;
         }
 
-        if (IS_DEV && debug.render.obstacles && util.sameLayer(layer, this.layer)) {
+        if (debug.render.obstacles && util.sameLayer(layer, this.layer)) {
             const def = MapObjectDefs[this.type] as ObstacleDef;
 
             const color = def.collidable ? 0xff0000 : 0xffff00;

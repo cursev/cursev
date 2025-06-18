@@ -1483,7 +1483,7 @@ export class Player implements AbstractObject {
         this.auraContainer.position.set(screenPos.x, screenPos.y);
         this.auraContainer.scale.set(screenScale, screenScale);
 
-        if (IS_DEV && debug.render.players) {
+        if (debug.render.players) {
             debugLines.addCircle(this.m_pos, this.m_rad, 0xff0000, 0);
 
             const weapDef = GameObjectDefs[this.m_netData.m_activeWeapon];

@@ -246,8 +246,6 @@ export class Structure implements AbstractObject {
     }
 
     render(_camera: Camera, debug: DebugOptions, _layer: number) {
-        if (!IS_DEV) return; // only debug rendering code here
-
         if (debug.render.structures.buildingBounds) {
             renderMapBuildingBounds(this);
         }
