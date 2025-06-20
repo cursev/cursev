@@ -774,7 +774,7 @@ export const Main: MapDef = {
                     large: 2,
                 },
                 stone_04: 1,
-                club_complex_01: 1,
+                club_complex_01: 2,
             },
         ],
         randomSpawns: [
