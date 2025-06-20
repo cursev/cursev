@@ -2107,14 +2107,14 @@ export class GameMap {
     }
 
     clampToMapBounds(pos: Vec2, rad = 0) {
-        // v2.set(
-        //     pos,
-        //     math.v2Clamp(
-        //         pos,
-        //         v2.create(rad, rad),
-        //         v2.create(this.width - rad, this.height - rad),
-        //     ),
-        // );
+        v2.set(
+            pos,
+            math.v2Clamp(
+                pos,
+                v2.create(rad, rad),
+                v2.create(this.width - rad, this.height - rad),
+            ),
+        );
     }
 
     getGroundSurface(pos: Vec2, layer: number) {

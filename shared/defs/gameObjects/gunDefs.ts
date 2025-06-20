@@ -3220,7 +3220,7 @@ export const GunDefs: Record<string, GunDef> = {
         bulletType: "bullet_flare", // ✅ Balle classique
         noSplinter: true,
         headshotMult: 2.5,
-        speed: { equip: -5, attack: -10 },
+        speed: { equip: 15, attack: 5 },
         lootImg: {
             sprite: "loot-weapon-flare-gun.img",
             tint: 0xff3300,
