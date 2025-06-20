@@ -3,10 +3,10 @@ import { version } from "../../package.json";
 import { util } from "../../shared/utils/util";
 import { ApiServer } from "./apiServer";
 import { Config } from "./config";
-import { type FindGameBody, GameServer } from "./gameServer";
 import { GIT_VERSION } from "./utils/gitRevision";
 import { Logger } from "./utils/logger";
 import { readPostedJSON, returnJson } from "./utils/serverHelpers";
+import { type FindGameBody } from "../../shared/types/api";
 
 util.mergeDeep(Config, {
     regions: {
@@ -19,7 +19,6 @@ util.mergeDeep(Config, {
 });
 
 const logger = new Logger("Dev server");
-const gameServer = new GameServer();
 const apiServer = new ApiServer();
 
 const app = (Config as any).devServer.ssl
@@ -33,7 +32,7 @@ app.post("/api/find_game", async (res) => {
     readPostedJSON(
         res,
         async (body: FindGameBody) => {
-            const data = await gameServer.findGame(body);
+            const data = await apiServer.findGame(body);
             res.cork(() => {
                 returnJson(res, data);
             });
@@ -45,8 +44,8 @@ app.post("/api/find_game", async (res) => {
 });
 
 setInterval(() => {
-    apiServer.updateRegion(gameServer.regionId, {
-        playerCount: gameServer.manager.getPlayerCount(),
+    apiServer.updateRegion("local", {
+        playerCount: 1,
     });
 }, 10 * 1000);
 
@@ -56,5 +55,4 @@ app.listen((Config as any).devServer.host, (Config as any).devServer.port, (): v
     logger.info(`Survev Dev Server v${version} - GIT ${GIT_VERSION}`);
     logger.info(`Listening on ${(Config as any).devServer.host}:${(Config as any).devServer.port}`);
     logger.info("Press Ctrl+C to exit.");
-    gameServer.init(app);
 });

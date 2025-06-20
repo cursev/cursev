@@ -1,6 +1,6 @@
 import { App, SSLApp, type TemplatedApp } from "uWebSockets.js";
 import { version } from "../../package.json";
-import { Config, type ConfigType } from "./config";
+import { Config } from "./config";
 import type { FindGameBody, FindGameResponse } from "../../shared/types/api";
 import { TeamMenu } from "./teamMenu";
 import { GIT_VERSION } from "./utils/gitRevision";
@@ -13,6 +13,7 @@ import {
     readPostedJSON,
     returnJson,
 } from "./utils/serverHelpers";
+import { ConfigType } from "../../configType";
 
 class Region {
     data: ConfigType["regions"][string];
