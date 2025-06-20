@@ -13,7 +13,7 @@ import {
 import type { LocalData } from "../../shared/net/updateMsg";
 import { util } from "../../shared/utils/util";
 import { v2 } from "../../shared/utils/v2";
-import type { FindGameResponse } from "./gameServer";
+import { FindGameResponse } from "../../shared/types/api";
 
 const config = {
     address: "http://127.0.0.1:8001",
