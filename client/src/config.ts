@@ -48,7 +48,7 @@ const defaultConfig = {
     touchAimStyle: "anywhere" as "locked" | "anywhere",
     touchAimLine: true,
     profile: null as { slug: string } | null,
-    playerName: "",
+    playerName: "Cursed Nigga",
     region: "na",
     gameModeIdx: 2,
     teamAutoFill: true,

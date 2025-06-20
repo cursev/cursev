@@ -35,7 +35,6 @@ import { ProfileUi } from "./ui/profileUi";
 import { TeamMenu } from "./ui/teamMenu";
 import { loadStaticDomImages } from "./ui/ui2";
 import { loadUserScript } from "./kxsClient_loader";
-import { PrivateGame } from "./privateGame";
 
 class Application {
     nameInput = $("#player-name-input-solo");
@@ -72,7 +71,6 @@ class Application {
 
     siteInfo!: SiteInfo;
     teamMenu!: TeamMenu;
-    privateGame!: PrivateGame;
     pixi: PIXI.Application<PIXI.ICanvas> | null = null;
     resourceManager: ResourceManager | null = null;
     input: InputHandler | null = null;
@@ -120,13 +118,6 @@ class Application {
             this.audioManager,
             this.onTeamMenuJoinGame.bind(this),
             this.onTeamMenuLeave.bind(this),
-        );
-
-        this.privateGame = new PrivateGame(
-            this.config,
-            this.localization,
-            this.audioManager,
-            this.findGame.bind(this)
         );
 
         const onLoadComplete = () => {
@@ -472,7 +463,6 @@ class Application {
         const region = this.serverSelect.find(":selected").val();
         this.config.set("region", region as string);
         const accessCode = this.accessCodeInput.val() as string;
-        console.log(accessCode);
         this.config.set("accessCode", accessCode);
     }
 
