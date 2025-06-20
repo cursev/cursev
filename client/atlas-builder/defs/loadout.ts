@@ -3,6 +3,7 @@ import type { AtlasDef } from "../atlasConfig.ts";
 export const LoadoutAtlas: AtlasDef = {
     compress: false,
     images: [
+        "emotes/flag-palestine.svg",
         "emotes/acorn.svg",
         "emotes/ammo-12gauge.svg",
         "emotes/ammo-308sub.svg",

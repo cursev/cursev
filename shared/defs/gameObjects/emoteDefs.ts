@@ -22,6 +22,16 @@ export interface EmoteDef {
 }
 
 export const EmotesDefs: Record<string, EmoteDef> = {
+        emote_flag_palestine: {
+        type: "emote",
+        name: "Flag Palestine",
+        rarity: 1,
+        texture: "flag-palestine.img",
+        sound: "emote_01",
+        channel: "ui",
+        teamOnly: false,
+        category: EmoteCategory.Flags,
+    },
     emote_medical: {
         type: "emote",
         texture: "emote-medical-healthkit.img",
