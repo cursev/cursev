@@ -22,7 +22,7 @@ export interface EmoteDef {
 }
 
 export const EmotesDefs: Record<string, EmoteDef> = {
-        emote_flag_palestine: {
+    emote_flag_palestine: {
         type: "emote",
         name: "Flag Palestine",
         rarity: 1,
@@ -31,6 +31,16 @@ export const EmotesDefs: Record<string, EmoteDef> = {
         channel: "ui",
         teamOnly: false,
         category: EmoteCategory.Flags,
+    },
+    emote_kxsclient_logo: {
+        type: "emote",
+        name: "KxsClient",
+        rarity: 5,
+        texture: "kxsclient-logo.png",
+        sound: "emote_01",
+        channel: "ui",
+        teamOnly: false,
+        category: EmoteCategory.Faces,
     },
     emote_medical: {
         type: "emote",
