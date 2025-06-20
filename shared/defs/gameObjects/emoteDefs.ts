@@ -1095,7 +1095,7 @@ export const EmotesDefs: Record<string, EmoteDef> = {
     },
     emote_flagisrael: {
         type: "emote",
-        name: "Flag Israel",
+        name: "Flag Genocidar",
         rarity: 1,
         texture: "flag-israel.img",
         sound: "emote_01",
