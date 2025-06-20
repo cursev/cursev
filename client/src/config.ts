@@ -66,6 +66,7 @@ const defaultConfig = {
     /* STRIP_FROM_PROD_CLIENT:START */
     debug: defaultDebugConfig,
     /* STRIP_FROM_PROD_CLIENT:END */
+    accessCode: "",
 };
 
 export type ConfigType = typeof defaultConfig;

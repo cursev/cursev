@@ -879,7 +879,9 @@
               <div class="play-button-container">
                 <div id="player-options">
                   <input type="text" class="menu-option player-name-input" tabindex="0" placeholder="Enter your name here" id="player-name-input-solo" maxlength="16" />
+                  <input type="text" class="menu-option private-key-input" tabindex="0" placeholder="Enter private key (optional)" id="private-key-input" maxlength="32" />
                   <a class="btn-darken menu-option player-options-btn" id="btn-customize"></a>
+                  <a class="btn-darken menu-option player-options-btn" id="btn-private-key" data-l10n="index-private-key">Private Key</a>
                 </div>
                 <select id="server-select-main" class="server-select menu-option btn-hollow btn-hollow-selected">
                   <optgroup id="server-opts" label="Region" data-l10n="index-region">
@@ -1171,6 +1173,26 @@
             <div class="btn-keybind menu-option btn-darken btn-start-option"></div>
             <div id="btn-start-fullscreen" class="btn-fullscreen-toggle menu-option btn-darken btn-start-option"></div>
             <div class="btn-start-mute btn-sound-toggle menu-option btn-darken btn-start-option audio-on-icon"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Modals -->
+      <div id="modal-private-key" class="modal">
+        <div class="modal-content modal-close">
+          <div class="modal-header">
+            <span class="close close-corner"></span>
+            <h2 data-l10n="index-private-key">Private Key</h2>
+          </div>
+          <div class="modal-body">
+            <div class="modal-form">
+              <div class="form-group">
+                <label for="private-key-input" data-l10n="index-private-key-label">Enter Private Key</label>
+                <input type="text" id="private-key-input" class="form-control" placeholder="Enter your private key here">
+              </div>
+              <div class="form-group">
+                <button id="btn-join-private-game" class="btn-darken" data-l10n="index-join-private-game">Join Private Game</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

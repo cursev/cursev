@@ -33,6 +33,8 @@ class GameProcess implements GameData {
     startedTime = 0;
     stopped = true;
     created = false;
+    isPrivate = false;
+    accessCode?: string;
 
     manager: GameProcessManager;
 
@@ -50,7 +52,7 @@ class GameProcess implements GameData {
             serialization: "advanced",
         });
 
-        this.process.on("message", (msg: ProcessMsg) => {
+        this.process.on("message", async (msg: ProcessMsg) => {
             if (msg.type) {
                 this.lastMsgTime = Date.now();
             }
@@ -80,6 +82,8 @@ class GameProcess implements GameData {
                         this.stoppedTime = Date.now();
                         this.created = false;
                     }
+                    this.isPrivate = msg.isPrivate;
+                    this.accessCode = msg.accessCode;
                     break;
                 case ProcessMsgType.SocketMsg:
                     for (let i = 0; i < msg.msgs.length; i++) {
@@ -279,34 +283,30 @@ export class GameProcessManager implements GameManager {
     }
 
     async findGame(body: FindGamePrivateBody): Promise<string> {
-        // S'il y a déjà une partie active, tout le monde la rejoint
-        const activeProcesses = this.processes.filter(p => !p.stopped);
-        if (activeProcesses.length > 0) {
-            const game = activeProcesses[0]; // Prendre la première partie active
-            
-            // if the game has not finished creating
-            // wait for it to be created to send the find game response
-            if (!game.created) {
+        // Trouver une partie privée avec la clé fournie
+        const privateGame = this.processes.find(g => g.isPrivate && g.accessCode === body.accessCode);
+        if (privateGame) {
+            if (!privateGame.created) {
                 return new Promise((resolve) => {
-                    game.onCreatedCbs.push((game) => {
+                    privateGame.onCreatedCbs.push((game) => {
                         game.addJoinTokens(body.playerData, body.autoFill);
                         resolve(game.id);
                     });
                 });
             }
-            
-            game.addJoinTokens(body.playerData, body.autoFill);
-            return game.id;
+
+            privateGame.addJoinTokens(body.playerData, body.autoFill);
+            return privateGame.id;
         }
-        
-        // Sinon créer une nouvelle partie
+
+        // Si aucune partie privée trouvée, créer une nouvelle partie privée
         const game = await this.newGame({
             teamMode: body.teamMode,
             mapName: body.mapName as keyof typeof MapDefs,
+            isPrivate: true,
+            accessCode: body.accessCode
         });
 
-        // if the game has not finished creating
-        // wait for it to be created to send the find game response
         if (!game.created) {
             return new Promise((resolve) => {
                 game.onCreatedCbs.push((game) => {

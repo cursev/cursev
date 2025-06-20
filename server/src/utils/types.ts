@@ -29,6 +29,8 @@ export interface SaveGameBody {
 export interface ServerGameConfig {
     readonly mapName: keyof typeof MapDefs;
     readonly teamMode: TeamMode;
+    readonly isPrivate?: boolean;
+    readonly accessCode?: string;
 }
 
 export interface GameData {
@@ -39,6 +41,8 @@ export interface GameData {
     aliveCount: number;
     startedTime: number;
     stopped: boolean;
+    isPrivate: boolean;
+    accessCode?: string;
 }
 
 export const zFindGamePrivateBody = z.object({
@@ -48,6 +52,7 @@ export const zFindGamePrivateBody = z.object({
     mapName: z.string(),
     teamMode: z.number(),
     groupHash: z.string().optional(),
+    accessCode: z.string(),
     playerData: z.array(
         z.object({
             token: z.string(),

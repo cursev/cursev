@@ -168,6 +168,7 @@ app.post("/api/find_game", validateParams(zFindGameBody), async (c) => {
                 ip,
             },
         ],
+        accessCode: body.accessCode || "",
     });
 
     if ("error" in data) {

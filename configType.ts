@@ -35,6 +35,11 @@ export interface ConfigType {
      * Not needed if only deploying a game server.
      */
     apiServer: ServerConfig;
+    
+    /**
+     * API key for authentication
+     */
+    apiKey?: string;
 
     /**
      * Game server configuration.

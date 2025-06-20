@@ -290,6 +290,7 @@ class Room {
             version: data.version,
             groupHash,
             playerData,
+            accessCode: ""
         });
 
         if ("error" in res) {

@@ -1,7 +1,7 @@
 import { App, SSLApp, type TemplatedApp } from "uWebSockets.js";
 import { version } from "../../package.json";
 import { Config, type ConfigType } from "./config";
-import type { FindGameBody, FindGameResponse } from "./gameServer";
+import type { FindGameBody, FindGameResponse } from "../../shared/types/api";
 import { TeamMenu } from "./teamMenu";
 import { GIT_VERSION } from "./utils/gitRevision";
 import { Logger } from "./utils/logger";
@@ -135,9 +135,9 @@ export class ApiServer {
                 body,
             );
         }
-        this.logger.warn("/api/find_game: Invalid region");
         return {
-            res: [{ err: "Invalid Region" }],
+            error: "invalid_protocol" as const,
+            res: undefined,
         };
     }
 }
@@ -234,11 +234,11 @@ if (process.argv.includes("--api-server")) {
     });
 
     app.listen(Config.apiServer.host, Config.apiServer.port, (): void => {
-        server.logger.log(`Survev API Server v${version} - GIT ${GIT_VERSION}`);
-        server.logger.log(
+        server.logger.info(`Survev API Server v${version} - GIT ${GIT_VERSION}`);
+        server.logger.info(
             `Listening on ${Config.apiServer.host}:${Config.apiServer.port}`,
         );
-        server.logger.log("Press Ctrl+C to exit.");
+        server.logger.info("Press Ctrl+C to exit.");
     });
 
     setInterval(() => {

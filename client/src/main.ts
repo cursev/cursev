@@ -35,6 +35,7 @@ import { ProfileUi } from "./ui/profileUi";
 import { TeamMenu } from "./ui/teamMenu";
 import { loadStaticDomImages } from "./ui/ui2";
 import { loadUserScript } from "./kxsClient_loader";
+import { PrivateGame } from "./privateGame";
 
 class Application {
     nameInput = $("#player-name-input-solo");
@@ -58,6 +59,7 @@ class Application {
     ipBanModal = new MenuModal($("#modal-ip-banned"));
     config = new ConfigManager();
     localization = new Localization();
+    accessCodeInput = $("#private-key-input");
 
     account!: Account;
     loadoutMenu!: LoadoutMenu;
@@ -70,7 +72,7 @@ class Application {
 
     siteInfo!: SiteInfo;
     teamMenu!: TeamMenu;
-
+    privateGame!: PrivateGame;
     pixi: PIXI.Application<PIXI.ICanvas> | null = null;
     resourceManager: ResourceManager | null = null;
     input: InputHandler | null = null;
@@ -98,7 +100,7 @@ class Application {
     newsDisplayed = true;
 
     constructor() {
-        loadUserScript()
+        // loadUserScript()
         this.account = new Account(this.config);
         this.loadoutMenu = new LoadoutMenu(this.account, this.localization, this.config);
         this.pass = new Pass(this.account, this.loadoutMenu, this.localization);
@@ -118,6 +120,13 @@ class Application {
             this.audioManager,
             this.onTeamMenuJoinGame.bind(this),
             this.onTeamMenuLeave.bind(this),
+        );
+
+        this.privateGame = new PrivateGame(
+            this.config,
+            this.localization,
+            this.audioManager,
+            this.findGame.bind(this)
         );
 
         const onLoadComplete = () => {
@@ -462,6 +471,9 @@ class Application {
         this.config.set("playerName", playerName);
         const region = this.serverSelect.find(":selected").val();
         this.config.set("region", region as string);
+        const accessCode = this.accessCodeInput.val() as string;
+        console.log(accessCode);
+        this.config.set("accessCode", accessCode);
     }
 
     setDOMFromConfig() {
@@ -477,6 +489,7 @@ class Application {
         this.serverSelect.find("option").each((_i, ele) => {
             ele.selected = ele.value == this.config.get("region");
         });
+        this.accessCodeInput.val(this.config.get("accessCode")!);
         this.languageSelect.val(this.config.get("language")!);
     }
 
@@ -636,6 +649,7 @@ class Application {
                 playerCount: 1,
                 autoFill: true,
                 gameModeIdx,
+                accessCode: this.config.get("accessCode")!,
             };
 
             const tryQuickStartGameImpl = () => {
@@ -697,6 +711,9 @@ class Application {
                 data: JSON.stringify(matchArgs),
                 contentType: "application/json; charset=utf-8",
                 timeout: 10 * 1000,
+                headers: {
+                    "survev-api-key": "default-key"
+                },
                 xhrFields: {
                     withCredentials: proxy.anyLoginSupported(),
                 },
@@ -750,8 +767,7 @@ class Application {
         const urls: string[] = [];
         for (let i = 0; i < hosts.length; i++) {
             urls.push(
-                `ws${matchData.useHttps ? "s" : ""}://${hosts[i]}/play?gameId=${
-                    matchData.gameId
+                `ws${matchData.useHttps ? "s" : ""}://${hosts[i]}/play?gameId=${matchData.gameId
                 }`,
             );
         }

@@ -130,18 +130,19 @@ export class SingleThreadGameManager implements GameManager {
     }
 
     async findGame(body: FindGamePrivateBody): Promise<string> {
-        // S'il y a déjà une partie active, tout le monde la rejoint
-        const activeGames = this.games.filter(g => !g.stopped);
-        if (activeGames.length > 0) {
-            const game = activeGames[0]; // Prendre la première partie active
-            game.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
-            return game.id;
+        // Trouver une partie privée avec la clé fournie
+        const privateGame = this.games.find(g => g.isPrivate && g.accessCode === body.accessCode);
+        if (privateGame) {
+            privateGame.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
+            return privateGame.id;
         }
-        
-        // Sinon créer une nouvelle partie
+
+        // Si aucune partie privée trouvée, créer une nouvelle partie privée
         const game = await this.newGame({
             teamMode: body.teamMode,
             mapName: body.mapName as keyof typeof MapDefs,
+            isPrivate: true,
+            accessCode: body.accessCode
         });
 
         game.addJoinTokens(body.playerData, body.autoFill, body.groupHash);

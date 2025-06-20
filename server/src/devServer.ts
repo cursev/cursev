@@ -12,7 +12,7 @@ util.mergeDeep(Config, {
     regions: {
         local: {
             https: false,
-            address: `${Config.devServer.host}:${Config.devServer.port}`,
+            address: `${(Config as any).devServer.host}:${(Config as any).devServer.port}`,
             l10n: "index-local",
         },
     },
@@ -22,10 +22,10 @@ const logger = new Logger("Dev server");
 const gameServer = new GameServer();
 const apiServer = new ApiServer();
 
-const app = Config.devServer.ssl
+const app = (Config as any).devServer.ssl
     ? SSLApp({
-          key_file_name: Config.devServer.ssl.keyFile,
-          cert_file_name: Config.devServer.ssl.certFile,
+          key_file_name: (Config as any).devServer.ssl.keyFile,
+          cert_file_name: (Config as any).devServer.ssl.certFile,
       })
     : App();
 
@@ -52,9 +52,9 @@ setInterval(() => {
 
 apiServer.init(app);
 
-app.listen(Config.devServer.host, Config.devServer.port, (): void => {
-    logger.log(`Survev Dev Server v${version} - GIT ${GIT_VERSION}`);
-    logger.log(`Listening on ${Config.devServer.host}:${Config.devServer.port}`);
-    logger.log("Press Ctrl+C to exit.");
+app.listen((Config as any).devServer.host, (Config as any).devServer.port, (): void => {
+    logger.info(`Survev Dev Server v${version} - GIT ${GIT_VERSION}`);
+    logger.info(`Listening on ${(Config as any).devServer.host}:${(Config as any).devServer.port}`);
+    logger.info("Press Ctrl+C to exit.");
     gameServer.init(app);
 });

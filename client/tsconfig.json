@@ -17,6 +17,12 @@
     "skipLibCheck": true,
     "types": ["vite/client", "turnstile-types"]
   },
+  // Specifies an array of file paths or patterns to include in the compilation process.
+  // - "src/**/*.ts": Includes all TypeScript files in the 'src' directory and its subdirectories.
+  // - "src/**/*.js": Includes all JavaScript files in the 'src' directory and its subdirectories.
+  // - "../shared/": Includes all files in the 'shared' directory located one level up from the current directory.
+  // - "atlas-builder/**/*.ts": Includes all TypeScript files in the 'atlas-builder' directory and its subdirectories.
+  // - "global.d.ts": Includes the 'global.d.ts' file, typically used for global type declarations.
   "include": [
     "src/**/*.ts",
     "src/**/*.js",

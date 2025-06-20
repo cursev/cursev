@@ -54,6 +54,8 @@ export class Game {
     teamMode: TeamMode;
     mapName: string;
     isTeamMode: boolean;
+    isPrivate: boolean;
+    accessCode?: string;
     config: ServerGameConfig;
     pluginManager = new PluginManager(this);
     modeManager: GameModeManager;
@@ -126,6 +128,8 @@ export class Game {
         this.teamMode = config.teamMode;
         this.mapName = config.mapName;
         this.isTeamMode = this.teamMode !== TeamMode.Solo;
+        this.isPrivate = config.isPrivate || false;
+        this.accessCode = config.accessCode;
 
         this.map = new GameMap(this);
         this.grid = new Grid(this.map.width, this.map.height);
@@ -518,6 +522,8 @@ export class Game {
             aliveCount: this.aliveCount,
             startedTime: this.startedTime,
             stopped: this.stopped,
+            isPrivate: this.isPrivate,
+            accessCode: this.accessCode,
         });
     }
 

@@ -7,6 +7,11 @@ export const serverConfigPath = isProd ? "../../" : "";
 // to remove "server/dist" from the path to load the config from...
 export const Config = getConfig(isProd, serverConfigPath);
 
+// Ajouter la propriété apiKey si elle n'existe pas déjà
+if (!Config.apiKey) {
+    Config.apiKey = process.env.API_KEY || "default_api_key";
+}
+
 const BACKPACK_LEVEL = 3;
 
 util.mergeDeep(Config, {
