@@ -272,87 +272,97 @@ export const GameConfig = {
     structureLayerCount: 2,
     tracerColors: {
         "9mm": {
-            regular: 0xfee2c6,
-            saturated: 0xffd9b3,
-            chambered: 0xff7f00,
-            alphaRate: 0.92,
-            alphaMin: 0.14,
-        },
-        "9mm_suppressed_bonus": {
-            regular: 0xfee2c6,
-            saturated: 0xffd9b3,
-            chambered: 0xff7f00,
-            alphaRate: 0.96,
-            alphaMin: 0.28,
-        },
-        "9mm_cursed": {
-            regular: 0x130900,
-            saturated: 0x130900,
-            chambered: 0x130900,
-            alphaRate: 0.92,
-            alphaMin: 0.14,
-        },
-        "762mm": {
-            regular: 0xc5d6fe,
-            saturated: 0xabc4ff,
-            chambered: 0x4cff,
-            alphaRate: 0.94,
+            regular: 0x90caf9,       // bleu clair
+            saturated: 0x64b5f6,
+            chambered: 0x1976d2,     // bleu foncé
+            alphaRate: 0.88,
             alphaMin: 0.2,
         },
+        "9mm_suppressed_bonus": {
+            regular: 0x80cbc4,       // turquoise
+            saturated: 0x4db6ac,
+            chambered: 0x00695c,
+            alphaRate: 0.94,
+            alphaMin: 0.3,
+        },
+        "9mm_cursed": {
+            regular: 0x311b92,       // violet profond
+            saturated: 0x4527a0,
+            chambered: 0x1a237e,
+            alphaRate: 0.85,
+            alphaMin: 0.1,
+        },
+        "762mm": {
+            regular: 0xffcc80,       // orange doux
+            saturated: 0xffb74d,
+            chambered: 0xff6f00,     // orange vif
+            alphaRate: 0.9,
+            alphaMin: 0.15,
+        },
         "12gauge": {
-            regular: 0xfedcdc,
-            saturated: 0xfedcdc,
-            chambered: 0xff0000,
+            regular: 0xff8a80,       // rouge saumon
+            saturated: 0xff5252,
+            chambered: 0xd50000,     // rouge sang
         },
         "556mm": {
-            regular: 0xa9ff92,
-            saturated: 0xa9ff92,
-            chambered: 0x36ff00,
-            alphaRate: 0.92,
-            alphaMin: 0.14,
+            regular: 0xc5e1a5,       // vert clair
+            saturated: 0xaed581,
+            chambered: 0x689f38,
+            alphaRate: 0.91,
+            alphaMin: 0.16,
         },
         "50AE": {
-            regular: 0xfff088,
-            saturated: 0xfff088,
-            chambered: 0xffdf00,
+            regular: 0xfff59d,       // jaune pâle
+            saturated: 0xfff176,
+            chambered: 0xffca28,
         },
         "308sub": {
-            regular: 0x252b00,
-            saturated: 0x465000,
-            chambered: 0x131600,
-            alphaRate: 0.92,
-            alphaMin: 0.07,
+            regular: 0x8d6e63,       // brun
+            saturated: 0x6d4c41,
+            chambered: 0x4e342e,
+            alphaRate: 0.89,
+            alphaMin: 0.08,
         },
         flare: {
-            regular: 0xe2e2e2,
-            saturated: 0xe2e2e2,
-            chambered: 0xc4c4c4,
+            regular: 0xfff3e0,       // blanc chaud
+            saturated: 0xffe0b2,
+            chambered: 0xffcc80,
         },
         "45acp": {
-            regular: 0xecbeff,
-            saturated: 0xe7acff,
-            chambered: 0xb500ff,
+            regular: 0xce93d8,       // violet pastel
+            saturated: 0xba68c8,
+            chambered: 0x8e24aa,
         },
         laser: {
-            regular: 0xff0000,
-            saturated: 0xff0000,
-            chambered: 0xff0000,
+            regular: 0xff1744,       // rouge laser
+            saturated: 0xf50057,
+            chambered: 0xc51162,
         },
         water: {
-            regular: 3633658,
-            saturated: 3633658,
-            chambered: 3633658,
+            regular: 0x81d4fa,       // bleu eau
+            saturated: 0x4fc3f7,
+            chambered: 0x0288d1,
         },
         rainbowTrail: {
-            regular: 16777215,
-            saturated: 16777215,
-            chambered: 16777215,
-            alphaRate: 0.92,
-            alphaMin: 0.14,
+            regular: 0xffffff,       // blanc arc-en-ciel
+            saturated: 0xffffff,
+            chambered: 0xffffff,
+            alphaRate: 0.95,
+            alphaMin: 0.12,
         },
-        shrapnel: { regular: 0x333333, saturated: 0x333333 },
-        frag: { regular: 0xcb0000, saturated: 0xcb0000 },
-        invis: { regular: 0, saturated: 0, chambered: 0 },
+        shrapnel: {
+            regular: 0x616161,       // gris foncé
+            saturated: 0x424242,
+        },
+        frag: {
+            regular: 0xe53935,       // rouge grenade
+            saturated: 0xb71c1c,
+        },
+        invis: {
+            regular: 0x000000,
+            saturated: 0x000000,
+            chambered: 0x000000,
+        },
     },
     scopeZoomRadius: {
         desktop: {
