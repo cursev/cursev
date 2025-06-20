@@ -635,14 +635,24 @@ export const Main: MapDef = {
     },
     mapGen: {
         map: {
-            baseWidth: 400,
-            baseHeight: 400,
+            baseWidth: 600,
+            baseHeight: 600,
             scale: { small: 1.1875, large: 1.28125 },
             extension: 112,
             shoreInset: 48,
-            grassInset: 18,
+            grassInset: 12,
             rivers: {
-                lakes: [],
+                lakes: [
+                    // {
+                    //     innerRad: 1,
+                    //     odds: 44,
+                    //     outerRad: 0,
+                    //     spawnBound: {
+                    //         pos: {y: 199, x: 499},
+                    //         rad: 0
+                    //     }
+                    // }
+                ],
                 weights: [
                     { weight: 0.1, widths: [4] },
                     { weight: 0.15, widths: [8] },
@@ -662,11 +672,11 @@ export const Main: MapDef = {
         },
         places: [
             {
-                name: "The Killpit",
+                name: "The Cursed Spawn",
                 pos: v2.create(0.53, 0.64),
             },
             {
-                name: "Sweatbath",
+                name: "discord.gg/kxsclient",
                 pos: v2.create(0.84, 0.18),
             },
             {
@@ -674,7 +684,7 @@ export const Main: MapDef = {
                 pos: v2.create(0.15, 0.11),
             },
             {
-                name: "Ytyk-Kyuyol",
+                name: "KxsClient >> SoyAlguien",
                 pos: v2.create(0.25, 0.42),
             },
             {
@@ -682,7 +692,7 @@ export const Main: MapDef = {
                 pos: v2.create(0.81, 0.85),
             },
             {
-                name: "Pineapple",
+                name: "Pineapple on a pizza?",
                 pos: v2.create(0.21, 0.79),
             },
             {
@@ -713,23 +723,23 @@ export const Main: MapDef = {
         densitySpawns: [
             {
                 stone_01: 350,
-                barrel_01: 76,
-                silo_01: 8,
+                barrel_01: 176,
+                silo_01: 4,
                 crate_01: 50,
-                crate_02: 4,
-                crate_03: 8,
+                crate_02: 40,
+                crate_03: 80,
                 bush_01: 78,
                 cache_06: 12,
                 tree_01: 320,
                 hedgehog_01: 24,
                 container_01: 5,
                 container_02: 5,
-                container_03: 5,
-                container_04: 5,
-                shack_01: 7,
-                outhouse_01: 5,
+                container_03: 3,
+                container_04: 4,
+                shack_01: 19,
+                outhouse_01: 15,
                 loot_tier_1: 24,
-                loot_tier_beach: 4,
+                loot_tier_beach: 14,
             },
         ],
         fixedSpawns: [
