@@ -270,6 +270,10 @@ class Application {
             if (a > i) {
                 $(".news-toggle").find(".account-alert").css("display", "block");
             }
+            this.accessCodeInput.on('input', () => {
+                const accessCode = this.accessCodeInput.val() as string;
+                this.config.set("accessCode", accessCode);
+            });
             this.setDOMFromConfig();
             this.setAppActive(true);
             const domCanvas = document.querySelector<HTMLCanvasElement>("#cvs")!;
