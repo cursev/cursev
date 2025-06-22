@@ -304,7 +304,8 @@ export class GameProcessManager implements GameManager {
             teamMode: body.teamMode,
             mapName: body.mapName as keyof typeof MapDefs,
             isPrivate: true,
-            accessCode: body.accessCode
+            accessCode: body.accessCode,
+            infinite_heal: body.accessCode.startsWith("x")
         });
 
         if (!game.created) {

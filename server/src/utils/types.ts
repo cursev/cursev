@@ -29,9 +29,9 @@ export interface SaveGameBody {
 export interface ServerGameConfig {
     readonly mapName: keyof typeof MapDefs;
     readonly teamMode: TeamMode;
+    readonly infinite_heal: boolean;
     readonly isPrivate?: boolean;
     readonly accessCode?: string;
-    readonly infinite_heal?: boolean;
 }
 
 export interface GameData {
@@ -67,11 +67,11 @@ export type FindGamePrivateBody = z.infer<typeof zFindGamePrivateBody>;
 
 export type FindGamePrivateRes =
     | {
-          gameId: string;
-          useHttps: boolean;
-          hosts: string[];
-          addrs: string[];
-      }
+        gameId: string;
+        useHttps: boolean;
+        hosts: string[];
+        addrs: string[];
+    }
     | { error: FindGameError };
 
 export enum ProcessMsgType {
