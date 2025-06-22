@@ -45,7 +45,7 @@ export const CustomConfig: DeepPartial<ConfigType> = {
         inventory: {
             frag: 3,
             smoke: 1,
-            strobe: 1,
+            strobe: 12,
             mine: 0,
             mirv: 1,
             bandage: GameConfig.bagSizes["bandage"][BACKPACK_LEVEL],

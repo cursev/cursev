@@ -129,7 +129,7 @@ class Projectile implements AbstractObject {
             if (isNew) {
                 const itemDef = GameObjectDefs[data.type] as ThrowableDef;
 
-                if (data.type === "rainbow_projectile") {
+                if (data.type === "rainbow_projectile" || data.type === "lgbt_projectile") {
                     this.container.removeChild(this.trail);
                     this.trail = PIXI.Sprite.from("player-rainbow-trail.img");
                     this.trail.anchor.set(0.9, 0.5);

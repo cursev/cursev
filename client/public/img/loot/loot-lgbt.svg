@@ -1,0 +1,21 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cercle de fond -->
+  <circle cx="100" cy="100" r="100" fill="#fff" />
+
+  <!-- Drapeau LGBT dans un cercle -->
+  <clipPath id="circleClip">
+    <circle cx="100" cy="100" r="100" />
+  </clipPath>
+
+  <g clip-path="url(#circleClip)">
+    <rect width="200" height="33.33" y="0" fill="#E40303" />   <!-- Rouge -->
+    <rect width="200" height="33.33" y="33.33" fill="#FF8C00" /> <!-- Orange -->
+    <rect width="200" height="33.33" y="66.66" fill="#FFED00" /> <!-- Jaune -->
+    <rect width="200" height="33.33" y="99.99" fill="#008026" /> <!-- Vert -->
+    <rect width="200" height="33.33" y="133.32" fill="#004DFF" /> <!-- Bleu -->
+    <rect width="200" height="33.33" y="166.65" fill="#750787" /> <!-- Violet -->
+  </g>
+
+  <!-- Contour -->
+  <circle cx="100" cy="100" r="98" fill="none" stroke="#000" stroke-width="4" />
+</svg>

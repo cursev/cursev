@@ -7,13 +7,13 @@
     </clipPath>
   </defs>
 
-  <!-- Bandes du drapeau trans -->
+  <!-- Bandes du drapeau trans (étendues sur toute la forme) -->
   <g clip-path="url(#clipTransForm)">
-    <rect x="0" y="84" width="60" height="20" fill="#5BCEFA" />
-    <rect x="0" y="104" width="60" height="20" fill="#F5A9B8" />
-    <rect x="0" y="124" width="60" height="20" fill="#FFFFFF" />
-    <rect x="0" y="144" width="60" height="20" fill="#F5A9B8" />
-    <rect x="0" y="164" width="60" height="20" fill="#5BCEFA" />
+    <rect x="0" y="84.0" width="60" height="26.8" fill="#5BCEFA" />  <!-- Bleu -->
+    <rect x="0" y="110.8" width="60" height="26.8" fill="#F5A9B8" /> <!-- Rose -->
+    <rect x="0" y="137.6" width="60" height="26.8" fill="#FFFFFF" /> <!-- Blanc -->
+    <rect x="0" y="164.4" width="60" height="26.8" fill="#F5A9B8" /> <!-- Rose -->
+    <rect x="0" y="191.2" width="60" height="26.8" fill="#5BCEFA" />  <!-- Bleu -->
   </g>
 
   <!-- Contour noir -->
