@@ -73,6 +73,11 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
             volume: 1,
             maxInstances: 5,
         },
+        glock_02: {
+            path: "audio/guns/transgender_shoot.mp3",
+            volume: 1,
+            maxInstances: 5,
+        },
         glock_reload_01: {
             path: "audio/guns/glock_reload_01.mp3",
             volume: 1,
@@ -1668,6 +1673,10 @@ const Sounds: Record<string, Record<string, SoundDef>> = {
         },
         gun_pickup_01: {
             path: "audio/ui/gun_pickup_01.mp3",
+            volume: 1,
+        },
+        gun_pickup_02: {
+            path: "audio/ui/gun_pickup_02.mp3",
             volume: 1,
         },
         scope_pickup_01: {

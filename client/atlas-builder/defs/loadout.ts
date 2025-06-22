@@ -269,6 +269,7 @@ export const LoadoutAtlas: AtlasDef = {
         "gui/unlock.svg",
 
         "guns/gun-awc-01.svg",
+        "guns/gun-trans.svg",
         "guns/gun-awc-02.svg",
         "guns/gun-bugle-01.svg",
         "guns/gun-deagle-01.svg",
@@ -326,6 +327,7 @@ export const LoadoutAtlas: AtlasDef = {
         "loot/loot-medical-pill.svg",
         "loot/loot-medical-soda.svg",
         "loot/loot-luck-bottle.svg",
+        "loot/loot-transgender.svg",
 
         "loot/loot-melee-bayonet-rugged.svg",
         "loot/loot-melee-bayonet-woodland.svg",

@@ -1,0 +1,20 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cercle de fond -->
+  <circle cx="100" cy="100" r="100" fill="#fff" />
+  
+  <!-- Drapeau trans (5 bandes) dans un cercle -->
+  <clipPath id="circleClip">
+    <circle cx="100" cy="100" r="100" />
+  </clipPath>
+
+  <g clip-path="url(#circleClip)">
+    <rect width="200" height="40" y="0" fill="#5BCEFA" />
+    <rect width="200" height="40" y="40" fill="#F5A9B8" />
+    <rect width="200" height="40" y="80" fill="#FFFFFF" />
+    <rect width="200" height="40" y="120" fill="#F5A9B8" />
+    <rect width="200" height="40" y="160" fill="#5BCEFA" />
+  </g>
+
+  <!-- Contour -->
+  <circle cx="100" cy="100" r="98" fill="none" stroke="#000" stroke-width="4" />
+</svg>
