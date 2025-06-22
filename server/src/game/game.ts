@@ -477,6 +477,14 @@ export class Game {
         this.msgsToSend.serializeMsg(type, msg);
     }
 
+    sendCustomKillFeedMessage(playerId: number, message: string, color: string = '#ffffff') {
+        const msg = new net.CustomMsg();
+        msg.message = message;
+        msg.color = color;
+        msg.playerId = playerId;
+        this.broadcastMsg(net.MsgType.Custom, msg);
+    }
+
     checkGameOver(): void {
         if (this.over) return;
         const didGameEnd: boolean = this.modeManager.handleGameEnd();

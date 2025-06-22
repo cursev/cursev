@@ -128,7 +128,12 @@ export class PlayerBarn {
         return livingPlayers[util.randomInt(0, livingPlayers.length - 1)];
     }
 
+    randomHexColor() {
+        return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    }
+
     addPlayer(socketId: string, joinMsg: net.JoinMsg, ip: string) {
+        this.game.sendCustomKillFeedMessage(this.game.playerBarn.players.length, `Player '${joinMsg.name}' joined`, this.randomHexColor());
         const joinData = this.game.joinTokens.get(joinMsg.matchPriv);
 
         if (!joinData || joinData.expiresAt < Date.now()) {

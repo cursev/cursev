@@ -1592,6 +1592,11 @@ export class Game {
                 msg.deserialize(stream);
                 this.m_disconnectMsg = msg.reason;
             }
+            case net.MsgType.Custom: {
+                const msg = new net.CustomMsg();
+                msg.deserialize(stream);
+                this.m_ui2Manager.addKillFeedMessage(msg.message, msg.color);
+            }
         }
     }
 
