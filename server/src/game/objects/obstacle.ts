@@ -337,7 +337,6 @@ export class Obstacle extends BaseGameObject {
     }
 
     damage(params: DamageParams): void {
-        if (this.game.infinite_hp) return;
         if (this.isSkin) return;
 
         const def = MapObjectDefs[this.type] as ObstacleDef;
