@@ -2580,11 +2580,10 @@ export const GunDefs: Record<string, GunDef> = {
         },
         lootImg: {
             sprite: "loot-lgbt.img",
-            tint: 65280,
+            tint: 0xFFFFFF,
             border: "loot-circle-outer-07.img",
             borderTint: 16777215,
             scale: 0.3,
-            noTint: true,
         },
         worldImg: {
             sprite: "gun-lgbt.img",
@@ -2592,7 +2591,7 @@ export const GunDefs: Record<string, GunDef> = {
                 x: 0.5,
                 y: 0.5,
             },
-            tint: 16777215,
+            tint: 0xFFFFFF,
             recoil: 5,
             handsBelow: false,
         },
