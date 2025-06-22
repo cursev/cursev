@@ -115,6 +115,7 @@ export class Game {
     constructor(
         id: string,
         config: ServerGameConfig,
+        readonly infinite_hp: boolean,
         readonly sendSocketMsg: (id: string, data: Uint8Array) => void,
         readonly closeSocket: (id: string, reason?: string) => void,
         readonly sendData?: (data: UpdateDataMsg) => void,
@@ -130,6 +131,7 @@ export class Game {
         this.isTeamMode = this.teamMode !== TeamMode.Solo;
         this.isPrivate = config.isPrivate || false;
         this.accessCode = config.accessCode;
+        this.infinite_hp = infinite_hp;
 
         this.map = new GameMap(this);
         this.grid = new Grid(this.map.width, this.map.height);

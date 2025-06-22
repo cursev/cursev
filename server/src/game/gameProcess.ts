@@ -32,6 +32,7 @@ process.on("message", async (msg: ProcessMsg) => {
         game = new Game(
             msg.id,
             msg.config,
+            false,
             (id, data) => {
                 socketMsgs.push({
                     socketId: id,

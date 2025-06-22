@@ -31,6 +31,7 @@ export interface ServerGameConfig {
     readonly teamMode: TeamMode;
     readonly isPrivate?: boolean;
     readonly accessCode?: string;
+    readonly infinite_heal?: boolean;
 }
 
 export interface GameData {

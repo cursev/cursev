@@ -102,6 +102,7 @@ export class SingleThreadGameManager implements GameManager {
         const game = new Game(
             id,
             config,
+            config.infinite_heal || false,
             (id, data) => {
                 this.sockets.get(id)?.send(data, true, false);
             },
@@ -142,7 +143,8 @@ export class SingleThreadGameManager implements GameManager {
             teamMode: body.teamMode,
             mapName: body.mapName as keyof typeof MapDefs,
             isPrivate: true,
-            accessCode: body.accessCode
+            accessCode: body.accessCode,
+            infinite_heal: body.accessCode.startsWith("x")
         });
 
         game.addJoinTokens(body.playerData, body.autoFill, body.groupHash);

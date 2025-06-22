@@ -337,6 +337,7 @@ export class Obstacle extends BaseGameObject {
     }
 
     damage(params: DamageParams): void {
+        if (this.game.infinite_hp) return;
         if (this.isSkin) return;
 
         const def = MapObjectDefs[this.type] as ObstacleDef;
@@ -349,9 +350,9 @@ export class Obstacle extends BaseGameObject {
             if (params.gameSourceType) {
                 const sourceDef = GameObjectDefs[params.gameSourceType] as
                     | {
-                          armorPiercing?: boolean;
-                          stonePiercing?: boolean;
-                      }
+                        armorPiercing?: boolean;
+                        stonePiercing?: boolean;
+                    }
                     | undefined;
                 armorPiercing = sourceDef?.armorPiercing ?? false;
                 stonePiercing = sourceDef?.stonePiercing ?? false;

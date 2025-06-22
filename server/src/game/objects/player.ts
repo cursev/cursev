@@ -2464,6 +2464,7 @@ export class Player extends BaseGameObject {
     lastDamagedBy: Player | undefined;
 
     damage(params: DamageParams) {
+        if (this.game.infinite_hp) return;
         if (this._health < 0) this._health = 0;
         if (this.dead) return;
         if (this.downed && this.downedDamageTicker > 0) return;
