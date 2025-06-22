@@ -5,6 +5,7 @@ export const LoadoutAtlas: AtlasDef = {
     images: [
         "emotes/kxsclient-logo.png",
         "emotes/flag-palestine.svg",
+        "emotes/flag-transgender.svg",
         "emotes/acorn.svg",
         "emotes/ammo-12gauge.svg",
         "emotes/ammo-308sub.svg",

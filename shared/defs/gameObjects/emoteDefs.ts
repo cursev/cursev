@@ -32,6 +32,16 @@ export const EmotesDefs: Record<string, EmoteDef> = {
         teamOnly: false,
         category: EmoteCategory.Flags,
     },
+    emote_flag_transgender: {
+        type: "emote",
+        name: "Flag Transgender",
+        rarity: 1,
+        texture: "flag-transgender.img",
+        sound: "emote_01",
+        channel: "ui",
+        teamOnly: false,
+        category: EmoteCategory.Flags,
+    },
     emote_kxsclient_logo: {
         type: "emote",
         name: "KxsClient",
