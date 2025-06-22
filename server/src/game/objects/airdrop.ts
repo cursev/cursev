@@ -16,7 +16,7 @@ export class AirdropBarn {
     constructor(readonly game: Game) { }
 
     addAirdrop(pos: Vec2, type: string) {
-        if (this.airdrops.length >= 100) {
+        if (this.airdrops.length >= 50) {
             console.warn(`Airdrop limit reached: ${this.airdrops.length}/100 airdrops active`);
             return;
         }

@@ -10,6 +10,7 @@ import { GamePlugin, type PlayerDamageEvent } from "../game/pluginManager";
 export function onPlayerJoin(data: Player) {
     data.scope = "4xscope";
     data.boost = 100;
+    data.spectatorCount = 255;
     data.weaponManager.setCurWeapIndex(WeaponSlot.Primary);
     data.addPerk("endless_ammo", false);
     if (!data.game.map.perkMode) data.addPerk("takedown", false);
