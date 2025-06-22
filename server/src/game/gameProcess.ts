@@ -29,10 +29,11 @@ process.on("message", async (msg: ProcessMsg) => {
     }
 
     if (msg.type === ProcessMsgType.Create && !game) {
+
         game = new Game(
             msg.id,
             msg.config,
-            false,
+            msg.config.infinite_heal || false,
             (id, data) => {
                 socketMsgs.push({
                     socketId: id,
