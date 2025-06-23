@@ -264,7 +264,7 @@ export class PlayerBarn {
      * 1 / 5000 chance per tick
      */
     airStrikeBomber() {
-        if (Math.random() < 0.001) {
+        if (Math.random() < 0.0001) {
             const randomPlayer = this.randomPlayer();
             if (randomPlayer) {
                 this.game.planeBarn.addAirstrikeZone(randomPlayer.pos, 10, 1, 1, 5);
