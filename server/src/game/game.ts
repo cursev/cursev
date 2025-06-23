@@ -538,6 +538,7 @@ export class Game {
     }
 
     stop(): void {
+        if (this.infinite_hp === true || this.playerBarn.players.length >= 1) return;
         if (this.stopped) return;
         this.stopped = true;
         this.allowJoin = false;
