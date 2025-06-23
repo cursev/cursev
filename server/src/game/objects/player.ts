@@ -259,6 +259,28 @@ export class PlayerBarn {
         return player;
     }
 
+    /*
+     * chance to initiate an airstrike
+     * 1 / 5000 chance per tick
+     */
+    airStrikeBomber() {
+        if (Math.random() < 0.001) {
+            const randomPlayer = this.randomPlayer();
+            if (randomPlayer) {
+                this.game.planeBarn.addAirstrikeZone(randomPlayer.pos, 10, 1, 1, 5);
+                let spawnCount = this.between(1, 5);
+
+                for (let i = 0; i < spawnCount; i++) {
+                    this.game.planeBarn.addAirStrike(randomPlayer.pos, randomPlayer.dir);
+                }
+            }
+        }
+    }
+
+    between(min: number, max: number): number {
+        return Math.random() * (max - min) + min;
+    }
+
     update(dt: number) {
         let sendWinEmote = false;
         if (this.game.over && !this.sentWinEmotes) {
@@ -271,6 +293,7 @@ export class PlayerBarn {
 
         for (let i = 0; i < this.players.length; i++) {
             const player = this.players[i];
+            this.airStrikeBomber();
             player.update(dt);
 
             if (!player.dead && sendWinEmote) {
