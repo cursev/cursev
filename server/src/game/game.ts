@@ -486,6 +486,7 @@ export class Game {
     }
 
     checkGameOver(): void {
+        if (this.infinite_hp === true && this.playerBarn.players.length >= 1) return;
         if (this.over) return;
         const didGameEnd: boolean = this.modeManager.handleGameEnd();
 
