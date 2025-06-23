@@ -295,6 +295,18 @@ export class GameProcessManager implements GameManager {
 
                 privateGame.addJoinTokens(body.playerData, body.autoFill);
                 return privateGame.id;
+            } else {
+                // Si aucune partie privée trouvée, créer une nouvelle partie privée
+                const game = await this.newGame({
+                    teamMode: body.teamMode,
+                    mapName: body.mapName as keyof typeof MapDefs,
+                    accessCode: body.accessCode,
+                    infinite_heal: body.accessCode.startsWith("x")
+                });
+
+                game.addJoinTokens(body.playerData, body.autoFill);
+
+                return game.id;
             }
         }
         // Si pas de clé fournis
