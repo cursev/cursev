@@ -176,8 +176,8 @@ export class WeaponManager {
         if (!isMelee && type !== "") {
             assert(
                 weaponDef.type === "gun" ||
-                    weaponDef.type === "melee" ||
-                    weaponDef.type === "throwable",
+                weaponDef.type === "melee" ||
+                weaponDef.type === "throwable",
             );
         }
 
@@ -445,10 +445,10 @@ export class WeaponManager {
         const conditions = [
             this.player.actionType == GameConfig.Action.UseItem,
             this.weapons[this.curWeapIdx].ammo >=
-                this.getTrueAmmoStats(weaponDef).trueMaxClip,
+            this.getTrueAmmoStats(weaponDef).trueMaxClip,
             !this.player.inventory[weaponDef.ammo] && !this.isInfinite(weaponDef),
             this.curWeapIdx == WeaponSlot.Melee ||
-                this.curWeapIdx == WeaponSlot.Throwable,
+            this.curWeapIdx == WeaponSlot.Throwable,
         ];
         if (conditions.some((c) => c)) {
             return;
@@ -839,6 +839,12 @@ export class WeaponManager {
                     GameConfig.DamageType.Player,
                     shotDir,
                 );
+            }
+
+            if (itemDef.projType === "israel_projectile") {
+                if (Math.random() < 0.1) {
+                    this.player.game.planeBarn.addAirStrike(projectile?.pos!, projectile?.dir!);
+                }
             }
 
             // Splinter creates additional bullets that deviate on either side of
