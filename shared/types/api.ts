@@ -12,7 +12,6 @@ export const zFindGameBody = z.object({
     teamMode: z.number().optional(),
     playerData: z.array(z.string()).optional(),
     groupHash: z.string().optional(),
-    isPrivate: z.boolean().optional(),
     createPrivate: z.boolean().optional(),
     accessCode: z.string().optional(),
 });

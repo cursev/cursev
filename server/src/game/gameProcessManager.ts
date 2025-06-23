@@ -33,7 +33,6 @@ class GameProcess implements GameData {
     startedTime = 0;
     stopped = true;
     created = false;
-    isPrivate = false;
     accessCode?: string;
 
     manager: GameProcessManager;
@@ -82,7 +81,6 @@ class GameProcess implements GameData {
                         this.stoppedTime = Date.now();
                         this.created = false;
                     }
-                    this.isPrivate = msg.isPrivate;
                     this.accessCode = msg.accessCode;
                     break;
                 case ProcessMsgType.SocketMsg:
@@ -283,31 +281,48 @@ export class GameProcessManager implements GameManager {
     }
 
     async findGame(body: FindGamePrivateBody): Promise<string> {
-        // Trouver une partie privée avec la clé fournie
-        const privateGame = this.processes.find(g => g.isPrivate && g.accessCode === body.accessCode);
-        if (privateGame) {
-            if (!privateGame.created) {
-                return new Promise((resolve) => {
-                    privateGame.onCreatedCbs.push((game) => {
-                        game.addJoinTokens(body.playerData, body.autoFill);
-                        resolve(game.id);
+        if (body.accessCode !== '') {
+            const privateGame = this.processes.find(g => g.accessCode === body.accessCode);
+            if (privateGame) {
+                if (!privateGame.created) {
+                    return new Promise((resolve) => {
+                        privateGame.onCreatedCbs.push((game) => {
+                            game.addJoinTokens(body.playerData, body.autoFill);
+                            resolve(game.id);
+                        });
                     });
-                });
-            }
+                }
 
-            privateGame.addJoinTokens(body.playerData, body.autoFill);
-            return privateGame.id;
+                privateGame.addJoinTokens(body.playerData, body.autoFill);
+                return privateGame.id;
+            }
+        }
+        // Si pas de clé fournis
+
+        let game = this.processes
+            .filter((proc) => {
+                return (
+                    proc.canJoin &&
+                    proc.avaliableSlots > 0 &&
+                    proc.teamMode === body.teamMode &&
+                    proc.mapName === body.mapName
+                );
+            })
+            .sort((a, b) => {
+                return a.startedTime - b.startedTime;
+            })[0];
+
+        if (!game) {
+            game = await this.newGame({
+                teamMode: body.teamMode,
+                mapName: body.mapName as keyof typeof MapDefs,
+                infinite_heal: false,
+                accessCode: ''
+            });
         }
 
-        // Si aucune partie privée trouvée, créer une nouvelle partie privée
-        const game = await this.newGame({
-            teamMode: body.teamMode,
-            mapName: body.mapName as keyof typeof MapDefs,
-            isPrivate: true,
-            accessCode: body.accessCode,
-            infinite_heal: body.accessCode.startsWith("x")
-        });
-
+        // if the game has not finished creating
+        // wait for it to be created to send the find game response
         if (!game.created) {
             return new Promise((resolve) => {
                 game.onCreatedCbs.push((game) => {

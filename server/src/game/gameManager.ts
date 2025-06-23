@@ -132,20 +132,47 @@ export class SingleThreadGameManager implements GameManager {
 
     async findGame(body: FindGamePrivateBody): Promise<string> {
         // Trouver une partie privée avec la clé fournie
-        const privateGame = this.games.find(g => g.isPrivate && g.accessCode === body.accessCode);
-        if (privateGame) {
-            privateGame.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
-            return privateGame.id;
-        }
+        if (body.accessCode !== "") {
+            const privateGame = this.games.find(g => g.accessCode === body.accessCode);
+            if (privateGame) {
+                privateGame.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
+                return privateGame.id;
+            } else {
+                // Si aucune partie privée trouvée, créer une nouvelle partie privée
+                const game = await this.newGame({
+                    teamMode: body.teamMode,
+                    mapName: body.mapName as keyof typeof MapDefs,
+                    accessCode: body.accessCode,
+                    infinite_heal: body.accessCode.startsWith("x")
+                });
 
-        // Si aucune partie privée trouvée, créer une nouvelle partie privée
-        const game = await this.newGame({
-            teamMode: body.teamMode,
-            mapName: body.mapName as keyof typeof MapDefs,
-            isPrivate: true,
-            accessCode: body.accessCode,
-            infinite_heal: body.accessCode.startsWith("x")
-        });
+                game.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
+
+                return game.id;
+            }
+        }
+        // Si pas de clé fournis
+
+        let game = this.games
+            .filter((game) => {
+                return (
+                    game.canJoin &&
+                    game.teamMode === body.teamMode &&
+                    game.mapName === body.mapName
+                );
+            })
+            .sort((a, b) => {
+                return a.startedTime - b.startedTime;
+            })[0];
+
+        if (!game) {
+            game = await this.newGame({
+                teamMode: body.teamMode,
+                mapName: body.mapName as keyof typeof MapDefs,
+                infinite_heal: false,
+                accessCode: ''
+            });
+        }
 
         game.addJoinTokens(body.playerData, body.autoFill, body.groupHash);
 

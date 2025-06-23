@@ -30,7 +30,6 @@ export interface ServerGameConfig {
     readonly mapName: keyof typeof MapDefs;
     readonly teamMode: TeamMode;
     readonly infinite_heal: boolean;
-    readonly isPrivate?: boolean;
     readonly accessCode?: string;
 }
 
@@ -42,7 +41,6 @@ export interface GameData {
     aliveCount: number;
     startedTime: number;
     stopped: boolean;
-    isPrivate: boolean;
     accessCode?: string;
 }
 
