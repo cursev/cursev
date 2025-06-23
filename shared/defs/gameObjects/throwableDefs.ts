@@ -1158,10 +1158,10 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         },
     },
     israel_projectile: {
-        name: "Lgbt Blaster",
+        name: "Israel Projectile",
         type: "throwable",
         quality: 60,
-        explosionType: "explosion_lgbt_projectile",
+        explosionType: "explosion_potato_cannonball",
         inventoryOrder: 0,
         noPotatoSwap: true,
         cookable: true,

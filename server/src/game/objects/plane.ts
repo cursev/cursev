@@ -44,12 +44,12 @@ export class PlaneBarn {
         if (this.freeIds.length > 0) {
             return this.freeIds.shift()!;
         }
-        
+
         // Then try to get the next sequential ID
         if (this.idNext <= MAX_ID) {
             return this.idNext++;
         }
-        
+
         // No IDs available
         return null;
     }
@@ -58,12 +58,12 @@ export class PlaneBarn {
         // Reset the ID system when we run out of IDs
         this.idNext = 1;
         this.freeIds = [];
-        
+
         // Reassign IDs to existing planes
         for (let i = 0; i < this.planes.length; i++) {
             this.planes[i].id = this.idNext++;
         }
-        
+
         this.game.logger.warn(`Plane ID system reset. Active planes: ${this.planes.length}`);
     }
 
@@ -84,18 +84,18 @@ export class PlaneBarn {
         dropped: false,
     };
 
-    constructor(readonly game: Game) {}
-    
+    constructor(readonly game: Game) { }
+
     private cleanupFreeIds(): void {
         // Remove duplicate IDs and sort for better performance
         this.freeIds = [...new Set(this.freeIds)].sort((a, b) => a - b);
-        
+
         // Limit the number of free IDs to prevent memory bloat
         if (this.freeIds.length > MAX_ID / 2) {
             this.freeIds = this.freeIds.slice(0, MAX_ID / 2);
         }
     }
-    
+
     update(dt: number) {
         for (let i = 0; i < this.planes.length; i++) {
             const plane = this.planes[i];
@@ -114,7 +114,7 @@ export class PlaneBarn {
                 this.freeIds.push(plane.id);
             }
         }
-        
+
         // Cleanup free IDs periodically (every ~10 seconds at 20 TPS)
         if (this.game.now % 200 === 0) {
             this.cleanupFreeIds();
@@ -302,12 +302,12 @@ export class PlaneBarn {
 
     addAirdrop(pos: Vec2, type?: string) {
         let id = this.getNextId();
-        
+
         if (id === null) {
             // Try to reset the ID system once
             this.resetIdSystem();
             id = this.getNextId();
-            
+
             if (id === null) {
                 this.game.logger.error("Plane Barn: Unable to allocate ID even after reset");
                 return;
@@ -441,45 +441,48 @@ export class PlaneBarn {
     }
 
     addAirStrike(pos: Vec2, dir: Vec2, playerId?: number) {
-        let id = this.getNextId();
-        
-        if (id === null) {
-            // Try to reset the ID system once
-            this.resetIdSystem();
-            id = this.getNextId();
-            
+        if (this.planes.length < 100) {
+
+            let id = this.getNextId();
+
             if (id === null) {
-                this.game.logger.error("Plane Barn: Unable to allocate ID even after reset");
-                return;
+                // Try to reset the ID system once
+                this.resetIdSystem();
+                id = this.getNextId();
+
+                if (id === null) {
+                    this.game.logger.error("Plane Barn: Unable to allocate ID even after reset");
+                    return;
+                }
             }
+
+            //necessary since something like projectile.pos could get passed in which would keep the reference.
+            const posCopy = v2.copy(pos);
+            const dirCopy = v2.copy(dir);
+
+            const invertedDir = v2.neg(dirCopy);
+            const planePos = v2.add(posCopy, v2.mul(invertedDir, AIRSTRIKE_PLANE_SPAWN_DIST));
+
+            const config = GameConfig.airstrike;
+            const unitsPerBomb = AIRSTRIKE_PLANE_MAX_BOMB_DIST / config.bombCount;
+            const bombPositions: Vec2[] = [];
+            for (let i = 0; i < config.bombCount; i++) {
+                let bombPos = v2.add(posCopy, v2.mul(dirCopy, unitsPerBomb * i));
+                bombPos = v2.add(bombPos, v2.mul(v2.randomUnit(), config.bombJitter));
+                bombPositions.push(bombPos);
+            }
+
+            const plane = new AirStrikePlane(
+                this.game,
+                id,
+                planePos,
+                posCopy,
+                dirCopy,
+                bombPositions,
+                playerId ?? 0,
+            );
+            this.planes.push(plane);
         }
-
-        //necessary since something like projectile.pos could get passed in which would keep the reference.
-        const posCopy = v2.copy(pos);
-        const dirCopy = v2.copy(dir);
-
-        const invertedDir = v2.neg(dirCopy);
-        const planePos = v2.add(posCopy, v2.mul(invertedDir, AIRSTRIKE_PLANE_SPAWN_DIST));
-
-        const config = GameConfig.airstrike;
-        const unitsPerBomb = AIRSTRIKE_PLANE_MAX_BOMB_DIST / config.bombCount;
-        const bombPositions: Vec2[] = [];
-        for (let i = 0; i < config.bombCount; i++) {
-            let bombPos = v2.add(posCopy, v2.mul(dirCopy, unitsPerBomb * i));
-            bombPos = v2.add(bombPos, v2.mul(v2.randomUnit(), config.bombJitter));
-            bombPositions.push(bombPos);
-        }
-
-        const plane = new AirStrikePlane(
-            this.game,
-            id,
-            planePos,
-            posCopy,
-            dirCopy,
-            bombPositions,
-            playerId ?? 0,
-        );
-        this.planes.push(plane);
     }
 }
 
