@@ -46,7 +46,7 @@ export const EmotesDefs: Record<string, EmoteDef> = {
         type: "emote",
         name: "KxsClient",
         rarity: 5,
-        texture: "kxsclient-logo.png",
+        texture: "kxsclient-logo.img",
         sound: "emote_01",
         channel: "ui",
         teamOnly: false,
