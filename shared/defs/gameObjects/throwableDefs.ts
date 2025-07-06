@@ -109,7 +109,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
             tint: 0xffffff,
         },
         splitType: "potato_cannonball1",
-        numSplit: 10,
+        numSplit: 3,
         handImg: {
             equip: {
                 right: {
@@ -786,7 +786,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
             tint: 0xffffff,
         },
         splitType: "potato_cannonball2",
-        numSplit: 2,
+        numSplit: 1,
         handImg: {},
         useThrowParticles: false,
         sound: {
