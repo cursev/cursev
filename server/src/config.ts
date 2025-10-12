@@ -39,13 +39,13 @@ util.mergeDeep(Config, {
             "2xscope": 1,
             "4xscope": 1,
             "8xscope": 1,
-            "15xscope": 1,
-            "30xscope": 1,
-            "60xscope": 1,
-            "120xscope": 1,
-            "240xscope": 1,
-            "580xscope": 1,
-            "1160xscope": 1
+            "15xscope": 0,
+            "30xscope": 0,
+            "60xscope": 0,
+            "120xscope": 0,
+            "240xscope": 0,
+            "580xscope": 0,
+            "1160xscope": 0
         },
     },
 });

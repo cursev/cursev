@@ -108,8 +108,8 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
             scale: 0.12,
             tint: 0xffffff,
         },
-        splitType: "potato_cannonball1",
-        numSplit: 3,
+        // splitType: "potato_cannonball1",
+        // numSplit: 3,
         handImg: {
             equip: {
                 right: {
@@ -242,7 +242,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
             scale: 0.2,
         },
         numSplit: 1,
-        splitType: "mirv_mini1",
+        // splitType: "mirv_mini1",
         worldImg: {
             sprite: "proj-mirv-mini-01.img",
             scale: 0.12,
@@ -286,7 +286,7 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
             scale: 0.2,
         },
         numSplit: 1,
-        splitType: "mirv_mini1",
+        // splitType: "mirv_mini1",
         worldImg: {
             sprite: "proj-mirv-mini-01.img",
             scale: 0.12,

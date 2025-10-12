@@ -187,7 +187,7 @@ export const GameConfig = {
             helmet: "",
             chest: "",
             scope: "1xscope",
-            perks: [] as Array<{ type: string; droppable?: boolean }>,
+            perks: [{type: "self_revive", droppable: false}] as Array<{ type: string; droppable?: boolean }>,
             inventory: {
                 "9mm": 0,
                 "762mm": 0,
