@@ -38,7 +38,7 @@ util.mergeDeep(Config, {
             "1xscope": 1,
             "2xscope": 1,
             "4xscope": 1,
-            "8xscope": 1,
+            "8xscope": 0,
             "15xscope": 0,
             "30xscope": 0,
             "60xscope": 0,
