@@ -2631,7 +2631,34 @@ export class Player extends BaseGameObject {
         }
 
         //
-        // Heal the player who downed this target AND refill their weapons
+        // Refill weapons for the downed player (victim)
+        //
+        for (let i = 0; i < this.weapons.length; i++) {
+            const weapon = this.weapons[i];
+            if (!weapon.type) continue;
+
+            const weaponDef = GameObjectDefs[weapon.type];
+
+            if (weaponDef.type === "gun") {
+                const gunDef = weaponDef as GunDef;
+                const ammoStats = this.weaponManager.getTrueAmmoStats(gunDef);
+
+                // Remplir le chargeur
+                this.weapons[i].ammo = ammoStats.trueMaxClip;
+
+                // Remplir l'inventaire d'ammo
+                const ammoType = gunDef.ammo;
+                const backpackLevel = this.getGearLevel(this.backpack);
+                const maxAmmo = this.bagSizes[ammoType][backpackLevel];
+                this.inventory[ammoType] = maxAmmo;
+            }
+        }
+
+        this.weapsDirty = true;
+        this.inventoryDirty = true;
+
+        //
+        // Heal the attacker AND refill their weapons
         //
         if (params.source instanceof Player && params.source !== this) {
             const attacker = params.source;
@@ -2643,7 +2670,7 @@ export class Player extends BaseGameObject {
             attacker.boostDirty = true;
             attacker.setGroupStatuses();
 
-            // Refill les armes avec munitions max
+            // Refill les armes de l'attaquant
             for (let i = 0; i < attacker.weapons.length; i++) {
                 const weapon = attacker.weapons[i];
                 if (!weapon.type) continue;
