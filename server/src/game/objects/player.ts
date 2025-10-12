@@ -14,7 +14,7 @@ import {
     SCOPE_LEVELS,
     type ScopeDef,
 } from "../../../../shared/defs/gameObjects/gearDefs";
-import type { GunDef } from "../../../../shared/defs/gameObjects/gunDefs";
+import { GunDefs, type GunDef } from "../../../../shared/defs/gameObjects/gunDefs";
 import { type MeleeDef, MeleeDefs } from "../../../../shared/defs/gameObjects/meleeDefs";
 import type { OutfitDef } from "../../../../shared/defs/gameObjects/outfitDefs";
 import { PerkProperties } from "../../../../shared/defs/gameObjects/perkDefs";
@@ -259,24 +259,6 @@ export class PlayerBarn {
         return player;
     }
 
-    /*
-     * chance to initiate an airstrike
-     * 1 / 5000 chance per tick
-     */
-    airStrikeBomber() {
-        if (Math.random() < 0.0001) {
-            const randomPlayer = this.randomPlayer();
-            if (randomPlayer) {
-                this.game.planeBarn.addAirstrikeZone(randomPlayer.pos, 10, 1, 1, 5);
-                let spawnCount = this.between(1, 5);
-
-                for (let i = 0; i < spawnCount; i++) {
-                    this.game.planeBarn.addAirStrike(randomPlayer.pos, randomPlayer.dir);
-                }
-            }
-        }
-    }
-
     between(min: number, max: number): number {
         return Math.random() * (max - min) + min;
     }
@@ -293,7 +275,6 @@ export class PlayerBarn {
 
         for (let i = 0; i < this.players.length; i++) {
             const player = this.players[i];
-            this.airStrikeBomber();
             player.update(dt);
 
             if (!player.dead && sendWinEmote) {
@@ -1501,18 +1482,18 @@ export class Player extends BaseGameObject {
                     this.actionType === GameConfig.Action.Revive &&
                     this.playerBeingRevived
                 ) {
+                    const downedMsg = new net.KillMsg();
                     this.applyActionFunc((target: Player) => {
                         if (!target.downed) return;
                         target.downed = false;
                         target.downedDamageTicker = 0;
-                        target.health = GameConfig.player.reviveHealth;
+                        target.health = 100;
+                        target.boost = 100;
 
                         // checks 2 conditions in one, player has pan AND has it selected
                         if (target.weapons[target.curWeapIdx].type === "pan") {
                             target.wearingPan = false;
                         }
-
-                        if (target.hasPerk("leadership")) target.boost = 100;
                         target.setDirty();
                         target.setGroupStatuses();
                         this.game.pluginManager.emit("playerRevived", target);
@@ -2647,6 +2628,47 @@ export class Player extends BaseGameObject {
 
         if (this.weapons[GameConfig.WeaponSlot.Melee].type === "pan") {
             this.wearingPan = true;
+        }
+
+        //
+        // Heal the player who downed this target AND refill their weapons
+        //
+        if (params.source instanceof Player && params.source !== this) {
+            const attacker = params.source;
+
+            // Heal complet
+            attacker._health = GameConfig.player.health; // 100 HP
+            attacker._boost = 100; // 100 boost
+            attacker.healthDirty = true;
+            attacker.boostDirty = true;
+            attacker.setGroupStatuses();
+
+            // Refill les armes avec munitions max
+            for (let i = 0; i < attacker.weapons.length; i++) {
+                const weapon = attacker.weapons[i];
+                if (!weapon.type) continue;
+
+                const weaponDef = GameObjectDefs[weapon.type];
+
+                if (weaponDef.type === "gun") {
+                    const gunDef = weaponDef as GunDef;
+                    const ammoStats = attacker.weaponManager.getTrueAmmoStats(gunDef);
+
+                    // Remplir le chargeur
+                    attacker.weapons[i].ammo = ammoStats.trueMaxClip;
+
+                    // Remplir l'inventaire d'ammo
+                    const ammoType = gunDef.ammo;
+                    const backpackLevel = attacker.getGearLevel(attacker.backpack);
+                    const maxAmmo = attacker.bagSizes[ammoType][backpackLevel];
+                    attacker.inventory[ammoType] = maxAmmo;
+                }
+            }
+
+            attacker.weapsDirty = true;
+            attacker.inventoryDirty = true;
+
+            this.game.logger.info(`Player ${attacker.name} healed and refilled after downing ${this.name}`);
         }
 
         //
