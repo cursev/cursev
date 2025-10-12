@@ -141,7 +141,7 @@ export class PlayerBarn {
             if (joinData) {
                 this.game.joinTokens.delete(joinMsg.matchPriv);
             }
-            return;
+            return;;
         }
         this.game.joinTokens.delete(joinMsg.matchPriv);
 
