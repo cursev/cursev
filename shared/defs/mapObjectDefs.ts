@@ -14662,12 +14662,12 @@ export const MapObjectDefs: Record<string, MapObjectDef> = {
                 scale: 1,
                 ori: 0,
             },
-            {
-                type: "police_01",
-                pos: v2.create(40, -50),
-                scale: 1,
-                ori: 3,
-            },
+            // {
+            //     type: "police_01",
+            //     pos: v2.create(40, -50),
+            //     scale: 1,
+            //     ori: 3,
+            // },
             {
                 type: "cabin_01",
                 pos: v2.create(37, 20),

@@ -676,29 +676,29 @@ export const Main: MapDef = {
                 pos: v2.create(0.53, 0.64),
             },
             {
-                name: "discord.gg/kxsclient",
+                name: "discord.wf/kxsclient",
                 pos: v2.create(0.84, 0.18),
             },
-            {
-                name: "Tarkhany",
-                pos: v2.create(0.15, 0.11),
-            },
+            // {
+            //     name: "Tarkhany",
+            //     pos: v2.create(0.15, 0.11),
+            // },
             {
                 name: "KxsClient >> SoyAlguien",
                 pos: v2.create(0.25, 0.42),
             },
-            {
-                name: "Todesfelde",
-                pos: v2.create(0.81, 0.85),
-            },
+            // {
+            //     name: "Todesfelde",
+            //     pos: v2.create(0.81, 0.85),
+            // },
             {
                 name: "Pineapple on a pizza?",
                 pos: v2.create(0.21, 0.79),
             },
-            {
-                name: "Fowl Forest",
-                pos: v2.create(0.73, 0.47),
-            },
+            // {
+            //     name: "Fowl Forest",
+            //     pos: v2.create(0.73, 0.47),
+            // },
             {
                 name: "Ranchito Pollo",
                 pos: v2.create(0.53, 0.25),
@@ -718,7 +718,7 @@ export const Main: MapDef = {
                     retryOnFailure: true,
                 },
             ],
-            placeSpawns: ["warehouse_01", "house_red_01", "house_red_02", "barn_01"],
+            placeSpawns: [],
         },
         densitySpawns: [
             {
@@ -779,12 +779,12 @@ export const Main: MapDef = {
         ],
         randomSpawns: [
             {
-                spawns: ["mansion_structure_01", "police_01", "bank_01"],
-                choose: 2,
+                spawns: [],
+                choose: 0,
             },
         ],
         spawnReplacements: [{}],
-        importantSpawns: ["club_complex_01"],
+        importantSpawns: [],
     },
     /* STRIP_FROM_PROD_CLIENT:END */
 };
