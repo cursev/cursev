@@ -2613,7 +2613,7 @@ export class Player extends BaseGameObject {
         this.health = 100;
 
         if (this.game.gas.currentRad <= 0.1) {
-            this.health = 50;
+            this.health = 100;
         }
 
         this.animType = GameConfig.Anim.None;
