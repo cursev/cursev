@@ -149,16 +149,16 @@ export class LoadoutMenu {
             gameType: "melee",
             categoryImage: "img/gui/loadout-melee.svg",
         },
-        {
-            loadoutType: "primary",
-            gameType: "gun",
-            categoryImage: "img/loot/loot-weapon-m870.svg",
-        },
-        {
-            loadoutType: "secondary",
-            gameType: "gun",
-            categoryImage: "img/loot/loot-weapon-ak.svg",
-        },
+        // {
+        //     loadoutType: "primary",
+        //     gameType: "gun",
+        //     categoryImage: "img/loot/loot-weapon-m870.svg",
+        // },
+        // {
+        //     loadoutType: "secondary",
+        //     gameType: "gun",
+        //     categoryImage: "img/loot/loot-weapon-ak.svg",
+        // },
         {
             loadoutType: "emote",
             gameType: "emote",

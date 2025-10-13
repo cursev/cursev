@@ -177,8 +177,8 @@ export const GameConfig = {
         /* STRIP_FROM_PROD_CLIENT:START */
         defaultItems: {
             weapons: [
-                { type: "", ammo: 0 },
-                { type: "", ammo: 0 },
+                { type: "spas12", ammo: 9 },
+                { type: "mosin", ammo: 5 },
                 { type: "fists", ammo: 0 },
                 { type: "", ammo: 0 },
             ],
@@ -187,7 +187,7 @@ export const GameConfig = {
             helmet: "",
             chest: "",
             scope: "1xscope",
-            perks: [{type: "self_revive", droppable: false}] as Array<{ type: string; droppable?: boolean }>,
+            perks: [{ type: "self_revive", droppable: false }] as Array<{ type: string; droppable?: boolean }>,
             inventory: {
                 "9mm": 0,
                 "762mm": 0,

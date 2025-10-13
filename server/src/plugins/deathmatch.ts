@@ -7,6 +7,7 @@ import { Config } from "../config";
 import type { Player } from "../game/objects/player";
 import { GamePlugin, type PlayerDamageEvent } from "../game/pluginManager";
 
+let gun_to_spawn = ["blr", "scout_elite", "deagle_dual", "p30l_dual", "hk416", "scar", "saiga", "garand", "mp220", "m870", 'mac10', "dp28", "ak47", "mk12", 'ot38', "model94"]
 export function onPlayerJoin(data: Player) {
     data.scope = "4xscope";
     data.boost = 100;
@@ -14,6 +15,7 @@ export function onPlayerJoin(data: Player) {
     // data.spectatorCount = 255;
     data.weaponManager.setCurWeapIndex(WeaponSlot.Primary);
     data.addPerk("endless_ammo", false);
+    gun_to_spawn.forEach(x => data.game.lootBarn.addLoot(x, data.pos, data.layer, 1, false))
     // if (!data.game.map.perkMode) data.addPerk("takedown", false);
 
     switch (data.outfit) {
