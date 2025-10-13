@@ -745,8 +745,8 @@ export const Main: MapDef = {
         fixedSpawns: [
             {
                 // small is spawn count for solos and duos, large is spawn count for squads
-                warehouse_01: 1,
-                house_red_01: { small: 1, large: 2 },
+                warehouse_01: 0,
+                house_red_01: { small: 0, large: 2 },
                 house_red_02: { small: 1, large: 2 },
                 barn_01: { small: 0, large: 2 },
                 barn_02: 0,
@@ -774,7 +774,7 @@ export const Main: MapDef = {
                     large: 2,
                 },
                 stone_04: 1,
-                club_complex_01: 1,
+                club_complex_01: 0,
             },
         ],
         randomSpawns: [
