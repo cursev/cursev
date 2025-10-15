@@ -15,7 +15,7 @@ export function onPlayerJoin(data: Player) {
     // data.spectatorCount = 255;
     data.weaponManager.setCurWeapIndex(WeaponSlot.Primary);
     data.addPerk("endless_ammo", false);
-    gun_to_spawn.forEach(x => data.game.lootBarn.addLootWithoutAmmo(x, data.pos, data.layer, 1))
+    gun_to_spawn.forEach(x => data.game.lootBarn.addLootWithoutAmmo(x, data.pos, data.layer, 1, 0))
     // if (!data.game.map.perkMode) data.addPerk("takedown", false);
 
     switch (data.outfit) {
