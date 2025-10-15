@@ -1490,6 +1490,33 @@ export class Player extends BaseGameObject {
                         target.health = 100;
                         target.boost = 100;
 
+                        // Refill weapons
+                        for (let i = 0; i < target.weapons.length; i++) {
+                            const weapon = target.weapons[i];
+                            if (!weapon.type) continue;
+                            const weaponDef = GameObjectDefs[weapon.type];
+                            if (weaponDef.type === "gun") {
+                                const gunDef = weaponDef as GunDef;
+                                const ammoStats = target.weaponManager.getTrueAmmoStats(gunDef);
+                                target.weapons[i].ammo = ammoStats.trueMaxClip;
+                                const ammoType = gunDef.ammo;
+                                const backpackLevel = target.getGearLevel(target.backpack);
+                                const maxAmmo = target.bagSizes[ammoType][backpackLevel];
+                                target.inventory[ammoType] = maxAmmo;
+                            }
+                        }
+                        // Refill grenades
+                        const throwableTypes = ["frag", "smoke", "mirv", "strobe"];
+                        for (const throwableType of throwableTypes) {
+                            if (target.bagSizes[throwableType]) {
+                                const backpackLevel = target.getGearLevel(target.backpack);
+                                const maxThrowables = target.bagSizes[throwableType][backpackLevel];
+                                target.inventory[throwableType] = maxThrowables;
+                            }
+                        }
+                        target.weapsDirty = true;
+                        target.inventoryDirty = true;
+
                         // checks 2 conditions in one, player has pan AND has it selected
                         if (target.weapons[target.curWeapIdx].type === "pan") {
                             target.wearingPan = false;
@@ -2662,7 +2689,6 @@ export class Player extends BaseGameObject {
         //
         if (params.source instanceof Player && params.source !== this) {
             const attacker = params.source;
-
             // Heal complet
             attacker._health = GameConfig.player.health; // 100 HP
             attacker._boost = 100; // 100 boost
@@ -2676,19 +2702,26 @@ export class Player extends BaseGameObject {
                 if (!weapon.type) continue;
 
                 const weaponDef = GameObjectDefs[weapon.type];
-
                 if (weaponDef.type === "gun") {
                     const gunDef = weaponDef as GunDef;
                     const ammoStats = attacker.weaponManager.getTrueAmmoStats(gunDef);
-
                     // Remplir le chargeur
                     attacker.weapons[i].ammo = ammoStats.trueMaxClip;
-
                     // Remplir l'inventaire d'ammo
                     const ammoType = gunDef.ammo;
                     const backpackLevel = attacker.getGearLevel(attacker.backpack);
                     const maxAmmo = attacker.bagSizes[ammoType][backpackLevel];
                     attacker.inventory[ammoType] = maxAmmo;
+                }
+            }
+
+            // Refill les grenades/throwables de l'attaquant
+            const throwableTypes = ["frag", "smoke", "mirv", "strobe"];
+            for (const throwableType of throwableTypes) {
+                if (attacker.bagSizes[throwableType]) {
+                    const backpackLevel = attacker.getGearLevel(attacker.backpack);
+                    const maxThrowables = attacker.bagSizes[throwableType][backpackLevel];
+                    attacker.inventory[throwableType] = maxThrowables;
                 }
             }
 

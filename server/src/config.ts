@@ -26,8 +26,8 @@ util.mergeDeep(Config, {
         chest: "chest03",
         scope: "4xscope",
         inventory: {
-            frag: 3,
-            smoke: 1,
+            frag: 12,
+            smoke: 12,
             strobe: 1,
             mine: 0,
             mirv: 1,
