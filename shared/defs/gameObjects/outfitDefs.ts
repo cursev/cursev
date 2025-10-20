@@ -1319,6 +1319,23 @@ export const SkinDefs: Record<string, OutfitDef> = {
             tint: 0xa9621d,
         },
     }),
+    outfitKxsLogo: defineOutfitSkin("outfitBase", {
+        name: "KxsClient's logo skin",
+        skinImg: {
+            baseTint: 0xd3aeff,        // Violet clair du dégradé
+            baseSprite: "player-base-kxs.img",
+            handTint: 0x4d007e,         // Violet foncé du dégradé
+            handSprite: "player-hands-01.img",
+            footTint: 0x4d007e,         // Violet foncé du dégradé
+            footSprite: "player-feet-01.img",
+            backpackTint: 0xf3acfa,     // Rose clair du dégradé
+            backpackSprite: "player-circle-base-01.img",
+        },
+        lootImg: {
+            sprite: "loot-shirt-01.img",
+            tint: 0xeeaaff,             // Rose/violet très clair
+        },
+    }),
 };
 
 export const OutfitDefs = { ...BaseDefs, ...SkinDefs };
