@@ -17,8 +17,8 @@ const BACKPACK_LEVEL = 3;
 util.mergeDeep(Config, {
     modes: [
         { mapName: "main", teamMode: TeamMode.Solo, enabled: true },
-        { mapName: "main", teamMode: TeamMode.Duo, enabled: false },
-        { mapName: "main", teamMode: TeamMode.Squad, enabled: false },
+        // { mapName: "main", teamMode: TeamMode.Duo, enabled: false },
+        // { mapName: "main", teamMode: TeamMode.Squad, enabled: false },
     ],
     defaultItems: {
         backpack: "backpack03",
@@ -26,11 +26,11 @@ util.mergeDeep(Config, {
         chest: "chest03",
         scope: "4xscope",
         inventory: {
-            frag: 12,
-            smoke: 12,
-            strobe: 1,
-            mine: 0,
-            mirv: 1,
+            frag: GameConfig.bagSizes["frag"][BACKPACK_LEVEL],
+            smoke: GameConfig.bagSizes["smoke"][BACKPACK_LEVEL],
+            strobe: GameConfig.bagSizes["strobe"][BACKPACK_LEVEL],
+            mine: GameConfig.bagSizes["mine"][BACKPACK_LEVEL],
+            mirv: GameConfig.bagSizes["mirv"][BACKPACK_LEVEL],
             bandage: GameConfig.bagSizes["bandage"][BACKPACK_LEVEL],
             healthkit: GameConfig.bagSizes["healthkit"][BACKPACK_LEVEL],
             soda: GameConfig.bagSizes["soda"][BACKPACK_LEVEL],
