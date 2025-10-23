@@ -1508,11 +1508,9 @@ export class Player extends BaseGameObject {
                         // Refill grenades
                         const throwableTypes = ["frag", "smoke", "mirv", "strobe"];
                         for (const throwableType of throwableTypes) {
-                            if (target.bagSizes[throwableType]) {
-                                const backpackLevel = target.getGearLevel(target.backpack);
-                                const maxThrowables = target.bagSizes[throwableType][backpackLevel];
-                                target.inventory[throwableType] = maxThrowables;
-                            }
+                            const backpackLevel = target.getGearLevel(target.backpack);
+                            const maxThrowables = target.bagSizes[throwableType][backpackLevel];
+                            target.inventory[throwableType] = maxThrowables;
                         }
                         target.weapsDirty = true;
                         target.inventoryDirty = true;
@@ -2718,11 +2716,9 @@ export class Player extends BaseGameObject {
             // Refill les grenades/throwables de l'attaquant
             const throwableTypes = ["frag", "smoke", "mirv", "strobe"];
             for (const throwableType of throwableTypes) {
-                if (attacker.bagSizes[throwableType]) {
-                    const backpackLevel = attacker.getGearLevel(attacker.backpack);
-                    const maxThrowables = attacker.bagSizes[throwableType][backpackLevel];
-                    attacker.inventory[throwableType] = maxThrowables;
-                }
+                const backpackLevel = attacker.getGearLevel(attacker.backpack);
+                const maxThrowables = attacker.bagSizes[throwableType][backpackLevel];
+                attacker.inventory[throwableType] = maxThrowables;
             }
 
             attacker.weapsDirty = true;
