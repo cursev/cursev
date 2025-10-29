@@ -60,7 +60,7 @@ export const Main: MapDef = {
     },
     gameMode: {
         maxPlayers: 200,
-        killLeaderEnabled: false,
+        killLeaderEnabled: true,
     },
     gameConfig: {
         planes: {
