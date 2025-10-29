@@ -149,6 +149,7 @@ export class Map {
     } | null = null;
 
     cameraEmitter: Emitter | null = null;
+    private _rgbTime = 0;
 
     constructor(public decalBarn: DecalBarn) { }
 
@@ -240,6 +241,16 @@ export class Map {
         _smokeParticles: SmokeParticle[],
         debug: DebugOptions,
     ) {
+        // Animation RGB du fond de la carte
+        this._rgbTime += dt * 2; // Vitesse de l'animation (ajustable)
+        const r = Math.floor((Math.sin(this._rgbTime) * 127) + 128);
+        const g = Math.floor((Math.sin(this._rgbTime + 2) * 127) + 128);
+        const b = Math.floor((Math.sin(this._rgbTime + 4) * 127) + 128);
+        const rgbColor = (r << 16) | (g << 8) | b;
+
+        // Appliquer la teinte RGB au terrain
+        this.display.ground.tint = rgbColor;
+
         const obstacles = this.m_obstaclePool.m_getPool();
         for (let i = 0; i < obstacles.length; i++) {
             const obstacle = obstacles[i];
@@ -351,7 +362,6 @@ export class Map {
         tracePath(groundGfx, terrain?.shore);
         groundGfx.beginHole();
         tracePath(groundGfx, terrain?.grass);
-        // groundGfx.addHole();
         groundGfx.endHole();
         groundGfx.endFill();
 
@@ -379,8 +389,6 @@ export class Map {
         // River shore
         groundGfx.beginFill(mapColors.riverbank);
 
-        // groundGfx.lineStyle(2, 0xff0000);
-
         for (let i = 0; i < terrain.rivers.length; i++) {
             tracePath(groundGfx, terrain.rivers[i].shorePoly);
         }
@@ -399,7 +407,6 @@ export class Map {
         groundGfx.lineTo(ll.x, ll.y);
         groundGfx.beginHole();
         tracePath(groundGfx, terrain.shore);
-        // e.addHole();
         groundGfx.endHole();
         groundGfx.closePath();
         groundGfx.endFill();
@@ -511,7 +518,7 @@ export class Map {
 
             // Background
             const background = new PIXI.Graphics();
-            background.beginFill(mapColors.grass);
+            background.beginFill(0xffffff);
             background.drawRect(0, 0, this.width, this.height);
             background.endFill();
             this.renderTerrain(background, scale, canvasMode, true);
