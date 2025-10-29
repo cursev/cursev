@@ -49,7 +49,7 @@ export const Main: MapDef = {
             playerGhillie: 0x00ffff,    // cyan électrique
         },
         valueAdjust: 1,
-        sound: { riverShore: "sand" },
+        sound: { riverShore: "stone" },
         particles: { camera: "" },
         tracerColors: {},
         airdrop: {
