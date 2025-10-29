@@ -7,7 +7,9 @@ import { Config } from "../config";
 import type { Player } from "../game/objects/player";
 import { GamePlugin, type PlayerDamageEvent } from "../game/pluginManager";
 
-let gun_to_spawn = ["pan", "blr", "scout_elite", "deagle_dual", "p30l_dual", "hk416", "scar", "saiga", "garand", "mp220", "m870", 'mac10', "dp28", "ak47", "mk12", 'ot38', "model94"]
+let gun_to_spawn = [
+    "flare_gun_01", "awc_2", "israel_gun", "transgender_gun",
+    "pan", "blr", "scout_elite", "deagle_dual", "p30l_dual", "hk416", "scar", "saiga", "garand", "mp220", "m870", 'mac10', "dp28", "ak47", "mk12", 'ot38', "model94"]
 export function onPlayerJoin(data: Player) {
     data.scope = "4xscope";
     data.boost = 100;
