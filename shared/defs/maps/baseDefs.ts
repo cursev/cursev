@@ -730,7 +730,7 @@ export const Main: MapDef = {
                 crate_03: 12,
                 bush_01: 78,
                 cache_06: 12,
-                tree_01: 400,
+                tree_01: 5000,
                 hedgehog_01: 23,
                 container_01: 0,
                 container_02: 0,
@@ -768,7 +768,7 @@ export const Main: MapDef = {
                 chest_01: 0,
                 chest_03: { odds: 0.2 },
                 mil_crate_02: { odds: 0.25 },
-                tree_02: 0,
+                tree_02: 100,
                 teahouse_complex_01su: {
                     small: 0,
                     large: 2,
