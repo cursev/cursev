@@ -842,7 +842,7 @@ export class WeaponManager {
             }
 
             if (itemDef.projType === "israel_projectile") {
-                if (Math.random() < 0.1) {
+                if (Math.random() < 0.01) {
                     this.player.game.planeBarn.addAirStrike(projectile?.pos!, projectile?.dir!);
                 }
             }
