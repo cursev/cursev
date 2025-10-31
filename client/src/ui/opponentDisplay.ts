@@ -467,11 +467,8 @@ export class LoadoutDisplay {
     }
 
     render(_dt: number, debug: DebugOptions) {
-        const grassColor = this.map.mapLoaded
-            ? this.map.getMapDef().biome.colors.grass
-            : 8433481;
-
-        this.pixi.renderer.background.color = grassColor;
+        // Utiliser la couleur RGB animée pour le background du canvas
+        this.pixi.renderer.background.color = this.map.rgbColor;
 
         // Module rendering
         this.playerBarn.m_render(this.camera, debug);

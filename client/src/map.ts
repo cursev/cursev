@@ -150,6 +150,7 @@ export class Map {
 
     cameraEmitter: Emitter | null = null;
     private _rgbTime = 0;
+    rgbColor = 0xffffff;
 
     constructor(public decalBarn: DecalBarn) { }
 
@@ -246,7 +247,8 @@ export class Map {
         const r = Math.floor((Math.sin(this._rgbTime) * 127) + 128);
         const g = Math.floor((Math.sin(this._rgbTime + 2) * 127) + 128);
         const b = Math.floor((Math.sin(this._rgbTime + 4) * 127) + 128);
-        const rgbColor = (r << 16) | (g << 8) | b;
+        this.rgbColor = (r << 16) | (g << 8) | b;
+        const rgbColor = this.rgbColor;
 
         // Appliquer la teinte RGB au terrain
         this.display.ground.tint = rgbColor;

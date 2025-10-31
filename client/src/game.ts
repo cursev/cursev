@@ -1001,10 +1001,8 @@ export class Game {
     }
 
     m_render(dt: number, debug: DebugOptions) {
-        const grassColor = this.m_map.mapLoaded
-            ? this.m_map.getMapDef().biome.colors.grass
-            : 8433481;
-        this.m_pixi.renderer.background.color = grassColor;
+        // Utiliser la couleur RGB animée pour le background du canvas
+        this.m_pixi.renderer.background.color = this.m_map.rgbColor;
         // Module rendering
         this.m_playerBarn.m_render(this.m_camera, debug);
         this.m_bulletBarn.m_render(this.m_camera, debug);
