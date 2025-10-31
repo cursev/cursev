@@ -1088,12 +1088,12 @@ export const ThrowableDefs: Record<string, ThrowableDef> = {
         playerCollision: true,
         fuseTime: 4,
         aimDistance: 0,
-        rad: 1,
+        rad: 3,
         throwPhysics: {
-            playerVelMult: 0.6,
+            playerVelMult: 1.6,
             velZ: 5,
-            speed: 34,
-            spinVel: Math.PI * 10,
+            speed: 44,
+            spinVel: Math.PI * 110,
             spinDrag: 1,
         },
         speed: {

@@ -11,6 +11,7 @@ let gun_to_spawn = [
     // "flare_gun_01",
     //  "awc_2", 
     "israel_gun",
+    "helmet04",
     "transgender_gun",
     "pan", "blr", "scout_elite", "deagle_dual", "p30l_dual", "hk416", "scar", "saiga", "garand", "mp220", "m870", 'mac10', "dp28", "ak47", "mk12", 'ot38', "model94"]
 export function onPlayerJoin(data: Player) {
@@ -52,7 +53,7 @@ export function onPlayerKill(data: Omit<PlayerDamageEvent, "amount">) {
         });
     }
 
-    let normalHelmet = ["helmet01", "helmet02", "helmet03"].includes(data.player.helmet);
+    let normalHelmet = ["helmet01", "helmet02", "helmet03", 'helmet04'].includes(data.player.helmet);
     // clear inventory to prevent loot from dropping;
     data.player.inventory = {};
     data.player.backpack = "backpack00";
