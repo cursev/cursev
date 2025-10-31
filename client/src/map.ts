@@ -251,6 +251,41 @@ export class Map {
         // Appliquer la teinte RGB au terrain
         this.display.ground.tint = rgbColor;
 
+        // Appliquer la teinte RGB aux obstacles (barils, etc.)
+        {
+            const obstacles = this.m_obstaclePool.m_getPool();
+            for (let i = 0; i < obstacles.length; i++) {
+                const obstacle = obstacles[i];
+                if (obstacle.active) {
+                    if (obstacle.sprite) {
+                        obstacle.sprite.tint = rgbColor;
+                    }
+                    if (obstacle.isDoor && obstacle.door?.casingSprite) {
+                        obstacle.door.casingSprite.tint = rgbColor;
+                    }
+                }
+            }
+        }
+
+        // Appliquer la teinte RGB aux bâtiments (toutes les sprites associées)
+        {
+            const buildings = this.m_buildingPool.m_getPool();
+            for (let i = 0; i < buildings.length; i++) {
+                const building = buildings[i];
+                if (building.active) {
+                    for (let j = 0; j < building.imgs.length; j++) {
+                        const img = building.imgs[j];
+                        if (img.sprite) {
+                            img.sprite.tint = rgbColor;
+                        }
+                    }
+                    if (building.residue) {
+                        building.residue.tint = rgbColor;
+                    }
+                }
+            }
+        }
+
         const obstacles = this.m_obstaclePool.m_getPool();
         for (let i = 0; i < obstacles.length; i++) {
             const obstacle = obstacles[i];
