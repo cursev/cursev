@@ -248,9 +248,6 @@ export class Map {
         const b = Math.floor((Math.sin(this._rgbTime + 4) * 127) + 128);
         const rgbColor = (r << 16) | (g << 8) | b;
 
-        // Appliquer la teinte RGB au terrain
-        this.display.ground.tint = rgbColor;
-
         // Appliquer la teinte RGB aux obstacles (barils, etc.)
         {
             const obstacles = this.m_obstaclePool.m_getPool();
@@ -553,7 +550,7 @@ export class Map {
 
             // Background
             const background = new PIXI.Graphics();
-            background.beginFill(0xffffff);
+            background.beginFill(mapColors.grass);
             background.drawRect(0, 0, this.width, this.height);
             background.endFill();
             this.renderTerrain(background, scale, canvasMode, true);
