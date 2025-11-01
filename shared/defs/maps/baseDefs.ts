@@ -38,18 +38,18 @@ export const Main: MapDef = {
     },
     biome: {
         colors: {
-            background: 0xff00ff,       // magenta flashy
-            water: 0xffff00,            // jaune fluo
-            waterRipple: 0xff1493,      // rose vif
-            beach: 0x00ff00,            // vert lime électrique
-            riverbank: 0xff4500,        // orange rouge vif
-            grass: 0x9400d3,            // violet foncé
-            underground: 0xffffff,      // blanc pur
-            playerSubmerge: 0xff69b4,   // rose hot pink
-            playerGhillie: 0x00ffff,    // cyan électrique
+            background: 0x0a1b26,       // bleu nuit très sombre
+            water: 0x1a3b55,            // bleu profond
+            waterRipple: 0x4c7d8f,      // bleu-gris adouci
+            beach: 0x7a6b30,            // sable terni
+            riverbank: 0x5a3b1a,        // brun foncé
+            grass: 0x3d5e2b,            // vert mousse foncé
+            underground: 0x0e0603,      // quasi-noir brun
+            playerSubmerge: 0x1a4c5c,   // bleu-vert assombri
+            playerGhillie: 0x4a6b3c,    // vert olive mat
         },
         valueAdjust: 1,
-        sound: { riverShore: "stone" },
+        sound: { riverShore: "sand" },
         particles: { camera: "" },
         tracerColors: {},
         airdrop: {
