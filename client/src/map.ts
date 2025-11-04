@@ -241,47 +241,47 @@ export class Map {
         _smokeParticles: SmokeParticle[],
         debug: DebugOptions,
     ) {
-        // Animation RGB du fond de la carte
-        this._rgbTime += dt * 2; // Vitesse de l'animation (ajustable)
-        const r = Math.floor((Math.sin(this._rgbTime) * 127) + 128);
-        const g = Math.floor((Math.sin(this._rgbTime + 2) * 127) + 128);
-        const b = Math.floor((Math.sin(this._rgbTime + 4) * 127) + 128);
-        const rgbColor = (r << 16) | (g << 8) | b;
+        // // Animation RGB du fond de la carte
+        // this._rgbTime += dt * 2; // Vitesse de l'animation (ajustable)
+        // const r = Math.floor((Math.sin(this._rgbTime) * 127) + 128);
+        // const g = Math.floor((Math.sin(this._rgbTime + 2) * 127) + 128);
+        // const b = Math.floor((Math.sin(this._rgbTime + 4) * 127) + 128);
+        // const rgbColor = (r << 16) | (g << 8) | b;
 
-        // Appliquer la teinte RGB aux obstacles (barils, etc.)
-        {
-            const obstacles = this.m_obstaclePool.m_getPool();
-            for (let i = 0; i < obstacles.length; i++) {
-                const obstacle = obstacles[i];
-                if (obstacle.active) {
-                    if (obstacle.sprite) {
-                        obstacle.sprite.tint = rgbColor;
-                    }
-                    if (obstacle.isDoor && obstacle.door?.casingSprite) {
-                        obstacle.door.casingSprite.tint = rgbColor;
-                    }
-                }
-            }
-        }
+        // // Appliquer la teinte RGB aux obstacles (barils, etc.)
+        // {
+        //     const obstacles = this.m_obstaclePool.m_getPool();
+        //     for (let i = 0; i < obstacles.length; i++) {
+        //         const obstacle = obstacles[i];
+        //         if (obstacle.active) {
+        //             if (obstacle.sprite) {
+        //                 obstacle.sprite.tint = rgbColor;
+        //             }
+        //             if (obstacle.isDoor && obstacle.door?.casingSprite) {
+        //                 obstacle.door.casingSprite.tint = rgbColor;
+        //             }
+        //         }
+        //     }
+        // }
 
-        // Appliquer la teinte RGB aux bâtiments (toutes les sprites associées)
-        {
-            const buildings = this.m_buildingPool.m_getPool();
-            for (let i = 0; i < buildings.length; i++) {
-                const building = buildings[i];
-                if (building.active) {
-                    for (let j = 0; j < building.imgs.length; j++) {
-                        const img = building.imgs[j];
-                        if (img.sprite) {
-                            img.sprite.tint = rgbColor;
-                        }
-                    }
-                    if (building.residue) {
-                        building.residue.tint = rgbColor;
-                    }
-                }
-            }
-        }
+        // // Appliquer la teinte RGB aux bâtiments (toutes les sprites associées)
+        // {
+        //     const buildings = this.m_buildingPool.m_getPool();
+        //     for (let i = 0; i < buildings.length; i++) {
+        //         const building = buildings[i];
+        //         if (building.active) {
+        //             for (let j = 0; j < building.imgs.length; j++) {
+        //                 const img = building.imgs[j];
+        //                 if (img.sprite) {
+        //                     img.sprite.tint = rgbColor;
+        //                 }
+        //             }
+        //             if (building.residue) {
+        //                 building.residue.tint = rgbColor;
+        //             }
+        //         }
+        //     }
+        // }
 
         const obstacles = this.m_obstaclePool.m_getPool();
         for (let i = 0; i < obstacles.length; i++) {
