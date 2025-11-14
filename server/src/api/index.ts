@@ -155,6 +155,9 @@ app.post("/api/find_game", validateParams(zFindGameBody), async (c) => {
         return c.json<FindGameResponse>({ error: "full" });
     }
 
+    // Obtenir le hostname de la requête pour déterminer le serveur custom si nécessaire
+    const hostname = c.req.header("host") || c.req.header("x-forwarded-host") || undefined;
+    
     const data = await server.findGame({
         region: body.region,
         version: body.version,
@@ -169,7 +172,7 @@ app.post("/api/find_game", validateParams(zFindGameBody), async (c) => {
             },
         ],
         accessCode: body.accessCode || "",
-    });
+    }, hostname);
 
     if ("error" in data) {
         return c.json(data);

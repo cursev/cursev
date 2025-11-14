@@ -104,13 +104,58 @@ export class ApiServer {
         region.lastUpdateTime = Date.now();
     }
 
-    async findGame(body: FindGamePrivateBody): Promise<FindGamePrivateRes> {
+    async findGame(body: FindGamePrivateBody, hostname?: string): Promise<FindGamePrivateRes> {
         if (body.version !== GameConfig.protocolVersion) {
             return { error: "invalid_protocol" };
         }
 
-        if (body.region in this.regions) {
-            return await this.regions[body.region].findGame(body);
+        // Si un accessCode est fourni et qu'un hostname est disponible, 
+        // essayer de déterminer la région à partir du hostname pour les serveurs customs
+        let region = body.region;
+        if (body.accessCode && body.accessCode !== "" && hostname) {
+            // Extraire le hostname sans le port
+            const hostnameWithoutPort = hostname.split(':')[0];
+            
+            // Chercher si le hostname correspond à un proxy configuré
+            if (Config.proxies) {
+                for (const proxyHost in Config.proxies) {
+                    if (hostnameWithoutPort.includes(proxyHost) || proxyHost.includes(hostnameWithoutPort)) {
+                        // Si le proxy a une apiUrl, extraire la région depuis l'URL
+                        const proxyDef = Config.proxies[proxyHost];
+                        if (proxyDef.apiUrl) {
+                            try {
+                                const url = new URL(proxyDef.apiUrl);
+                                // Chercher une région qui correspond à cette URL
+                                for (const regionId in this.regions) {
+                                    const regionData = Config.regions[regionId];
+                                    if (regionData && url.hostname.includes(regionData.address.split(':')[0])) {
+                                        region = regionId;
+                                        break;
+                                    }
+                                }
+                            } catch (e) {
+                                // Si l'URL n'est pas valide, continuer avec la région originale
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            // Si aucune correspondance de proxy, chercher si le hostname correspond directement à une région
+            if (region === body.region) {
+                for (const regionId in this.regions) {
+                    const regionData = Config.regions[regionId];
+                    if (regionData && hostnameWithoutPort.includes(regionData.address.split(':')[0])) {
+                        region = regionId;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (region in this.regions) {
+            return await this.regions[region].findGame(body);
         }
         return { error: "full" };
     }
