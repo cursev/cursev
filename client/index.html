@@ -82,33 +82,6 @@
       }
     }
 
-    .btn-kxsclient {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #f3acfa 0%, #d3aeff 100%);
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      color: #1a0033;
-      font-size: 14px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(211, 174, 255, 0.3);
-      cursor: pointer;
-    }
-
-    .btn-kxsclient:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 30px rgba(211, 174, 255, 0.6);
-      background: linear-gradient(135deg, #ffb8ff 0%, #e0bbff 100%);
-    }
-
-    .btn-kxsclient:active {
-      transform: translateY(0);
-    }
-
     .btn-logo {
       width: 32px;
       height: 32px;
@@ -861,625 +834,625 @@
         </div>
       </div>
       <!-- Accounts Mobile -->
-      </div>
-
-      <!-- Accounts -->
-      <div id="start-top-right">
-        <a id="btn-discord-join" href="https://discord.wf/kxsclient" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" />
-          </svg>
-          Join us on Discord Server
-        </a>
-        <a class="btn-kxsclient" href="https://kxs.rip/" target="_blank" rel="noopener noreferrer">
-          <svg class="btn-logo" viewBox="50 40 240 240" version="1.1">
-            <defs>
-              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#f3acfa;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#d3aeff;stop-opacity:1" />
-              </linearGradient>
-              <radialGradient id="grad2" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" style="stop-color:#eeaaff;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#4d007e;stop-opacity:1" />
-              </radialGradient>
-            </defs>
-            <circle style="fill:url(#grad2);stroke:url(#grad1);stroke-width:18.8332" cx="168.648" cy="158.75"
-              r="104.268" />
-          </svg>
-          Try KxsClient now
-        </a>
-      </div>
-
-      <div id="start-main-center">
-        <div id="start-row-header">
-          <div id="server-warning"></div>
-        </div>
-
-        <div id="start-turnstile-container"></div>
-        <div id="start-row-top">
-          <div id="start-rotate-reminder" class="menu-column menu-block">
-            <span>Rotate to landscape for a better experience.</span>
-          </div>
-          <div id="start-menu" class="menu-column menu-block">
-            <div class="play-loading-outer">
-              <div class="play-loading-inner">
-                <div class="play-loading-spinner"></div>
-              </div>
-            </div>
-            <div class="play-button-container">
-              <div id="player-options">
-                <input type="text" class="menu-option player-name-input" tabindex="0" placeholder="Enter your name here"
-                  id="player-name-input-solo" maxlength="16" />
-                <a class="btn-darken menu-option player-options-btn" id="btn-customize"></a>
-              </div>
-              <select id="server-select-main" class="server-select menu-option btn-hollow btn-hollow-selected">
-                <optgroup id="server-opts" label="Region" data-l10n="index-region">
-                </optgroup>
-              </select>
-              <a class="btn-green btn-darken menu-option" id="btn-start-mode-0" data-l10n="index-play-solo">Play
-                Solo</a>
-              <div id="btns-quick-start">
-                <a class="btn-green btn-darken menu-option" id="btn-start-mode-1" data-l10n="index-play-duo">Play
-                  Duo</a>
-                <a class="btn-green btn-darken menu-option" id="btn-start-mode-2" data-l10n="index-play-squad">Play
-                  Squad</a>
-              </div>
-              <div class="btns-double-row">
-                <a class="btn-darken menu-option btn-team-option" id="btn-join-team" data-l10n="index-join-team">Join
-                  Team</a>
-                <a class="btn-darken menu-option btn-team-option" id="btn-create-team"
-                  data-l10n="index-create-team">Create Team</a>
-              </div>
-              <input type="text" class="menu-option private-key-input" tabindex="0"
-                placeholder="Enter private key (optional)" id="private-key-input" maxlength="32" />
-
-            </div>
-          </div>
-          <div id="team-menu" class="menu-column menu-block">
-            <div class="play-loading-outer">
-              <div class="play-loading-inner">
-                <div class="play-loading-spinner"></div>
-              </div>
-            </div>
-            <div class="play-button-container">
-              <a class="btn-darken menu-option" id="btn-team-leave" data-l10n="index-leave-team">Leave Team</a>
-              <div id="team-menu-connecting">
-                <div class="ui-spinner"></div>
-                <div class="team-menu-connecting-text" id="team-menu-joining-text"><span
-                    data-l10n="index-joining-team">Joining team</span> ...</div>
-                <div class="team-menu-connecting-text" id="team-menu-creating-text"><span
-                    data-l10n="index-creating-team">Creating team</span> ...</div>
-              </div>
-              <div id="team-menu-contents">
-                <div id="team-desc">
-                  <div id="team-desc-text"><span id="invite-link-text" data-l10n="index-invite-link">Invite link</span>:
-                    <span id="team-url"></span>
-                  </div>
-                  <a id="team-copy-url" class="copy-item btn-darken"></a>
-                  <a id="team-hide-url" class="hide-item btn-darken"></a>
-                  <div id="team-code-text"><span id="invite-code-text" data-l10n="index-invite-code">Invite code</span>:
-                    <span id="team-code"></span>
-                  </div>
-                </div>
-                <div id="team-menu-columns">
-                  <div id="team-menu-members" class="team-menu-block">
-                    <div id="team-menu-member-list"></div>
-                  </div>
-                  <div id="team-menu-options" class="team-menu-block">
-                    <select id="team-server-select" class="btn-hollow btn-hollow-selected server-select menu-option">
-                      <optgroup id="team-server-opts" label="Region">
-                      </optgroup>
-                    </select>
-                    <div class="team-menu-options-buttons">
-                      <a class="btn-hollow btn-hollow-selected btn-darken team-menu-option btn-team-queue"
-                        id="btn-team-queue-mode-1" data-l10n="index-duo">Duo</a>
-                      <a class="btn-hollow btn-hollow-selected btn-darken team-menu-option btn-team-queue"
-                        id="btn-team-queue-mode-2" data-l10n="index-squad">Squad</a>
-                    </div>
-                    <div class="team-menu-options-buttons">
-                      <a class="btn-hollow btn-hollow-selected btn-darken team-menu-option btn-team-fill"
-                        id="btn-team-fill-auto" data-l10n="index-auto-fill">Auto Fill</a>
-                      <a class="btn-hollow btn-darken team-menu-option btn-team-fill" id="btn-team-fill-none"
-                        data-l10n="index-no-fill">No Fill</a>
-                    </div>
-                    <div id="team-menu-options-start">
-                      <a class="btn-green btn-darken menu-option" id="btn-start-team" data-label="Play"
-                        data-l10n="index-play">Play</a>
-                      <div id="msg-wait-reason"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="team-mobile-link" class="menu-column menu-block">
-            <div id="team-mobile-link-desc" class="team-mobile-link-text" data-l10n="index-join-team-help">Got a team
-              link or code? Paste it here:</div>
-            <div id="team-mobile-link-warning" class="team-mobile-link-text">Invalid link!</div>
-            <input type="text" class="menu-option" contenteditable="false" tabindex="0" autofocus
-              placeholder="Paste team link or enter code here" id="team-link-input" />
-            <a class="btn-darken menu-option btn-team-option" id="btn-team-mobile-link-join"
-              data-l10n="index-join-team">Join Team</a>
-            <a class="btn-darken menu-option" id="btn-team-mobile-link-leave" data-l10n="index-back-to-main">Back to
-              Main Menu</a>
-          </div>
-          <div id="right-column" class="menu-column">
-            <div id="pass-wrapper" style="display: none!important;">
-              <div id="pass-unlock-tooltip">
-                <div class="tooltip-pass-title"></div>
-                <div class="tooltip-pass-desc"></div>
-              </div>
-              <div class="right-column-toggle news-toggle">
-                <div class="account-alert"></div>
-              </div>
-              <div id="pass-loading" class="pass-column menu-block">
-                <div id="pass-loading-spinner"></div>
-              </div>
-              <div id="pass-block" class="pass-column menu-block">
-                <div id="pass-name">
-                  <span id="pass-name-text"></span>
-                </div>
-                <div id="pass-progress" class="">
-                  <div id="pass-progress-level" class=""></div>
-                  <div id="pass-progress-bar" class="">
-                    <div id="pass-progress-bar-fill"></div>
-                    <div id="pass-progress-xp">
-                      <span id="pass-progress-xp-current"></span>
-                      <span>/</span>
-                      <span id="pass-progress-xp-target"></span>
-                      <span>XP</span>
-                    </div>
-                  </div>
-                  <div id="pass-progress-unlock-wrapper">
-                    <div id="pass-progress-unlock" class="">
-                      <div id="pass-progress-unlock-image" class=""></div>
-                    </div>
-                    <div id="pass-progress-unlock-type-wrapper" class="">
-                      <div id="pass-progress-unlock-type-border" class="">
-                        <div id="pass-progress-unlock-type-image" class=""></div>
-                      </div>
-                      <div id="pass-progress-unlock-overlay" class=""></div>
-                    </div>
-                  </div>
-                </div>
-                <div id="pass-quest-wrapper" class="">
-                  <div id="pass-locked">
-                    <div id="btn-pass-locked" class="menu-option btn-darken" data-l10n="quest-login-prompt">Log in to
-                      get quests!</div>
-                  </div>
-                  <div id="pass-quest-0" class="pass-quest">
-                    <div class="pass-quest-timer"></div>
-                    <div class="pass-quest-spinner-container">
-                      <div class="pass-quest-spinner"></div>
-                    </div>
-                    <div class="pass-quest-refresh-prompt">
-                      <div class="pass-quest-refresh-prompt-text" data-l10n="quest-refresh-prompt">Get a new quest?
-                      </div>
-                      <div class="pass-quest-refresh-confirm btn-pass-quest-refresh"></div>
-                      <div class="pass-quest-refresh-cancel btn-pass-quest-refresh"></div>
-                    </div>
-                    <div class="pass-quest-info">
-                      <div class="pass-quest-desc"></div>
-                      <div class="pass-quest-xp"></div>
-                      <div class="pass-quest-refresh"></div>
-                      <div class="pass-quest-progress">
-                        <div class="pass-quest-bar">
-                          <div class="pass-quest-bar-fill"></div>
-                        </div>
-                        <div class="pass-quest-counter">
-                          <span class="pass-quest-counter-current"></span>
-                          <span>/</span>
-                          <span class="pass-quest-counter-target"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="pass-quest-1" class="pass-quest">
-                    <div class="pass-quest-timer"></div>
-                    <div class="pass-quest-spinner-container">
-                      <div class="pass-quest-spinner"></div>
-                    </div>
-                    <div class="pass-quest-refresh-prompt">
-                      <div class="pass-quest-refresh-prompt-text" data-l10n="quest-refresh-prompt">Get a new quest?
-                      </div>
-                      <div class="pass-quest-refresh-confirm btn-pass-quest-refresh"></div>
-                      <div class="pass-quest-refresh-cancel btn-pass-quest-refresh"></div>
-                    </div>
-                    <div class="pass-quest-info">
-                      <div class="pass-quest-desc"></div>
-                      <div class="pass-quest-xp"></div>
-                      <div class="pass-quest-refresh"></div>
-                      <div class="pass-quest-progress">
-                        <div class="pass-quest-bar">
-                          <div class="pass-quest-bar-fill"></div>
-                        </div>
-                        <div class="pass-quest-counter">
-                          <span class="pass-quest-counter-current"></span>
-                          <span>/</span>
-                          <span class="pass-quest-counter-target"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-      <div class="ad-block-leaderboard-bottom" id="ad-block-leaderboard-bottom-728x90">
-        <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
-          data-ad-client="ca-pub-1712213211562891" data-ad-slot="5283105478"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-      <div id="start-bottom-left">
-        <div id="mobile-settings-front">
-          <div class="btn-settings menu-option btn-darken btn-start-option"></div>
-        </div>
-      </div>
-
-      <div id="start-bottom-right-wrapper">
-        <div id="start-bottom-right">
-          <div class="btn-settings menu-option btn-darken btn-start-option"></div>
-          <div class="btn-keybind menu-option btn-darken btn-start-option"></div>
-          <div class="btn-start-mute btn-sound-toggle menu-option btn-darken btn-start-option audio-on-icon"></div>
-        </div>
-      </div>
     </div>
-    <!-- Modals -->
-    <div id="modal-private-key" class="modal">
-      <div class="modal-content modal-close">
-        <div class="modal-body">
-          <div class="modal-form">
-            <div class="form-group">
-              <label for="private-key-input" data-l10n="index-private-key-label">Enter Private Key</label>
-              <input type="text" id="private-key-input" class="form-control" placeholder="Enter your private key here">
-            </div>
-            <div class="form-group">
-              <button id="btn-join-private-game" class="btn-darken" data-l10n="index-join-private-game">Join Private
-                Game</button>
+
+    <!-- Accounts -->
+    <div id="start-top-right">
+      <a id="btn-discord-join" href="https://discord.wf/kxsclient" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z" />
+        </svg>
+        Join us on Discord Server
+      </a>
+      <a id="btn-discord-join" href="https://kxs.rip/" target="_blank" rel="noopener noreferrer">
+        <svg class="btn-logo" viewBox="50 40 240 240" version="1.1">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#f3acfa;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#d3aeff;stop-opacity:1" />
+            </linearGradient>
+            <radialGradient id="grad2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" style="stop-color:#eeaaff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#4d007e;stop-opacity:1" />
+            </radialGradient>
+          </defs>
+          <circle style="fill:url(#grad2);stroke:url(#grad1);stroke-width:18.8332" cx="168.648" cy="158.75"
+            r="104.268" />
+        </svg>
+
+        Try KxsClient now
+      </a>
+    </div>
+
+    <div id="start-main-center">
+      <div id="start-row-header">
+        <div id="server-warning"></div>
+      </div>
+
+      <div id="start-turnstile-container"></div>
+      <div id="start-row-top">
+        <div id="start-rotate-reminder" class="menu-column menu-block">
+          <span>Rotate to landscape for a better experience.</span>
+        </div>
+        <div id="start-menu" class="menu-column menu-block">
+          <div class="play-loading-outer">
+            <div class="play-loading-inner">
+              <div class="play-loading-spinner"></div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modals -->
-    <div id="ui-modal-keybind" class="ui-modal-keybind modal" oncontextmenu="return false;">
-      <div class="ui-modal-keybind-content modal-content modal-close">
-        <div id="ui-modal-keybind-header" class="modal-header">
-          <span id="ui-close-keybind" class="close close-corner"></span>
-          <h2 data-l10n="index-customize-keybinds">Customize Keybinds</h2>
-        </div>
-        <div id="ui-modal-keybind-body" class="modal-body">
-          <div id="ui-modal-keybind-list" class="js-keybind-list"></div>
-          <div id="ui-modal-keybind-share">
-            <div class="ui-modal-keybind-share-row">
-              <div class="ui-modal-keybind-share-elem">
-                <span data-l10n="index-keybind-link">Share your keybinds with this code</span>:
-              </div>
-              <div class="ui-modal-keybind-share-elem">
-                <div id="keybind-link-text">
-                  <div id="keybind-link">aFvc42SfhpoFlrJKVkA1fx+5afasdf9034hfSF09nASqqF</div>
-                  <span id="keybind-copy" class="copy-item btn-darken"></span>
-                </div>
-              </div>
+          <div class="play-button-container">
+            <div id="player-options">
+              <input type="text" class="menu-option player-name-input" tabindex="0" placeholder="Enter your name here"
+                id="player-name-input-solo" maxlength="16" />
+              <a class="btn-darken menu-option player-options-btn" id="btn-customize"></a>
             </div>
-            <span class="keybind-share-paste-text" data-l10n="index-keybind-paste">Load keybinds using a code
-              here</span><span>:</span>
-            <div id="keybind-warning" class="link-warning">Invalid code!</div>
-            <div class="ui-modal-keybind-share-row">
-              <input type="text" class="menu-option" contenteditable="false" tabindex="0" autofocus
-                placeholder="Paste a keybind code here" id="keybind-code-input" />
-              <a class="btn-game-menu btn-darken" id="btn-keybind-code-load" data-l10n="index-keybind-apply">Load</a>
-            </div>
-          </div>
-        </div>
-        <div id="ui-modal-keybind-footer" class="modal-footer modal-footer-round">
-          <a class="js-btn-keybind-share btn-game-menu btn-darken" data-l10n="game-share">Share</a>
-          <a class="js-btn-keybind-restore btn-game-menu btn-darken" data-l10n="game-restore-defaults">Restore
-            Defaults</a>
-        </div>
-      </div>
-    </div>
-    <!-- Loadouts -->
-    <div id="modal-customize" class="modal">
-      <div class="ad-block-loadouts-left hide-on-mobile" id="modal-customize-ad-300x600">
-        <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px"
-          data-ad-client="ca-pub-1712213211562891" data-ad-slot="4695706717"></ins>
-        <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-      </div>
-      <div id="modal-customize-wrapper" class="modal-close">
-        <div id="modal-content-left" class="modal-content-shadow">
-          <div id="modal-customize-cat-title"></div>
-          <div id="modal-customize-sort-wrap">
-            <select id="modal-customize-sort">
-              <option id="customize-sort-newest" value="newest" data-l10n="loadout-newest">Newest</option>
-              <option id="customize-sort-alpha" value="alpha" data-l10n="loadout-alpha">Alpha</option>
-              <option id="customize-sort-rarity" value="rarity" data-l10n="loadout-rarity">Rarity</option>
-              <option id="customize-sort-subcat" value="subcat" data-l10n="loadout-subcat">Category</option>
+            <select id="server-select-main" class="server-select menu-option btn-hollow btn-hollow-selected">
+              <optgroup id="server-opts" label="Region" data-l10n="index-region">
+              </optgroup>
             </select>
-          </div>
-          <div id="modal-customize-close">
-            <span class="close close-corner"></span>
-          </div>
-          <div id="modal-customize-header" class="modal-header"></div>
-          <div class="modal-disabled">
-            <div class="modal-disabled-message">The Edge browser does not support custom cursors.</div>
-          </div>
-          <div id="modal-customize-body" class="modal-body">
-            <div id="modal-customize-item-header">
-              <div id="modal-customize-item-name"></div>
-              <div id="modal-customize-item-rarity"></div>
-              <div id="modal-customize-loading-container">
-                <div id="modal-customize-loading"></div>
-              </div>
+            <a class="btn-green btn-darken menu-option" id="btn-start-mode-0" data-l10n="index-play-solo">Play
+              Solo</a>
+            <div id="btns-quick-start">
+              <a class="btn-green btn-darken menu-option" id="btn-start-mode-1" data-l10n="index-play-duo">Play
+                Duo</a>
+              <a class="btn-green btn-darken menu-option" id="btn-start-mode-2" data-l10n="index-play-squad">Play
+                Squad</a>
             </div>
-            <div id="modal-customize-list"></div>
-          </div>
-          <div id="modal-customize-footer" class="modal-footer modal-footer-round">
-            <div id="modal-customize-item-source"></div>
-            <div id="modal-customize-item-lore"></div>
+            <div class="btns-double-row">
+              <a class="btn-darken menu-option btn-team-option" id="btn-join-team" data-l10n="index-join-team">Join
+                Team</a>
+              <a class="btn-darken menu-option btn-team-option" id="btn-create-team"
+                data-l10n="index-create-team">Create Team</a>
+            </div>
+            <input type="text" class="menu-option private-key-input" tabindex="0"
+              placeholder="Enter private key (optional)" id="private-key-input" maxlength="32" />
+
           </div>
         </div>
-        <div id="modal-content-right-crosshair" class="modal-content-right modal-content-shadow">
-          <div class="modal-spacer"></div>
-          <div class="modal-disabled"></div>
-          <div id="customize-crosshair-parent">
-            <div id="customize-crosshair-selected">
-              <div class="customize-item-image customize-crosshair-image" draggable="false"></div>
+        <div id="team-menu" class="menu-column menu-block">
+          <div class="play-loading-outer">
+            <div class="play-loading-inner">
+              <div class="play-loading-spinner"></div>
             </div>
-            <div id="customize-crosshair-sliders">
-              <div class="crosshair-hex-outer">
-                <span>#</span><input type="text" id="color-picker-hex">
+          </div>
+          <div class="play-button-container">
+            <a class="btn-darken menu-option" id="btn-team-leave" data-l10n="index-leave-team">Leave Team</a>
+            <div id="team-menu-connecting">
+              <div class="ui-spinner"></div>
+              <div class="team-menu-connecting-text" id="team-menu-joining-text"><span
+                  data-l10n="index-joining-team">Joining team</span> ...</div>
+              <div class="team-menu-connecting-text" id="team-menu-creating-text"><span
+                  data-l10n="index-creating-team">Creating team</span> ...</div>
+            </div>
+            <div id="team-menu-contents">
+              <div id="team-desc">
+                <div id="team-desc-text"><span id="invite-link-text" data-l10n="index-invite-link">Invite link</span>:
+                  <span id="team-url"></span>
+                </div>
+                <a id="team-copy-url" class="copy-item btn-darken"></a>
+                <a id="team-hide-url" class="hide-item btn-darken"></a>
+                <div id="team-code-text"><span id="invite-code-text" data-l10n="index-invite-code">Invite code</span>:
+                  <span id="team-code"></span>
+                </div>
               </div>
-              <section id="color-picker"></section>
-              <div class="crosshair-slider-container">
-                <p class="" data-l10n="loadout-size">Size</p>
-                <input type="range" min="0.25" max="1.0" value="0.5" step="0.025" class="crosshair-slider"
-                  id="crosshair-size">
-              </div>
-              <div class="crosshair-slider-container">
-                <p class="" data-l10n="loadout-stroke">Stroke</p>
-                <input type="range" min="0.0" max="1.5" value="0.0" step="0.025" class="crosshair-slider"
-                  id="crosshair-stroke">
+              <div id="team-menu-columns">
+                <div id="team-menu-members" class="team-menu-block">
+                  <div id="team-menu-member-list"></div>
+                </div>
+                <div id="team-menu-options" class="team-menu-block">
+                  <select id="team-server-select" class="btn-hollow btn-hollow-selected server-select menu-option">
+                    <optgroup id="team-server-opts" label="Region">
+                    </optgroup>
+                  </select>
+                  <div class="team-menu-options-buttons">
+                    <a class="btn-hollow btn-hollow-selected btn-darken team-menu-option btn-team-queue"
+                      id="btn-team-queue-mode-1" data-l10n="index-duo">Duo</a>
+                    <a class="btn-hollow btn-hollow-selected btn-darken team-menu-option btn-team-queue"
+                      id="btn-team-queue-mode-2" data-l10n="index-squad">Squad</a>
+                  </div>
+                  <div class="team-menu-options-buttons">
+                    <a class="btn-hollow btn-hollow-selected btn-darken team-menu-option btn-team-fill"
+                      id="btn-team-fill-auto" data-l10n="index-auto-fill">Auto Fill</a>
+                    <a class="btn-hollow btn-darken team-menu-option btn-team-fill" id="btn-team-fill-none"
+                      data-l10n="index-no-fill">No Fill</a>
+                  </div>
+                  <div id="team-menu-options-start">
+                    <a class="btn-green btn-darken menu-option" id="btn-start-team" data-label="Play"
+                      data-l10n="index-play">Play</a>
+                    <div id="msg-wait-reason"></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div id="modal-content-right-emote" class="modal-content-right modal-content-shadow">
-          <div id="customize-emote-parent">
-            <div id="customize-emote-wheel" class="ui-emote-wheel">
-              <div id="customize-emote-middle" class="ui-emote-middle ui-emote-circle ui-emote-parent">
-                <div class="ui-emote ui-emote-bg-circle"></div>
-                <div class="ui-emote ui-emote-hl"></div>
-                <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
+        <div id="team-mobile-link" class="menu-column menu-block">
+          <div id="team-mobile-link-desc" class="team-mobile-link-text" data-l10n="index-join-team-help">Got a team
+            link or code? Paste it here:</div>
+          <div id="team-mobile-link-warning" class="team-mobile-link-text">Invalid link!</div>
+          <input type="text" class="menu-option" contenteditable="false" tabindex="0" autofocus
+            placeholder="Paste team link or enter code here" id="team-link-input" />
+          <a class="btn-darken menu-option btn-team-option" id="btn-team-mobile-link-join"
+            data-l10n="index-join-team">Join Team</a>
+          <a class="btn-darken menu-option" id="btn-team-mobile-link-leave" data-l10n="index-back-to-main">Back to
+            Main Menu</a>
+        </div>
+        <div id="right-column" class="menu-column">
+          <div id="pass-wrapper" style="display: none!important;">
+            <div id="pass-unlock-tooltip">
+              <div class="tooltip-pass-title"></div>
+              <div class="tooltip-pass-desc"></div>
+            </div>
+            <div class="right-column-toggle news-toggle">
+              <div class="account-alert"></div>
+            </div>
+            <div id="pass-loading" class="pass-column menu-block">
+              <div id="pass-loading-spinner"></div>
+            </div>
+            <div id="pass-block" class="pass-column menu-block">
+              <div id="pass-name">
+                <span id="pass-name-text"></span>
               </div>
-              <div id="customize-emote-top" class="ui-emote-top ui-emote-quarter ui-emote-parent" data-slot="emoteTop"
-                data-idx="0">
-                <div class="ui-emote ui-emote-bg-quarter"></div>
-                <div class="ui-emote ui-emote-hl"></div>
-                <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
-                <div class="customize-col customize-col-small" draggable="true"></div>
+              <div id="pass-progress" class="">
+                <div id="pass-progress-level" class=""></div>
+                <div id="pass-progress-bar" class="">
+                  <div id="pass-progress-bar-fill"></div>
+                  <div id="pass-progress-xp">
+                    <span id="pass-progress-xp-current"></span>
+                    <span>/</span>
+                    <span id="pass-progress-xp-target"></span>
+                    <span>XP</span>
+                  </div>
+                </div>
+                <div id="pass-progress-unlock-wrapper">
+                  <div id="pass-progress-unlock" class="">
+                    <div id="pass-progress-unlock-image" class=""></div>
+                  </div>
+                  <div id="pass-progress-unlock-type-wrapper" class="">
+                    <div id="pass-progress-unlock-type-border" class="">
+                      <div id="pass-progress-unlock-type-image" class=""></div>
+                    </div>
+                    <div id="pass-progress-unlock-overlay" class=""></div>
+                  </div>
+                </div>
               </div>
-              <div id="customize-emote-right" class="ui-emote-right ui-emote-quarter ui-emote-parent"
-                data-slot="emoteRight" data-idx="1">
-                <div class="ui-emote ui-emote-bg-quarter"></div>
-                <div class="ui-emote ui-emote-hl"></div>
-                <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
-                <div class="customize-col customize-col-small" draggable="true"></div>
-              </div>
-              <div id="customize-emote-bottom" class="ui-emote-bottom ui-emote-quarter ui-emote-parent"
-                data-slot="emoteBottom" data-idx="2">
-                <div class="ui-emote ui-emote-bg-quarter"></div>
-                <div class="ui-emote ui-emote-hl"></div>
-                <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
-                <div class="customize-col customize-col-small" draggable="true"></div>
-              </div>
-              <div id="customize-emote-left" class="ui-emote-left ui-emote-quarter ui-emote-parent"
-                data-slot="emoteLeft" data-idx="3">
-                <div class="ui-emote ui-emote-bg-quarter"></div>
-                <div class="ui-emote ui-emote-hl"></div>
-                <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
-                <div class="customize-col customize-col-small" draggable="true"></div>
+              <div id="pass-quest-wrapper" class="">
+                <div id="pass-locked">
+                  <div id="btn-pass-locked" class="menu-option btn-darken" data-l10n="quest-login-prompt">Log in to
+                    get quests!</div>
+                </div>
+                <div id="pass-quest-0" class="pass-quest">
+                  <div class="pass-quest-timer"></div>
+                  <div class="pass-quest-spinner-container">
+                    <div class="pass-quest-spinner"></div>
+                  </div>
+                  <div class="pass-quest-refresh-prompt">
+                    <div class="pass-quest-refresh-prompt-text" data-l10n="quest-refresh-prompt">Get a new quest?
+                    </div>
+                    <div class="pass-quest-refresh-confirm btn-pass-quest-refresh"></div>
+                    <div class="pass-quest-refresh-cancel btn-pass-quest-refresh"></div>
+                  </div>
+                  <div class="pass-quest-info">
+                    <div class="pass-quest-desc"></div>
+                    <div class="pass-quest-xp"></div>
+                    <div class="pass-quest-refresh"></div>
+                    <div class="pass-quest-progress">
+                      <div class="pass-quest-bar">
+                        <div class="pass-quest-bar-fill"></div>
+                      </div>
+                      <div class="pass-quest-counter">
+                        <span class="pass-quest-counter-current"></span>
+                        <span>/</span>
+                        <span class="pass-quest-counter-target"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="pass-quest-1" class="pass-quest">
+                  <div class="pass-quest-timer"></div>
+                  <div class="pass-quest-spinner-container">
+                    <div class="pass-quest-spinner"></div>
+                  </div>
+                  <div class="pass-quest-refresh-prompt">
+                    <div class="pass-quest-refresh-prompt-text" data-l10n="quest-refresh-prompt">Get a new quest?
+                    </div>
+                    <div class="pass-quest-refresh-confirm btn-pass-quest-refresh"></div>
+                    <div class="pass-quest-refresh-cancel btn-pass-quest-refresh"></div>
+                  </div>
+                  <div class="pass-quest-info">
+                    <div class="pass-quest-desc"></div>
+                    <div class="pass-quest-xp"></div>
+                    <div class="pass-quest-refresh"></div>
+                    <div class="pass-quest-progress">
+                      <div class="pass-quest-bar">
+                        <div class="pass-quest-bar-fill"></div>
+                      </div>
+                      <div class="pass-quest-counter">
+                        <span class="pass-quest-counter-current"></span>
+                        <span>/</span>
+                        <span class="pass-quest-counter-target"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div id="customize-emote-autos">
-              <div id="customize-emote-win" class="ui-emote-middle ui-emote-circle ui-emote-parent" data-slot="emoteWin"
-                data-idx="4">
-                <div class="ui-emote ui-emote-auto-trash"></div>
-                <div class="ui-emote ui-emote-auto-icon ui-emote-auto-chicken"></div>
-                <div class="ui-emote ui-emote-bg-circle-outer"></div>
-                <div class="ui-emote ui-emote-bg-circle"></div>
-                <div class="ui-emote ui-emote-hl"></div>
-                <div class="customize-emote-slot customize-item-image"></div>
-                <div class="customize-col customize-col-large" draggable="true"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="ad-block-leaderboard-bottom" id="ad-block-leaderboard-bottom-728x90">
+      <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
+        data-ad-client="ca-pub-1712213211562891" data-ad-slot="5283105478"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    <div id="start-bottom-left">
+      <div id="mobile-settings-front">
+        <div class="btn-settings menu-option btn-darken btn-start-option"></div>
+      </div>
+    </div>
+
+    <div id="start-bottom-right-wrapper">
+      <div id="start-bottom-right">
+        <div class="btn-settings menu-option btn-darken btn-start-option"></div>
+        <div class="btn-keybind menu-option btn-darken btn-start-option"></div>
+        <div class="btn-start-mute btn-sound-toggle menu-option btn-darken btn-start-option audio-on-icon"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Modals -->
+  <div id="modal-private-key" class="modal">
+    <div class="modal-content modal-close">
+      <div class="modal-body">
+        <div class="modal-form">
+          <div class="form-group">
+            <label for="private-key-input" data-l10n="index-private-key-label">Enter Private Key</label>
+            <input type="text" id="private-key-input" class="form-control" placeholder="Enter your private key here">
+          </div>
+          <div class="form-group">
+            <button id="btn-join-private-game" class="btn-darken" data-l10n="index-join-private-game">Join Private
+              Game</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modals -->
+  <div id="ui-modal-keybind" class="ui-modal-keybind modal" oncontextmenu="return false;">
+    <div class="ui-modal-keybind-content modal-content modal-close">
+      <div id="ui-modal-keybind-header" class="modal-header">
+        <span id="ui-close-keybind" class="close close-corner"></span>
+        <h2 data-l10n="index-customize-keybinds">Customize Keybinds</h2>
+      </div>
+      <div id="ui-modal-keybind-body" class="modal-body">
+        <div id="ui-modal-keybind-list" class="js-keybind-list"></div>
+        <div id="ui-modal-keybind-share">
+          <div class="ui-modal-keybind-share-row">
+            <div class="ui-modal-keybind-share-elem">
+              <span data-l10n="index-keybind-link">Share your keybinds with this code</span>:
+            </div>
+            <div class="ui-modal-keybind-share-elem">
+              <div id="keybind-link-text">
+                <div id="keybind-link">aFvc42SfhpoFlrJKVkA1fx+5afasdf9034hfSF09nASqqF</div>
+                <span id="keybind-copy" class="copy-item btn-darken"></span>
               </div>
-              <div id="customize-emote-death" class="ui-emote-middle ui-emote-circle ui-emote-parent"
-                data-slot="emoteDeath" data-idx="5">
-                <div class="ui-emote ui-emote-auto-trash"></div>
-                <div class="ui-emote ui-emote-auto-icon ui-emote-auto-skull"></div>
-                <div class="ui-emote ui-emote-bg-circle-outer"></div>
-                <div class="ui-emote ui-emote-bg-circle"></div>
-                <div class="ui-emote ui-emote-hl"></div>
-                <div class="customize-emote-slot customize-item-image"></div>
-                <div class="customize-col customize-col-large" draggable="true"></div>
-              </div>
+            </div>
+          </div>
+          <span class="keybind-share-paste-text" data-l10n="index-keybind-paste">Load keybinds using a code
+            here</span><span>:</span>
+          <div id="keybind-warning" class="link-warning">Invalid code!</div>
+          <div class="ui-modal-keybind-share-row">
+            <input type="text" class="menu-option" contenteditable="false" tabindex="0" autofocus
+              placeholder="Paste a keybind code here" id="keybind-code-input" />
+            <a class="btn-game-menu btn-darken" id="btn-keybind-code-load" data-l10n="index-keybind-apply">Load</a>
+          </div>
+        </div>
+      </div>
+      <div id="ui-modal-keybind-footer" class="modal-footer modal-footer-round">
+        <a class="js-btn-keybind-share btn-game-menu btn-darken" data-l10n="game-share">Share</a>
+        <a class="js-btn-keybind-restore btn-game-menu btn-darken" data-l10n="game-restore-defaults">Restore
+          Defaults</a>
+      </div>
+    </div>
+  </div>
+  <!-- Loadouts -->
+  <div id="modal-customize" class="modal">
+    <div class="ad-block-loadouts-left hide-on-mobile" id="modal-customize-ad-300x600">
+      <ins class="adsbygoogle" style="display:inline-block;width:300px;height:600px"
+        data-ad-client="ca-pub-1712213211562891" data-ad-slot="4695706717"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    <div id="modal-customize-wrapper" class="modal-close">
+      <div id="modal-content-left" class="modal-content-shadow">
+        <div id="modal-customize-cat-title"></div>
+        <div id="modal-customize-sort-wrap">
+          <select id="modal-customize-sort">
+            <option id="customize-sort-newest" value="newest" data-l10n="loadout-newest">Newest</option>
+            <option id="customize-sort-alpha" value="alpha" data-l10n="loadout-alpha">Alpha</option>
+            <option id="customize-sort-rarity" value="rarity" data-l10n="loadout-rarity">Rarity</option>
+            <option id="customize-sort-subcat" value="subcat" data-l10n="loadout-subcat">Category</option>
+          </select>
+        </div>
+        <div id="modal-customize-close">
+          <span class="close close-corner"></span>
+        </div>
+        <div id="modal-customize-header" class="modal-header"></div>
+        <div class="modal-disabled">
+          <div class="modal-disabled-message">The Edge browser does not support custom cursors.</div>
+        </div>
+        <div id="modal-customize-body" class="modal-body">
+          <div id="modal-customize-item-header">
+            <div id="modal-customize-item-name"></div>
+            <div id="modal-customize-item-rarity"></div>
+            <div id="modal-customize-loading-container">
+              <div id="modal-customize-loading"></div>
+            </div>
+          </div>
+          <div id="modal-customize-list"></div>
+        </div>
+        <div id="modal-customize-footer" class="modal-footer modal-footer-round">
+          <div id="modal-customize-item-source"></div>
+          <div id="modal-customize-item-lore"></div>
+        </div>
+      </div>
+      <div id="modal-content-right-crosshair" class="modal-content-right modal-content-shadow">
+        <div class="modal-spacer"></div>
+        <div class="modal-disabled"></div>
+        <div id="customize-crosshair-parent">
+          <div id="customize-crosshair-selected">
+            <div class="customize-item-image customize-crosshair-image" draggable="false"></div>
+          </div>
+          <div id="customize-crosshair-sliders">
+            <div class="crosshair-hex-outer">
+              <span>#</span><input type="text" id="color-picker-hex">
+            </div>
+            <section id="color-picker"></section>
+            <div class="crosshair-slider-container">
+              <p class="" data-l10n="loadout-size">Size</p>
+              <input type="range" min="0.25" max="1.0" value="0.5" step="0.025" class="crosshair-slider"
+                id="crosshair-size">
+            </div>
+            <div class="crosshair-slider-container">
+              <p class="" data-l10n="loadout-stroke">Stroke</p>
+              <input type="range" min="0.0" max="1.5" value="0.0" step="0.025" class="crosshair-slider"
+                id="crosshair-stroke">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="modal-content-right-emote" class="modal-content-right modal-content-shadow">
+        <div id="customize-emote-parent">
+          <div id="customize-emote-wheel" class="ui-emote-wheel">
+            <div id="customize-emote-middle" class="ui-emote-middle ui-emote-circle ui-emote-parent">
+              <div class="ui-emote ui-emote-bg-circle"></div>
+              <div class="ui-emote ui-emote-hl"></div>
+              <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
+            </div>
+            <div id="customize-emote-top" class="ui-emote-top ui-emote-quarter ui-emote-parent" data-slot="emoteTop"
+              data-idx="0">
+              <div class="ui-emote ui-emote-bg-quarter"></div>
+              <div class="ui-emote ui-emote-hl"></div>
+              <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
+              <div class="customize-col customize-col-small" draggable="true"></div>
+            </div>
+            <div id="customize-emote-right" class="ui-emote-right ui-emote-quarter ui-emote-parent"
+              data-slot="emoteRight" data-idx="1">
+              <div class="ui-emote ui-emote-bg-quarter"></div>
+              <div class="ui-emote ui-emote-hl"></div>
+              <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
+              <div class="customize-col customize-col-small" draggable="true"></div>
+            </div>
+            <div id="customize-emote-bottom" class="ui-emote-bottom ui-emote-quarter ui-emote-parent"
+              data-slot="emoteBottom" data-idx="2">
+              <div class="ui-emote ui-emote-bg-quarter"></div>
+              <div class="ui-emote ui-emote-hl"></div>
+              <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
+              <div class="customize-col customize-col-small" draggable="true"></div>
+            </div>
+            <div id="customize-emote-left" class="ui-emote-left ui-emote-quarter ui-emote-parent" data-slot="emoteLeft"
+              data-idx="3">
+              <div class="ui-emote ui-emote-bg-quarter"></div>
+              <div class="ui-emote ui-emote-hl"></div>
+              <div class="customize-emote-slot customize-item-image ui-emote-image"></div>
+              <div class="customize-col customize-col-small" draggable="true"></div>
+            </div>
+          </div>
+          <div id="customize-emote-autos">
+            <div id="customize-emote-win" class="ui-emote-middle ui-emote-circle ui-emote-parent" data-slot="emoteWin"
+              data-idx="4">
+              <div class="ui-emote ui-emote-auto-trash"></div>
+              <div class="ui-emote ui-emote-auto-icon ui-emote-auto-chicken"></div>
+              <div class="ui-emote ui-emote-bg-circle-outer"></div>
+              <div class="ui-emote ui-emote-bg-circle"></div>
+              <div class="ui-emote ui-emote-hl"></div>
+              <div class="customize-emote-slot customize-item-image"></div>
+              <div class="customize-col customize-col-large" draggable="true"></div>
+            </div>
+            <div id="customize-emote-death" class="ui-emote-middle ui-emote-circle ui-emote-parent"
+              data-slot="emoteDeath" data-idx="5">
+              <div class="ui-emote ui-emote-auto-trash"></div>
+              <div class="ui-emote ui-emote-auto-icon ui-emote-auto-skull"></div>
+              <div class="ui-emote ui-emote-bg-circle-outer"></div>
+              <div class="ui-emote ui-emote-bg-circle"></div>
+              <div class="ui-emote ui-emote-hl"></div>
+              <div class="customize-emote-slot customize-item-image"></div>
+              <div class="customize-col customize-col-large" draggable="true"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="modal-settings" class="modal">
-      <div class="modal-content modal-close">
-        <div class="modal-header">
-          <span class="close close-corner"></span>
-          <h2 data-l10n="index-settings">Settings</h2>
+  </div>
+  <div id="modal-settings" class="modal">
+    <div class="modal-content modal-close">
+      <div class="modal-header">
+        <span class="close close-corner"></span>
+        <h2 data-l10n="index-settings">Settings</h2>
+      </div>
+      <div id="modal-settings-body" class="modal-body">
+        <div id="language-select-mobile-wrapper" class="modal-settings-item">
+          <div class="language-select-wrap">
+            <select class="language-select"></select>
+          </div>
         </div>
-        <div id="modal-settings-body" class="modal-body">
-          <div id="language-select-mobile-wrapper" class="modal-settings-item">
-            <div class="language-select-wrap">
-              <select class="language-select"></select>
-            </div>
-          </div>
-          <div id="modal-settings-high-res" class="modal-settings-item">
-            <input id="highResTex" type="checkbox">
-            <p class="modal-settings-checkbox-text" data-l10n="index-high-resolution">High resolution (check to increase
-              visual quality)</p>
-          </div>
-          <div id="modal-settings-interp" class="modal-settings-item">
-            <input id="interpolation" type="checkbox">
-            <p class="modal-settings-checkbox-text" data-l10n="index-client-side-interp">Client side interpolation</p>
-          </div>
-          <div class="modal-settings-item hide-on-mobile">
-            <input id="screenShake" type="checkbox">
-            <p class="modal-settings-checkbox-text" data-l10n="index-screen-shake">Screen shake</p>
-          </div>
-          <div class="modal-settings-item">
-            <input id="anonPlayerNames" type="checkbox">
-            <p class="modal-settings-checkbox-text" data-l10n="index-anon-player-names">Anonymize player names</p>
-          </div>
-          <div class="modal-settings-item slider-container main-volume-slider">
-            <p class="modal-slider-text" data-l10n="index-master-volume">Master Volume</p>
-            <input type="range" min="0" max="100" value="50" class="slider sl-master-volume" id="">
-          </div>
-          <div class="modal-settings-item slider-container main-volume-slider">
-            <p class="modal-slider-text" data-l10n="index-sfx-volume">SFX Volume</p>
-            <input type="range" min="0" max="100" value="50" class="slider sl-sound-volume" id="">
-          </div>
-          <div class="modal-settings-item slider-container main-volume-slider">
-            <p class="modal-slider-text" data-l10n="index-music-volume">Music Volume</p>
-            <input type="range" min="0" max="100" value="50" class="slider sl-music-volume" id="">
-          </div>
-          <div id="settings-links">
-            <!--
+        <div id="modal-settings-high-res" class="modal-settings-item">
+          <input id="highResTex" type="checkbox">
+          <p class="modal-settings-checkbox-text" data-l10n="index-high-resolution">High resolution (check to increase
+            visual quality)</p>
+        </div>
+        <div id="modal-settings-interp" class="modal-settings-item">
+          <input id="interpolation" type="checkbox">
+          <p class="modal-settings-checkbox-text" data-l10n="index-client-side-interp">Client side interpolation</p>
+        </div>
+        <div class="modal-settings-item hide-on-mobile">
+          <input id="screenShake" type="checkbox">
+          <p class="modal-settings-checkbox-text" data-l10n="index-screen-shake">Screen shake</p>
+        </div>
+        <div class="modal-settings-item">
+          <input id="anonPlayerNames" type="checkbox">
+          <p class="modal-settings-checkbox-text" data-l10n="index-anon-player-names">Anonymize player names</p>
+        </div>
+        <div class="modal-settings-item slider-container main-volume-slider">
+          <p class="modal-slider-text" data-l10n="index-master-volume">Master Volume</p>
+          <input type="range" min="0" max="100" value="50" class="slider sl-master-volume" id="">
+        </div>
+        <div class="modal-settings-item slider-container main-volume-slider">
+          <p class="modal-slider-text" data-l10n="index-sfx-volume">SFX Volume</p>
+          <input type="range" min="0" max="100" value="50" class="slider sl-sound-volume" id="">
+        </div>
+        <div class="modal-settings-item slider-container main-volume-slider">
+          <p class="modal-slider-text" data-l10n="index-music-volume">Music Volume</p>
+          <input type="range" min="0" max="100" value="50" class="slider sl-music-volume" id="">
+        </div>
+        <div id="settings-links">
+          <!--
               <a href="privacy.html" target="_blank" class="footer-after" data-l10n="index-privacy">privacy</a>
               -->
-            <a href="attribution.txt" target="_blank" class="footer-after"
-              data-l10n="index-attributions">attributions</a>
-            <a href="hof.html" target="_blank" data-l10n="index-hof">HOF</a>
-          </div>
+          <a href="attribution.txt" target="_blank" class="footer-after" data-l10n="index-attributions">attributions</a>
+          <a href="hof.html" target="_blank" data-l10n="index-hof">HOF</a>
         </div>
-        <div class="modal-footer"></div>
       </div>
+      <div class="modal-footer"></div>
     </div>
-    <div id="modal-hamburger" class="modal">
-      <div class="modal-content modal-close">
-        <div class="modal-header">
-          <span class="close close-hamburger icon-hamburger"></span>
-          <h2>&nbsp;</h2>
+  </div>
+  <div id="modal-hamburger" class="modal">
+    <div class="modal-content modal-close">
+      <div class="modal-header">
+        <span class="close close-hamburger icon-hamburger"></span>
+        <h2>&nbsp;</h2>
+      </div>
+      <div id="modal-hamburger-body" class="modal-body">
+        <div id="modal-hamburger-leaderboards">
+          <a href="/stats" target="_blank" class="btn-leaderboard-stats-link menu-option btn-darken"
+            data-l10n="index-leaderboards">Leaderboards</a>
         </div>
-        <div id="modal-hamburger-body" class="modal-body">
-          <div id="modal-hamburger-leaderboards">
-            <a href="/stats" target="_blank" class="btn-leaderboard-stats-link menu-option btn-darken"
-              data-l10n="index-leaderboards">Leaderboards</a>
-          </div>
-          <div class="modal-divider"></div>
-          <!-- <div class="btn-social-wrapper">
+        <div class="modal-divider"></div>
+        <!-- <div class="btn-social-wrapper">
               <a href="https://facebook.com/resurviv" target="_blank" class="btn-social btn-darken btn-facebook"></a>
               <a href="https://twitter.com/resurviv" target="_blank" class="btn-social btn-darken btn-twitter"></a>
               <a href="https://www.instagram.com/resurviv/" target="_blank" class="btn-social btn-darken btn-instagram"></a>
               <a href="https://discord.gg/resurviv" target="_blank" class="btn-social btn-darken btn-discord"></a>
               <a href="https://www.youtube.com/c/resurviv?sub_confirmation=1" target="_blank" class="btn-social btn-darken btn-youtube"></a>
             </div> -->
-          <div class="modal-divider"></div>
-          <div id="modal-hamburger-bottom">
-            <a href="changelogRec.html" class="footer-after">ver %VITE_GAME_VERSION%</a>
-            <!--
+        <div class="modal-divider"></div>
+        <div id="modal-hamburger-bottom">
+          <a href="changelogRec.html" class="footer-after">ver %VITE_GAME_VERSION%</a>
+          <!--
               <a href="changelog.html" class="footer-after">ver 0.8.82</a>
               <a href="#" class="btn-cookie-settings footer-after">cookie settings</a>
               <a href="privacy.txt" target="_blank" class="footer-after">privacy</a>
               -->
-            <a href="attribution.txt" target="_blank">attributions</a>
-          </div>
+          <a href="attribution.txt" target="_blank">attributions</a>
         </div>
       </div>
     </div>
-    <div id="modal-notification" class="modal">
-      <div class="modal-content modal-close">
-        <div class="modal-header">
-          <span class="close close-corner"></span>
-          <h2>Alert</h2>
-        </div>
-        <div class="modal-body">
-          <p class="modal-body-text"></p>
-        </div>
-        <div class="modal-footer modal-footer-round">
-          <h3 class="close close-footer">OK</h3>
-        </div>
+  </div>
+  <div id="modal-notification" class="modal">
+    <div class="modal-content modal-close">
+      <div class="modal-header">
+        <span class="close close-corner"></span>
+        <h2>Alert</h2>
+      </div>
+      <div class="modal-body">
+        <p class="modal-body-text"></p>
+      </div>
+      <div class="modal-footer modal-footer-round">
+        <h3 class="close close-footer">OK</h3>
       </div>
     </div>
-    <div id="modal-refresh" class="modal">
-      <div class="modal-content modal-close">
-        <div class="modal-header">
-          <span class="close close-corner"></span>
-          <h2>New Update</h2>
-        </div>
-        <div class="modal-body">
-          <p class="modal-body-text">A new version of cursev.io is available!<br><br>Press "OK" below to reload the
-            page.</p>
-        </div>
-        <div class="modal-footer modal-footer-round">
-          <h3 id="force-refresh" class="close close-footer">OK</h3>
-        </div>
+  </div>
+  <div id="modal-refresh" class="modal">
+    <div class="modal-content modal-close">
+      <div class="modal-header">
+        <span class="close close-corner"></span>
+        <h2>New Update</h2>
+      </div>
+      <div class="modal-body">
+        <p class="modal-body-text">A new version of cursev.io is available!<br><br>Press "OK" below to reload the
+          page.</p>
+      </div>
+      <div class="modal-footer modal-footer-round">
+        <h3 id="force-refresh" class="close close-footer">OK</h3>
       </div>
     </div>
-    <div id="modal-ip-banned" class="modal">
-      <div class="modal-content modal-close">
-        <div class="modal-header">
-          <span class="close close-corner"></span>
-          <h2 data-l10n="index-ip-banned">Your IP has been banned.</h2>
-        </div>
-        <div class="modal-body">
-          <div id="modal-ip-banned-reason"></div>
-          <div id="modal-ip-banned-expiration"></div>
-        </div>
-        <div class="modal-footer modal-footer-round">
-          <h3 id="force-refresh" class="close close-footer">OK</h3>
-        </div>
+  </div>
+  <div id="modal-ip-banned" class="modal">
+    <div class="modal-content modal-close">
+      <div class="modal-header">
+        <span class="close close-corner"></span>
+        <h2 data-l10n="index-ip-banned">Your IP has been banned.</h2>
+      </div>
+      <div class="modal-body">
+        <div id="modal-ip-banned-reason"></div>
+        <div id="modal-ip-banned-expiration"></div>
+      </div>
+      <div class="modal-footer modal-footer-round">
+        <h3 id="force-refresh" class="close close-footer">OK</h3>
       </div>
     </div>
-    <div id="modal-create-account" class="modal modal-account">
+  </div>
+  <div id="modal-create-account" class="modal modal-account">
+    <div class="modal-content modal-close">
+      <div class="modal-header modal-header-name">
+        <span class="close-loadouts close close-corner"></span>
+        <h2 id="modal-account-name-title" data-l10n="index-log-in-desc">Log In / Create Account</h2>
+      </div>
+      <div class="modal-body modal-body-name">
+        <p class="modal-body-text" data-l10n="index-create-account-prompt-1">Log in to access this feature!</p>
+        <div class="login-options-content"></div>
+      </div>
+      <div class="modal-footer modal-footer-name modal-footer-round">
+        <h3 class="close close-footer" data-l10n="index-cancel">Cancel</h3>
+      </div>
+    </div>
+  </div>
+  <div id="modal-screen-block">
+    <div id="modal-item-confirm" class="modal">
       <div class="modal-content modal-close">
         <div class="modal-header modal-header-name">
-          <span class="close-loadouts close close-corner"></span>
-          <h2 id="modal-account-name-title" data-l10n="index-log-in-desc">Log In / Create Account</h2>
+          <h2 id="modal-account-name-title">You got a new item!</h2>
         </div>
         <div class="modal-body modal-body-name">
-          <p class="modal-body-text" data-l10n="index-create-account-prompt-1">Log in to access this feature!</p>
-          <div class="login-options-content"></div>
+          <div id="modal-item-confirm-image-outer">
+            <div id="modal-item-confirm-image-inner"></div>
+          </div>
+          <div class="modal-settings-item">
+            <p id="modal-item-confirm-name" class="modal-body-text"></p>
+          </div>
         </div>
         <div class="modal-footer modal-footer-name modal-footer-round">
-          <h3 class="close close-footer" data-l10n="index-cancel">Cancel</h3>
+          <h3 class="close close-footer" data-l10n="index-confirm">Confirm</h3>
         </div>
       </div>
     </div>
-    <div id="modal-screen-block">
-      <div id="modal-item-confirm" class="modal">
-        <div class="modal-content modal-close">
-          <div class="modal-header modal-header-name">
-            <h2 id="modal-account-name-title">You got a new item!</h2>
-          </div>
-          <div class="modal-body modal-body-name">
-            <div id="modal-item-confirm-image-outer">
-              <div id="modal-item-confirm-image-inner"></div>
-            </div>
-            <div class="modal-settings-item">
-              <p id="modal-item-confirm-name" class="modal-body-text"></p>
-            </div>
-          </div>
-          <div class="modal-footer modal-footer-name modal-footer-round">
-            <h3 class="close close-footer" data-l10n="index-confirm">Confirm</h3>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
   </div>
   <script type="module" src="src/main.ts"></script>
 
