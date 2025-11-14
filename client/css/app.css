@@ -11,7 +11,7 @@
 
 html,
 body {
-  background: #80af49;
+  background: #000000;
 }
 
 @media (max-width: 850px), (max-width: 900px) and (min-resolution: 3dppx) {

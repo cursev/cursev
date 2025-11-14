@@ -11,7 +11,7 @@ import stripBlockPlugin from "vite-plugin-strip-block";
 export const SplashThemes = {
     main: {
         menuMusic: "audio/ambient/menu_music_01.mp3",
-        splashBg: "/img/main_splash.png",
+        splashBg: "/img/main_splash.jpeg",
     },
     easter: {
         menuMusic: "audio/ambient/menu_music_01.mp3",

@@ -81,6 +81,47 @@
         height: 16px;
       }
     }
+
+    .btn-kxsclient {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #f3acfa 0%, #d3aeff 100%);
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #1a0033;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(211, 174, 255, 0.3);
+      cursor: pointer;
+    }
+
+    .btn-kxsclient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(211, 174, 255, 0.6);
+      background: linear-gradient(135deg, #ffb8ff 0%, #e0bbff 100%);
+    }
+
+    .btn-kxsclient:active {
+      transform: translateY(0);
+    }
+
+    .btn-logo {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    .btn-logo circle {
+      transition: all 0.3s ease;
+    }
+
+    .btn-kxsclient:hover .btn-logo circle {
+      stroke-width: 22;
+    }
   </style>
 </head>
 
@@ -820,34 +861,6 @@
         </div>
       </div>
       <!-- Accounts Mobile -->
-      <div id="modal-mobile-account" class="modal">
-        <div class="modal-content modal-close">
-          <div class="modal-header">
-            <span class="close close-corner"></span>
-            <h2 data-l10n="index-account">Account</h2>
-          </div>
-          <div id="modal-mobile-account-body">
-            <div class="account-buttons-settings account-buttons-wrapper account-block-arrow modal-close">
-              <div class="account-buttons">
-                <div class="account-stats-link btn-player-stats-link menu-option btn-darken btn-standard "
-                  data-l10n="index-my-stats">My Stats</div>
-                <!-- <div class="btn-account-link btn-account-turq menu-option btn-darken btn-standard" data-l10n="index-link-account">Link Account</div> -->
-                <div class="btn-account-change-name btn-account-turq menu-option btn-darken btn-standard"
-                  data-l10n="index-change-account-name">Change Account Name</div>
-                <div class="btn-account-reset-stats btn-account-turq menu-option btn-darken btn-standard"
-                  data-l10n="index-reset-stats">Reset Stats</div>
-                <div class="btn-account-delete btn-account-turq menu-option btn-darken btn-standard"
-                  data-l10n="index-delete-account">Delete Account</div>
-                <div class="btn-account-logout btn-account-grey menu-option btn-darken btn-standard"
-                  data-l10n="index-log-out">Log Out</div>
-              </div>
-            </div>
-            <div id="account-login-options-mobile"
-              class="account-buttons-link-account account-buttons-wrapper account-block-arrow modal-close">
-              <div class="login-options-content"></div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Accounts -->
@@ -859,64 +872,23 @@
           </svg>
           Join us on Discord Server
         </a>
-        <div class="account-block" style="display: none;">
-          <div class="account-details-top">
-            <div class="account-details-top-buttons">
-              <div class="account-details-button-wrapper account-details-button-loadout menu-option btn-darken-alt">
-                <div class="account-details-button">
-                  <div id="loadout-alert-main" class="account-alert-main account-alert"></div>
-                  <div class="account-link account-loadout-link">
-                    <span data-l10n="index-loadout">Loadout</span>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="account-details-button-wrapper account-details-link-out menu-option btn-darken hide-on-mobile">
-                <div class="account-details-button">
-                  <div class="account-link account-stats-link"><span data-l10n="index-my-stats">My Stats</span></div>
-                </div>
-              </div>
-              <div
-                class="account-details-button-wrapper account-details-link-out menu-option btn-darken hide-on-mobile">
-                <div class="account-details-button">
-                  <div class="account-link account-leaderboard-link"><span
-                      data-l10n="index-leaderboards">Leaderboards</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="account-overview">
-            <div class="account-details-user account-details-block">
-              <div class="account-details">
-                <div class="account-avatar"></div>
-                <div id="account-login" class="account-player-name account-name account-name-user"
-                  data-l10n="index-log-in-desc">Log In / Create Account</div>
-                <div id="account-player-name" class="account-player-name account-name account-name-user"
-                  style="display:none"></div>
-                <div class="account-loading-container">
-                  <div class="account-loading"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="account-buttons-settings account-buttons-wrapper account-block-arrow modal-close hide-on-mobile">
-            <div class="account-buttons">
-              <!-- <div class="btn-account-link btn-account-turq menu-option btn-darken btn-standard" data-l10n="index-link-account">Link Account</div> -->
-              <div class="btn-account-change-name btn-account-turq menu-option btn-darken btn-standard"
-                data-l10n="index-change-account-name">Change Account Name</div>
-              <div class="btn-account-reset-stats btn-account-turq menu-option btn-darken btn-standard"
-                data-l10n="index-reset-stats">Reset Stats</div>
-              <div class="btn-account-delete btn-account-turq menu-option btn-darken btn-standard"
-                data-l10n="index-delete-account">Delete Account</div>
-              <div class="btn-account-logout btn-account-grey menu-option btn-darken btn-standard"
-                data-l10n="index-log-out">Log Out</div>
-            </div>
-          </div>
-          <div id="account-login-options"
-            class="account-buttons-link-account account-buttons-wrapper account-block-arrow modal-close">
-            <div class="login-options-content"></div>
-          </div>
-        </div>
+        <a class="btn-kxsclient" href="https://kxs.rip/" target="_blank" rel="noopener noreferrer">
+          <svg class="btn-logo" viewBox="50 40 240 240" version="1.1">
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#f3acfa;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#d3aeff;stop-opacity:1" />
+              </linearGradient>
+              <radialGradient id="grad2" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" style="stop-color:#eeaaff;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#4d007e;stop-opacity:1" />
+              </radialGradient>
+            </defs>
+            <circle style="fill:url(#grad2);stroke:url(#grad1);stroke-width:18.8332" cx="168.648" cy="158.75"
+              r="104.268" />
+          </svg>
+          Try KxsClient now
+        </a>
       </div>
 
       <div id="start-main-center">
