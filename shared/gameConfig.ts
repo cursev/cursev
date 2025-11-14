@@ -195,7 +195,7 @@ export const GameConfig = {
                 "12gauge": 0,
                 "50AE": 0,
                 "308sub": 0,
-                flare: 1,
+                flare: 0,
                 "40mm": 0,
                 "45acp": 0,
                 frag: 12,
