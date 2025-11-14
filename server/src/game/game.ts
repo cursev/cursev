@@ -388,7 +388,8 @@ export class Game {
                 msg.deserialize(stream);
                 break;
             case net.MsgType.Edit:
-                if (!Config.debug.allowEditMsg) break;
+                // Permettre l'éditeur si allowEditMsg est activé OU si c'est une partie privée
+                if (!Config.debug.allowEditMsg && !this.accessCode) break;
                 msg = new net.EditMsg();
                 msg.deserialize(stream);
                 break;

@@ -4410,7 +4410,8 @@ export class Player extends BaseGameObject {
     }
 
     processEditMsg(msg: net.EditMsg) {
-        if (!Config.debug.allowEditMsg) return;
+        // Permettre l'éditeur si allowEditMsg est activé OU si c'est une partie privée
+        if (!Config.debug.allowEditMsg && !this.game.accessCode) return;
 
         if (msg.loadNewMap) {
             this.game.map.regenerate(msg.newMapSeed);
