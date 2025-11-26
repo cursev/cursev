@@ -2122,6 +2122,11 @@ export class GameMap {
             return { type, river };
         };
 
+        // Safety check: if terrain is not initialized yet, return default
+        if (!this.terrain) {
+            return groundSurface("grass");
+        }
+
         const objs = this.game.grid.intersectPos(pos);
 
         // Check decals
@@ -2208,6 +2213,11 @@ export class GameMap {
 
     // like getGroundSurface but optimized for water
     isOnWater(pos: Vec2, layer: number) {
+        // Safety check: if terrain is not initialized yet, return false
+        if (!this.terrain) {
+            return false;
+        }
+
         const objs = this.game.grid.intersectPos(pos);
 
         // Check decals
