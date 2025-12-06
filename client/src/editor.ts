@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { GameObjectDefs } from "../../shared/defs/gameObjectDefs";
+import { type GameObjectDef, GameObjectDefs } from "../../shared/defs/gameObjectDefs";
 import { RoleDefs } from "../../shared/defs/gameObjects/roleDefs";
 import { GameConfig } from "../../shared/gameConfig";
 import { EditMsg } from "../../shared/net/editMsg";
@@ -117,77 +117,298 @@ export class Editor {
             }),
         );
 
+        // Build loot items list with categories
+        const lootItems: Array<{ type: string; def: GameObjectDef; category: string }> = [];
+        const categoryMap: Record<string, string> = {
+            gun: "Guns",
+            melee: "Melee",
+            throwable: "Throwables",
+            outfit: "Outfits",
+            helmet: "Armor",
+            chest: "Armor",
+            backpack: "Gear",
+            scope: "Gear",
+            heal: "Consumables",
+            boost: "Consumables",
+            ammo: "Ammo",
+            perk: "Perks",
+            xp: "XP",
+        };
+
+        for (const [type, def] of Object.entries(GameObjectDefs)) {
+            if (!("lootImg" in def)) continue;
+            const category = categoryMap[def.type] || "Other";
+            lootItems.push({ type, def, category });
+        }
+
+        // Sort by category then by name
+        lootItems.sort((a, b) => {
+            if (a.category !== b.category) {
+                return a.category.localeCompare(b.category);
+            }
+            const nameA = ("name" in a.def ? a.def.name : a.type) || a.type;
+            const nameB = ("name" in b.def ? b.def.name : b.type) || b.type;
+            return nameA.localeCompare(nameB);
+        });
+
         const createLootUi = $("<div/>", {
             css: {
-                display: "flex",
-                "align-items": "center",
+                position: "relative",
+                width: "100%",
             },
         });
 
         const label = $("<label/>", {
             text: "Loot:",
+            css: {
+                display: "block",
+                "margin-bottom": "5px",
+            },
         });
         createLootUi.append(label);
 
-        const form = $("<form/>", {
+        // Search input container
+        const searchContainer = $("<div/>", {
             css: {
+                position: "relative",
                 display: "flex",
-                height: "30px",
-                "margin-left": "10px",
                 "align-items": "center",
             },
         });
-        createLootUi.append(form);
 
-        const input = $("<input/>", {
+        const searchInput = $("<input/>", {
             type: "text",
-            list: "editor-loot-list",
-            placeholder: "Type a loot ID here...",
+            placeholder: "Search loot items...",
+            class: "editor-loot-search",
             css: {
-                height: "20px",
-                border: "none",
-            },
-        });
-        input.on("keydown", (e) => {
-            e.stopImmediatePropagation();
-        });
-        form.append(input);
-
-        const dataList = $("<datalist/>", {
-            id: "editor-loot-list",
-        });
-
-        for (const [type, def] of Object.entries(GameObjectDefs)) {
-            if (!("lootImg" in def)) continue;
-
-            const option = $("<option/>", {
-                value: type,
-            });
-            dataList.append(option);
-        }
-
-        form.append(dataList);
-
-        const spawnButton = $("<input/>", {
-            type: "submit",
-            value: "Spawn",
-            class: "btn-game-menu btn-darken",
-            css: {
+                width: "100%",
                 height: "30px",
-                "line-height": "28px",
-                "margin-left": "10px",
+                padding: "5px 30px 5px 10px",
+                border: "1px solid #444",
+                "background-color": "#1a1a1a",
+                color: "#fff",
+                "border-radius": "4px",
+                "box-sizing": "border-box",
             },
         });
-        form.append(spawnButton);
 
-        form.on("submit", (e) => {
-            e.preventDefault();
-            const type = input.val() as string;
-            if (GameObjectDefs[type]) {
-                this.spawnLootType = type as string;
+        // Search icon
+        const searchIcon = $("<span/>", {
+            html: "🔍",
+            css: {
+                position: "absolute",
+                right: "8px",
+                "pointer-events": "none",
+                "font-size": "14px",
+            },
+        });
+        searchContainer.append(searchInput);
+        searchContainer.append(searchIcon);
+
+        // Dropdown container
+        const dropdownContainer = $("<div/>", {
+            class: "editor-loot-dropdown",
+            css: {
+                display: "none",
+                position: "absolute",
+                top: "100%",
+                left: "0",
+                right: "0",
+                "max-height": "300px",
+                "overflow-y": "auto",
+                "background-color": "#1a1a1a",
+                border: "1px solid #444",
+                "border-top": "none",
+                "border-radius": "0 0 4px 4px",
+                "z-index": "1000",
+                "margin-top": "2px",
+            },
+        });
+
+        // Items list
+        const itemsList = $("<div/>", {
+            class: "editor-loot-items",
+        });
+
+        let currentCategory = "";
+        const renderItems = (filter: string = "") => {
+            itemsList.empty();
+            const filterLower = filter.toLowerCase();
+            let hasVisibleItems = false;
+
+            for (const item of lootItems) {
+                const itemName = ("name" in item.def ? item.def.name : item.type) || item.type;
+                const searchText = `${itemName} ${item.type} ${item.category}`.toLowerCase();
+
+                if (filter && !searchText.includes(filterLower)) {
+                    continue;
+                }
+
+                hasVisibleItems = true;
+
+                // Category header
+                if (item.category !== currentCategory) {
+                    currentCategory = item.category;
+                    const categoryHeader = $("<div/>", {
+                        class: "editor-loot-category",
+                        text: currentCategory,
+                        css: {
+                            padding: "8px 12px",
+                            "background-color": "#2a2a2a",
+                            color: "#aaa",
+                            "font-weight": "bold",
+                            "font-size": "12px",
+                            "text-transform": "uppercase",
+                            "border-bottom": "1px solid #333",
+                        },
+                    });
+                    itemsList.append(categoryHeader);
+                }
+
+                // Item
+                const itemElement = $("<div/>", {
+                    class: "editor-loot-item",
+                    css: {
+                        padding: "8px 12px",
+                        cursor: "pointer",
+                        "border-bottom": "1px solid #2a2a2a",
+                        display: "flex",
+                        "justify-content": "space-between",
+                        "align-items": "center",
+                    },
+                });
+
+                const itemNameSpan = $("<span/>", {
+                    text: itemName,
+                    css: {
+                        color: "#fff",
+                        "font-size": "14px",
+                    },
+                });
+
+                const itemTypeSpan = $("<span/>", {
+                    text: item.type,
+                    css: {
+                        color: "#888",
+                        "font-size": "11px",
+                        "font-family": "monospace",
+                    },
+                });
+
+                itemElement.append(itemNameSpan);
+                itemElement.append(itemTypeSpan);
+
+                // Hover effect
+                itemElement.on("mouseenter", function () {
+                    $(this).css("background-color", "#2a2a2a");
+                });
+                itemElement.on("mouseleave", function () {
+                    $(this).css("background-color", "transparent");
+                });
+
+                // Click handler
+                itemElement.on("click", (e) => {
+                    e.stopPropagation();
+                    searchInput.val(itemName);
+                    this.spawnLootType = item.type;
+                    this.sendMsg = true;
+                    dropdownContainer.hide();
+                });
+
+                itemsList.append(itemElement);
+            }
+
+            if (!hasVisibleItems) {
+                const noResults = $("<div/>", {
+                    text: "No items found",
+                    css: {
+                        padding: "20px",
+                        "text-align": "center",
+                        color: "#888",
+                    },
+                });
+                itemsList.append(noResults);
+            }
+
+            currentCategory = "";
+        };
+
+        // Initial render
+        renderItems();
+
+        dropdownContainer.append(itemsList);
+        searchContainer.append(dropdownContainer);
+        createLootUi.append(searchContainer);
+
+        // Search input handlers
+        searchInput.on("keydown", (e) => {
+            e.stopImmediatePropagation();
+            if (e.key === "Escape") {
+                dropdownContainer.hide();
+                searchInput.blur();
+            }
+        });
+
+        searchInput.on("input", () => {
+            const filter = searchInput.val() as string;
+            renderItems(filter);
+            dropdownContainer.show();
+        });
+
+        searchInput.on("focus", () => {
+            dropdownContainer.show();
+        });
+
+        // Close dropdown when clicking outside
+        $(document).on("click", (e) => {
+            if (!searchContainer[0].contains(e.target as Node)) {
+                dropdownContainer.hide();
+            }
+        });
+
+        // Spawn button
+        const spawnButtonContainer = $("<div/>", {
+            css: {
+                "margin-top": "10px",
+                display: "flex",
+                "align-items": "center",
+            },
+        });
+
+        const spawnButton = createButton("Spawn Selected", () => {
+            let selectedType = this.spawnLootType;
+            
+            // If no type is selected, try to find it from the search input
+            if (!selectedType) {
+                const searchValue = searchInput.val() as string;
+                if (searchValue) {
+                    // Try to find exact match by name first
+                    for (const item of lootItems) {
+                        const itemName = ("name" in item.def ? item.def.name : item.type) || item.type;
+                        if (itemName.toLowerCase() === searchValue.toLowerCase()) {
+                            selectedType = item.type;
+                            break;
+                        }
+                    }
+                    
+                    // If no name match, try type match
+                    if (!selectedType && GameObjectDefs[searchValue]) {
+                        selectedType = searchValue;
+                    }
+                }
+            }
+            
+            if (selectedType && GameObjectDefs[selectedType]) {
+                this.spawnLootType = selectedType;
                 this.sendMsg = true;
             }
         });
+        spawnButton.css({
+            width: "100%",
+        });
+
+        spawnButtonContainer.append(spawnButton);
+        createLootUi.append(spawnButtonContainer);
 
         const createRoleUi = $("<div/>", {
             css: { display: "flex" },

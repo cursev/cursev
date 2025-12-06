@@ -3244,6 +3244,52 @@ span.ui-stats-header-value {
   padding: 0px;
 }
 
+/* Editor Loot Search Interface */
+.editor-loot-search {
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.editor-loot-search:focus {
+  outline: none;
+  border-color: #7cfc00 !important;
+  background-color: #222 !important;
+}
+
+.editor-loot-dropdown {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.editor-loot-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.editor-loot-dropdown::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.editor-loot-dropdown::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.editor-loot-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.editor-loot-item {
+  transition: background-color 0.15s ease;
+}
+
+.editor-loot-item:hover {
+  background-color: #2a2a2a !important;
+}
+
+.editor-loot-category {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
 /*
 * Profiler
 */
