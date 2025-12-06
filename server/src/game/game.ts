@@ -83,6 +83,11 @@ export class Game {
      * cached in a single stream
      */
     msgsToSend = new net.MsgStream(new ArrayBuffer(4096));
+    
+    /**
+     * Queue of chat messages to send in the next tick
+     */
+    chatMessagesQueue: Array<net.ChatMsg> = [];
 
     playerBarn: PlayerBarn;
     lootBarn: LootBarn;
@@ -293,6 +298,18 @@ export class Game {
 
         const start = performance.now();
 
+        // Process queued chat messages
+        if (this.chatMessagesQueue.length > 0) {
+            this.logger.info(`Processing ${this.chatMessagesQueue.length} chat messages`);
+        }
+        for (let i = 0; i < this.chatMessagesQueue.length; i++) {
+            const chatMsg = this.chatMessagesQueue[i];
+            this.msgsToSend.stream.writeAlignToNextByte();
+            this.msgsToSend.serializeMsg(net.MsgType.Chat, chatMsg);
+            this.logger.info(`Serialized chat message: ${chatMsg.playerName}: ${chatMsg.message}`);
+        }
+        this.chatMessagesQueue = [];
+
         // serialize objects and send msgs
         this.objectRegister.serializeObjs();
         this.playerBarn.sendMsgs();
@@ -453,6 +470,23 @@ export class Game {
             }
             case net.MsgType.Edit: {
                 player.processEditMsg(msg as net.EditMsg);
+                break;
+            }
+            case net.MsgType.Chat: {
+                const chatMsg = msg as net.ChatMsg;
+                // Validate message
+                if (!chatMsg.message || chatMsg.message.trim().length === 0) {
+                    break;
+                }
+                if (chatMsg.message.length > 255) {
+                    break;
+                }
+                // Set player info
+                chatMsg.playerId = player.__id;
+                chatMsg.playerName = player.name;
+                // Add to queue to be sent in the next tick
+                this.chatMessagesQueue.push(chatMsg);
+                this.logger.info(`Chat message queued from ${chatMsg.playerName}: ${chatMsg.message}`);
                 break;
             }
         }

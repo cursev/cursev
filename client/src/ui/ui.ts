@@ -240,6 +240,14 @@ export class UiManager {
     displayingStats = false;
     teamMemberHealthBarWidth!: number;
 
+    // Chat
+    chatOpen = false;
+    chatMessages: Array<{ playerName: string; message: string; playerId: number }> = [];
+    chatMessagesContainer = $("#ui-chat-messages");
+    chatInputWrapper = $("#ui-chat-input-wrapper");
+    chatInput = $("#ui-chat-input");
+    maxChatMessages = 50;
+
     teamMemberHeight = 48;
     groupPlayerCount = 0;
     teamSelectors: Array<{
@@ -315,6 +323,20 @@ export class UiManager {
         $("#ui-menu-display").on("click", (e) => {
             e.stopPropagation();
             this.toggleEscMenu();
+        });
+
+        // Chat initialization
+        this.chatInput.on("keydown", (e) => {
+            if (e.keyCode === 13) {
+                // Enter
+                this.sendChatMessage();
+            } else if (e.keyCode === 27) {
+                // Escape
+                this.closeChat();
+            }
+        });
+        this.chatInput.on("blur", () => {
+            // Keep chat open on blur, only close on Escape
         });
 
         this.moveStyleButton.on("touchstart", () => {
@@ -2486,5 +2508,81 @@ export class UiManager {
         }
         $("#ui-role-body").html("").append(roleBodyLeft).append(roleBodyRight);
         this.roleDisplayed = role;
+    }
+
+    openChat() {
+        if (this.chatOpen) return;
+        this.chatOpen = true;
+        this.chatInputWrapper.show();
+        this.chatInput.focus();
+    }
+
+    closeChat() {
+        if (!this.chatOpen) return;
+        this.chatOpen = false;
+        this.chatInputWrapper.hide();
+        this.chatInput.val("");
+        this.chatInput.blur();
+    }
+
+    sendChatMessage() {
+        const message = (this.chatInput.val() as string)?.trim();
+        if (!message || message.length === 0) {
+            this.closeChat();
+            return;
+        }
+        if (message.length > 255) {
+            return;
+        }
+        // Send message will be handled in game.ts
+        this.game.sendChatMessage(message);
+        this.closeChat();
+    }
+
+    addChatMessage(playerName: string, message: string, playerId: number, localPlayerId: number) {
+        console.log("addChatMessage called:", playerName, message, playerId, localPlayerId);
+        console.log("chatMessagesContainer:", this.chatMessagesContainer, "length:", this.chatMessagesContainer?.length);
+        this.chatMessages.push({ playerName, message, playerId });
+        if (this.chatMessages.length > this.maxChatMessages) {
+            this.chatMessages.shift();
+        }
+        console.log("Total messages:", this.chatMessages.length);
+        this.updateChatDisplay(localPlayerId);
+    }
+
+    updateChatDisplay(localPlayerId: number) {
+        console.log("updateChatDisplay called, messages:", this.chatMessages.length);
+        if (!this.chatMessagesContainer || this.chatMessagesContainer.length === 0) {
+            console.error("Chat messages container not found! Trying to reinitialize...");
+            this.chatMessagesContainer = $("#ui-chat-messages");
+            if (this.chatMessagesContainer.length === 0) {
+                console.error("Still not found after reinit!");
+                return;
+            }
+        }
+        this.chatMessagesContainer.empty();
+        console.log("Creating", this.chatMessages.length, "message elements");
+        for (let i = 0; i < this.chatMessages.length; i++) {
+            const msg = this.chatMessages[i];
+            const isSelf = msg.playerId === localPlayerId;
+            const messageElem = $("<div/>", {
+                class: "ui-chat-message",
+            });
+            const nameSpan = $("<span/>", {
+                class: `chat-player-name ${isSelf ? "self" : ""}`,
+                text: `${msg.playerName}: `,
+            });
+            const textSpan = $("<span/>", {
+                text: helpers.htmlEscape(msg.message),
+            });
+            messageElem.append(nameSpan).append(textSpan);
+            this.chatMessagesContainer.append(messageElem);
+            console.log("Appended message:", msg.playerName, msg.message);
+        }
+        // Auto-scroll to bottom
+        if (this.chatMessagesContainer[0]) {
+            this.chatMessagesContainer.scrollTop(this.chatMessagesContainer[0].scrollHeight);
+        }
+        console.log("Chat display updated, container children:", this.chatMessagesContainer.children().length);
     }
 }

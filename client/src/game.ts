@@ -442,7 +442,15 @@ export class Game {
         );
         this.m_audioManager.cameraPos = v2.copy(this.m_camera.m_pos);
         if (this.m_input.keyPressed(Key.Escape)) {
-            this.m_uiManager.toggleEscMenu();
+            if (this.m_uiManager.chatOpen) {
+                this.m_uiManager.closeChat();
+            } else {
+                this.m_uiManager.toggleEscMenu();
+            }
+        }
+        // Open chat with T
+        if (this.m_input.keyPressed(Key.T) && !this.m_uiManager.chatOpen && !this.m_uiManager.escMenuDisplayed) {
+            this.m_uiManager.openChat();
         }
         // Large Map
         if (
@@ -1597,7 +1605,31 @@ export class Game {
                 msg.deserialize(stream);
                 this.m_ui2Manager.addKillFeedMessage(msg.message, msg.color);
             }
+            case net.MsgType.Chat: {
+                const msg = new net.ChatMsg();
+                msg.deserialize(stream);
+                console.log("Received chat message:", msg);
+                const playerInfo = this.m_playerBarn.getPlayerInfo(msg.playerId);
+                const playerName = this.m_playerBarn.getPlayerName(
+                    msg.playerId,
+                    this.m_activeId,
+                    true,
+                );
+                console.log("Adding chat message:", playerName, msg.message);
+                this.m_uiManager.addChatMessage(playerName, msg.message, msg.playerId, this.m_localId);
+                break;
+            }
         }
+    }
+
+    sendChatMessage(message: string) {
+        console.log("Sending chat message:", message);
+        const chatMsg = new net.ChatMsg();
+        chatMsg.message = message;
+        chatMsg.playerId = this.m_localId;
+        chatMsg.playerName = this.m_config.get("playerName") || "Player";
+        console.log("Chat message object:", chatMsg);
+        this.m_sendMessage(net.MsgType.Chat, chatMsg, 512);
     }
 
     m_sendMessage(type: net.MsgType, data: net.Msg, maxLen?: number) {
