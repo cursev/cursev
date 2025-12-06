@@ -34,11 +34,119 @@ export class Editor {
     /** differentiates between player movement vs manual toggle when changing layers */
     layerChangedByToggle = false;
 
+    private dragInitialized = false;
+
     constructor(config: ConfigManager) {
         this.config = config;
         this.config.addModifiedListener(this.onConfigModified.bind(this));
 
         this.setEnabled(false);
+        this.initDragAndDrop();
+    }
+
+    initDragAndDrop() {
+        if (this.dragInitialized) return;
+        this.dragInitialized = true;
+
+        const editorElement = $("#ui-editor");
+        const headerElement = $("#ui-editor-top-center");
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let initialX = 0;
+        let initialY = 0;
+
+        // Load saved position
+        const savedPos = this.loadEditorPosition();
+        if (savedPos) {
+            editorElement.css({
+                left: `${savedPos.x}px`,
+                top: `${savedPos.y}px`,
+                right: "auto",
+            });
+        } else {
+            // Default position (top-right)
+            editorElement.css({
+                right: "12px",
+                top: "12px",
+                left: "auto",
+            });
+        }
+
+        // Make header draggable
+        headerElement.on("mousedown", (e) => {
+            if (e.button !== 0) return; // Only left mouse button
+            isDragging = true;
+            editorElement.addClass("dragging");
+
+            const rect = editorElement[0].getBoundingClientRect();
+            startX = e.clientX;
+            startY = e.clientY;
+            initialX = rect.left;
+            initialY = rect.top;
+
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // Handle mouse move
+        $(document).on("mousemove", (e) => {
+            if (!isDragging) return;
+
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+
+            const newX = initialX + deltaX;
+            const newY = initialY + deltaY;
+
+            // Keep editor within viewport bounds
+            const maxX = window.innerWidth - editorElement.outerWidth()!;
+            const maxY = window.innerHeight - editorElement.outerHeight()!;
+
+            const clampedX = Math.max(0, Math.min(newX, maxX));
+            const clampedY = Math.max(0, Math.min(newY, maxY));
+
+            editorElement.css({
+                left: `${clampedX}px`,
+                top: `${clampedY}px`,
+                right: "auto",
+            });
+        });
+
+        // Handle mouse up
+        $(document).on("mouseup", () => {
+            if (isDragging) {
+                isDragging = false;
+                editorElement.removeClass("dragging");
+
+                // Save position
+                const rect = editorElement[0].getBoundingClientRect();
+                this.saveEditorPosition({
+                    x: rect.left,
+                    y: rect.top,
+                });
+            }
+        });
+    }
+
+    saveEditorPosition(pos: { x: number; y: number }) {
+        try {
+            localStorage.setItem("editorPosition", JSON.stringify(pos));
+        } catch (e) {
+            console.warn("Failed to save editor position:", e);
+        }
+    }
+
+    loadEditorPosition(): { x: number; y: number } | null {
+        try {
+            const saved = localStorage.getItem("editorPosition");
+            if (saved) {
+                return JSON.parse(saved);
+            }
+        } catch (e) {
+            console.warn("Failed to load editor position:", e);
+        }
+        return null;
     }
 
     onConfigModified(_key?: string) {
@@ -48,7 +156,11 @@ export class Editor {
     setEnabled(e: boolean) {
         this.enabled = e;
         this.refreshUi();
-        if (e) this.sendMsg = true;
+        if (e) {
+            this.sendMsg = true;
+            // Ensure drag & drop is initialized when editor is enabled
+            this.initDragAndDrop();
+        }
     }
 
     newMap(seed: number) {

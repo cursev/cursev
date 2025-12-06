@@ -3196,20 +3196,42 @@ span.ui-stats-header-value {
 /**
  * editor
  */
+#ui-editor {
+  position: fixed;
+  z-index: 10000;
+  cursor: move;
+  user-select: none;
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+#ui-editor.dragging {
+  cursor: grabbing;
+}
+
 #ui-editor-top-center {
-  position: absolute;
+  position: relative;
   color: #fff;
-  top: 0%;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 5px 5px 0 0;
+  cursor: move;
+  user-select: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#ui-editor-top-center:hover {
+  background: rgba(0, 0, 0, 0.9);
 }
 
 #ui-editor-top-right {
-  position: absolute;
+  position: relative;
   color: #fff;
   font-size: 16px;
-  top: 12px;
-  right: 12px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 0 0 5px 5px;
+  padding: 8px;
 }
 
 .ui-editor-header {
