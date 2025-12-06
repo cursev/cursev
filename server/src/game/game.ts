@@ -298,17 +298,19 @@ export class Game {
 
         const start = performance.now();
 
-        // Process queued chat messages
+        // Process queued chat messages (only once per tick)
         if (this.chatMessagesQueue.length > 0) {
             this.logger.info(`Processing ${this.chatMessagesQueue.length} chat messages`);
+            // Process each message only once - copy and clear immediately
+            const messagesToProcess = this.chatMessagesQueue.slice();
+            this.chatMessagesQueue.length = 0; // Clear immediately to prevent re-processing
+            for (let i = 0; i < messagesToProcess.length; i++) {
+                const chatMsg = messagesToProcess[i];
+                this.msgsToSend.stream.writeAlignToNextByte();
+                this.msgsToSend.serializeMsg(net.MsgType.Chat, chatMsg);
+                this.logger.info(`Serialized chat message: ${chatMsg.playerName}: ${chatMsg.message}`);
+            }
         }
-        for (let i = 0; i < this.chatMessagesQueue.length; i++) {
-            const chatMsg = this.chatMessagesQueue[i];
-            this.msgsToSend.stream.writeAlignToNextByte();
-            this.msgsToSend.serializeMsg(net.MsgType.Chat, chatMsg);
-            this.logger.info(`Serialized chat message: ${chatMsg.playerName}: ${chatMsg.message}`);
-        }
-        this.chatMessagesQueue = [];
 
         // serialize objects and send msgs
         this.objectRegister.serializeObjs();
@@ -375,6 +377,7 @@ export class Game {
             | net.SpectateMsg
             | net.PerkModeRoleSelectMsg
             | net.EditMsg
+            | net.ChatMsg
             | undefined = undefined;
 
         switch (type) {
@@ -408,6 +411,10 @@ export class Game {
                 // Permettre l'éditeur si allowEditMsg est activé OU si c'est une partie privée
                 if (!Config.debug.allowEditMsg && !this.accessCode) break;
                 msg = new net.EditMsg();
+                msg.deserialize(stream);
+                break;
+            case net.MsgType.Chat:
+                msg = new net.ChatMsg();
                 msg.deserialize(stream);
                 break;
         }
@@ -484,9 +491,19 @@ export class Game {
                 // Set player info
                 chatMsg.playerId = player.__id;
                 chatMsg.playerName = player.name;
-                // Add to queue to be sent in the next tick
-                this.chatMessagesQueue.push(chatMsg);
-                this.logger.info(`Chat message queued from ${chatMsg.playerName}: ${chatMsg.message}`);
+                // Check if this message is already in the queue (prevent duplicates)
+                const isDuplicate = this.chatMessagesQueue.some(
+                    (queued) => queued.playerId === chatMsg.playerId && 
+                                queued.message === chatMsg.message &&
+                                queued.playerName === chatMsg.playerName
+                );
+                if (!isDuplicate) {
+                    // Add to queue to be sent in the next tick
+                    this.chatMessagesQueue.push(chatMsg);
+                    this.logger.info(`Chat message queued from ${chatMsg.playerName}: ${chatMsg.message}`);
+                } else {
+                    this.logger.warn(`Duplicate chat message ignored from ${chatMsg.playerName}: ${chatMsg.message}`);
+                }
                 break;
             }
         }

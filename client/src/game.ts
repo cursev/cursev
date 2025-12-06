@@ -113,6 +113,8 @@ export class Game {
     debugPingTime!: number;
     lastUpdateTime!: number;
     updateIntervals!: number[];
+    m_lastChatMessage: string = "";
+    m_lastChatMessageTime: number = 0;
 
     constructor(
         public m_pixi: PIXI.Application,
@@ -494,7 +496,9 @@ export class Game {
         // Input
         const inputMsg = new net.InputMsg();
         inputMsg.seq = this.seq;
-        if (!this.m_spectating) {
+        // Block game inputs when chat is open
+        const chatOpen = this.m_uiManager.chatOpen;
+        if (!this.m_spectating && !chatOpen) {
             if (device.touch) {
                 const touchPlayerMovement = this.m_touch.getTouchMovement(this.m_camera);
                 const touchAimMovement = this.m_touch.getAimMovement(
@@ -570,444 +574,450 @@ export class Game {
                 net.Constants.MouseMaxDist,
             );
             inputMsg.shootStart =
-                this.m_inputBinds.isBindPressed(Input.Fire) || this.m_touch.shotDetected;
+                (!chatOpen && this.m_inputBinds.isBindPressed(Input.Fire)) || this.m_touch.shotDetected;
             inputMsg.shootHold =
-                this.m_inputBinds.isBindDown(Input.Fire) || this.m_touch.shotDetected;
+                (!chatOpen && this.m_inputBinds.isBindDown(Input.Fire)) || this.m_touch.shotDetected;
             inputMsg.portrait =
                 this.m_camera.m_screenWidth < this.m_camera.m_screenHeight;
-            const checkInputs = [
-                Input.Reload,
-                Input.Revive,
-                Input.Use,
-                Input.Loot,
-                Input.Cancel,
-                Input.EquipPrimary,
-                Input.EquipSecondary,
-                Input.EquipThrowable,
-                Input.EquipMelee,
-                Input.EquipNextWeap,
-                Input.EquipPrevWeap,
-                Input.EquipLastWeap,
-                Input.EquipOtherGun,
-                Input.EquipPrevScope,
-                Input.EquipNextScope,
-                Input.StowWeapons,
-            ];
-            for (let i = 0; i < checkInputs.length; i++) {
-                const input = checkInputs[i];
-                if (this.m_inputBinds.isBindPressed(input)) {
-                    inputMsg.addInput(input);
+
+            // Don't process game inputs when chat is open
+            if (!chatOpen) {
+                const checkInputs = [
+                    Input.Reload,
+                    Input.Revive,
+                    Input.Use,
+                    Input.Loot,
+                    Input.Cancel,
+                    Input.EquipPrimary,
+                    Input.EquipSecondary,
+                    Input.EquipThrowable,
+                    Input.EquipMelee,
+                    Input.EquipNextWeap,
+                    Input.EquipPrevWeap,
+                    Input.EquipLastWeap,
+                    Input.EquipOtherGun,
+                    Input.EquipPrevScope,
+                    Input.EquipNextScope,
+                    Input.StowWeapons,
+                ];
+                for (let i = 0; i < checkInputs.length; i++) {
+                    const input = checkInputs[i];
+                    if (this.m_inputBinds.isBindPressed(input)) {
+                        inputMsg.addInput(input);
+                    }
+                }
+
+                // Handle Interact
+                // Interact should not activate Revive, Use, or Loot if those inputs are bound separately.
+                if (this.m_inputBinds.isBindPressed(Input.Interact)) {
+                    const inputs = [];
+                    const interactBinds = [Input.Revive, Input.Use, Input.Loot];
+                    for (let i = 0; i < interactBinds.length; i++) {
+                        const b = interactBinds[i];
+                        if (!this.m_inputBinds.getBind(b)) {
+                            inputs.push(b);
+                        }
+                    }
+                    if (inputs.length == interactBinds.length) {
+                        inputMsg.addInput(Input.Interact);
+                    } else {
+                        for (let i = 0; i < inputs.length; i++) {
+                            inputMsg.addInput(inputs[i]);
+                        }
+                    }
                 }
             }
 
-            // Handle Interact
-            // Interact should not activate Revive, Use, or Loot if those inputs are bound separately.
-            if (this.m_inputBinds.isBindPressed(Input.Interact)) {
-                const inputs = [];
-                const interactBinds = [Input.Revive, Input.Use, Input.Loot];
-                for (let i = 0; i < interactBinds.length; i++) {
-                    const b = interactBinds[i];
-                    if (!this.m_inputBinds.getBind(b)) {
-                        inputs.push(b);
-                    }
-                }
-                if (inputs.length == interactBinds.length) {
-                    inputMsg.addInput(Input.Interact);
-                } else {
-                    for (let i = 0; i < inputs.length; i++) {
-                        inputMsg.addInput(inputs[i]);
-                    }
-                }
-            }
-
-            // Swap weapon slots
-            if (
+            // Swap weapon slots (only if chat is not open)
+            if (!chatOpen && (
                 this.m_inputBinds.isBindPressed(Input.SwapWeapSlots) ||
                 this.m_uiManager.swapWeapSlots
-            ) {
+            )) {
                 inputMsg.addInput(Input.SwapWeapSlots);
                 this.m_activePlayer.gunSwitchCooldown = 0;
             }
 
-            // Handle touch inputs
-            if (this.m_uiManager.reloadTouched) {
-                inputMsg.addInput(Input.Reload);
-            }
-            if (this.m_uiManager.interactionTouched) {
-                inputMsg.addInput(Input.Interact);
-                inputMsg.addInput(Input.Cancel);
-            }
-
-            // Process 'use' actions trigger from the ui
-            for (let i = 0; i < this.m_ui2Manager.uiEvents.length; i++) {
-                const e = this.m_ui2Manager.uiEvents[i];
-                if (e.action == "use") {
-                    if (e.type == "weapon") {
-                        const weapIdxToInput = {
-                            [WeaponSlot.Primary]: Input.EquipPrimary,
-                            [WeaponSlot.Secondary]: Input.EquipSecondary,
-                            [WeaponSlot.Melee]: Input.EquipMelee,
-                            [WeaponSlot.Throwable]: Input.EquipThrowable,
-                        };
-                        const input =
-                            weapIdxToInput[
-                            e.data as unknown as keyof typeof weapIdxToInput
-                            ];
-                        if (input) {
-                            inputMsg.addInput(input);
-                        }
-                    } else {
-                        inputMsg.useItem = e.data as string;
-                    }
+            // Handle touch inputs (only if chat is not open)
+            if (!chatOpen) {
+                if (this.m_uiManager.reloadTouched) {
+                    inputMsg.addInput(Input.Reload);
                 }
-            }
-            if (this.m_inputBinds.isBindPressed(Input.UseBandage)) {
-                inputMsg.useItem = "bandage";
-            } else if (this.m_inputBinds.isBindPressed(Input.UseHealthKit)) {
-                inputMsg.useItem = "healthkit";
-            } else if (this.m_inputBinds.isBindPressed(Input.UseSoda)) {
-                inputMsg.useItem = "soda";
-            } else if (this.m_inputBinds.isBindPressed(Input.UsePainkiller)) {
-                inputMsg.useItem = "painkiller";
-            }
+                if (this.m_uiManager.interactionTouched) {
+                    inputMsg.addInput(Input.Interact);
+                    inputMsg.addInput(Input.Cancel);
+                }
 
-            // Process 'drop' actions triggered from the ui
-            let playDropSound = false;
-            for (let X = 0; X < this.m_ui2Manager.uiEvents.length; X++) {
-                const uiEvent = this.m_ui2Manager.uiEvents[X];
-                if (uiEvent.action == "drop") {
-                    const dropMsg = new net.DropItemMsg();
-                    if (uiEvent.type == "weapon") {
-                        const eventData = uiEvent.data as unknown as number;
-                        const Y = this.m_activePlayer.m_localData.m_weapons;
-                        dropMsg.item = Y[eventData].type;
-                        dropMsg.weapIdx = eventData;
-                    } else if (uiEvent.type == "perk") {
-                        const eventData = uiEvent.data as unknown as number;
-                        const J = this.m_activePlayer.m_netData.m_perks;
-                        const Q = J.length > eventData ? J[eventData] : null;
-                        if (Q?.droppable) {
-                            dropMsg.item = Q.type;
-                        }
-                    } else {
-                        const item =
-                            uiEvent.data == "helmet"
-                                ? this.m_activePlayer.m_netData.m_helmet
-                                : uiEvent.data == "chest"
-                                    ? this.m_activePlayer.m_netData.m_chest
-                                    : uiEvent.data;
-                        dropMsg.item = item as string;
-                    }
-                    if (dropMsg.item != "") {
-                        this.m_sendMessage(net.MsgType.DropItem, dropMsg, 128);
-                        if (dropMsg.item != "fists") {
-                            playDropSound = true;
+                // Process 'use' actions trigger from the ui
+                for (let i = 0; i < this.m_ui2Manager.uiEvents.length; i++) {
+                    const e = this.m_ui2Manager.uiEvents[i];
+                    if (e.action == "use") {
+                        if (e.type == "weapon") {
+                            const weapIdxToInput = {
+                                [WeaponSlot.Primary]: Input.EquipPrimary,
+                                [WeaponSlot.Secondary]: Input.EquipSecondary,
+                                [WeaponSlot.Melee]: Input.EquipMelee,
+                                [WeaponSlot.Throwable]: Input.EquipThrowable,
+                            };
+                            const input =
+                                weapIdxToInput[
+                                e.data as unknown as keyof typeof weapIdxToInput
+                                ];
+                            if (input) {
+                                inputMsg.addInput(input);
+                            }
+                        } else {
+                            inputMsg.useItem = e.data as string;
                         }
                     }
                 }
-            }
-            if (playDropSound) {
-                this.m_audioManager.playSound("loot_drop_01", {
-                    channel: "ui",
-                });
-            }
-            if (this.m_uiManager.roleSelected) {
-                const roleSelectMessage = new net.PerkModeRoleSelectMsg();
-                roleSelectMessage.role = this.m_uiManager.roleSelected;
-                this.m_sendMessage(
-                    net.MsgType.PerkModeRoleSelect,
-                    roleSelectMessage,
-                    128,
-                );
-                this.m_config.set("perkModeRole", roleSelectMessage.role);
-            }
-        }
-        const specBegin = this.m_uiManager.specBegin;
-        const specNext =
-            this.m_uiManager.specNext ||
-            (this.m_spectating && this.m_input.keyPressed(Key.Right));
-        const specPrev =
-            this.m_uiManager.specPrev ||
-            (this.m_spectating && this.m_input.keyPressed(Key.Left));
-        const specForce =
-            this.m_input.keyPressed(Key.Right) || this.m_input.keyPressed(Key.Left);
-        if (specBegin || (this.m_spectating && specNext) || specPrev) {
-            const specMsg = new net.SpectateMsg();
-            specMsg.specBegin = specBegin;
-            specMsg.specNext = specNext;
-            specMsg.specPrev = specPrev;
-            specMsg.specForce = specForce;
-            this.m_sendMessage(net.MsgType.Spectate, specMsg, 128);
-        }
-        this.m_uiManager.specBegin = false;
-        this.m_uiManager.specNext = false;
-        this.m_uiManager.specPrev = false;
-        this.m_uiManager.reloadTouched = false;
-        this.m_uiManager.interactionTouched = false;
-        this.m_uiManager.swapWeapSlots = false;
-        this.m_uiManager.roleSelected = "";
+                if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UseBandage)) {
+                    inputMsg.useItem = "bandage";
+                } else if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UseHealthKit)) {
+                    inputMsg.useItem = "healthkit";
+                } else if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UseSoda)) {
+                    inputMsg.useItem = "soda";
+                } else if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UsePainkiller)) {
+                    inputMsg.useItem = "painkiller";
+                }
 
-        // Only send a InputMsg if the new data has changed from the previously sent data. For the look direction, we need to determine if the angle difference is large enough.
-        let diff = false;
-        for (const k in inputMsg) {
-            if (inputMsg.hasOwnProperty(k)) {
-                if (k == "inputs") {
-                    diff = inputMsg[k].length > 0;
-                } else if (k == "toMouseDir" || k == "touchMoveDir") {
-                    const dot = math.clamp(
-                        v2.dot(inputMsg[k], this.m_prevInputMsg[k]),
-                        -1,
-                        1,
+                // Process 'drop' actions triggered from the ui
+                let playDropSound = false;
+                for (let X = 0; X < this.m_ui2Manager.uiEvents.length; X++) {
+                    const uiEvent = this.m_ui2Manager.uiEvents[X];
+                    if (uiEvent.action == "drop") {
+                        const dropMsg = new net.DropItemMsg();
+                        if (uiEvent.type == "weapon") {
+                            const eventData = uiEvent.data as unknown as number;
+                            const Y = this.m_activePlayer.m_localData.m_weapons;
+                            dropMsg.item = Y[eventData].type;
+                            dropMsg.weapIdx = eventData;
+                        } else if (uiEvent.type == "perk") {
+                            const eventData = uiEvent.data as unknown as number;
+                            const J = this.m_activePlayer.m_netData.m_perks;
+                            const Q = J.length > eventData ? J[eventData] : null;
+                            if (Q?.droppable) {
+                                dropMsg.item = Q.type;
+                            }
+                        } else {
+                            const item =
+                                uiEvent.data == "helmet"
+                                    ? this.m_activePlayer.m_netData.m_helmet
+                                    : uiEvent.data == "chest"
+                                        ? this.m_activePlayer.m_netData.m_chest
+                                        : uiEvent.data;
+                            dropMsg.item = item as string;
+                        }
+                        if (dropMsg.item != "") {
+                            this.m_sendMessage(net.MsgType.DropItem, dropMsg, 128);
+                            if (dropMsg.item != "fists") {
+                                playDropSound = true;
+                            }
+                        }
+                    }
+                }
+                if (playDropSound) {
+                    this.m_audioManager.playSound("loot_drop_01", {
+                        channel: "ui",
+                    });
+                }
+                if (this.m_uiManager.roleSelected) {
+                    const roleSelectMessage = new net.PerkModeRoleSelectMsg();
+                    roleSelectMessage.role = this.m_uiManager.roleSelected;
+                    this.m_sendMessage(
+                        net.MsgType.PerkModeRoleSelect,
+                        roleSelectMessage,
+                        128,
                     );
-                    const angle = math.rad2deg(Math.acos(dot));
-                    diff = angle > 0.1;
-                } else if (k == "toMouseLen") {
-                    diff = Math.abs(this.m_prevInputMsg[k] - inputMsg[k]) > 0.5;
-                } else if (k == "shootStart") {
-                    diff = inputMsg[k] || inputMsg[k] != this.m_prevInputMsg[k];
-                } else if (
-                    this.m_prevInputMsg[k as keyof typeof this.m_prevInputMsg] !=
-                    inputMsg[k as keyof typeof inputMsg]
-                ) {
-                    diff = true;
-                }
-                if (diff) {
-                    break;
+                    this.m_config.set("perkModeRole", roleSelectMessage.role);
                 }
             }
-        }
-        this.m_inputMsgTimeout -= dt;
-        if (diff || this.m_inputMsgTimeout < 0) {
-            if (!this.seqInFlight) {
-                this.seq = (this.seq + 1) % 256;
-                this.seqSendTime = Date.now();
-                this.seqInFlight = true;
-                inputMsg.seq = this.seq;
+            const specBegin = this.m_uiManager.specBegin;
+            const specNext =
+                this.m_uiManager.specNext ||
+                (this.m_spectating && this.m_input.keyPressed(Key.Right));
+            const specPrev =
+                this.m_uiManager.specPrev ||
+                (this.m_spectating && this.m_input.keyPressed(Key.Left));
+            const specForce =
+                this.m_input.keyPressed(Key.Right) || this.m_input.keyPressed(Key.Left);
+            if (specBegin || (this.m_spectating && specNext) || specPrev) {
+                const specMsg = new net.SpectateMsg();
+                specMsg.specBegin = specBegin;
+                specMsg.specNext = specNext;
+                specMsg.specPrev = specPrev;
+                specMsg.specForce = specForce;
+                this.m_sendMessage(net.MsgType.Spectate, specMsg, 128);
             }
-            this.m_sendMessage(net.MsgType.Input, inputMsg, 128);
-            this.m_inputMsgTimeout = 1;
-            this.m_prevInputMsg = inputMsg;
-        }
+            this.m_uiManager.specBegin = false;
+            this.m_uiManager.specNext = false;
+            this.m_uiManager.specPrev = false;
+            this.m_uiManager.reloadTouched = false;
+            this.m_uiManager.interactionTouched = false;
+            this.m_uiManager.swapWeapSlots = false;
+            this.m_uiManager.roleSelected = "";
 
-        // Clear cached data
-        this.m_ui2Manager.flushInput();
-
-        if (this.editor.enabled && this.editor.sendMsg) {
-            var msg = this.editor.getMsg();
-            this.m_sendMessage(net.MsgType.Edit, msg);
-            this.editor.postSerialization();
-        }
-
-        this.m_map.m_update(
-            dt,
-            this.m_activePlayer,
-            this.m_playerBarn,
-            this.m_particleBarn,
-            this.m_audioManager,
-            this.m_ambience,
-            this.m_renderer,
-            this.m_camera,
-            smokeParticles,
-            debug,
-        );
-        this.m_lootBarn.m_update(
-            dt,
-            this.m_activePlayer,
-            this.m_map,
-            this.m_audioManager,
-            this.m_camera,
-            debug,
-        );
-        this.m_bulletBarn.m_update(
-            dt,
-            this.m_playerBarn,
-            this.m_map,
-            this.m_camera,
-            this.m_activePlayer,
-            this.m_renderer,
-            this.m_particleBarn,
-            this.m_audioManager,
-        );
-        this.m_flareBarn.m_update(
-            dt,
-            this.m_playerBarn,
-            this.m_map,
-            this.m_camera,
-            this.m_activePlayer,
-            this.m_renderer,
-            this.m_particleBarn,
-            this.m_audioManager,
-        );
-        this.m_projectileBarn.m_update(
-            dt,
-            this.m_particleBarn,
-            this.m_audioManager,
-            this.m_activePlayer,
-            this.m_map,
-            this.m_renderer,
-            this.m_camera,
-        );
-        this.m_explosionBarn.m_update(
-            dt,
-            this.m_map,
-            this.m_playerBarn,
-            this.m_camera,
-            this.m_particleBarn,
-            this.m_audioManager,
-            debug,
-        );
-        this.m_airdropBarn.m_update(
-            dt,
-            this.m_activePlayer,
-            this.m_camera,
-            this.m_map,
-            this.m_particleBarn,
-            this.m_renderer,
-            this.m_audioManager,
-        );
-        this.m_planeBarn.m_update(
-            dt,
-            this.m_camera,
-            this.m_activePlayer,
-            this.m_map,
-            this.m_renderer,
-        );
-        this.m_smokeBarn.m_update(
-            dt,
-            this.m_camera,
-            this.m_activePlayer,
-            this.m_map,
-            this.m_renderer,
-        );
-        this.m_shotBarn.m_update(
-            dt,
-            this.m_activeId,
-            this.m_playerBarn,
-            this.m_particleBarn,
-            this.m_audioManager,
-        );
-        this.m_particleBarn.m_update(dt, this.m_camera, debug);
-        this.m_deadBodyBarn.m_update(
-            dt,
-            this.m_playerBarn,
-            this.m_activePlayer,
-            this.m_map,
-            this.m_camera,
-            this.m_renderer,
-        );
-        this.m_decalBarn.m_update(dt, this.m_camera, this.m_renderer, debug);
-        this.m_uiManager.m_update(
-            dt,
-            this.m_activePlayer,
-            this.m_map,
-            this.m_gas,
-            this.m_lootBarn,
-            this.m_playerBarn,
-            this.m_camera,
-            this.teamMode,
-            this.m_map.factionMode,
-        );
-        this.m_ui2Manager.m_update(
-            dt,
-            this.m_activePlayer,
-            this.m_spectating,
-            this.m_playerBarn,
-            this.m_lootBarn,
-            this.m_map,
-            this.m_inputBinds,
-        );
-        this.m_emoteBarn.m_update(
-            dt,
-            this.m_localId,
-            this.m_activePlayer,
-            this.teamMode,
-            this.m_deadBodyBarn,
-            this.m_map,
-            this.m_renderer,
-            this.m_input,
-            this.m_inputBinds,
-            this.m_spectating,
-        );
-        this.m_touch.m_update(
-            dt,
-            this.m_activePlayer,
-            this.m_map,
-            this.m_camera,
-            this.m_renderer,
-        );
-        this.m_renderer.m_update(dt, this.m_camera, this.m_map, debug);
-
-        for (let i = 0; i < this.m_emoteBarn.newPings.length; i++) {
-            const ping = this.m_emoteBarn.newPings[i];
-            const msg = new net.EmoteMsg();
-            msg.type = ping.type;
-            msg.pos = ping.pos;
-            msg.isPing = true;
-            this.m_sendMessage(net.MsgType.Emote, msg, 128);
-        }
-        this.m_emoteBarn.newPings = [];
-        for (let i = 0; i < this.m_emoteBarn.newEmotes.length; i++) {
-            const emote = this.m_emoteBarn.newEmotes[i];
-            const msg = new net.EmoteMsg();
-            msg.type = emote.type;
-            msg.pos = emote.pos;
-            msg.isPing = false;
-            this.m_sendMessage(net.MsgType.Emote, msg, 128);
-        }
-        this.m_emoteBarn.newEmotes = [];
-
-        const now = Date.now();
-        if (now > this.debugPingTime) {
-            this.debugPingTime = now + 20000;
-            function format(str: string, len: number) {
-                return (" ".repeat(len) + str).slice(-len);
+            // Only send a InputMsg if the new data has changed from the previously sent data. For the look direction, we need to determine if the angle difference is large enough.
+            let diff = false;
+            for (const k in inputMsg) {
+                if (inputMsg.hasOwnProperty(k)) {
+                    if (k == "inputs") {
+                        diff = inputMsg[k].length > 0;
+                    } else if (k == "toMouseDir" || k == "touchMoveDir") {
+                        const dot = math.clamp(
+                            v2.dot(inputMsg[k], this.m_prevInputMsg[k]),
+                            -1,
+                            1,
+                        );
+                        const angle = math.rad2deg(Math.acos(dot));
+                        diff = angle > 0.1;
+                    } else if (k == "toMouseLen") {
+                        diff = Math.abs(this.m_prevInputMsg[k] - inputMsg[k]) > 0.5;
+                    } else if (k == "shootStart") {
+                        diff = inputMsg[k] || inputMsg[k] != this.m_prevInputMsg[k];
+                    } else if (
+                        this.m_prevInputMsg[k as keyof typeof this.m_prevInputMsg] !=
+                        inputMsg[k as keyof typeof inputMsg]
+                    ) {
+                        diff = true;
+                    }
+                    if (diff) {
+                        break;
+                    }
+                }
             }
-            const pings = this.pings.sort((a, b) => {
-                return a - b;
-            });
-            const pLen = pings.length;
-            if (pLen > 0) {
-                const med = pings[Math.floor(pLen * 0.5)];
-                const p95 = pings[Math.floor(pLen * 0.95)];
-                const max = pings[pLen - 1];
-                console.log(
-                    "Ping     min:",
-                    format(pings[0].toFixed(2), 7),
-                    "med:",
-                    format(med.toFixed(2), 7),
-                    "p95:",
-                    format(p95.toFixed(2), 7),
-                    "max:",
-                    format(max.toFixed(2), 7),
-                );
+            this.m_inputMsgTimeout -= dt;
+            if (diff || this.m_inputMsgTimeout < 0) {
+                if (!this.seqInFlight) {
+                    this.seq = (this.seq + 1) % 256;
+                    this.seqSendTime = Date.now();
+                    this.seqInFlight = true;
+                    inputMsg.seq = this.seq;
+                }
+                this.m_sendMessage(net.MsgType.Input, inputMsg, 128);
+                this.m_inputMsgTimeout = 1;
+                this.m_prevInputMsg = inputMsg;
             }
-            this.pings = [];
 
-            const intervals = this.updateIntervals.sort((a, b) => {
-                return a - b;
-            });
-            const inteLen = intervals.length;
-            if (inteLen > 0) {
-                const med = intervals[Math.floor(inteLen * 0.5)];
-                const p95 = intervals[Math.floor(inteLen * 0.95)];
-                const max = intervals[inteLen - 1];
-                console.log(
-                    "Interval min:",
-                    format(intervals[0].toFixed(2), 7),
-                    "med:",
-                    format(med.toFixed(2), 7),
-                    "p95:",
-                    format(p95.toFixed(2), 7),
-                    "max:",
-                    format(max.toFixed(2), 7),
-                );
+            // Clear cached data
+            this.m_ui2Manager.flushInput();
+
+            if (this.editor.enabled && this.editor.sendMsg) {
+                var msg = this.editor.getMsg();
+                this.m_sendMessage(net.MsgType.Edit, msg);
+                this.editor.postSerialization();
             }
-            this.updateIntervals = [];
+
+            this.m_map.m_update(
+                dt,
+                this.m_activePlayer,
+                this.m_playerBarn,
+                this.m_particleBarn,
+                this.m_audioManager,
+                this.m_ambience,
+                this.m_renderer,
+                this.m_camera,
+                smokeParticles,
+                debug,
+            );
+            this.m_lootBarn.m_update(
+                dt,
+                this.m_activePlayer,
+                this.m_map,
+                this.m_audioManager,
+                this.m_camera,
+                debug,
+            );
+            this.m_bulletBarn.m_update(
+                dt,
+                this.m_playerBarn,
+                this.m_map,
+                this.m_camera,
+                this.m_activePlayer,
+                this.m_renderer,
+                this.m_particleBarn,
+                this.m_audioManager,
+            );
+            this.m_flareBarn.m_update(
+                dt,
+                this.m_playerBarn,
+                this.m_map,
+                this.m_camera,
+                this.m_activePlayer,
+                this.m_renderer,
+                this.m_particleBarn,
+                this.m_audioManager,
+            );
+            this.m_projectileBarn.m_update(
+                dt,
+                this.m_particleBarn,
+                this.m_audioManager,
+                this.m_activePlayer,
+                this.m_map,
+                this.m_renderer,
+                this.m_camera,
+            );
+            this.m_explosionBarn.m_update(
+                dt,
+                this.m_map,
+                this.m_playerBarn,
+                this.m_camera,
+                this.m_particleBarn,
+                this.m_audioManager,
+                debug,
+            );
+            this.m_airdropBarn.m_update(
+                dt,
+                this.m_activePlayer,
+                this.m_camera,
+                this.m_map,
+                this.m_particleBarn,
+                this.m_renderer,
+                this.m_audioManager,
+            );
+            this.m_planeBarn.m_update(
+                dt,
+                this.m_camera,
+                this.m_activePlayer,
+                this.m_map,
+                this.m_renderer,
+            );
+            this.m_smokeBarn.m_update(
+                dt,
+                this.m_camera,
+                this.m_activePlayer,
+                this.m_map,
+                this.m_renderer,
+            );
+            this.m_shotBarn.m_update(
+                dt,
+                this.m_activeId,
+                this.m_playerBarn,
+                this.m_particleBarn,
+                this.m_audioManager,
+            );
+            this.m_particleBarn.m_update(dt, this.m_camera, debug);
+            this.m_deadBodyBarn.m_update(
+                dt,
+                this.m_playerBarn,
+                this.m_activePlayer,
+                this.m_map,
+                this.m_camera,
+                this.m_renderer,
+            );
+            this.m_decalBarn.m_update(dt, this.m_camera, this.m_renderer, debug);
+            this.m_uiManager.m_update(
+                dt,
+                this.m_activePlayer,
+                this.m_map,
+                this.m_gas,
+                this.m_lootBarn,
+                this.m_playerBarn,
+                this.m_camera,
+                this.teamMode,
+                this.m_map.factionMode,
+            );
+            this.m_ui2Manager.m_update(
+                dt,
+                this.m_activePlayer,
+                this.m_spectating,
+                this.m_playerBarn,
+                this.m_lootBarn,
+                this.m_map,
+                this.m_inputBinds,
+            );
+            this.m_emoteBarn.m_update(
+                dt,
+                this.m_localId,
+                this.m_activePlayer,
+                this.teamMode,
+                this.m_deadBodyBarn,
+                this.m_map,
+                this.m_renderer,
+                this.m_input,
+                this.m_inputBinds,
+                this.m_spectating,
+            );
+            this.m_touch.m_update(
+                dt,
+                this.m_activePlayer,
+                this.m_map,
+                this.m_camera,
+                this.m_renderer,
+            );
+            this.m_renderer.m_update(dt, this.m_camera, this.m_map, debug);
+
+            for (let i = 0; i < this.m_emoteBarn.newPings.length; i++) {
+                const ping = this.m_emoteBarn.newPings[i];
+                const msg = new net.EmoteMsg();
+                msg.type = ping.type;
+                msg.pos = ping.pos;
+                msg.isPing = true;
+                this.m_sendMessage(net.MsgType.Emote, msg, 128);
+            }
+            this.m_emoteBarn.newPings = [];
+            for (let i = 0; i < this.m_emoteBarn.newEmotes.length; i++) {
+                const emote = this.m_emoteBarn.newEmotes[i];
+                const msg = new net.EmoteMsg();
+                msg.type = emote.type;
+                msg.pos = emote.pos;
+                msg.isPing = false;
+                this.m_sendMessage(net.MsgType.Emote, msg, 128);
+            }
+            this.m_emoteBarn.newEmotes = [];
+
+            const now = Date.now();
+            if (now > this.debugPingTime) {
+                this.debugPingTime = now + 20000;
+                function format(str: string, len: number) {
+                    return (" ".repeat(len) + str).slice(-len);
+                }
+                const pings = this.pings.sort((a, b) => {
+                    return a - b;
+                });
+                const pLen = pings.length;
+                if (pLen > 0) {
+                    const med = pings[Math.floor(pLen * 0.5)];
+                    const p95 = pings[Math.floor(pLen * 0.95)];
+                    const max = pings[pLen - 1];
+                    console.log(
+                        "Ping     min:",
+                        format(pings[0].toFixed(2), 7),
+                        "med:",
+                        format(med.toFixed(2), 7),
+                        "p95:",
+                        format(p95.toFixed(2), 7),
+                        "max:",
+                        format(max.toFixed(2), 7),
+                    );
+                }
+                this.pings = [];
+
+                const intervals = this.updateIntervals.sort((a, b) => {
+                    return a - b;
+                });
+                const inteLen = intervals.length;
+                if (inteLen > 0) {
+                    const med = intervals[Math.floor(inteLen * 0.5)];
+                    const p95 = intervals[Math.floor(inteLen * 0.95)];
+                    const max = intervals[inteLen - 1];
+                    console.log(
+                        "Interval min:",
+                        format(intervals[0].toFixed(2), 7),
+                        "med:",
+                        format(med.toFixed(2), 7),
+                        "p95:",
+                        format(p95.toFixed(2), 7),
+                        "max:",
+                        format(max.toFixed(2), 7),
+                    );
+                }
+                this.updateIntervals = [];
+            }
+
+            this.m_render(dt, debug);
         }
 
-        this.m_render(dt, debug);
     }
-
     m_render(dt: number, debug: DebugOptions) {
         const grassColor = this.m_map.mapLoaded
             ? this.m_map.getMapDef().biome.colors.grass
@@ -1623,6 +1633,11 @@ export class Game {
     }
 
     sendChatMessage(message: string) {
+        // Prevent sending duplicate messages
+        if (this.m_lastChatMessage === message && Date.now() - this.m_lastChatMessageTime < 1000) {
+            console.warn("Duplicate chat message prevented:", message);
+            return;
+        }
         console.log("Sending chat message:", message);
         const chatMsg = new net.ChatMsg();
         chatMsg.message = message;
@@ -1630,6 +1645,8 @@ export class Game {
         chatMsg.playerName = this.m_config.get("playerName") || "Player";
         console.log("Chat message object:", chatMsg);
         this.m_sendMessage(net.MsgType.Chat, chatMsg, 512);
+        this.m_lastChatMessage = message;
+        this.m_lastChatMessageTime = Date.now();
     }
 
     m_sendMessage(type: net.MsgType, data: net.Msg, maxLen?: number) {
