@@ -385,7 +385,7 @@ export class Game {
     }
 
     update(dt: number) {
-        if (this.m_input.keyPressed(Key.Tilde)) {
+        if (this.m_input.keyPressed(Key.BracketRight)) {
             this.editor.setEnabled(!this.editor.enabled);
         }
         if (this.editor.enabled) {
