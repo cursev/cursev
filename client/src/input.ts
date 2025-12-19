@@ -377,6 +377,7 @@ export enum Key {
     FwdSlash = 191,
     Tilde = 192,
     BracketRight = 221,
+    Y = 89,
 }
 
 export enum MouseButton {

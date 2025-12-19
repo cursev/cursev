@@ -2721,8 +2721,17 @@ export class Player extends BaseGameObject {
                 attacker.inventory[throwableType] = maxThrowables;
             }
 
+            // Refill les items de soin de l'attaquant
+            const healingItemTypes = ["soda", "painkiller", "bandage", "healthkit"];
+            for (const itemType of healingItemTypes) {
+                const backpackLevel = attacker.getGearLevel(attacker.backpack);
+                const maxItems = attacker.bagSizes[itemType][backpackLevel];
+                attacker.inventory[itemType] = maxItems;
+            }
+
             attacker.weapsDirty = true;
             attacker.inventoryDirty = true;
+            attacker.setDirty();
 
             this.game.logger.info(`Player ${attacker.name} healed and refilled after downing ${this.name}`);
         }

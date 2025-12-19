@@ -242,11 +242,12 @@ export class UiManager {
 
     // Chat
     chatOpen = false;
-    chatMessages: Array<{ playerName: string; message: string; playerId: number }> = [];
+    chatMessages: Array<{ playerName: string; message: string; playerId: number; timestamp: number }> = [];
     chatMessagesContainer = $("#ui-chat-messages");
     chatInputWrapper = $("#ui-chat-input-wrapper");
     chatInput = $("#ui-chat-input");
     maxChatMessages = 50;
+    chatMessageLifetime = 7; // Messages disappear after 10 seconds
 
     teamMemberHeight = 48;
     groupPlayerCount = 0;
@@ -680,8 +681,19 @@ export class UiManager {
         camera: Camera,
         teamMode: TeamMode,
         factionMode: boolean,
+        localPlayerId: number,
     ) {
         const localPlayer = player;
+
+        // Remove chat messages older than chatMessageLifetime seconds
+        const now = Date.now();
+        const initialLength = this.chatMessages.length;
+        this.chatMessages = this.chatMessages.filter(
+            (msg) => now - msg.timestamp < this.chatMessageLifetime * 1000
+        );
+        if (this.chatMessages.length !== initialLength) {
+            this.updateChatDisplay(localPlayerId);
+        }
 
         if (this.weapsDirty) {
             this.resetWeapSlotStyling();
@@ -2542,7 +2554,7 @@ export class UiManager {
     addChatMessage(playerName: string, message: string, playerId: number, localPlayerId: number) {
         console.log("addChatMessage called:", playerName, message, playerId, localPlayerId);
         console.log("chatMessagesContainer:", this.chatMessagesContainer, "length:", this.chatMessagesContainer?.length);
-        this.chatMessages.push({ playerName, message, playerId });
+        this.chatMessages.push({ playerName, message, playerId, timestamp: Date.now() });
         if (this.chatMessages.length > this.maxChatMessages) {
             this.chatMessages.shift();
         }

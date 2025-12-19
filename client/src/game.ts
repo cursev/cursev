@@ -451,7 +451,7 @@ export class Game {
             }
         }
         // Open chat with T
-        if (this.m_input.keyPressed(Key.T) && !this.m_uiManager.chatOpen && !this.m_uiManager.escMenuDisplayed) {
+        if (this.m_input.keyPressed(Key.Y) && !this.m_uiManager.chatOpen && !this.m_uiManager.escMenuDisplayed) {
             this.m_uiManager.openChat();
         }
         // Large Map
@@ -915,6 +915,7 @@ export class Game {
                 this.m_camera,
                 this.teamMode,
                 this.m_map.factionMode,
+                this.m_localId,
             );
             this.m_ui2Manager.m_update(
                 dt,
