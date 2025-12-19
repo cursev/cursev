@@ -1512,6 +1512,8 @@ export class Player extends BaseGameObject {
                             const maxThrowables = target.bagSizes[throwableType][backpackLevel];
                             target.inventory[throwableType] = maxThrowables;
                         }
+                        target.setDirty();
+
                         // Refill les items de soin de l'attaquant
                         const healingItemTypes = ["soda", "painkiller", "bandage", "healthkit"];
                         for (const itemType of healingItemTypes) {
