@@ -319,8 +319,7 @@ export enum MsgType {
     UpdatePass,
     AliveCounts,
     PerkModeRoleSelect,
-    Custom,
-    Chat
+    Custom
 }
 
 export enum PickupMsgType {
@@ -355,4 +354,3 @@ export { RoleAnnouncementMsg } from "./roleAnnouncementMsg";
 export { AliveCountsMsg } from "./aliveCountsMsg";
 export { PerkModeRoleSelectMsg } from "./perkModeRoleSelectMsg";
 export { CustomMsg } from "./customMsg";
-export { ChatMsg } from "./chatMsg";

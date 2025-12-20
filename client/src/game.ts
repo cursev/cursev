@@ -113,8 +113,6 @@ export class Game {
     debugPingTime!: number;
     lastUpdateTime!: number;
     updateIntervals!: number[];
-    m_lastChatMessage: string = "";
-    m_lastChatMessageTime: number = 0;
 
     constructor(
         public m_pixi: PIXI.Application,
@@ -444,15 +442,7 @@ export class Game {
         );
         this.m_audioManager.cameraPos = v2.copy(this.m_camera.m_pos);
         if (this.m_input.keyPressed(Key.Escape)) {
-            if (this.m_uiManager.chatOpen) {
-                this.m_uiManager.closeChat();
-            } else {
-                this.m_uiManager.toggleEscMenu();
-            }
-        }
-        // Open chat with T
-        if (this.m_input.keyPressed(Key.Y) && !this.m_uiManager.chatOpen && !this.m_uiManager.escMenuDisplayed) {
-            this.m_uiManager.openChat();
+            this.m_uiManager.toggleEscMenu();
         }
         // Large Map
         if (
@@ -496,9 +486,7 @@ export class Game {
         // Input
         const inputMsg = new net.InputMsg();
         inputMsg.seq = this.seq;
-        // Block game inputs when chat is open
-        const chatOpen = this.m_uiManager.chatOpen;
-        if (!this.m_spectating && !chatOpen) {
+        if (!this.m_spectating) {
             if (device.touch) {
                 const touchPlayerMovement = this.m_touch.getTouchMovement(this.m_camera);
                 const touchAimMovement = this.m_touch.getAimMovement(
@@ -574,14 +562,13 @@ export class Game {
                 net.Constants.MouseMaxDist,
             );
             inputMsg.shootStart =
-                (!chatOpen && this.m_inputBinds.isBindPressed(Input.Fire)) || this.m_touch.shotDetected;
+                this.m_inputBinds.isBindPressed(Input.Fire) || this.m_touch.shotDetected;
             inputMsg.shootHold =
-                (!chatOpen && this.m_inputBinds.isBindDown(Input.Fire)) || this.m_touch.shotDetected;
+                this.m_inputBinds.isBindDown(Input.Fire) || this.m_touch.shotDetected;
             inputMsg.portrait =
                 this.m_camera.m_screenWidth < this.m_camera.m_screenHeight;
 
-            // Don't process game inputs when chat is open
-            if (!chatOpen) {
+            {
                 const checkInputs = [
                     Input.Reload,
                     Input.Revive,
@@ -628,17 +615,17 @@ export class Game {
                 }
             }
 
-            // Swap weapon slots (only if chat is not open)
-            if (!chatOpen && (
+            // Swap weapon slots
+            if (
                 this.m_inputBinds.isBindPressed(Input.SwapWeapSlots) ||
                 this.m_uiManager.swapWeapSlots
-            )) {
+            ) {
                 inputMsg.addInput(Input.SwapWeapSlots);
                 this.m_activePlayer.gunSwitchCooldown = 0;
             }
 
-            // Handle touch inputs (only if chat is not open)
-            if (!chatOpen) {
+            // Handle touch inputs
+            {
                 if (this.m_uiManager.reloadTouched) {
                     inputMsg.addInput(Input.Reload);
                 }
@@ -670,13 +657,13 @@ export class Game {
                         }
                     }
                 }
-                if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UseBandage)) {
+                if (this.m_inputBinds.isBindPressed(Input.UseBandage)) {
                     inputMsg.useItem = "bandage";
-                } else if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UseHealthKit)) {
+                } else if (this.m_inputBinds.isBindPressed(Input.UseHealthKit)) {
                     inputMsg.useItem = "healthkit";
-                } else if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UseSoda)) {
+                } else if (this.m_inputBinds.isBindPressed(Input.UseSoda)) {
                     inputMsg.useItem = "soda";
-                } else if (!chatOpen && this.m_inputBinds.isBindPressed(Input.UsePainkiller)) {
+                } else if (this.m_inputBinds.isBindPressed(Input.UsePainkiller)) {
                     inputMsg.useItem = "painkiller";
                 }
 
@@ -1616,38 +1603,7 @@ export class Game {
                 msg.deserialize(stream);
                 this.m_ui2Manager.addKillFeedMessage(msg.message, msg.color);
             }
-            case net.MsgType.Chat: {
-                const msg = new net.ChatMsg();
-                msg.deserialize(stream);
-                console.log("Received chat message:", msg);
-                const playerInfo = this.m_playerBarn.getPlayerInfo(msg.playerId);
-                const playerName = this.m_playerBarn.getPlayerName(
-                    msg.playerId,
-                    this.m_activeId,
-                    true,
-                );
-                console.log("Adding chat message:", playerName, msg.message);
-                this.m_uiManager.addChatMessage(playerName, msg.message, msg.playerId, this.m_localId);
-                break;
-            }
         }
-    }
-
-    sendChatMessage(message: string) {
-        // Prevent sending duplicate messages
-        if (this.m_lastChatMessage === message && Date.now() - this.m_lastChatMessageTime < 1000) {
-            console.warn("Duplicate chat message prevented:", message);
-            return;
-        }
-        console.log("Sending chat message:", message);
-        const chatMsg = new net.ChatMsg();
-        chatMsg.message = message;
-        chatMsg.playerId = this.m_localId;
-        chatMsg.playerName = this.m_config.get("playerName") || "Player";
-        console.log("Chat message object:", chatMsg);
-        this.m_sendMessage(net.MsgType.Chat, chatMsg, 512);
-        this.m_lastChatMessage = message;
-        this.m_lastChatMessageTime = Date.now();
     }
 
     m_sendMessage(type: net.MsgType, data: net.Msg, maxLen?: number) {
